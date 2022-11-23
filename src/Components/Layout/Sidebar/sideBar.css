@@ -1,0 +1,87 @@
+.sideBarNav{
+    width: 250px;
+    height: 100%;
+    background: #49167E;
+    overflow-y: auto;
+}
+.navlist-items {
+    overflow-y: auto;
+    flex: 1;
+}
+.navbar-fixed-control {
+    min-height: 50px;
+    background-color: #49167E;
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: row;
+    color: #fff;
+    align-items: center;
+}
+.navbar-fixed-control:hover {
+    cursor: pointer;
+    background-color: #49167E;
+}
+.user-profile-name {
+    font-size: 13px;
+    font-weight: 600;
+}
+.user-profile-role {
+    font-size: 11px;
+    color: #d0d0d0;
+    line-height: 14px;
+}
+.navMenu{
+    cursor: pointer;
+    font-size: 13px;
+    align-items: center;
+    font-weight: 600;
+    padding: 0px 15px;
+
+}
+
+
+.navMenu a {
+    color: #dfdfdfc2;
+    text-decoration: none;
+    background-color: #3B0F69;
+    padding: 5px 15px;
+    margin: 8px 0px;
+    transition: 500ms;
+    border-radius: 8px;
+    min-height: 42px;
+
+}
+.navMenu a:hover {
+    /* color: #ffffff; */
+    text-decoration: none;
+    background-color: #3a0a6d;
+    /* border-left: 3px solid; */
+    transition: 500ms;
+    
+}
+.nav-title{
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: #ffffff;
+    padding: 15px;
+    letter-spacing: 0.2px;
+}
+.navMenu svg{
+    opacity: .5;
+    width: 18px;
+}
+.navMenu:hover svg{
+    opacity: 1;
+}
+.sideBarNav .active a{
+    color: #ffffff;
+    text-decoration: none;
+    background-color: transparent;
+    transition: 500ms;
+    background-color: #2D0A52;
+    border-radius: 8px;
+}
+.sideBarNav .active svg{
+    opacity: 1;
+}
