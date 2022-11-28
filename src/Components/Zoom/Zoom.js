@@ -46,10 +46,13 @@ function Zoom({zoomInfo}) {
       console.error(error)
     })
   }
-
+ 
   function startMeeting(signature) {
-    document.getElementById('zmmtg-root').style.display = 'block'
-
+    document.getElementById('zmmtg-root').style.display = 'block';
+    document.getElementById('zmmtg-root').style.marginLeft = '790px';
+    // document.getElementById('content_container').style.justifyContent = 'left'
+    document.getElementById('zmmtg-root').style.justifyContent='left'
+ 
     ZoomMtg.init({
       leaveUrl: leaveUrl,
       success: (success) => {
@@ -85,6 +88,7 @@ function Zoom({zoomInfo}) {
 
   return (
     <div className="App">
+     
     </div> 
   );
 }
