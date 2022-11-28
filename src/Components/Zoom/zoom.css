@@ -111,3 +111,54 @@
     /* justify-content: center; */
     background: #222020;
 }
+
+/* #zmmtg-root {
+    width: 100% !important;
+    height: 100% !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0% !important;
+
+    background-color: yellow !important;
+    justify-content: left !important ;
+   
+    
+} */
+
+.om{
+    background: white;
+    height: 548px;
+    width: 1600px;
+    display: flex;
+    justify-content: left !important;
+    align-items: center;
+    overflow: hidden scroll;
+}
+.media-preview-container{
+    margin: 10px 1000px 0px 10px !important;
+}
+
+/* full screen Zoom video css */
+.footer__btns-container {
+
+    margin-left: -20px  ;
+}
+.footer__leave-btn-container {
+   
+    margin-right: 620px ;
+}
+.single-main-container__video-frame {
+    position: initial !important;
+}
+
+.meeting-info-container--right-side {
+    right: 10px !important;
+    left: 80px !important;
+    top: 12px;
+    height: 32px;
+    z-index: 101;
+}
+#wc-content {
+    
+    margin-left: 820px !important;
+}

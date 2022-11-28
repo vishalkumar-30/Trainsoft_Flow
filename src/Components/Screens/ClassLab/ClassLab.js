@@ -18,6 +18,7 @@ import AppContext from '../../../Store/AppContext';
 import GLOBELCONSTANT from '../../../Constant/GlobleConstant';
 import ClassNotes from './ClassNotes/ClassNotes';
 import Zoom from '../../Zoom/Zoom';
+import "../../Zoom/zoom.css"
 const classTab = ['Media Library', 'Whiteboard', 'Content', 'Code editor', 'Development Env']
 const learnerTab = ['Media Library', 'Code editor',"Notes"]
 
@@ -34,7 +35,7 @@ const ClassLab = ({location}) => {
 
         <div className="p-4 full-w full-h">
             <div className="row full-w full-h ">
-                <div className={`full-w  column ${isFull ? "d-none" : "col-sm-7"}`}>
+                <div className={`full-w  column ${isFull ? "d-none" : "col-sm-6"}`}>
                     <div className="title-lg pointer" onClick={ ()=> navigate('/dashboard') }>TrainSoft - {!isTrainer ? 'Learner' : 'Instructor'}</div>
                     <div className="flx">
                         {tab.length !== 0 ?
@@ -70,9 +71,9 @@ const ClassLab = ({location}) => {
                 </div>
 
                 {/* right panel */}
-                <div className={`${isFull ? "col-md-12" : "col-sm-5"}  column`}>
+                <div className={`${isFull ? "col-md-12" : "col-sm-6"}  column`}>
                     <div className="flx jce">
-                        <BtnSquare className="mr-3 expZoom" onClick={()=>setIsFull(!isFull)}>{ICN_EXPANDED}</BtnSquare>
+                        {/* <BtnSquare className="mr-3 expZoom" onClick={()=>setIsFull(!isFull)}>{ICN_EXPANDED}</BtnSquare> */}
                         {/* <BtnSquare className="mr-3">{ICN_RECORD}</BtnSquare>
                         <BtnSquare className="mr-3"> {ICN_PEOPLE}</BtnSquare>
                         <BsDropDown
@@ -84,8 +85,8 @@ const ClassLab = ({location}) => {
                         <BtnSquare className="mr-3">{ICN_EXIT}</BtnSquare> */}
                     </div>
 
-                    <div>
-                        <div className="video-container">
+                    <div >
+                        <div className="video-container " >
                             {/* <div className="video-action">
                                     <img src={vid}/>
                                 <div></div>
@@ -97,8 +98,12 @@ const ClassLab = ({location}) => {
                            {/* <object type="text/html" data={GLOBELCONSTANT.ZOOM_PATH + '/'+ zoomInfo.meetingId} style={{ width: "100%", height: "100%" }}>
                                 <p>backup content</p>
                             </object>  */}
-                              <Zoom zoomInfo={zoomInfo} />
+                            <div  >
+                            <Zoom zoomInfo={zoomInfo}   />
+                            </div>
+                             
                         </div>
+                        
                     </div>
                     {/* <div className="flx mt-3 ">
                         <div className="tab-btn">Class conversation</div>
