@@ -1,34 +1,3 @@
-
-// import React from 'react';
-// import Rating from '@material-ui/lab/Rating';
-// import Typography from '@material-ui/core/Typography';
-// import Box from '@material-ui/core/Box';
-
-// const Feedback = () => {
-//     const [ratingValue, setRatingValue] = React.useState(0);
-//   return (
-//   <>
-//     <div style={{ display: 'block', padding: 30 }}>
-//       <h4>How to use Rating Component in ReactJS?</h4>
-//       <Box component="fieldset" mb={3} borderColor="transparent">
-//         <Typography component="legend">
-//             Please Rate our app
-//         </Typography>
-//         <Rating
-//           name="Rating Label"
-//           value={ratingValue}
-//           onChange={(event, newValue) => {
-//             setRatingValue(newValue);
-//           }}
-//         />
-//       </Box>
-//     </div>
-//   </>
-//   )
-// }
-
-// export default Feedback
-
 import { useState, useContext } from "react";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
@@ -87,37 +56,15 @@ const Feedback = ({ sectionsid, trainingsid }) => {
 
       }, err => {
         spinner.hide()
-        console.error(err)
       }
       );
     }
     catch (err) {
       spinner.hide()
-      console.error('error occur on createTraining', err)
       Toast.error({ message: `Something wrong!!` });
     }
   }
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    const form =
-    {
-      "contentDeliveryRating": value2,
-      "contentRating": value1,
-      "instructorRating": value,
-      "reviewComments": comments
-    }
-    Toast.success({ message: `Feedback submitted successfully` });
-    console.log(form);
-    setValue(0);
-    setValue1(0);
-    setValue2(0);
-    setComments('');
-  }
-  console.log(value);
-  console.log(hover);
-  console.log(hover2);
-  console.log(comments);
   return (
     <div>
       <form

@@ -23,9 +23,11 @@ import "./TrainingMediaPlayer/MediaPlayer.css";
 import DynamicTable from "../../Common/DynamicTable/DynamicTable";
 import Feedback from "../../Common/Feedback/Feedback";
 import { Link } from "@material-ui/core";
+import { navigate } from "../../Common/Router";
 import Qa from "../../Common/QA/Qa";
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import SummarizeRoundedIcon from '@mui/icons-material/SummarizeRounded';
+import DuoIcon from '@mui/icons-material/Duo';
 
 const TrainingDetails = ({ location }) => {
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
@@ -35,182 +37,9 @@ const TrainingDetails = ({ location }) => {
     const [vdlink, setVdlink] = useState("https://www.youtube.com/watch?v=RTagtaWSea4");
     const [feed, setFeed] = useState(false);
     const [modal, setModal] = useState(false);
-    const training = [
-        {
+    const [showcoursename, setShowcoursename] = useState('');
+    const [zoomInfo, setZoomInfo] = useState({});
 
-            "name": "October Batch Nodejs",
-            "totalsection": "0 / 5 | 10 mint",
-            "topics": [
-                {
-                    "description": "Introduction 1",
-                    "videolink": "https://www.youtube.com/watch?v=XDjG4_m1bSY",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 2",
-                    "videolink": "https://www.youtube.com/watch?v=1Rp15Svbu6E",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 3",
-                    "videolink": "https://www.youtube.com/watch?v=9NqthBLHBDg",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 4",
-                    "documentlink": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 5",
-                    "videolink": "https://www.youtube.com/watch?v=1Rp15Svbu6E",
-                    "islast": true
-                },
-
-            ]
-
-        },
-        {
-
-            "name": "October Batch Python",
-            "totalsection": "0 / 4 | 15 mint",
-            "topics": [
-                {
-                    "description": "Introduction 1",
-                    "videolink": "https://www.youtube.com/watch?v=ysz5S6PUM-U",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 2",
-                    "videolink": "https://www.youtube.com/watch?v=9NqthBLHBDg",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 3",
-                    "videolink": "https://www.youtube.com/watch?v=ysz5S6PUM-U",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 4",
-                    "documentlink": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-                    "islast": true
-                }
-            ]
-
-        },
-        {
-
-            "name": "October Batch Ruby",
-            "totalsection": "0 / 4 | 40 mint",
-            "topics": [
-                {
-                    "description": "Introduction 1",
-                    "videolink": "https://www.youtube.com/watch?v=ysz5S6PUM-U",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 2",
-                    "videolink": "https://www.youtube.com/watch?v=9NqthBLHBDg",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 3",
-                    "documentlink": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 4",
-                    "documentlink": "https://calibre-ebook.com/downloads/demos/demo.docx",
-                    "islast": true
-                }
-            ]
-
-        },
-        {
-
-            "name": "October Batch Java",
-            "totalsection": "0 / 4 | 25 mint",
-            "topics": [
-                {
-                    "description": "Introduction 1",
-                    "videolink": "https://www.youtube.com/watch?v=ysz5S6PUM-U",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 2",
-                    "videolink": "https://www.youtube.com/watch?v=9NqthBLHBDg",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 3",
-                    "documentlink": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 4",
-                    "documentlink": "https://calibre-ebook.com/downloads/demos/demo.docx",
-                    "islast": true
-                }
-            ]
-
-        },
-        {
-
-            "name": "October Batch C++",
-            "totalsection": "1 / 5 | 30 mint",
-            "topics": [
-                {
-                    "description": "Introduction 1",
-                    "videolink": "https://www.youtube.com/watch?v=ysz5S6PUM-U",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 2",
-                    "videolink": "https://www.youtube.com/watch?v=9NqthBLHBDg",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 3",
-                    "documentlink": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 4",
-                    "documentlink": "https://calibre-ebook.com/downloads/demos/demo.docx",
-                    "islast": true
-                }
-            ]
-        },
-        {
-
-            "name": "October Batch C",
-            "totalsection": "0 / 4 | 50 mint",
-
-            "topics": [
-                {
-                    "description": "Introduction 1",
-                    "videolink": "https://www.youtube.com/watch?v=ysz5S6PUM-U",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 2",
-                    "videolink": "https://www.youtube.com/watch?v=9NqthBLHBDg",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 3",
-                    "documentlink": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-                    "islast": false
-                },
-                {
-                    "description": "Introduction 4",
-                    "documentlink": "https://calibre-ebook.com/downloads/demos/demo.docx",
-                    "islast": true
-                }
-            ]
-
-        }
-    ]
     const navigate = useNavigate();
 
 
@@ -255,15 +84,33 @@ const TrainingDetails = ({ location }) => {
                     if (data.contentLink) {
                         Show(data.contentLink)
                     }
-                    // else if (data.documentlink) {
-                    //     Show(data.documentlink);
-                    // }
-                    //console.log(data.islast)
                     showFeedBack(data.last)
                     modalF(data.last);
+                    setShowcoursename(data.contentName);
+                    setZoomInfo(zoomInfo => ({
+                        ...zoomInfo,
+                        ...{
+                            "meetingId": data.meetingId,
+                            "password": data.meetingPwd
+                        }
+                    }))
+
+                }} style={{ cursor: "pointer" }} > {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : <SummarizeRoundedIcon />}
+                    {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
+                    {/* <button style={{
+                        backgroundColor: "transparent",
+                        border: "1px solid #1c1d1f",
+                        borderRadius: "4px",
+                        color: "black",
+                        marginRight: "10px",
+                        padding: "0px 10px 0px 10px  ",
+                        textAlign: "center",
+                        textDecoration: "none",
 
 
-                }} style={{ cursor: "pointer" }}> {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : <SummarizeRoundedIcon />} {data.contentName}</Link>
+                        float: "right"
+                    }}>Resources </button> */}
+                </Link>
             },
             // "description": {
             //     "title": "Description",
@@ -318,8 +165,11 @@ const TrainingDetails = ({ location }) => {
             spinner.show();
             RestService.getTrainingContentsByTrainingSid(trainingSid).then(
                 response => {
-                    console.log(response.data.courseSectionResponseTO);
-                    setTrainingDetailsList(response.data.courseSectionResponseTO);
+
+                    if (response.status === 200) {
+                        setTrainingDetailsList(response.data.courseSectionResponseTO);
+                    }
+
                     console.log(trainingDetailsList);
                 },
                 err => {
@@ -337,10 +187,11 @@ const TrainingDetails = ({ location }) => {
     useEffect(() => {
         getTrainingContentsByTrainingSid();
     }, [])
-   
-    // console.log(feed);
+
     return (
         <>
+            {showcoursename.length === 0 ? "" :
+                <div className=" title-sm">Content Title: {showcoursename}</div>}
             <hr />
 
             {/* <div className="table-shadow p-3 ">
@@ -360,7 +211,9 @@ const TrainingDetails = ({ location }) => {
                     {/* <VideoMediaPlayer /> */}
                     {(vdlink.includes("youtube") || vdlink.includes("mp4")) ? <VideoMediaPlayer url={vdlink} />
                         : vdlink.includes("pdf") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
-                            : <div  style={{width:"130px",textAlign:"center", textDecoration:"none",color:"white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius:"10px" }}><a href="/class" target='_blank' >Join Now</a></div>
+                            : <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                <button onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
+                            </div>
 
                     }
 
@@ -395,7 +248,7 @@ const TrainingDetails = ({ location }) => {
                 </div>
                 <div class="col-4 " style={{ height: "535px", overflowY: "scroll", marginLeft: "-12px", marginTop: "-15px", borderTopLeftRadius: "10px", borderTopRightRadius: "10px", background: "#F7F9FA", boxShadow: "#00000033 0px 0px 0px 1px, #00000033 0px 1px 1px -1px, #00000033 0px 1px 0px " }}>
 
-                    {trainingDetailsList.map((train) => {
+                    {trainingDetailsList.length > 0 ? trainingDetailsList.map((train) => {
                         return (
                             <>
                                 <div >
@@ -408,14 +261,14 @@ const TrainingDetails = ({ location }) => {
                                     {
                                         feed ? <Modal show={modal} handleClose={() => setModal(false)}>
 
-                                            <Feedback sectionsid={train.sid} trainingsid={location.state.sid}   />
+                                            <Feedback sectionsid={train.sid} trainingsid={location.state.sid} />
 
                                         </Modal> : ''
                                     }
                                 </div>
                             </>
                         )
-                    })}
+                    }) : ''}
                 </div>
             </div>
 
