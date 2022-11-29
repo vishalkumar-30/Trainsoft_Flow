@@ -22,7 +22,11 @@ import "../../Zoom/zoom.css"
 const classTab = ['Media Library', 'Whiteboard', 'Content', 'Code editor', 'Development Env']
 const learnerTab = ['Media Library', 'Code editor',"Notes"]
 
-const ClassLab = ({location}) => {
+const ClassLab = (props) => {
+    let zoomInfo2 = {
+        meetingId: props.location.state.meetingId,
+        password: props.location.state.password
+    }
     const { user, spinner ,ROLE,zoomInfo } = useContext(AppContext)
     const [show, setShow] = useState(false)
     const isTrainer = user.role === ROLE.INSTRUCTOR ? true : false 
@@ -99,7 +103,8 @@ const ClassLab = ({location}) => {
                                 <p>backup content</p>
                             </object>  */}
                             <div  >
-                            <Zoom zoomInfo={zoomInfo}   />
+                                <Zoom zoomInfo={zoomInfo2} />
+                            {/* <Zoom zoomInfo={zoomInfo}   /> */}
                             </div>
                              
                         </div>

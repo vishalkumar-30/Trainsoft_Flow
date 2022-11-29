@@ -51,7 +51,7 @@ const Trainings = ({ location }) => {
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
-                render: (data) => <Link onClick={() => setTraining(data)} to={`training-details`} state={{ title: 'Training', rowData: data, sid: data.sid, subTitle: "Training Info", subPath: '/' }} className="dt-name">{data.name}</Link>
+                render: (data) => <Link onClick={() => setTraining(data)} to={`training-details`} state={{ title: data.name, rowData: data, sid: data.sid, subTitle: "Training Info", subPath: '/' }} className="dt-name">{data.name}</Link>
 
             },
             "noOfBatches": {
@@ -290,8 +290,8 @@ const Training = () => {
         
             <Router>
                 <Trainings path="/" />
-                <TrainingDetails2 path="training-details/*" />
-                {/* <TrainingDetails path="training-details/*" /> */}
+                {/* <TrainingDetails2 path="training-details/*" /> */}
+                <TrainingDetails path="training-details/*" />
             </Router>
       
     )
