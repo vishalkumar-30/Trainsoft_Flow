@@ -172,7 +172,8 @@ storeFeedback: (sectionsid, trainingsid, payload) => AxiosService.post(GLOBELCON
 
 //notification
 
-getNotification:()=>AxiosService.get(GLOBELCONSTANT.NOTIFICATION.GET_NOTIFICATION)
+getNotification:()=>AxiosService.get(GLOBELCONSTANT.NOTIFICATION.GET_NOTIFICATION),
+deleteAllNotifications:()=>AxiosService.delete(GLOBELCONSTANT.NOTIFICATION.DELETE_ALL_NOTIFICATIONS)
 
 
 
