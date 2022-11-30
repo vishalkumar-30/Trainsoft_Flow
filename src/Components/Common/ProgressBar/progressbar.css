@@ -1,0 +1,19 @@
+.product {
+    
+    padding: 5px;
+   
+   
+    
+    cursor: pointer;
+    
+}
+
+.product-text {
+    float: left;
+    width: auto;
+    display: none;
+    font-size:14px
+}
+.product:hover .product-text {
+    display: flex;
+}
