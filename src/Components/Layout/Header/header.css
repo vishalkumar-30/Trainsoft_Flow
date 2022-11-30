@@ -62,3 +62,39 @@
     border: 0px;
     font-size: 13px;
 }
+
+.icon-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    color: #333333;
+    background: #dddddd;
+    border: none;
+    outline: none;
+    border-radius: 50%;
+  }
+  
+  .icon-button:hover {
+    cursor: pointer;
+  }
+  
+  .icon-button:active {
+    background: blue;
+  }
+  
+  .icon-button__badge {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    background: red;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+  }

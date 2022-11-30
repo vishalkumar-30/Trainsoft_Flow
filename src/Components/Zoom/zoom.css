@@ -141,12 +141,13 @@
 /* full screen Zoom video css */
 .footer__btns-container {
 
-    margin-left: -20px  ;
+    margin-left: -320px  ;
+    width:250px
 }
-.footer__leave-btn-container {
+/* .footer__leave-btn-container {
    
     margin-right: 620px ;
-}
+} */
 .single-main-container__video-frame {
     position: initial !important;
 }
@@ -161,4 +162,17 @@
 #wc-content {
     
     margin-left: 820px !important;
+}
+.send-video-container__btn{
+    margin-left: -22px !important;
+}
+.footer-button-base__button{
+    display: grid;
+}
+.video-avatar__avatar{
+    margin-left: -1200px !important;
+    width: auto !important;
+}
+.video-avatar__avatar-name{
+    font-size: 30px !important;
 }

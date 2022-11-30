@@ -575,7 +575,7 @@ const CourseDetails = ({ location }) => {
                     return (
                         <>
                             <DropdownItem title={item.sectionName} theme="dark">
-                                <Button className=" ml-2 mb-2" onClick={() => { setShow(true); setContentType("Add Content"); setSectionSid(item.sid) }}>Add Content</Button>
+                                <Button className=" ml-2 mb-2" onClick={() => { setShow(true); setContentType("Add Content"); setSectionSid(item.sid);setShowhide("") }}>Add Content</Button>
                                 <DynamicTable  {...{ configuration, sourceData: item.courseContentResposeTOList, onPageChange: (e) => getSection(e) }} />
                             </DropdownItem>
                         </>

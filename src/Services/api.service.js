@@ -168,7 +168,17 @@ const RestService = {
   quitAssessment: (questionSid, virtualAccountSid) => AxiosService.get(GLOBELCONSTANT.API.ASSESSMENT.QUIT_ASSESSMENT + questionSid + "/" + virtualAccountSid),
 
   //feedback
-storeFeedback: (sectionsid, trainingsid, payload) => AxiosService.post(GLOBELCONSTANT.FEEDBACK.SUBMIT_FEEDBAK + `section-sid=${sectionsid}&training-sid=${trainingsid}`, payload)
+storeFeedback: (sectionsid, trainingsid, payload) => AxiosService.post(GLOBELCONSTANT.FEEDBACK.SUBMIT_FEEDBAK + `section-sid=${sectionsid}&training-sid=${trainingsid}`, payload),
+
+//notification
+
+getNotification:()=>AxiosService.get(GLOBELCONSTANT.NOTIFICATION.GET_NOTIFICATION)
+
+
+
+
 };
+
+
 
 export default RestService;
