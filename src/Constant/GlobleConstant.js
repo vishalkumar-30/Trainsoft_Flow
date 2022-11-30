@@ -149,6 +149,11 @@ const GLOBELCONSTANT = {
     FEEDBACK: {
         SUBMIT_FEEDBAK: API_HOST_V2 + "submit-feedback?"
     },
+NOTIFICATION:{
+    GET_NOTIFICATION : API_HOST_V2 + "get-notification"
+},
+
+
     API: {
         ASSESSMENT: {
             GET_ASSESSMENT_BY_SID: ASSESSMENT_V1 + "assessment/",
