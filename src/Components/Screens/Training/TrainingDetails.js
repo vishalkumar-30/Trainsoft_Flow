@@ -28,6 +28,7 @@ import Qa from "../../Common/QA/Qa";
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import SummarizeRoundedIcon from '@mui/icons-material/SummarizeRounded';
 import DuoIcon from '@mui/icons-material/Duo';
+import ProgressBar from "../../Common/ProgressBar/ProgressBar";
 
 const TrainingDetails = ({ location }) => {
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
@@ -190,8 +191,14 @@ const TrainingDetails = ({ location }) => {
 
     return (
         <>
+          <div className="row" >
+   
             {showcoursename.length === 0 ? "" :
-                <div className=" title-sm">Content Title: {showcoursename}</div>}
+                <div className=" title-sm col-8">Content Title: {showcoursename}</div>}
+                  <div className="col-4" >
+                  <ProgressBar/>
+                  </div>
+          </div>
             <hr />
 
             {/* <div className="table-shadow p-3 ">
@@ -207,7 +214,7 @@ const TrainingDetails = ({ location }) => {
 
             <div class="row">
 
-                <div class="col-8  pl-3 " style={{ marginTop: "-15px" }}>
+                <div class="col-8  pl-3 " style={{ marginTop: "-25px" }}>
                     {/* <VideoMediaPlayer /> */}
                     {(vdlink.includes("youtube") || vdlink.includes("mp4")) ? <VideoMediaPlayer url={vdlink} />
                         : vdlink.includes("pdf") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
@@ -246,7 +253,8 @@ const TrainingDetails = ({ location }) => {
 
 
                 </div>
-                <div class="col-4 " style={{ height: "535px", overflowY: "scroll", marginLeft: "-12px", marginTop: "-15px", borderTopLeftRadius: "10px", borderTopRightRadius: "10px", background: "#F7F9FA", boxShadow: "#00000033 0px 0px 0px 1px, #00000033 0px 1px 1px -1px, #00000033 0px 1px 0px " }}>
+              
+                <div class="col-4 " style={{ height: "535px", overflowY: "scroll", marginLeft: "-12px", marginTop: "-25px", borderTopLeftRadius: "10px", borderTopRightRadius: "10px", background: "#F7F9FA", boxShadow: "#00000033 0px 0px 0px 1px, #00000033 0px 1px 1px -1px, #00000033 0px 1px 0px " }}>
 
                     {trainingDetailsList.length > 0 ? trainingDetailsList.map((train) => {
                         return (
