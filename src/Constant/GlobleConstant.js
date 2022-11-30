@@ -150,7 +150,8 @@ const GLOBELCONSTANT = {
         SUBMIT_FEEDBAK: API_HOST_V2 + "submit-feedback?"
     },
 NOTIFICATION:{
-    GET_NOTIFICATION : API_HOST_V2 + "get-notification"
+    GET_NOTIFICATION : API_HOST_V2 + "get-notification",
+    DELETE_ALL_NOTIFICATIONS : API_HOST_V2 + "delete-all-notifications"
 },
 
 
