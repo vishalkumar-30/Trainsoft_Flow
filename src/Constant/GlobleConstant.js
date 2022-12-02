@@ -97,6 +97,8 @@ const GLOBELCONSTANT = {
         SEARCH_SESSION:  API_HOST + "coursesessions/",
         COURSE_SESSION_PAGE: API_HOST + "coursesession/course/{courseSid}/{pageNo}/{pageSize}",
         COURSE_BY_PAGE:  API_HOST + "course/{pageNo}/{pageSize}",
+        GET_COMPLETED_COURSES: API_HOST_V2 + "get-completed-courses?",
+        MARK_COURSE_COMPLETED: API_HOST_V2 + "mark-course-completed?"
     },  
     BATCHES: {
         GET_BATCH_SID: API_HOST +  'batch/{batchSid}',

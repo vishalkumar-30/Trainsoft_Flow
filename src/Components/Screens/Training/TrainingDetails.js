@@ -29,6 +29,7 @@ import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import SummarizeRoundedIcon from '@mui/icons-material/SummarizeRounded';
 import DuoIcon from '@mui/icons-material/Duo';
 import ProgressBar from "../../Common/ProgressBar/ProgressBar";
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 
 const TrainingDetails = ({ location }) => {
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
@@ -40,9 +41,30 @@ const TrainingDetails = ({ location }) => {
     const [modal, setModal] = useState(false);
     const [showcoursename, setShowcoursename] = useState('');
     const [zoomInfo, setZoomInfo] = useState({});
-
+    const [contentLength, setContentLength] = useState(0);
+    // const [contentSid, setContentSid] = useState('');
+    const [sectionSidArray, setSectionSidArray] = useState([]);
+    const [markCompleted, setMarkAsCompleted] = useState([]);
+    const arr = [ 
+        '7EAA2322F1DF4D69892420C9DFA555E633C672A095A340E39CC3C9DC3AE32CE6',
+    '2588ECC4305D4A62B2E7B13C29305D195B1963CC78384DAB9EBE798B23FEEE65',
+    '32F0EF3805A74E5E8AC6305197608D0E61FF2EC3B58843CE9FACB5E3A6CCDA13',
+    '140F96A8FF5E4AC4A3761B87A618CBCB0B2AB3373C934978A3F99DCBD694E20F',
+    'ADC87788CE784DC8BA0BDD7C2BA18836A2623A16BD12421C9BF20C32D44C7011',
+    'C6F5435B028542D18B64ACA1BE76E22EA815269A736C48ABBA19F44816C46670',
+    '7ABE6C677595472CB1E1BDE2E4C6493969BB96E10258424EA7AA22E4CE82C87B',
+    '1922A6A6017D45CBBDB02ECBFDDDF8D23874463B61D84869B7D8ADAB44CF01F9',
+    '2C0E2529A9314194AB5A71A51DF091814F0A40D83AA84E25AEEF06CBAB53EFBA',
+    '5DAD1458B6D647DBB7A035D9AAF106EF276A555DBE7F469BBA19DF754C4B4120',
+    '2FFCB00E7BB34782A1ED9CA0C58FDE363BA26CFC581341D5B5BE94E672516CCB',
+    '3095BE5A902A4074A493069A2D7965A8B56EEC1F269A45ACBD17A465CB08D351',
+    'B4CE5FBC7BCC4776A2B7ED20BBF9F679921FE3BCE2484EACB32CCB94ABA558ED',
+    '74F483E3104A43A4B76C762C0AFCA19FE8C24A8BD09F4668AFF14B301B38E8CA',
+    'F5C0540029294EFAAF85E32D70B2140178FAD90990BB4FDAA03A5A9DF4482170',
+    'B8B1155624DB4CC98ED6A6E293F16AB5874E27301905451991E604195182EEBB',
+    'F0F82B9EB9F14BE68947CBA401C0D6CB346C09B229814C94B9F08C3F25024520'
+ ]
     const navigate = useNavigate();
-
 
     function Show(url) {
         setVdlink(url);
@@ -54,6 +76,14 @@ const TrainingDetails = ({ location }) => {
     function modalF(val) {
         setModal(val)
     }
+    // function getContentSid(val){
+    //     setContentSid(val);
+
+    // }
+    // function getSectionSid(val){
+    //     setSectionSid(val);
+    // }
+
     const Modal = ({ handleClose, show, children }) => {
         const showHideClassName = show ? "modal d-block" : "modal d-none";
 
@@ -83,10 +113,16 @@ const TrainingDetails = ({ location }) => {
                 render: (data) => <Link onClick={() => {
 
                     if (data.contentLink) {
-                        Show(data.contentLink)
+                        Show(data.contentLink);
                     }
                     showFeedBack(data.last)
                     modalF(data.last);
+                    if(sectionSidArray.includes(data.sid) === false){
+                        markCourseAsCompleted(data.sid, data.sectionSid);
+                    }
+                    
+                    // getContentSid(data.sid);
+                    // getSectionSid(data.sectionSid);
                     setShowcoursename(data.contentName);
                     setZoomInfo(zoomInfo => ({
                         ...zoomInfo,
@@ -97,7 +133,8 @@ const TrainingDetails = ({ location }) => {
                     }))
 
                 }} style={{ cursor: "pointer" }} > {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : <SummarizeRoundedIcon />}
-                    {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
+                    {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName} {sectionSidArray.indexOf(data.sid) > -1 ? <p style={{float:"right",color:"blue"}}>Viewed</p>:<p style={{color:"gray"}}> View</p>}
+                    
                     {/* <button style={{
                         backgroundColor: "transparent",
                         border: "1px solid #1c1d1f",
@@ -156,12 +193,13 @@ const TrainingDetails = ({ location }) => {
         // this search is working for search enable fields(column) eg. isSearchEnabled: true, in tale column configuration
         searchQuery: "",
         tableCustomClass: "ng-table sort-enabled", // table custom class
-        showCheckbox: true,
+        // showCheckbox: true,
         clearSelection: false
     });
 
     const getTrainingContentsByTrainingSid = async () => {
         try {
+            let sum = 0;
             let trainingSid = location.state.sid;
             spinner.show();
             RestService.getTrainingContentsByTrainingSid(trainingSid).then(
@@ -169,9 +207,13 @@ const TrainingDetails = ({ location }) => {
 
                     if (response.status === 200) {
                         setTrainingDetailsList(response.data.courseSectionResponseTO);
+
                     }
 
-                    console.log(trainingDetailsList);
+                    response.data.courseSectionResponseTO.map((i) => {
+                        sum += i.courseContentResposeTOList.length;
+                        setContentLength(sum);
+                    })
                 },
                 err => {
                     spinner.hide();
@@ -184,21 +226,84 @@ const TrainingDetails = ({ location }) => {
         }
     }
 
+    //update content mark as completed
+    const markCourseAsCompleted = (contentSid, sectionSid) => {
+        try {
+            let trainingSid = location.state.sid;
+            let sidArray = [];
+            spinner.show();
+            RestService.markCourseAsCompleted(contentSid, sectionSid, trainingSid).then(
+                response => {
+
+                    if (response.status === 200) {
+                        setMarkAsCompleted(response.data);
+
+                    }
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on markCourseAsCompleted()", err)
+        }
+    }
+
+    //get completed courses 
+    const getCompletedCourses = () => {
+       
+        try {
+            let trainingSid = location.state.sid;
+            spinner.show();
+            RestService.getCompletedCourses(trainingSid).then(
+                response => {
+
+                    if (response.status === 200) {
+                        setMarkAsCompleted(response.data);
+
+                    }
+                    for (let i = 0; i < response.data.completedSection.length; i++) {
+                        for (let j = 0; j < response.data.completedSection[i].completedCourseContentDetails.length;
+                            j++) {
+                                setSectionSidArray(...sectionSidArray, response.data.completedSection[i].completedCourseContentDetails[j].sid);
+                        }
+                    }
+
+                    
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on markCourseAsCompleted()", err)
+        }
+    }
+
     //initialize component
     useEffect(() => {
         getTrainingContentsByTrainingSid();
-    }, [])
+        getCompletedCourses();
+    }, []);
 
+    console.log(markCompleted);
+    // console.log(sectionSidArray);
+    // console.log("SectionSid: ",sectionSid);
+    // console.log("ContentSid: ",contentSid)
     return (
         <>
-          <div className="row" >
-   
-            {showcoursename.length === 0 ? "" :
-                <div className=" title-sm col-8">Content Title: {showcoursename}</div>}
-                  <div className="col-4" >
-                  <ProgressBar/>
-                  </div>
-          </div>
+            <div className="row" >
+
+                {showcoursename.length === 0 ? "" :
+                    <div className=" title-sm col-8">Content Title: {showcoursename}</div>}
+                <div className="col-4" >
+                    <ProgressBar progress={markCompleted.totalCourseCompletedInTraining} totalSection={contentLength} />
+                </div>
+            </div>
             <hr />
 
             {/* <div className="table-shadow p-3 ">
@@ -253,7 +358,7 @@ const TrainingDetails = ({ location }) => {
 
 
                 </div>
-              
+
                 <div class="col-4 " style={{ height: "535px", overflowY: "scroll", marginLeft: "-12px", marginTop: "-25px", borderTopLeftRadius: "10px", borderTopRightRadius: "10px", background: "#F7F9FA", boxShadow: "#00000033 0px 0px 0px 1px, #00000033 0px 1px 1px -1px, #00000033 0px 1px 0px " }}>
 
                     {trainingDetailsList.length > 0 ? trainingDetailsList.map((train) => {
@@ -261,8 +366,7 @@ const TrainingDetails = ({ location }) => {
                             <>
                                 <div >
 
-                                    <DropdownItem title={train.sectionName} total={train.courseContentResposeTOList.length} theme="dark" >
-
+                                    <DropdownItem title={train.sectionName} total={train.courseContentResposeTOList.length} theme="dark">
 
                                         <DynamicTable  {...{ configuration, sourceData: train.courseContentResposeTOList }} />
                                     </DropdownItem>

@@ -6,7 +6,7 @@ import {
  
 } from "react-circular-progressbar";
 import "./progressbar.css"
-
+import FastForwardIcon from '@mui/icons-material/FastForward';
 function Example(props) {
     return (
       <div>
@@ -14,19 +14,14 @@ function Example(props) {
           <div style={{ width: "10%", paddingRight: 4 }}>
             {props.children}
           </div>
-          {/* <div style={{ display:"flex", paddingTop:6 }}>
-            <h6  className='ct' >
-              {props.label}
-            </h6>
-            
-            <h6  className='pc' >
-             : 0 of 50 complete.</h6>
-          </div> */}
+         
 
 <div class="product" style={{ display:"flex", paddingTop:6 }}>
-  <h6 style={{color:"#3f51b5", fontSize:"14px"}}> {props.label}</h6>
+  <h6 style={{color:"#3f51b5", fontSize:"14px"}}> {props.label}
+  <span><FastForwardIcon/></span>
+  </h6>
     <div class="product-text">
-        <h6>&nbsp;: &nbsp;0 of 50 complete.</h6>
+        <h6>&nbsp;: &nbsp;{props.progress} of {props.totalSection} complete.</h6>
     
     </div>
  
@@ -41,11 +36,11 @@ function Example(props) {
     );
   }
 
-const ProgressBar = () => {
+const ProgressBar = (props) => {
   return (
     <>
-    <Example label="Your Progress">
-      <CircularProgressbarWithChildren value={36}>
+    <Example label="Your Progress" progress={props.progress} totalSection={props.totalSection}>
+      <CircularProgressbarWithChildren value={(props.progress/props.totalSection)*100}>
         {/* Put any JSX content in here that you'd like. It'll be vertically and horizonally centered. */}
         <img
           style={{ width: 20, margin: -5 }}
