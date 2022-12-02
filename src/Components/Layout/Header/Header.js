@@ -16,8 +16,7 @@ const Header = ({ location, children }) => {
     const { spinner } = useContext(AppContext)
     const { user, setUserValue } = useContext(AppContext)
     const [shownotification, setShownotification] = useState([])
-    const [viewmore, setViewmore] = useState('')
-
+    const [viewmore, setViewmore] = useState('');
     //get notification 
     const getNotification = () => {
         try {
@@ -30,11 +29,6 @@ const Header = ({ location, children }) => {
                         setShownotification(response.data);
                         setViewmore(response.data.length);
                     }
-                    // if (response.data.length <= 3) {
-                    //     setViewmore(response.data)
-                    // }
-
-                    console.log(response.data);
                 },
                 err => {
                     spinner.hide();
@@ -48,7 +42,6 @@ const Header = ({ location, children }) => {
 
     }
 
-    console.log(shownotification)
     // get user name
     const getUserName = (name) => {
         let a = ''
@@ -70,28 +63,33 @@ const Header = ({ location, children }) => {
             console.error("error occur on LogOut()", err)
         }
     }
-const deleteAllNotifications = ()=>{
-    try {
-        spinner.show();
-        RestService.deleteAllNotifications().then(res => {
+    const deleteAllNotifications = () => {
+        try {
+            spinner.show();
+            RestService.deleteAllNotifications().then(res => {
+                spinner.hide();
+                console.log(res)
+                setShownotification(res.data)
+                // getTrainings()
+                // Toast.success({ message: `Training is Deleted Successfully ` });
+            }, err => { spinner.hide(); }
+            )
+        }
+        catch (err) {
             spinner.hide();
-            console.log(res)
-            setShownotification(res.data)
-            // getTrainings()
-            // Toast.success({ message: `Training is Deleted Successfully ` });
-        }, err => { spinner.hide(); }
-        )
+            console.error('error occur on Notifications()', err)
+            // Toast.error({ message: `Something wrong!!` });
+        }
     }
-    catch (err) {
-        spinner.hide();
-        console.error('error occur on Notifications()', err)
-        // Toast.error({ message: `Something wrong!!` });
-    }
-}
 
     useEffect(() => {
         getNotification()
-    }, [])
+    }, []);
+
+    shownotification.sort((x, y) => {
+        return new Date(x.createdDate) < new Date(y.createdDate) ? 1 : -1
+    })
+
     return (<>
 
 
@@ -111,7 +109,7 @@ const deleteAllNotifications = ()=>{
 
                             <div className="mx-3 icon-button">
 
-                                <button onClick={()=>setViewmore('')}><span class="material-icons">{ICN_NOTIFICATION}</span></button>
+                                <button onClick={() => setViewmore('')}><span class="material-icons">{ICN_NOTIFICATION}</span></button>
                                 {viewmore > 0 ? <span class="icon-button__badge">{viewmore} </span> : ""}
 
 
@@ -120,13 +118,13 @@ const deleteAllNotifications = ()=>{
 
 
                         <Dropdown.Menu as="div" align="left" className='noti'>
-                                {shownotification.length > 0 ?
+                            {shownotification.length > 0 ?
                                 <div>
-                                    <button onClick={()=> deleteAllNotifications()}>Clear All</button>
+                                    <button onClick={() => deleteAllNotifications()}>Clear All</button>
                                 </div>
                                 :
                                 ''
-                                }       
+                            }
                             {
                                 shownotification.length > 0 ? shownotification.map((item) => {
                                     return (

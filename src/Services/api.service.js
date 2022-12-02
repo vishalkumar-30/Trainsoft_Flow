@@ -44,9 +44,10 @@ const RestService = {
   deleteSession: (sessionId) => AxiosService.delete(GLOBELCONSTANT.COURSE.DELETE_COURSE_SESSION + sessionId),
   getCourseSessionByPage: (courseSid, pageSize, pageNo) => AxiosService.get(GLOBELCONSTANT.COURSE.COURSE_SESSION_PAGE.replace("{courseSid}", courseSid).replace("{pageNo}", pageNo).replace("{pageSize}", pageSize)),
   getCourseByPage: (pageSize, pageNo) => AxiosService.get(GLOBELCONSTANT.COURSE.COURSE_BY_PAGE.replace("{pageNo}", pageNo).replace("{pageSize}", pageSize)),
-  createCourseSection: (payload,courseSid) => AxiosService.post(GLOBELCONSTANT.COURSE.CREATE_COURSE_SECTION+ `${courseSid}/create-section`, payload),
+  createCourseSection: (payload, courseSid) => AxiosService.post(GLOBELCONSTANT.COURSE.CREATE_COURSE_SECTION + `${courseSid}/create-section`, payload),
   uploadCourseContent: (payload, courseSectionSid) => AxiosService.uploadMultiPart(GLOBELCONSTANT.COURSE.CREATE_COURSE_CONTENT + `${courseSectionSid}/upload-content`, payload),
-
+  markCourseAsCompleted: (contentSid, sectionSid, trainingsid)=> AxiosService.put(GLOBELCONSTANT.COURSE.MARK_COURSE_COMPLETED + `course-content-sid=${contentSid}&section-sid=${sectionSid}&training-sid=${trainingsid}`),
+  getCompletedCourses: (trainingsid) => AxiosService.get(GLOBELCONSTANT.COURSE.GET_COMPLETED_COURSES + `training-sid=${trainingsid}`),
   //batches
   getAllBatches: () => AxiosService.get(GLOBELCONSTANT.BATCHES.GET_BATCH_LIST),
   getAllBatchesByPage: (pageNo, pageSize) => AxiosService.get(GLOBELCONSTANT.BATCHES.GET_BATCH_LIST + pageNo + "/" + pageSize),
@@ -66,7 +67,7 @@ const RestService = {
   getAllParticipant: (sid) => AxiosService.get(GLOBELCONSTANT.PARTICIPANT.GET_PARTICIPANT),
   getAllUser: (type) => AxiosService.get(GLOBELCONSTANT.PARTICIPANT.ALL_USERS + type),
   getUserDetails: (vSId) => AxiosService.get(GLOBELCONSTANT.PARTICIPANT.GET_PARTICIPANT_ID.replace("{VASid}", vSId)),
- 
+
   getAllUserByPage: (type, pageNo, pageSize) => AxiosService.get(GLOBELCONSTANT.PARTICIPANT.ALL_USERS + `${type}/${pageNo}/${pageSize}`),
   searchUser: (str) => AxiosService.get(GLOBELCONSTANT.PARTICIPANT.SEARCH_USER.replace("{str}", str)),
   UploadParticipant: (payload, header) => AxiosService.uploadMultiPart(GLOBELCONSTANT.PARTICIPANT.UPLOAD_PARTICIPANT, payload, header),
@@ -168,12 +169,12 @@ const RestService = {
   quitAssessment: (questionSid, virtualAccountSid) => AxiosService.get(GLOBELCONSTANT.API.ASSESSMENT.QUIT_ASSESSMENT + questionSid + "/" + virtualAccountSid),
 
   //feedback
-storeFeedback: (sectionsid, trainingsid, payload) => AxiosService.post(GLOBELCONSTANT.FEEDBACK.SUBMIT_FEEDBAK + `section-sid=${sectionsid}&training-sid=${trainingsid}`, payload),
+  storeFeedback: (sectionsid, trainingsid, payload) => AxiosService.post(GLOBELCONSTANT.FEEDBACK.SUBMIT_FEEDBAK + `section-sid=${sectionsid}&training-sid=${trainingsid}`, payload),
 
-//notification
+  //notification
 
-getNotification:()=>AxiosService.get(GLOBELCONSTANT.NOTIFICATION.GET_NOTIFICATION),
-deleteAllNotifications:()=>AxiosService.delete(GLOBELCONSTANT.NOTIFICATION.DELETE_ALL_NOTIFICATIONS)
+  getNotification: () => AxiosService.get(GLOBELCONSTANT.NOTIFICATION.GET_NOTIFICATION),
+  deleteAllNotifications: () => AxiosService.delete(GLOBELCONSTANT.NOTIFICATION.DELETE_ALL_NOTIFICATIONS)
 
 
 
