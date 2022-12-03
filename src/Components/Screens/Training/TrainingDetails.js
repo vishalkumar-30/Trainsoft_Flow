@@ -1,4 +1,3 @@
-
 import { useContext, useState, useEffect } from "react";
 import '../Batches/batches.css'
 import './training.css'
@@ -45,6 +44,7 @@ const TrainingDetails = ({ location }) => {
     // const [contentSid, setContentSid] = useState('');
     const [sectionSidArray, setSectionSidArray] = useState([]);
     const [markCompleted, setMarkAsCompleted] = useState([]);
+    const [view, setView] = useState('View');
     const arr = [ 
         '7EAA2322F1DF4D69892420C9DFA555E633C672A095A340E39CC3C9DC3AE32CE6',
     '2588ECC4305D4A62B2E7B13C29305D195B1963CC78384DAB9EBE798B23FEEE65',
@@ -76,14 +76,6 @@ const TrainingDetails = ({ location }) => {
     function modalF(val) {
         setModal(val)
     }
-    // function getContentSid(val){
-    //     setContentSid(val);
-
-    // }
-    // function getSectionSid(val){
-    //     setSectionSid(val);
-    // }
-
     const Modal = ({ handleClose, show, children }) => {
         const showHideClassName = show ? "modal d-block" : "modal d-none";
 
@@ -117,12 +109,7 @@ const TrainingDetails = ({ location }) => {
                     }
                     showFeedBack(data.last)
                     modalF(data.last);
-                    if(sectionSidArray.includes(data.sid) === false){
-                        markCourseAsCompleted(data.sid, data.sectionSid);
-                    }
-                    
-                    // getContentSid(data.sid);
-                    // getSectionSid(data.sectionSid);
+                    markCourseAsCompleted(data.sid, data.sectionSid);
                     setShowcoursename(data.contentName);
                     setZoomInfo(zoomInfo => ({
                         ...zoomInfo,
@@ -149,21 +136,7 @@ const TrainingDetails = ({ location }) => {
                         float: "right"
                     }}>Resources </button> */}
                 </Link>
-            },
-            // "description": {
-            //     "title": "Description",
-            //     "sortDirection": null,
-            //     "sortEnabled": true,
-            //     isSearchEnabled: false,
-
-            // },
-            // "contentLink": {
-            //     "title": "Content Link",
-            //     "sortDirection": null,
-            //     "sortEnabled": true,
-            //     isSearchEnabled: false,
-            //     render: (data) => <Button onClick={() => window.open(`${data.contentLink}`, "_blank")} >Link</Button>
-            // }
+            }
         },
         headerTextColor: '#454E50', // user can change table header text color
         sortBy: null,  // by default sort table by name key
@@ -291,9 +264,6 @@ const TrainingDetails = ({ location }) => {
     }, []);
 
     console.log(markCompleted);
-    // console.log(sectionSidArray);
-    // console.log("SectionSid: ",sectionSid);
-    // console.log("ContentSid: ",contentSid)
     return (
         <>
             <div className="row" >
@@ -301,21 +271,10 @@ const TrainingDetails = ({ location }) => {
                 {showcoursename.length === 0 ? "" :
                     <div className=" title-sm col-8">Content Title: {showcoursename}</div>}
                 <div className="col-4" >
-                    <ProgressBar progress={markCompleted.totalCourseCompletedInTraining} totalSection={contentLength} />
+                    <ProgressBar progress={markCompleted.totalCourseCompletedInTraining === null ? 0 : markCompleted.totalCourseCompletedInTraining > contentLength ? contentLength : markCompleted.totalCourseCompletedInTraining} totalSection={contentLength} trainingSid={location.state.sid}/>
                 </div>
             </div>
             <hr />
-
-            {/* <div className="table-shadow p-3 ">
-            <Router>
-                <TrainingInfo path="/"/>
-                <Session path="session" />
-                <Assessment path="assessment" />
-                <Report path="report" />
-                <Forum path="forum" />
-            </Router>
-
-        </div> */}
 
             <div class="row">
 
@@ -337,8 +296,6 @@ const TrainingDetails = ({ location }) => {
                         <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier" />
                         <label for="tab2">Q&A</label>
 
-
-
                         <div class="tab-panels">
                             <section id="marzen" class="tab-panel">
                                 <h2>6A. Overview</h2>
@@ -349,13 +306,9 @@ const TrainingDetails = ({ location }) => {
                                 <Qa />
                             </section>
 
-
                         </div>
 
                     </div>
-
-
-
 
                 </div>
 
@@ -383,12 +336,7 @@ const TrainingDetails = ({ location }) => {
                     }) : ''}
                 </div>
             </div>
-
-
-
-
         </>
-
     )
 }
 export default TrainingDetails

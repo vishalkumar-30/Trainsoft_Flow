@@ -17,3 +17,10 @@
 .product:hover .product-text {
     display: flex;
 }
+.modalprogress{
+    position: absolute;
+    background: #ffffff;
+    left: 25%;
+    top: 10%;
+    padding: 0;
+}
