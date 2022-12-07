@@ -48,6 +48,10 @@ const RestService = {
   uploadCourseContent: (payload, courseSectionSid) => AxiosService.uploadMultiPart(GLOBELCONSTANT.COURSE.CREATE_COURSE_CONTENT + `${courseSectionSid}/upload-content`, payload),
   markCourseAsCompleted: (contentSid, sectionSid, trainingsid)=> AxiosService.put(GLOBELCONSTANT.COURSE.MARK_COURSE_COMPLETED + `course-content-sid=${contentSid}&section-sid=${sectionSid}&training-sid=${trainingsid}`),
   getCompletedCourses: (trainingsid) => AxiosService.get(GLOBELCONSTANT.COURSE.GET_COMPLETED_COURSES + `training-sid=${trainingsid}`),
+  cloneCourseAndContents:(coursesid) => AxiosService.patch(GLOBELCONSTANT.COURSE.CLONE_COURSE_AND_CONTENTS + `?course-sid=${coursesid}`),
+
+
+
   //batches
   getAllBatches: () => AxiosService.get(GLOBELCONSTANT.BATCHES.GET_BATCH_LIST),
   getAllBatchesByPage: (pageNo, pageSize) => AxiosService.get(GLOBELCONSTANT.BATCHES.GET_BATCH_LIST + pageNo + "/" + pageSize),

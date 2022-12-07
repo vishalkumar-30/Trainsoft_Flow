@@ -18,6 +18,7 @@ const AxiosService = {
         }
         return axios.post(resource, data, config)
     },
+    patch:(resource, data) => axios.patch(resource, data),
     put:(resource, data) => axios.put(resource, data),
     delete:(resource,payload) => axios.delete(resource,{data:payload}),
     uploadMultiPart:(resource, formData)=>  axios.post(resource, formData, { headers: { 'Content-Type': 'multipart/form-data'}})

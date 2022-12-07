@@ -48,7 +48,7 @@ import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite';
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
-
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 export const ICN_EXPANDED = <AspectRatioIcon/>
 export const ICN_ASSESS_ATTEND = <img src={ASSESS}/>
 export const ICN_TOTAL_QUESTION = <img src={TOTAL_QUESTION}/>
@@ -102,6 +102,7 @@ export const ICN_CIRCLE = <FiberManualRecordIcon/>
 export const ICN_TEXT_FIELD = <TextFieldsIcon/>
 export const ICN_CALL_MADE = <CallMadeIcon/>
 export const ICN_DELETE = <DeleteIcon/>
+export const ICN_CLONE = <FileCopyIcon/>
 export const ICN_ORG_MGT = <svg xmlns="http://www.w3.org/2000/svg" width="32" height="28.8" viewBox="0 0 32 28.8"><path fill="#fff"  d="M18,9.4V3H2V31.8H34V9.4ZM14.8,28.6H5.2V25.4h9.6Zm0-6.4H5.2V19h9.6Zm0-6.4H5.2V12.6h9.6Zm0-6.4H5.2V6.2h9.6Zm16,19.2H18v-16H30.8ZM27.6,15.8H21.2V19h6.4Zm0,6.4H21.2v3.2h6.4Z" transform="translate(-2 -3)"/></svg>
 export const ICN_BOOK = <MenuBookIcon/>
 export const ICN_STORE = <StoreIcon/>
@@ -128,6 +129,7 @@ export const ICN_ON_GOING = <svg xmlns="http://www.w3.org/2000/svg" width="24.02
 export const ICN_COMING_BATCHES = <svg id="Upcoming_batch" data-name="Upcoming batch" xmlns="http://www.w3.org/2000/svg" width="24.031" height="30.039" viewBox="0 0 24.031 30.039"><g id="Group_47" data-name="Group 47"><rect id="Rectangle_27" data-name="Rectangle 27" width="10" height="4" transform="translate(7.016 20.02)" fill="#fff"/><rect id="Rectangle_28" data-name="Rectangle 28" width="10" height="3" transform="translate(7.016 15.02)" fill="#fff"/> <path id="Path_2325" data-name="Path 2325" d="M19.02,2H7A3.013,3.013,0,0,0,4,5V29.036a3,3,0,0,0,2.989,3H25.028a3.013,3.013,0,0,0,3-3V11.012Zm6.008,27.036H7V5H17.518v7.51h7.51Z" transform="translate(-4 -2)" fill="#fff"/></g></svg>
 export const ICN_EDIT = <EditIcon/>
 export const ICN_TRASH = <DeleteIcon/>
+
 export const ICN_MORE = <MoreVertIcon/>
 export const ICN_SEARCH = <svg xmlns="http://www.w3.org/2000/svg" width="20.16" height="20.164" viewBox="0 0 20.16 20.164"><path fill="#272d3b" className="a" d="M20.036,19.136l-4.9-4.9a8.6,8.6,0,1,0-.849.849l4.9,4.9a.608.608,0,0,0,.425.179.589.589,0,0,0,.425-.179A.6.6,0,0,0,20.036,19.136ZM1.253,8.6a7.391,7.391,0,1,1,7.391,7.4A7.4,7.4,0,0,1,1.253,8.6Z" transform="translate(-0.05 0)"/></svg>
 export const ICN_COPY = <svg xmlns="http://www.w3.org/2000/svg" width="24.022" height="30" viewBox="0 0 24.022 30"><g transform="translate(-48.65)"><g transform="translate(48.65)"><path fill="#fff" className="a" d="M65.039,85.4H51.032a2.383,2.383,0,0,0-2.382,2.382v20.1a2.383,2.383,0,0,0,2.382,2.382H65.039a2.383,2.383,0,0,0,2.382-2.382v-20.1A2.391,2.391,0,0,0,65.039,85.4Zm.71,22.474a.716.716,0,0,1-.716.716H51.026a.716.716,0,0,1-.716-.716V87.782a.716.716,0,0,1,.716-.716H65.033a.716.716,0,0,1,.716.716Z" transform="translate(-48.65 -80.262)"/><path fill="#fff"  className="a" d="M151.839,0H137.832a2.383,2.383,0,0,0-2.382,2.382.833.833,0,0,0,1.666,0,.716.716,0,0,1,.716-.716h14.007a.716.716,0,0,1,.716.716v20.1a.716.716,0,0,1-.716.716.833.833,0,0,0,0,1.666,2.383,2.383,0,0,0,2.382-2.382V2.382A2.383,2.383,0,0,0,151.839,0Z" transform="translate(-130.199)"/></g></g></svg>

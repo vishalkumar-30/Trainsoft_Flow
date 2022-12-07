@@ -3,7 +3,7 @@ import './../Batches/batches.css'
 import DynamicTable from "../../Common/DynamicTable/DynamicTable";
 import { Modal, Form } from 'react-bootstrap'
 import { Formik } from 'formik';
-import { ICN_TRASH, ICN_EDIT } from "../../Common/Icon";
+import { ICN_TRASH, ICN_EDIT,ICN_CLONE } from "../../Common/Icon";
 import { Button } from "../../Common/Buttons/Buttons";
 import { TextInput, DateInput, SelectInput, TextArea } from "../../Common/InputField/InputField";
 import { Link, Router } from "../../Common/Router";
@@ -82,6 +82,11 @@ const Courses = ({ location }) => {
         },
         actions: [
             {
+                "title": "Clone",
+                "icon": ICN_CLONE,
+                "onClick": (data) => cloneCourseAndContents(data.sid)
+            },
+            {
                 "title": "Edit",
                 "icon": ICN_EDIT,
                 "onClick": (data, i) => { setIsEdit(true); setShow(true); setInitialValues({ name: data.name, description: data.description, sid: data.sid }) }
@@ -91,6 +96,7 @@ const Courses = ({ location }) => {
                 "icon": ICN_TRASH,
                 "onClick": (data) => deleteCourse(data.sid)
             }
+           
         ],
         actionCustomClass: "no-chev esc-btn-dropdown", // user can pass their own custom className name to add/remove some css style on action button
         actionVariant: "", // user can pass action button variant like primary, dark, light,
@@ -149,6 +155,31 @@ const Courses = ({ location }) => {
         }
     }
 
+
+    //clnoe
+
+    const cloneCourseAndContents =async (courseId) => {
+        console.log(courseId)
+        try {
+            spinner.show()
+            await RestService.cloneCourseAndContents(courseId).then(res => {
+
+                Toast.success({ message: `Course clone Successfully ` });
+                getCourse()
+                spinner.hide();
+            }, err => console.log(err)
+            
+            )
+        }
+        catch (err) {
+            console.error('error occur on deleteCourse', err)
+            Toast.error({ message: `Something wrong!!` });
+        }
+    }
+
+
+
+
     // get all course list
     const deleteCourse = (courseId) => {
         try {
@@ -163,6 +194,7 @@ const Courses = ({ location }) => {
             Toast.error({ message: `Something wrong!!` });
         }
     }
+
     
     // get all course
     const getCourse = async () => {
