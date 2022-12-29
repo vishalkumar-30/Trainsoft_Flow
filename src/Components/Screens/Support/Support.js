@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BtnPrimary, TabBtn } from "../../Common/Buttons/Buttons";
 import SearchBox from "../../Common/SearchBox/SearchBox"
 import { ICN_TRASH, ICN_EDIT } from "../../Common/Icon";
-import { navigate, Router,Link } from "../../Common/Router";
+import { navigate, Router, Link } from "../../Common/Router";
 import { Formik } from "formik"
 import { Button } from "../../Common/Buttons/Buttons"
 import { TextArea } from "../../Common/InputField/InputField"
@@ -11,74 +11,114 @@ import { TextInput, SelectInput } from '../../Common/InputField/InputField'
 import "./style.css";
 import DynamicTable from "../../Common/DynamicTable/DynamicTable";
 import moment from 'moment'
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 import { BsCheckbox } from '../../Common/BsUtils';
+import axios from 'axios';
 
+const Support = ({ location }) => {
+    const [subtypes, setSubTypes] = useState([]);
 
-const Support = ({location})=>{
-    return(<>
-             <Helmet>
-                <title>Support</title>
-                 <script type='text/javascript' id='myscript_58'>var d=document,c='createElement',ac='appendChild',b=d.body;const eschatInitiatedBy = 'ES_EMBEDDED';const vcSid='DA8DCE0753D14EABAC4E60121C808D906E5E8D472A8249AF9DAA6C415155B2A4';var glcp = (('https:' == document.location.protocol) ? 'https://' : 'http://');const esHst ='https://www.eservecloud.com';var v1 = Math.random();var s = d[c]('script');s.type = 'text/javascript';s.async = true;var scriptId = 'myscript_58';s.src = esHst + '/clientchat/apps/js/visualconnect.loader.min.js?' + 'v=' + v1;var script = d.getElementsByTagName('script')[0];script.parentNode.insertBefore(s, script);</script>
-            </Helmet>
+    //get sub types
+    const getSupportTypeAndSubTypes = () => {
+
+        axios.get('http://3.109.158.95:8089/insled/v2/get-support-types-sub-types',
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+
+                setSubTypes(response.data);
+                // console.log(response.data);
+                // for(let i =0; i<response.data.length; i++){
+                //     // console.log(response.data[i].subTypes.length);
+                //     for(let j =0; j<response.data[i].subTypes.length; j++){
+                //         setTypes(types => [...types, response.data[i].subTypes[j].typeName ])
+                //         // types.push(response.data[i].subTypes[j].typeName);
+                //         // console.log(response.data[i].subTypes[j].typeName)
+                //         // if(response.data[i].subTypes === "Operational"){
+                //         //     types.push(response.data[i].subTypes[j].typeName);
+                            
+                //         // }
+                //         // else{
+                //         //     types.push(response.data[i].subTypes[j].typeName);
+                //         // }
+                //     }
+                    
+                // }
+            })
+            .catch(err => console.error("YO YOU GOT AN ERROR IN getSupportTypeAndSubTypes() ", err))
+    }
+
+    useEffect(()=>{
+        getSupportTypeAndSubTypes();
+    }, []);
+
+    console.log(subtypes);
+    return (<>
+        <Helmet>
+            <title>Support</title>
+            <script type='text/javascript' id='myscript_58'>var d=document,c='createElement',ac='appendChild',b=d.body;const eschatInitiatedBy = 'ES_EMBEDDED';const vcSid='DA8DCE0753D14EABAC4E60121C808D906E5E8D472A8249AF9DAA6C415155B2A4';var glcp = (('https:' == document.location.protocol) ? 'https://' : 'http://');const esHst ='https://www.eservecloud.com';var v1 = Math.random();var s = d[c]('script');s.type = 'text/javascript';s.async = true;var scriptId = 'myscript_58';s.src = esHst + '/clientchat/apps/js/visualconnect.loader.min.js?' + 'v=' + v1;var script = d.getElementsByTagName('script')[0];script.parentNode.insertBefore(s, script);</script>
+        </Helmet>
         <div className="table-shadow p-3">
-        <CardHeader {...{location}}/>
-          <div className="flx storeTab-shadow mb-3">
-              <TabBtn active={location.state.subPath === "support"} onClick={()=>navigate("/support",{state: { title: 'SUPPORT',subTitle:"", subPath:"support" }})}>Raise a ticket</TabBtn>
-              <TabBtn  active={location.state.subPath === "history"} onClick={()=>navigate("/support/history",{state: { title: 'SUPPORT',subTitle:"History", subPath:"history"  }})}>History</TabBtn> 
-          </div>
-          <Router>
-                <SupportContainer path="/"/>
-                <SupportHistory path="history"/>
-          </Router>
+            <CardHeader {...{ location }} />
+            <div className="flx storeTab-shadow mb-3">
+                <TabBtn active={location.state.subPath === "support"} onClick={() => navigate("/support", { state: { title: 'SUPPORT', subTitle: "", subPath: "support" } })}>Raise a ticket</TabBtn>
+                <TabBtn active={location.state.subPath === "history"} onClick={() => navigate("/support/history", { state: { title: 'SUPPORT', subTitle: "History", subPath: "history" } })}>History</TabBtn>
+            </div>
+            <Router>
+                <SupportContainer path="/" />
+                <SupportHistory path="history" />
+            </Router>
 
-          
-    </div></>)
+
+        </div></>)
 }
 export default Support
 
-const SupportContainer = ({location})=>{
+const SupportContainer = ({ location }) => {
     return (<div className="">
 
-            <div className="row">
-                <div className="col-md-6">
+        <div className="row">
+            <div className="col-md-6">
                 <Formik
-                            initialValues={{
-                                "ticketType": '',
-                                "subject": '',
-                                "description":''
-                            }}
-                            // validationSchema={schema}
-                            onSubmit={(values) => console.log(values)}>
-                            {({ handleSubmit }) => (<>
-                                <form onSubmit={handleSubmit}>
-                                    <SelectInput name="ticketType" label="Ticket Type" option={['Course',"Calender",'Reports','Lab Store','VS Code','Compiler']}/>
-                                    <TextInput name="subject" label="subject"/>
-                                    <TextArea name="description" label="Problem description" />
-                                    <div className="text-right mt-4">
-                                        <Button type="submit" className="px-4">Submit</Button>
-                                    </div>
-                                </form>
-                            </>)}
+                    initialValues={{
+                        "ticketType": '',
+                        "subject": '',
+                        "description": ''
+                    }}
+                    // validationSchema={schema}
+                    onSubmit={(values) => console.log(values)}>
+                    {({ handleSubmit }) => (<>
+                        <form onSubmit={handleSubmit}>
+                            <SelectInput name="ticketType" label="Ticket Type" option={['Course', "Calender", 'Reports', 'Lab Store', 'VS Code', 'Compiler']} />
+                            <TextInput name="subject" label="subject" />
+                            <TextArea name="description" label="Problem description" />
+                            <div className="text-right mt-4">
+                                <Button type="submit" className="px-4">Submit</Button>
+                            </div>
+                        </form>
+                    </>)}
 
-                        </Formik>
-                </div>
-                <div className="col-md-6">
-                    <div className="box-shadow bg-light">
-                            <div className="title-md text-center">Common FAQs</div>
-                    </div>
+                </Formik>
+            </div>
+            <div className="col-md-6">
+                <div className="box-shadow bg-light">
+                    <div className="title-md text-center">Common FAQs</div>
                 </div>
             </div>
-</div>)
+        </div>
+    </div>)
 }
 
-const SupportHistory = ({location})=>{
+const SupportHistory = ({ location }) => {
     const value = [
-        {tid:'1232',ticketType:'Course',raisedDate:'15/03/2021',creationDate:'15/03/2021',status:'Completed'},
-        {tid:'1232',ticketType:'Report',raisedDate:'15/03/2021',creationDate:'15/03/2021',status:'Closed'},
-        {tid:'1232',ticketType:'Batches',raisedDate:'15/03/2021',creationDate:'15/03/2021',status:'In Progress'},
-        {tid:'1232',ticketType:'Lab Store',raisedDate:'15/03/2021',creationDate:'15/03/2021',status:'Open'},
-        {tid:'1232',ticketType:'Course',raisedDate:'15/03/2021',creationDate:'15/03/2021',status:'Completed'}
+        { tid: '1232', ticketType: 'Course', raisedDate: '15/03/2021', creationDate: '15/03/2021', status: 'Completed' },
+        { tid: '1232', ticketType: 'Report', raisedDate: '15/03/2021', creationDate: '15/03/2021', status: 'Closed' },
+        { tid: '1232', ticketType: 'Batches', raisedDate: '15/03/2021', creationDate: '15/03/2021', status: 'In Progress' },
+        { tid: '1232', ticketType: 'Lab Store', raisedDate: '15/03/2021', creationDate: '15/03/2021', status: 'Open' },
+        { tid: '1232', ticketType: 'Course', raisedDate: '15/03/2021', creationDate: '15/03/2021', status: 'Completed' }
 
     ]
     const [configuration, setConfiguration] = useState({
@@ -151,13 +191,13 @@ const SupportHistory = ({location})=>{
         clearSelection: false
     });
     return (<div className="">
-            <div className="flx mb-3 ml-3">
-                    <BsCheckbox label="Closed" id="Closed"/>
-                    <BsCheckbox className="mx-4"  label="Open" id="open"/>
-                    <BsCheckbox label="In Progress" id="inProgress"/>
-            </div>
-           <DynamicTable {...{ configuration, sourceData: value }} />
-</div>)
+        <div className="flx mb-3 ml-3">
+            <BsCheckbox label="Closed" id="Closed" />
+            <BsCheckbox className="mx-4" label="Open" id="open" />
+            <BsCheckbox label="In Progress" id="inProgress" />
+        </div>
+        <DynamicTable {...{ configuration, sourceData: value }} />
+    </div>)
 }
 
 

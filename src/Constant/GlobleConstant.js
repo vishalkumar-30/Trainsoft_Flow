@@ -94,13 +94,15 @@ const GLOBELCONSTANT = {
         GET_COURSE_SESSION:  API_HOST + 'coursesession/course/',
         UPDATE_COURSE_SESSION:  API_HOST + "update/coursesession",
         DELETE_COURSE_SESSION:  API_HOST + "delete/coursesession/",
+        DELETE_COURSE_CONTENT_FILE: API_HOST_V2 + "delete-course-content-file?course-content-sid=",
         SEARCH_SESSION:  API_HOST + "coursesessions/",
         COURSE_SESSION_PAGE: API_HOST + "coursesession/course/{courseSid}/{pageNo}/{pageSize}",
         COURSE_BY_PAGE:  API_HOST + "course/{pageNo}/{pageSize}",
         GET_COMPLETED_COURSES: API_HOST_V2 + "get-completed-courses?",
         MARK_COURSE_COMPLETED: API_HOST_V2 + "mark-course-completed?",
-       
         CLONE_COURSE_AND_CONTENTS : API_HOST_V2 + "clone-course-and-contents",
+        UPDATE_COURSE_CONTENT: API_HOST_V2 + "update-course-content",
+        BULK_CREATE_COURSE_SECTION_AND_CONTENT: API_HOST_V2 + "bulk-create-course-section-and-content"
     },  
     BATCHES: {
         GET_BATCH_SID: API_HOST +  'batch/{batchSid}',
