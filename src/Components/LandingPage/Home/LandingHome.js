@@ -39,10 +39,25 @@ const LandingHome = () => {
     return (<><div>
         <Header />
         <div className="mt-0 pt-0 section landing-bg" id="home">
-            <div className="row aic">
+            
+        <div class="area" >
+            <ul class="circles">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+            </ul>
+    </div >
+    <div className="row aic">
                 <div className="col-sm-5">
                     <div className="pg-title-sm">We Provided</div>
-                    <div className="pg-title">
+                    <div className="pg-title" style={{borderBottom: "dashed white"}}>
                         One Stop <br /> Online Learning Solution
                     </div>
                     <div className="pg-desc">
@@ -59,6 +74,9 @@ const LandingHome = () => {
                     </div>
                 </div>
             </div>
+
+
+
         </div>
         <div className="section-dk section" id="about">
             <div className="row jcc text-center my-4">

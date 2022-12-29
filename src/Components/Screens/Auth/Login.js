@@ -102,12 +102,10 @@ const Login = ({location}) => {
     }, [])
 
 
-    return (<div className="loginScreen">
+    return (<div className="loginScreen" >
             <div className="login-container">
-                <div className="text-center mb-3">
-                        {ICN_TRAINSOFT}
-                </div>
-                {tabPanel === "login" && <> <div className="text-center mb-3">Login to your Account</div>
+              
+                {tabPanel === "login" && <> 
                  <Formik
                     initialValues={{
                         "email": '',
@@ -118,6 +116,11 @@ const Login = ({location}) => {
                     onSubmit={(values) => onLogin(values)}>
                     {({ handleSubmit }) => (<>
                         <form onSubmit={handleSubmit} className="login-form">
+                        <div className="text-center mb-3">
+                {ICN_TRAINSOFT}
+                
+                </div>
+                <div className="text-center mb-3">Login to your Account</div>
                             <TextInput name="email" label="User Name" />
                             <TextInput onKeyUp={checkCapsLock} name="password" type="password" label="Password" />
                             {isCapsLockOn && (
@@ -142,7 +145,7 @@ const Login = ({location}) => {
                 </Formik></>
                 }
 
-              {tabPanel === "forget" && <> <div className="text-center mb-3">Forgot Password</div>
+              {tabPanel === "forget" && <> 
                <Formik
                     initialValues={{
                         "email": '',
@@ -151,6 +154,11 @@ const Login = ({location}) => {
                     onSubmit={(values) => forgetPwd(values)}>
                     {({ handleSubmit }) => (<>
                         <form onSubmit={handleSubmit} className="login-form">
+                        <div className="text-center mb-3">
+                {ICN_TRAINSOFT}
+                
+                </div>
+                <div className="text-center mb-3">Forgot Password</div>
                             <TextInput name="email" type="text" label="Email Id" />
                             <div className="text-right">
                                 <Button className="btn-am btn-block py-2" type="submit">Submit</Button>

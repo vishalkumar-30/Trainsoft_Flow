@@ -158,7 +158,7 @@ const getAllCategory = async () => {
                                         {batches.slice(0, 10).map((res, i) =>
                                             <tr key={i}>
                                                 <td>{res.name}</td>
-                                                <td><Progress className="mb-2" className="progress-sh" variant={i % 2 === 0 ? 'secondary' : 'danger'} value={50} /></td>
+                                                <td><Progress className="mb-2 progress-sh" variant={i % 2 === 0 ? 'secondary' : 'danger'} value={50} /></td>
                                                 <td className="text-right">{50}</td>
                                             </tr>
                                         )}
