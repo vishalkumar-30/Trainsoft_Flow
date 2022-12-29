@@ -3,8 +3,8 @@ import { Formik } from "formik"
 import { Link, Router } from "../../Common/Router";
 import { BsModal } from "../../Common/BsUtils";
 import moment from 'moment';
-import { ICN_TRASH, ICN_EDIT } from "../../Common/Icon";
-import { Button } from "../../Common/Buttons/Buttons"
+import { ICN_TRASH, ICN_EDIT, ICN_UPLOAD } from "../../Common/Icon";
+import { Button, Cancel } from "../../Common/Buttons/Buttons"
 import { TextArea, DateInput, TimeInput, TextInput, SelectInput } from "../../Common/InputField/InputField"
 import CardHeader from '../../Common/CardHeader'
 import SessionList from '../../Common/SessionList/SessionList'
@@ -16,6 +16,7 @@ import * as Yup from 'yup';
 import AppContext from '../../../Store/AppContext'
 import DynamicTable from '../../Common/DynamicTable/DynamicTable'
 import DropdownItem from '../../Common/DropdownItem/DropdownItem';
+import { Dropdown, DropdownButton } from "react-bootstrap";
 
 import { string } from 'prop-types';
 
@@ -29,7 +30,10 @@ const CourseDetails = ({ location }) => {
     }
     const { user, spinner } = useContext(AppContext)
     const [isEdit, setIsEdit] = useState(false)
-    const [initialValues, setInitialValue] = useState()
+    const [initialValues, setInitialValues] = useState({
+        contentTitle: '',
+        contentLink: ''
+    })
 
     const Toast = useToast();
     const [show, setShow] = useState(false);
@@ -38,6 +42,10 @@ const CourseDetails = ({ location }) => {
     const [contentType, setContentType] = useState('');
     const [trainingList, setTrainingList] = useState([])
     const [sectionSid, setSectionSid] = useState('');
+    const [fileName, setFileName] = useState('');
+    const [type, setType] = useState('');
+    const [contentSid, setContentSid] = useState('');
+    const [files, setFiles] = useState();
     //validation
     const schema = Yup.object().shape({
         topicDescription: Yup.string()
@@ -105,7 +113,7 @@ const CourseDetails = ({ location }) => {
             {
                 "title": "Edit",
                 "icon": ICN_EDIT,
-                // "onClick": (data, i) => { setIsEdit(true); setShow(true); setInitialValues({ name: data.name, description: data.description, sid: data.sid }) }
+                "onClick": (data, i) => { setIsEdit(true); setShow(true); setInitialValues(() => editValues(data)) }
             },
             {
                 "title": "Delete",
@@ -220,20 +228,28 @@ const CourseDetails = ({ location }) => {
 
     // create new session
     const editSession = (data) => {
+        console.log(data.sid);
         try {
             spinner.show();
-            let payload = {
-                "sid": data.sid,
-                "courseSid": data.courseSid,
-                "topicDescription": data.topicDescription,
-                "topicName": data.topicName
+            let formData = new FormData();
+            formData.append("content-title", data.contentTitle);
+            formData.append("content-link", data.contentLink);
+            formData.append("course-content-sid", data.sid);
+            if (typeof document === 'object') {
+                formData.append("file", document);
             }
+            // let payload = {
+            //     "course-content-sid": data.sid,
+            //     "courseSid": data.courseSid,
+            //     "topicDescription": data.topicDescription,
+            //     "topicName": data.topicName
+            // }
 
-            RestService.updateSession(payload).then(res => {
-                getSessionByPage()
+            RestService.updateCourseContent(formData).then(res => {
+                getSection();
                 setShow(false)
                 spinner.hide();
-                Toast.success({ message: `Topic is Successfully Updated` });
+                Toast.success({ message: `Successfully Updated` });
             }, err => spinner.hide()
             );
         }
@@ -297,7 +313,7 @@ const CourseDetails = ({ location }) => {
                 "duration": (endTime - startTime) / (1000 * 60),
                 "recording": "",
                 "sessionDate": data.sessionDate,
-                "sectionSid" : sectionSid,
+                "sectionSid": sectionSid,
                 "startTime": startTime,
                 "trainingSid": data.name.sid
             }
@@ -392,20 +408,84 @@ const CourseDetails = ({ location }) => {
         }
     }
 
+    //delete content file
+    // const deleteCourseContentFile = () => {
+    //     try {
+
+    //         // spinner.show();
+    //         RestService.deleteCourseContentFile(contentSid).then(
+    //             response => {
+
+    //                 setShow(true);
+    //                 setIsEdit(true);
+    //                 getSection();
+
+    //             },
+    //             err => {
+    //                 // spinner.hide();
+    //             }
+    //         ).finally(() => {
+    //             // spinner.hide();
+    //         });
+    //     } catch (err) {
+    //         console.error("error occur on deleteCourseContentFile()", err)
+    //     }
+
+    // }
+
+    const bulkCreateCourseSectionAndContents = () => {
+        const courseSid = location.state.sid;
+        try {
+            spinner.show("Please wait...");
+            let formData = new FormData();
+            formData.append("file", files);
+            RestService.bulkCreateCourseSectionAndContents(formData, courseSid).then(res => {
+                getSection();
+                setShow(false)
+                spinner.hide();
+                Toast.success({ message: 'Section uploaded successfully', time: 2000 });
+            }, err => spinner.hide()
+            );
+            
+        } catch (err) {
+            Toast.error({ message: err.response?.data?.message });
+        }
+    }
+
+    const editValues = (data) => {
+
+        setType(data.type);
+        setContentSid(data.sid);
+        setDocument('');
+        setInitialValues({ contentTitle: data.contentName, contentLink: data.contentLink, sid: data.sid });
+
+
+        if (data.contentLink !== null && data.contentLink.includes("s3")) {
+            setFileName(data.contentLink.split("/")[3].split("_")[1]);
+        }
+        else {
+            setFileName('')
+        }
+    }
+
     useEffect(() => {
         getSection();
         getTrainings();
     }, [])
-    console.log(document);
+
     return (<>
         <div className="table-shadow p-3">
             <CardHeader {...{
                 location,
                 onChange: (e) => e.length === 0 && getSessionByPage(),
-                onEnter: (e) => searchSession(e)
+                onEnter: (e) => searchSession(e),
+                actionClick: () => { setShow(true); setIsEdit(false); setInitialValues({ contentTitle: '', contentLink: '' }) },
             }} >
-                <Button className=" ml-2" onClick={() => { setShow(true); setIsEdit(false); setContentType("Add Section") }}>+ Add Section</Button>
-
+                {/* <Button className=" ml-2" onClick={() => { setShow(true); setIsEdit(false); setContentType("Add Section") }}>+ Add Section</Button> */}
+                <DropdownButton className="btn-sm f13" title="+ Add Section">
+                    <Dropdown.Item onClick={() => { setShow(true); setIsEdit(false); setContentType("Add Section") }}>Add Section</Dropdown.Item>
+                    <Dropdown.Item onClick={() => { setShow(true); setContentType("Upload Section") }}>Upload in Bulk</Dropdown.Item>
+                </DropdownButton>
             </CardHeader>
 
             {/* <SessionList {...{
@@ -442,132 +522,196 @@ const CourseDetails = ({ location }) => {
                     </div>
                 </BsModal>
                 :
-                <BsModal {...{ show, setShow, headerTitle: "Add Content", size: "lg" }}>
-                    <div className="">
-                        <Formik
-                            initialValues={{
-                                "contentTitle": '', "contentLink": '', "assets": ''
-                            }}
-                            validationSchema={videoDocumentSchema}
-                            onSubmit={(values) => { createUploadCourseSection(values) }}>
-                            {({ handleSubmit, setFieldValue }) => (<>
-                                <form onSubmit={handleSubmit}>
-                                    {showhide === "1" || showhide === "2" ?
-                                        <div >
-                                            {/* <label className="mb-2 label form-label">Content Title</label> */}
-                                            {/* <TextInput type="text" name="content-title" value={contentTitle} onChange={e => setContentTitle(e.target.value)} /> */}
-                                            <TextInput name="contentTitle" label="Content Title" />
-                                        </div>
-                                        : ''}
-                                    <div className="row mb-3 mx-1">
-                                        <label className="mb-2 label form-label">Content Type</label>
-                                        {/* <TextInput name="topicName" label="Content Title" /> */}
-                                        <select name="usertype" className="form-control" onChange={(e) => (handleshowhide(e))} style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}>
-                                            <option value="">--Select Type--</option>
-                                            <option value="1">Video</option>
-                                            <option value="2">Document</option>
-                                            <option value="3">Meeting</option>
-                                        </select>
+                contentType === "Upload Section" ?
+                    <BsModal {...{ show, setShow, headerTitle: "Upload Course in Bulk", size: "lg" }}>
+                        <div>
+                            
+                        </div>
+                        <input name="file" onChange={(e) => setFiles(e.target.files[0])} type="file" />
+                        <div className="jce mt-3">
+                            <div>
+                                <Cancel onClick={() => setShow(false)}>Cancel</Cancel>
+                                <Button onClick={() => bulkCreateCourseSectionAndContents()}>Create</Button>
+                            </div>
+                            <a href='https://course-content-storage.s3.amazonaws.com/Upload-Template.xlsx' className="mt-3 link">Download Template</a>
+                        </div>
+
+
+                        {/* <div className="">
+                            <div className="bulk-upload mt-2 border-0 ">
+                        
+                                <div className="file-upload mb-2">
+                                    <div>
+                                        {files?.name ? files.name : "No File Uploaded Yet"}
                                     </div>
+                                    <div>
+                                        <input accept=".xlsx" className={""} id="contained-button-file2" onChange={(e) => setFiles(e.target.files[0])} type="file" />
+                                        <label className="mb-0" htmlFor="contained-button-file2">
+                                            <Button variant="contained" color="primary" component="span">
+                                                <span className="mr-2">{ICN_UPLOAD}</span> Upload
+                                            </Button>
+                                        </label>
+                                    </div>
+                                </div>
+                                <a href='https://course-content-storage.s3.amazonaws.com/Upload-Template.xlsx' className="mt-3 link">Download Template</a>
 
-                                    {
-                                        showhide === '1' && (
-                                            <>
-                                                <div className='row'>
-                                                    <div className="col-md-5 mx-1 ">
-                                                        <TextInput name="contentLink" label="Video Link" />
-                                                        {/* <input name="address1" type="url" placeholder='url' onChange={e => setVideoLink(e.target.value)} className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} /> */}
+                
+                            </div>
+                        </div> */}
 
-                                                    </div>
-                                                    <span> Or</span>
-                                                    <div className="col-md-5  mx-1 mb-3">
-                                                        <label className="mb-2 label form-label">Video Upload</label>
-
-                                                        <input name="file" onChange={(e) => { setDocument(e.target.files[0]) }} type="file" />
-                                                    </div>
-                                                </div>
-                                            </>
-                                        )}
-
-                                    {
-                                        showhide === '2' && (
-                                            <div className="row form-group mx-1 mb-3">
-                                                <label className="mb-2 label form-label">Document</label>
-                                                <input name="file" onChange={(e) => { setDocument(e.target.files[0]) }} type="file" />
+                    </BsModal>
+                    :
+                    <BsModal {...{ show, setShow, headerTitle: isEdit ? "Update Content" : "Add Content", size: "lg" }}>
+                        <div className="">
+                            <Formik
+                                initialValues={isEdit ? initialValues : {
+                                    "contentTitle": '', "contentLink": '', "assets": ''
+                                }}
+                                validationSchema={videoDocumentSchema}
+                                onSubmit={(values) => { !isEdit ? createUploadCourseSection(values) : editSession(values) }}>
+                                {({ handleSubmit, values }) => (<>
+                                    <form onSubmit={handleSubmit}>
+                                        {showhide === "1" || showhide === "2" || type === "VIDEO" || type === "EXTERNAL_LINK" || type === "DOCUMENTS" ?
+                                            <div >
+                                                {/* <label className="mb-2 label form-label">Content Title</label> */}
+                                                {/* <TextInput type="text" name="content-title" value={contentTitle} onChange={e => setContentTitle(e.target.value)} /> */}
+                                                <TextInput name="contentTitle" label="Content Title" />
                                             </div>
-                                        )}
-                                    <div className="text-right mt-2" >
-                                        {showhide === '3' ? "" : <Button type="submit" className=" px-4">Add </Button>}
+                                            : ''
+                                            // : isEdit ? <TextInput name="contentTitle" label="Content Title" /> : ''
+                                        }
+                                        {
+                                            isEdit === true ? '' :
 
-                                    </div>
-                                </form>
+                                                <div className="row mb-3 mx-1">
 
-                            </>)}
-                        </Formik>
-                        {
-                            showhide === '3' && (
-                                <div className="col-md-12 form-group">
-                                    <Formik
-                                        initialValues={{
-                                            agenda: '',
-                                            topic: "",
-                                            assets: "",
-                                            endTime: '',
-                                            sessionDate: '',
-                                            startTime: '',
+                                                    <label className="mb-2 label form-label">Content Type</label>
+                                                    {/* <TextInput name="topicName" label="Content Title" /> */}
+                                                    <select name="usertype" className="form-control" onChange={(e) => (handleshowhide(e))} style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}>
+                                                        <option value="">--Select Type--</option>
+                                                        <option value="1">Video</option>
+                                                        <option value="2">Document</option>
+                                                        <option value="3">Meeting</option>
+                                                    </select>
+                                                </div>
 
-                                        }}
-                                        onSubmit={(value) => { createTrainingSession(value) }}
-                                        validationSchema={schemaMeeting}
-                                    >
-                                        {({ handleSubmit, setFieldValue, isValid, values }) => (
-                                            <>
-                                                <form onSubmit={handleSubmit}>
-                                                    <div className="row">
-                                                      
+                                        }
+                                        {
+                                            (showhide === '1' || type === "VIDEO" || type === "EXTERNAL_LINK") && (
+                                                <>
+                                                    <div className='row'>
+                                                        <div className="col-md-5 mx-1 ">
+                                                            <TextInput name="contentLink" label="Video Link" />
+                                                            {/* <input name="address1" type="url" placeholder='url' onChange={e => setVideoLink(e.target.value)} className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} /> */}
+
+                                                        </div>
+                                                        <span> Or</span>
+
+                                                        <div className="col-md-5  mx-1 mb-3">
+                                                            <label className="mb-2 label form-label">Video Upload</label>
+
+                                                            <input name="file" onChange={(e) => { setDocument(e.target.files[0]) }} type="file" />
+                                                            {
+                                                                <div style={{ color: "blue" }}>
+                                                                    {isEdit ? fileName : ''}
+                                                                    {/* <button onClick={deleteCourseContentFile}>Delete </button> */}
+                                                                </div>
+
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            )
+                                        }
+
+                                        {
+                                            (showhide === '2' || type === "DOCUMENTS") && (
+                                                <div className="row form-group mx-1 mb-3">
+                                                    <label className="mb-2 label form-label">Document</label>
+                                                    <input name="file" onChange={(e) => { setDocument(e.target.files[0]) }} type="file" />
+                                                    {
+                                                        <div style={{ color: "blue" }}>
+                                                            {isEdit ? fileName : ''}
+
+                                                            {/* <button onClick={deleteCourseContentFile}>Delete </button> */}
+                                                        </div>
+
+                                                    }
+                                                </div>
+                                            )}
+                                        <div className="text-right mt-2" >
+                                            {showhide === '3' ? "" : <Button type="submit" className=" px-4">{isEdit ? "Update" : "Add"} </Button>}
+
+                                        </div>
+                                    </form>
+
+                                </>)}
+                            </Formik>
+                            {
+                                showhide === '3' && isEdit === false && (
+                                    <div className="col-md-12 form-group">
+                                        <Formik
+                                            initialValues={{
+                                                agenda: '',
+                                                topic: "",
+                                                assets: "",
+                                                endTime: '',
+                                                sessionDate: '',
+                                                startTime: '',
+
+                                            }}
+                                            onSubmit={(value) => { createTrainingSession(value) }}
+                                            validationSchema={schemaMeeting}
+                                        >
+                                            {({ handleSubmit, setFieldValue, isValid, values }) => (
+                                                <>
+                                                    <form onSubmit={handleSubmit}>
+                                                        <div className="row">
+
                                                             {/* <TextInput name="assets" label="Assets" /> */}
-                                                            
+
                                                             <div className="col-6" >
                                                                 <SelectInput label="Training" bindKey="name" value={values.sid} payloadKey="sid" name="name" option={trainingList} />
                                                             </div>
                                                             {<div className="col-6  mt-3">
-                                                                <div><span className="title-sm ">Assets</span></div> 
-                                                                <div><input  multiple placeholder="Browse File" onChange={(e) => { uploadAttachments(e.target.files, setFieldValue) }} type="file" /></div>
+                                                                <div><span className="title-sm ">Assets</span></div>
+                                                                <div><input multiple placeholder="Browse File" onChange={(e) => { uploadAttachments(e.target.files, setFieldValue) }} type="file" /></div>
                                                             </div>
                                                             }
-                                                        
-                                                        <div className="col-md-12 ">
-                                                            {<TextInput name="topic" label="Agenda" />}
-                                                        </div>
-                                                        <div className="col-md-12 mb-3">
-                                                            <TextArea name="agenda" label="Description" />
-                                                        </div>
 
-                                                        <div className="col-md-4 ">
-                                                            <DateInput name="sessionDate" label="Start date" />
-                                                        </div>
-                                                        <div className="col-md-4">
-                                                            <TimeInput name="startTime" placeholder="Select Time" label="Start Time" />
-                                                        </div>
-                                                        <div className="col-md-4">
-                                                            <TimeInput name="endTime" placeholder="Select Time" label="End Time" />
-                                                        </div>
+                                                            <div className="col-md-12 ">
+                                                                {<TextInput name="topic" label="Agenda" />}
+                                                            </div>
+                                                            <div className="col-md-12 mb-3">
+                                                                <TextArea name="agenda" label="Description" />
+                                                            </div>
+
+                                                            <div className="col-md-4 ">
+                                                                <DateInput name="sessionDate" label="Start date" />
+                                                            </div>
+                                                            <div className="col-md-4">
+                                                                <TimeInput name="startTime" placeholder="Select Time" label="Start Time" />
+                                                            </div>
+                                                            <div className="col-md-4">
+                                                                <TimeInput name="endTime" placeholder="Select Time" label="End Time" />
+                                                            </div>
 
 
-                                                    </div>
-                                                    <div>
-                                                        <Button className="btn-block py-2 mt-3" type="submit">Confirm</Button>
-                                                    </div>
-                                                </form>
-                                            </>
-                                        )}
-                                    </Formik>
-                                </div>
-                            )}
-                        {/* <TextArea name="topicDescription" label="Description" /> */}
+                                                        </div>
+                                                        <div>
+                                                            <Button className="btn-block py-2 mt-3" type="submit">Confirm</Button>
+                                                        </div>
+                                                    </form>
+                                                </>
+                                            )}
+                                        </Formik>
+                                    </div>
+                                )}
+                            {/* <TextArea name="topicDescription" label="Description" /> */}
 
-                    </div>
-                </BsModal>
+                        </div>
+                    </BsModal>
             }
             {/* <DynamicTable {...{ configuration, sourceData: sessionList, onPageChange: (e) => getSection(e) }} /> */}
             <div style={{ width: "100%", background: "#FAFAFA" }}>
@@ -575,7 +719,11 @@ const CourseDetails = ({ location }) => {
                     return (
                         <>
                             <DropdownItem title={item.sectionName} theme="dark">
-                                <Button className=" ml-2 mb-2" onClick={() => { setShow(true); setContentType("Add Content"); setSectionSid(item.sid);setShowhide("") }}>Add Content</Button>
+                                <Button className=" ml-2 mb-2" onClick={() => {
+
+                                    setShow(true); setContentType("Add Content"); setSectionSid(item.sid); setShowhide(""); setIsEdit(false); setType('');
+
+                                }}>Add Content</Button>
                                 <DynamicTable  {...{ configuration, sourceData: item.courseContentResposeTOList, onPageChange: (e) => getSection(e) }} />
                             </DropdownItem>
                         </>
@@ -583,6 +731,7 @@ const CourseDetails = ({ location }) => {
                 })}
             </div>
         </div >
+
     </>)
 }
 export default CourseDetails

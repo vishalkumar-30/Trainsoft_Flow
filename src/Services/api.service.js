@@ -42,14 +42,16 @@ const RestService = {
   searchCourse: (name) => AxiosService.get(GLOBELCONSTANT.COURSE.SEARCH_COURSE + name),
   searchSession: (name) => AxiosService.get(GLOBELCONSTANT.COURSE.SEARCH_SESSION + name),
   deleteSession: (sessionId) => AxiosService.delete(GLOBELCONSTANT.COURSE.DELETE_COURSE_SESSION + sessionId),
+  deleteCourseContentFile: (contentSid) => AxiosService.delete(GLOBELCONSTANT.COURSE.DELETE_COURSE_CONTENT_FILE + `${contentSid}`),
   getCourseSessionByPage: (courseSid, pageSize, pageNo) => AxiosService.get(GLOBELCONSTANT.COURSE.COURSE_SESSION_PAGE.replace("{courseSid}", courseSid).replace("{pageNo}", pageNo).replace("{pageSize}", pageSize)),
   getCourseByPage: (pageSize, pageNo) => AxiosService.get(GLOBELCONSTANT.COURSE.COURSE_BY_PAGE.replace("{pageNo}", pageNo).replace("{pageSize}", pageSize)),
   createCourseSection: (payload, courseSid) => AxiosService.post(GLOBELCONSTANT.COURSE.CREATE_COURSE_SECTION + `${courseSid}/create-section`, payload),
-  uploadCourseContent: (payload, courseSectionSid) => AxiosService.uploadMultiPart(GLOBELCONSTANT.COURSE.CREATE_COURSE_CONTENT + `${courseSectionSid}/upload-content`, payload),
+  uploadCourseContent: (payload, courseSectionSid) => AxiosService.uploadMultiPart(GLOBELCONSTANT.COURSE.CREATE_COURSE_CONTENT + `${courseSectionSid}/upload-content`, payload), 
+  bulkCreateCourseSectionAndContents: (payload, courseSid) => AxiosService.uploadMultiPart(GLOBELCONSTANT.COURSE.BULK_CREATE_COURSE_SECTION_AND_CONTENT + `?course-sid=${courseSid}`, payload),
   markCourseAsCompleted: (contentSid, sectionSid, trainingsid)=> AxiosService.put(GLOBELCONSTANT.COURSE.MARK_COURSE_COMPLETED + `course-content-sid=${contentSid}&section-sid=${sectionSid}&training-sid=${trainingsid}`),
   getCompletedCourses: (trainingsid) => AxiosService.get(GLOBELCONSTANT.COURSE.GET_COMPLETED_COURSES + `training-sid=${trainingsid}`),
   cloneCourseAndContents:(coursesid) => AxiosService.patch(GLOBELCONSTANT.COURSE.CLONE_COURSE_AND_CONTENTS + `?course-sid=${coursesid}`),
-
+  updateCourseContent: (payload) => AxiosService.post(GLOBELCONSTANT.COURSE.UPDATE_COURSE_CONTENT, payload),
 
 
   //batches
