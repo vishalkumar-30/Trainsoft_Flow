@@ -474,7 +474,7 @@ const CourseDetails = ({ location }) => {
     }, [])
 
     return (<>
-        <div className="table-shadow p-3">
+        <div className="table-shadow p-3 pb-5">
             <CardHeader {...{
                 location,
                 onChange: (e) => e.length === 0 && getSessionByPage(),
@@ -525,15 +525,16 @@ const CourseDetails = ({ location }) => {
                 contentType === "Upload Section" ?
                     <BsModal {...{ show, setShow, headerTitle: "Upload Course in Bulk", size: "lg" }}>
                         <div>
-                            
-                        </div>
                         <input name="file" onChange={(e) => setFiles(e.target.files[0])} type="file" />
-                        <div className="jce mt-3">
+                        </div>
+                       <hr/>
+                        <a href='https://course-content-storage.s3.amazonaws.com/Upload-Template.xlsx' className="mt-5 link">Download Template</a>
+                        <div className="jce">
                             <div>
                                 <Cancel onClick={() => setShow(false)}>Cancel</Cancel>
-                                <Button onClick={() => bulkCreateCourseSectionAndContents()}>Create</Button>
+                                <Button onClick={() => bulkCreateCourseSectionAndContents()}>Upload</Button>
                             </div>
-                            <a href='https://course-content-storage.s3.amazonaws.com/Upload-Template.xlsx' className="mt-3 link">Download Template</a>
+                            
                         </div>
 
 

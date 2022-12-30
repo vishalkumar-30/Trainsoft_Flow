@@ -1,27 +1,49 @@
 import axios from 'axios'
 import { TokenService } from './storage.service'
+import GLOBELCONSTANT from "../Constant/GlobleConstant.js";
 
+const axiosDefaults = () => {
+    let auth1=localStorage.getItem('REACTAPP.TOKEN');
+    axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+    axios.defaults.headers.common["Authorization"] = auth1;
+
+}
 const AxiosService = {
-
+    
     init:(baseURL,authToken) => {
         axios.defaults.baseURL = baseURL;
-        axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-        axios.defaults.headers.common["Authorization"] = authToken;
+        axiosDefaults();
     },
-    // setHeader:()=> axios.defaults.headers.common["Authorization"] = `Bearer ${TokenService.getToken()}`,
     removeHeader:()=> axios.defaults.headers.common = {},
-    get:(resource)=>  axios.get(resource),
+    get:(resource ,params, headers)=>  {
+        axios.defaults.baseURL = GLOBELCONSTANT.COURSE.GET_COURSE; 
+        axiosDefaults();
+        const config = {
+            headers: headers,
+            params: params
+        }
+        return axios.get(resource,config)},
     post:(resource, data, params, headers)=> {
+        axios.defaults.baseURL = GLOBELCONSTANT.COURSE.GET_COURSE; 
+        axiosDefaults();
         const config = {
             headers: headers,
             params: params
         }
         return axios.post(resource, data, config)
     },
-    patch:(resource, data) => axios.patch(resource, data),
-    put:(resource, data) => axios.put(resource, data),
-    delete:(resource,payload) => axios.delete(resource,{data:payload}),
-    uploadMultiPart:(resource, formData)=>  axios.post(resource, formData, { headers: { 'Content-Type': 'multipart/form-data'}})
+    put:(resource, data) => {
+        axiosDefaults();
+       return axios.put(resource, data);
+    },
+    delete:(resource,payload) => {
+        axiosDefaults();
+        return axios.delete(resource,{data:payload});
+    },
+    uploadMultiPart:(resource, formData)=>  {
+        axiosDefaults();
+        return axios.post(resource, formData, { headers: { 'Content-Type': 'multipart/form-data'}})
+    }
     
 }
 
