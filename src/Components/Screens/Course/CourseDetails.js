@@ -593,6 +593,7 @@ const CourseDetails = ({ location }) => {
                                                         <option value="1">Video</option>
                                                         <option value="2">Document</option>
                                                         <option value="3">Meeting</option>
+                                                        <option value="4">Lab</option>
                                                     </select>
                                                 </div>
 
@@ -710,12 +711,83 @@ const CourseDetails = ({ location }) => {
                                     </div>
                                 )}
                             {/* <TextArea name="topicDescription" label="Description" /> */}
+                            {
+                                showhide === '4' && isEdit === false && (
+                                    <div className="col-md-12 form-group">
+                                        <Formik
+                                            initialValues={{
+                                                agenda: '',
+                                                topic: "",
+                                                assets: "",
+                                                endTime: '',
+                                                sessionDate: '',
+                                                startTime: '',
 
+                                            }}
+                                            onSubmit={(value) => { createTrainingSession(value) }}
+                                            validationSchema={schemaMeeting}
+                                        >
+                                            {({ handleSubmit, setFieldValue, isValid, values }) => (
+                                                <>
+                                                    <form onSubmit={handleSubmit}>
+                                                        <div className="row">
+
+                                                            {/* <TextInput name="assets" label="Assets" /> */}
+
+                                                            <div className="col-6" >
+                                                                <SelectInput label="Lab-Category" bindKey="name" value={values.sid} payloadKey="sid" name="name" option={trainingList} />
+                                                            </div>
+                                                            <div className="col-6" >
+                                                                <SelectInput label="Lab-Details" bindKey="name" value={values.sid} payloadKey="sid" name="name" option={trainingList} />
+                                                            </div>
+
+
+
+
+                                                            {/* {<div className="col-6  mt-3">
+                                                                <div><span className="title-sm ">Assets</span></div>
+                                                                <div><input multiple placeholder="Browse File" onChange={(e) => { uploadAttachments(e.target.files, setFieldValue) }} type="file" /></div>
+                                                            </div>
+                                                            }
+
+                                                            <div className="col-md-12 ">
+                                                                {<TextInput name="topic" label="Agenda" />}
+                                                            </div>
+                                                            <div className="col-md-12 mb-3">
+                                                                <TextArea name="agenda" label="Description" />
+                                                            </div>
+
+                                                            <div className="col-md-4 ">
+                                                                <DateInput name="sessionDate" label="Start date" />
+                                                            </div>
+                                                            <div className="col-md-4">
+                                                                <TimeInput name="startTime" placeholder="Select Time" label="Start Time" />
+                                                            </div>
+                                                            <div className="col-md-4">
+                                                                <TimeInput name="endTime" placeholder="Select Time" label="End Time" />
+                                                            </div> */}
+
+
+                                                        </div>
+                                                        <div>
+                                                            <Button className="btn-block py-2 mt-3" type="submit">Confirm</Button>
+                                                        </div>
+                                                    </form>
+                                                </>
+                                            )}
+                                        </Formik>
+                                    </div>
+                                )}
                         </div>
                     </BsModal>
             }
+
+
+
+
+
             {/* <DynamicTable {...{ configuration, sourceData: sessionList, onPageChange: (e) => getSection(e) }} /> */}
-            <div style={{ width: "100%", background: "#FAFAFA" }}>
+            <div style={{ width: "100%", background: "#FAFAFA" , borderRadius:"10px"}}>
                 {sessionList.map((item) => {
                     return (
                         <>
