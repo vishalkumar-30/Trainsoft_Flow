@@ -17,12 +17,11 @@ import AppContext from '../../../Store/AppContext'
 import DynamicTable from '../../Common/DynamicTable/DynamicTable'
 import DropdownItem from '../../Common/DropdownItem/DropdownItem';
 import { Dropdown, DropdownButton } from "react-bootstrap";
-
+import '../../Common/InputField/inputField.css';
 import { string } from 'prop-types';
 
 const CourseDetails = ({ location }) => {
     const [showhide, setShowhide] = useState('');
-
     const handleshowhide = (event) => {
         const getuser = event.target.value;
         setShowhide(getuser);
@@ -34,7 +33,6 @@ const CourseDetails = ({ location }) => {
         contentTitle: '',
         contentLink: ''
     })
-
     const Toast = useToast();
     const [show, setShow] = useState(false);
     const [sessionList, setSessionList] = useState([]);
@@ -46,6 +44,9 @@ const CourseDetails = ({ location }) => {
     const [type, setType] = useState('');
     const [contentSid, setContentSid] = useState('');
     const [files, setFiles] = useState();
+    const [accountLabs, setAccountLabs] = useState([]);
+    const [categorieList, setCategorieList] = useState([]);
+    
     //validation
     const schema = Yup.object().shape({
         topicDescription: Yup.string()
@@ -75,6 +76,7 @@ const CourseDetails = ({ location }) => {
         sessionDate: Yup.string()
             .required("Required!")
     });
+
     const [configuration, setConfiguration] = useState({
         columns: {
 
@@ -433,6 +435,25 @@ const CourseDetails = ({ location }) => {
 
     // }
 
+    // get labs after filter from account
+    const filterAccountLabs = (labs) => {
+        try {
+
+            spinner.show()
+            RestService.filterAccountLabs(labs).then(
+                response => {
+                    setAccountLabs(response.data.labDetails);
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on filterAccountLabs()", err)
+        }
+    }
     const bulkCreateCourseSectionAndContents = () => {
         const courseSid = location.state.sid;
         try {
@@ -446,7 +467,7 @@ const CourseDetails = ({ location }) => {
                 Toast.success({ message: 'Section uploaded successfully', time: 2000 });
             }, err => spinner.hide()
             );
-            
+
         } catch (err) {
             Toast.error({ message: err.response?.data?.message });
         }
@@ -468,9 +489,50 @@ const CourseDetails = ({ location }) => {
         }
     }
 
+    // add lab to course
+    const selectLabInCourse = (data) => {
+        const labId = data.labName.labId
+        const courseSid = location.state.sid;
+        const courseSectionSid = sectionSid;
+        try {
+            spinner.show();
+            RestService.selectLabInCourse(labId, courseSid, courseSectionSid).then(res => {
+                setShow(false)
+                getSection();
+                Toast.success({ message: `Lab added successfully` });
+                spinner.hide();
+            }, err => console.log(err)
+            );
+        }
+        catch (err) {
+            console.error('error occur on createCourse', err)
+        }
+    }
+
+    // get all labs categories
+    const getAllLabCategories = () => {
+        try {
+
+            spinner.show()
+            RestService.getAllLabCategories().then(
+                response => {
+                    setCategorieList(response.data);
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on getAllLabCategories()", err)
+        }
+    }
+
     useEffect(() => {
         getSection();
         getTrainings();
+        getAllLabCategories();
     }, [])
 
     return (<>
@@ -525,41 +587,17 @@ const CourseDetails = ({ location }) => {
                 contentType === "Upload Section" ?
                     <BsModal {...{ show, setShow, headerTitle: "Upload Course in Bulk", size: "lg" }}>
                         <div>
-                        <input name="file" onChange={(e) => setFiles(e.target.files[0])} type="file" />
+                            <input name="file" onChange={(e) => setFiles(e.target.files[0])} type="file" />
                         </div>
-                       <hr/>
+                        <hr />
                         <a href='https://course-content-storage.s3.amazonaws.com/Upload-Template.xlsx' className="mt-5 link">Download Template</a>
                         <div className="jce">
                             <div>
                                 <Cancel onClick={() => setShow(false)}>Cancel</Cancel>
                                 <Button onClick={() => bulkCreateCourseSectionAndContents()}>Upload</Button>
                             </div>
-                            
+
                         </div>
-
-
-                        {/* <div className="">
-                            <div className="bulk-upload mt-2 border-0 ">
-                        
-                                <div className="file-upload mb-2">
-                                    <div>
-                                        {files?.name ? files.name : "No File Uploaded Yet"}
-                                    </div>
-                                    <div>
-                                        <input accept=".xlsx" className={""} id="contained-button-file2" onChange={(e) => setFiles(e.target.files[0])} type="file" />
-                                        <label className="mb-0" htmlFor="contained-button-file2">
-                                            <Button variant="contained" color="primary" component="span">
-                                                <span className="mr-2">{ICN_UPLOAD}</span> Upload
-                                            </Button>
-                                        </label>
-                                    </div>
-                                </div>
-                                <a href='https://course-content-storage.s3.amazonaws.com/Upload-Template.xlsx' className="mt-3 link">Download Template</a>
-
-                
-                            </div>
-                        </div> */}
-
                     </BsModal>
                     :
                     <BsModal {...{ show, setShow, headerTitle: isEdit ? "Update Content" : "Add Content", size: "lg" }}>
@@ -574,12 +612,9 @@ const CourseDetails = ({ location }) => {
                                     <form onSubmit={handleSubmit}>
                                         {showhide === "1" || showhide === "2" || type === "VIDEO" || type === "EXTERNAL_LINK" || type === "DOCUMENTS" ?
                                             <div >
-                                                {/* <label className="mb-2 label form-label">Content Title</label> */}
-                                                {/* <TextInput type="text" name="content-title" value={contentTitle} onChange={e => setContentTitle(e.target.value)} /> */}
                                                 <TextInput name="contentTitle" label="Content Title" />
                                             </div>
                                             : ''
-                                            // : isEdit ? <TextInput name="contentTitle" label="Content Title" /> : ''
                                         }
                                         {
                                             isEdit === true ? '' :
@@ -643,7 +678,7 @@ const CourseDetails = ({ location }) => {
                                                 </div>
                                             )}
                                         <div className="text-right mt-2" >
-                                            {showhide === '3' ? "" : <Button type="submit" className=" px-4">{isEdit ? "Update" : "Add"} </Button>}
+                                            {showhide === '3' || showhide === '4' ? "" : <Button type="submit" className=" px-4">{isEdit ? "Update" : "Add"} </Button>}
 
                                         </div>
                                     </form>
@@ -713,70 +748,57 @@ const CourseDetails = ({ location }) => {
                             {/* <TextArea name="topicDescription" label="Description" /> */}
                             {
                                 showhide === '4' && isEdit === false && (
-                                    <div className="col-md-12 form-group">
-                                        <Formik
-                                            initialValues={{
-                                                agenda: '',
-                                                topic: "",
-                                                assets: "",
-                                                endTime: '',
-                                                sessionDate: '',
-                                                startTime: '',
+                                    <Formik
+                                        initialValues={{
+                                            labId: ''
+                                        }}
+                                        onSubmit={(value) => { selectLabInCourse(value) }}
 
-                                            }}
-                                            onSubmit={(value) => { createTrainingSession(value) }}
-                                            validationSchema={schemaMeeting}
-                                        >
-                                            {({ handleSubmit, setFieldValue, isValid, values }) => (
-                                                <>
-                                                    <form onSubmit={handleSubmit}>
-                                                        <div className="row">
+                                    >
+                                        {({ handleSubmit, setFieldValue, isValid, values }) => (
 
-                                                            {/* <TextInput name="assets" label="Assets" /> */}
+                                            <>
+                                                <form onSubmit={handleSubmit}>
+                                                    <div className="row">
 
-                                                            <div className="col-6" >
-                                                                <SelectInput label="Lab-Category" bindKey="name" value={values.sid} payloadKey="sid" name="name" option={trainingList} />
-                                                            </div>
-                                                            <div className="col-6" >
-                                                                <SelectInput label="Lab-Details" bindKey="name" value={values.sid} payloadKey="sid" name="name" option={trainingList} />
-                                                            </div>
+                                                        {/* <TextInput name="assets" label="Assets" /> */}
+                                                        <label className="mb-2 label form-label col-2">Lab Category</label>
+                                                        <div className="col-6" >
+                                                            <div className="input-wrapper">
 
+                                                                <select className="input-field" onChange={(e) => filterAccountLabs(e.target.value)}>
+                                                                <option value=""disabled selected hidden>Select Lab Category</option>
+                                                                    {
+                                                                        categorieList.map((item) => {
+                                                                            return(
+                                                                                <>
+                                                                                     <option value={item}>{item}</option>
+                                                                                </>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                
+                                                                </select>
 
-
-
-                                                            {/* {<div className="col-6  mt-3">
-                                                                <div><span className="title-sm ">Assets</span></div>
-                                                                <div><input multiple placeholder="Browse File" onChange={(e) => { uploadAttachments(e.target.files, setFieldValue) }} type="file" /></div>
-                                                            </div>
-                                                            }
-
-                                                            <div className="col-md-12 ">
-                                                                {<TextInput name="topic" label="Agenda" />}
-                                                            </div>
-                                                            <div className="col-md-12 mb-3">
-                                                                <TextArea name="agenda" label="Description" />
                                                             </div>
 
-                                                            <div className="col-md-4 ">
-                                                                <DateInput name="sessionDate" label="Start date" />
-                                                            </div>
-                                                            <div className="col-md-4">
-                                                                <TimeInput name="startTime" placeholder="Select Time" label="Start Time" />
-                                                            </div>
-                                                            <div className="col-md-4">
-                                                                <TimeInput name="endTime" placeholder="Select Time" label="End Time" />
-                                                            </div> */}
 
-
+                                                            {/* <SelectInput label="Lab-Category" option={categorieList} /> */}
                                                         </div>
-                                                        <div>
-                                                            <Button className="btn-block py-2 mt-3" type="submit">Confirm</Button>
+                                                        <div className="col-6" >
+                                                            <SelectInput label="Lab-Details" bindKey="labName" payloadKey="labId" name="labName" value={values.labId} option={accountLabs} />
                                                         </div>
-                                                    </form>
-                                                </>
-                                            )}
-                                        </Formik>
-                                    </div>
+
+                                                    </div>
+                                                    <div>
+                                                        <Button className="btn-block py-2 mt-3" type="submit">Confirm</Button>
+                                                    </div>
+                                                </form>
+                                            </>
+                                        )}
+
+                                    </Formik>
+
                                 )}
                         </div>
                     </BsModal>
@@ -787,14 +809,14 @@ const CourseDetails = ({ location }) => {
 
 
             {/* <DynamicTable {...{ configuration, sourceData: sessionList, onPageChange: (e) => getSection(e) }} /> */}
-            <div style={{ width: "100%", background: "#FAFAFA" , borderRadius:"10px"}}>
+            <div style={{ width: "100%", background: "#FAFAFA", borderRadius: "10px" }}>
                 {sessionList.map((item) => {
                     return (
                         <>
                             <DropdownItem title={item.sectionName} theme="dark">
                                 <Button className=" ml-2 mb-2" onClick={() => {
 
-                                    setShow(true); setContentType("Add Content"); setSectionSid(item.sid); setShowhide(""); setIsEdit(false); setType('');
+                                    setShow(true); setContentType("Add Content"); setSectionSid(item.sid); setShowhide(""); setIsEdit(false); setType(''); setAccountLabs('')
 
                                 }}>Add Content</Button>
                                 <DynamicTable  {...{ configuration, sourceData: item.courseContentResposeTOList, onPageChange: (e) => getSection(e) }} />

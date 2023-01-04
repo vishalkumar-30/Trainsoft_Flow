@@ -29,41 +29,26 @@ import SummarizeRoundedIcon from '@mui/icons-material/SummarizeRounded';
 import DuoIcon from '@mui/icons-material/Duo';
 import ProgressBar from "../../Common/ProgressBar/ProgressBar";
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import ScienceIcon from '@mui/icons-material/Science';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 
 const TrainingDetails = ({ location }) => {
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
     const { spinner } = useContext(AppContext)
     // const {setTraining,training} = useContext(TrainingContext)
-    // const Toast = useToast();
-    const [vdlink, setVdlink] = useState("https://www.youtube.com/watch?v=RTagtaWSea4");
+    const [vdlink, setVdlink] = useState("");
     const [feed, setFeed] = useState(false);
     const [modal, setModal] = useState(false);
     const [showcoursename, setShowcoursename] = useState('');
     const [zoomInfo, setZoomInfo] = useState({});
     const [contentLength, setContentLength] = useState(0);
-    // const [contentSid, setContentSid] = useState('');
+    const [contentSid, setContentSid] = useState('');
     const [sectionSidArray, setSectionSidArray] = useState([]);
     const [markCompleted, setMarkAsCompleted] = useState([]);
-    const [view, setView] = useState('View');
-    const arr = [ 
-        '7EAA2322F1DF4D69892420C9DFA555E633C672A095A340E39CC3C9DC3AE32CE6',
-    '2588ECC4305D4A62B2E7B13C29305D195B1963CC78384DAB9EBE798B23FEEE65',
-    '32F0EF3805A74E5E8AC6305197608D0E61FF2EC3B58843CE9FACB5E3A6CCDA13',
-    '140F96A8FF5E4AC4A3761B87A618CBCB0B2AB3373C934978A3F99DCBD694E20F',
-    'ADC87788CE784DC8BA0BDD7C2BA18836A2623A16BD12421C9BF20C32D44C7011',
-    'C6F5435B028542D18B64ACA1BE76E22EA815269A736C48ABBA19F44816C46670',
-    '7ABE6C677595472CB1E1BDE2E4C6493969BB96E10258424EA7AA22E4CE82C87B',
-    '1922A6A6017D45CBBDB02ECBFDDDF8D23874463B61D84869B7D8ADAB44CF01F9',
-    '2C0E2529A9314194AB5A71A51DF091814F0A40D83AA84E25AEEF06CBAB53EFBA',
-    '5DAD1458B6D647DBB7A035D9AAF106EF276A555DBE7F469BBA19DF754C4B4120',
-    '2FFCB00E7BB34782A1ED9CA0C58FDE363BA26CFC581341D5B5BE94E672516CCB',
-    '3095BE5A902A4074A493069A2D7965A8B56EEC1F269A45ACBD17A465CB08D351',
-    'B4CE5FBC7BCC4776A2B7ED20BBF9F679921FE3BCE2484EACB32CCB94ABA558ED',
-    '74F483E3104A43A4B76C762C0AFCA19FE8C24A8BD09F4668AFF14B301B38E8CA',
-    'F5C0540029294EFAAF85E32D70B2140178FAD90990BB4FDAA03A5A9DF4482170',
-    'B8B1155624DB4CC98ED6A6E293F16AB5874E27301905451991E604195182EEBB',
-    'F0F82B9EB9F14BE68947CBA401C0D6CB346C09B229814C94B9F08C3F25024520'
- ]
+    const [labId, setLabId] = useState('');
+    const [type, setType] = useState('');
+    const [labConnection, setLabConnection] = useState('');
+    const Toast = useToast();
     const navigate = useNavigate();
 
     function Show(url) {
@@ -75,6 +60,12 @@ const TrainingDetails = ({ location }) => {
     }
     function modalF(val) {
         setModal(val)
+    }
+    function storeLabId(val) {
+        setLabId(val)
+    }
+    function storeType(val) {
+        setType(val)
     }
     const Modal = ({ handleClose, show, children }) => {
         const showHideClassName = show ? "modal d-block" : "modal d-none";
@@ -107,7 +98,15 @@ const TrainingDetails = ({ location }) => {
                     if (data.contentLink) {
                         Show(data.contentLink);
                     }
+                    if (data.labId !== null) {
+                        storeLabId(data.labId);
+                        setContentSid(data.sectionSid);
+                    }
+                    if (data.type) {
+                        storeType(data.type)
+                    }
                     showFeedBack(data.last)
+                    
                     modalF(data.last);
                     markCourseAsCompleted(data.sid, data.sectionSid);
                     setShowcoursename(data.contentName);
@@ -119,9 +118,10 @@ const TrainingDetails = ({ location }) => {
                         }
                     }))
 
-                }} style={{ cursor: "pointer" }} > {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : <SummarizeRoundedIcon />}
-                    {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName} {sectionSidArray.indexOf(data.sid) > -1 ? <p style={{float:"right",color:"blue"}}>Viewed</p>:<p style={{color:"gray"}}> View</p>}
-                    
+                }} style={{ cursor: "pointer" }} > {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB") ? <ScienceIcon />
+                    : (data.type === "ASSESSMENT") ? <AssessmentIcon /> : <SummarizeRoundedIcon />}
+                    {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName} 
+
                     {/* <button style={{
                         backgroundColor: "transparent",
                         border: "1px solid #1c1d1f",
@@ -180,7 +180,8 @@ const TrainingDetails = ({ location }) => {
 
                     if (response.status === 200) {
                         setTrainingDetailsList(response.data.courseSectionResponseTO);
-
+                        setType(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].type);
+                        setVdlink(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentLink);
                     }
 
                     response.data.courseSectionResponseTO.map((i) => {
@@ -226,7 +227,7 @@ const TrainingDetails = ({ location }) => {
 
     //get completed courses 
     const getCompletedCourses = () => {
-       
+
         try {
             let trainingSid = location.state.sid;
             spinner.show();
@@ -240,11 +241,11 @@ const TrainingDetails = ({ location }) => {
                     for (let i = 0; i < response.data.completedSection.length; i++) {
                         for (let j = 0; j < response.data.completedSection[i].completedCourseContentDetails.length;
                             j++) {
-                                setSectionSidArray(...sectionSidArray, response.data.completedSection[i].completedCourseContentDetails[j].sid);
+                            setSectionSidArray(...sectionSidArray, response.data.completedSection[i].completedCourseContentDetails[j].sid);
                         }
                     }
 
-                    
+
                 },
                 err => {
                     spinner.hide();
@@ -257,13 +258,71 @@ const TrainingDetails = ({ location }) => {
         }
     }
 
+    //start lab 
+    const ec2GuacamolePOC = async () => {
+        try {
+            let trainingSid = location.state.sid;
+            let sectionSid = contentSid
+            spinner.show();
+            RestService.ec2GuacamolePOC(labId, sectionSid, trainingSid).then(
+                response => {
+                    setLabConnection(response.data);
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on ec2GuacamolePOC()", err)
+        }
+    }
+
+    //stop lab 
+    const stopEC2InstanceAndTerminateGuacamoleServer = async () => {
+        try {
+            spinner.show();
+            RestService.stopEC2InstanceAndTerminateGuacamoleServer(labConnection).then(
+                response => {
+                    Toast.success({ message: 'Lab stop successfully', time: 3000 });
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on stopEC2InstanceAndTerminateGuacamoleServer()", err)
+        }
+    }
+
+     //terminate lab 
+     const terminateEC2InstanceAndTerminateGuacamoleServer = async () => {
+        try {
+            spinner.show();
+            RestService.terminateEC2InstanceAndTerminateGuacamoleServer(labConnection).then(
+                response => {
+                    Toast.success({ message: 'Lab terminate successfully', time: 3000 });
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on terminateEC2InstanceAndTerminateGuacamoleServer()", err)
+        }
+    }
+
     //initialize component
     useEffect(() => {
         getTrainingContentsByTrainingSid();
         getCompletedCourses();
     }, []);
 
-    console.log(markCompleted);
     return (
         <>
             <div className="row" >
@@ -271,7 +330,7 @@ const TrainingDetails = ({ location }) => {
                 {showcoursename.length === 0 ? "" :
                     <div className=" title-sm col-8">Content Title: {showcoursename}</div>}
                 <div className="col-4" >
-                    <ProgressBar progress={markCompleted.totalCourseCompletedInTraining === null ? 0 : markCompleted.totalCourseCompletedInTraining > contentLength ? contentLength : markCompleted.totalCourseCompletedInTraining} totalSection={contentLength} trainingSid={location.state.sid}/>
+                    <ProgressBar progress={markCompleted.totalCourseCompletedInTraining === null ? 0 : markCompleted.totalCourseCompletedInTraining > contentLength ? contentLength : markCompleted.totalCourseCompletedInTraining} totalSection={contentLength} trainingSid={location.state.sid} />
                 </div>
             </div>
             <hr />
@@ -280,11 +339,32 @@ const TrainingDetails = ({ location }) => {
 
                 <div class="col-8  pl-3 " style={{ marginTop: "-25px" }}>
                     {/* <VideoMediaPlayer /> */}
-                    {(vdlink.includes("youtube") || vdlink.includes("mp4")) ? <VideoMediaPlayer url={vdlink} />
-                        : vdlink.includes("pdf") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
-                            : <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                <button onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
-                            </div>
+                    {(type === "EXTERNAL_LINK" || type === "VIDEO") ? <VideoMediaPlayer url={vdlink} />
+                        : (type === "PHOTO" || type === "DOCUMENTS") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
+                            : (type === "LAB") ?
+                                <div >
+                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                        
+                                        {labConnection.length === 0 ?  <button onClick={()=> ec2GuacamolePOC()}>Start Lab</button> : <a href={labConnection} target="_blank" rel="noopener noreferrer">Start Now</a>}
+                                    </div>
+                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                        <button onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>Stop Lab</button>
+                                    </div>
+                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                        <button onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Terminate Lab</button>
+                                    </div>
+                                </div>
+                                :
+                                (type === "ASSESSMENT") ?
+                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                         <a href={vdlink} target="_blank" rel="noopener noreferrer">Start Assessment</a>
+                                    </div>
+                                    :
+                                    (type === "TRAINING_SESSION") ? 
+                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                        <button onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
+                                    </div>
+                                    : ''
 
                     }
 
