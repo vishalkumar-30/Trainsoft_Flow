@@ -6,9 +6,10 @@ import { ICN_ON_GOING, ICN_STAR } from "../../Common/Icon"
 import AddLab from "./AddLab";
 import "./Styles.css";
 
-const LabList = ({ list = [], myLab = false }) => {
-    const [show, setShow] = useState(false)
-
+const LabList = ({ list = [], myLab = false}) => {
+    const [show, setShow] = useState(false);
+    const [labId, setLabId] = useState('');
+   
     const wordShort = (str, maxLen, separator = ' ') => {
         try {
             if (str.length <= maxLen) {
@@ -26,8 +27,9 @@ const LabList = ({ list = [], myLab = false }) => {
             {list.map(res => <div className="labList">
                 <div className="labList-info flx5">
                     <div>
-                        <div className="cat-title-md">{res.label}</div>
-                        <div className="cat-title-sm">{myLab ? wordShort(res.desc, 80) : res.desc}</div>
+                        <div className="cat-title-md">{res.labName}</div>
+                        <div className="cat-title-sm">{res.labDescription}</div>
+                        {/* <div className="cat-title-sm">{myLab ? wordShort(res.desc, 80) : res.labDescription}</div> */}
                     </div>
                     <div className="text-md">
                         <div className="flx f12">
@@ -50,7 +52,7 @@ const LabList = ({ list = [], myLab = false }) => {
                     <div>
                         {myLab ? <div>
                             <BtnPrimary className="btn-block">Select Training</BtnPrimary>
-                        </div> : <BtnPrimary className="btn-block" onClick={() => setShow(true)}>+ Import Now</BtnPrimary>}
+                        </div> : <BtnPrimary className="btn-block" onClick={() => {setShow(true); setLabId(res.labId)}}>+ Import Now</BtnPrimary>}
                     </div>
                     <div className="">
                         {myLab ? <BtnPrimary className="btn-block my-2">Assign Now</BtnPrimary> : <div className="title-sm text-white">500 + active imports</div>}
@@ -80,7 +82,7 @@ const LabList = ({ list = [], myLab = false }) => {
 
         </div>
         {<BsModal {...{ show, setShow, headerTitle: "Add This Lab", size: "xl" }}>
-            {show && <AddLab />}
+            {show && <AddLab labId={labId}/>}
         </BsModal>}
     </>)
 }

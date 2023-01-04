@@ -8,7 +8,7 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 import { BsCheckbox } from "../../../Common/BsUtils";
 
-const MyLab = ({ dummyData2 }) => {
+const MyLab = ({ accountLabs }) => {
     return (<>
         <div className="aic jcb">
             <div className="title-md">Lab Filter</div>
@@ -78,7 +78,7 @@ const MyLab = ({ dummyData2 }) => {
                     </div>
             </div>
             <div className="col-md-7">
-                <LabList myLab={true} list={dummyData2} />
+                <LabList myLab={true} list={accountLabs} />
             </div>
         </div>
     </>)

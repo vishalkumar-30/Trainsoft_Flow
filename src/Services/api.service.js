@@ -46,11 +46,11 @@ const RestService = {
   getCourseSessionByPage: (courseSid, pageSize, pageNo) => AxiosService.get(GLOBELCONSTANT.COURSE.COURSE_SESSION_PAGE.replace("{courseSid}", courseSid).replace("{pageNo}", pageNo).replace("{pageSize}", pageSize)),
   getCourseByPage: (pageSize, pageNo) => AxiosService.get(GLOBELCONSTANT.COURSE.COURSE_BY_PAGE.replace("{pageNo}", pageNo).replace("{pageSize}", pageSize)),
   createCourseSection: (payload, courseSid) => AxiosService.post(GLOBELCONSTANT.COURSE.CREATE_COURSE_SECTION + `${courseSid}/create-section`, payload),
-  uploadCourseContent: (payload, courseSectionSid) => AxiosService.uploadMultiPart(GLOBELCONSTANT.COURSE.CREATE_COURSE_CONTENT + `${courseSectionSid}/upload-content`, payload), 
+  uploadCourseContent: (payload, courseSectionSid) => AxiosService.uploadMultiPart(GLOBELCONSTANT.COURSE.CREATE_COURSE_CONTENT + `${courseSectionSid}/upload-content`, payload),
   bulkCreateCourseSectionAndContents: (payload, courseSid) => AxiosService.uploadMultiPart(GLOBELCONSTANT.COURSE.BULK_CREATE_COURSE_SECTION_AND_CONTENT + `?course-sid=${courseSid}`, payload),
-  markCourseAsCompleted: (contentSid, sectionSid, trainingsid)=> AxiosService.put(GLOBELCONSTANT.COURSE.MARK_COURSE_COMPLETED + `course-content-sid=${contentSid}&section-sid=${sectionSid}&training-sid=${trainingsid}`),
+  markCourseAsCompleted: (contentSid, sectionSid, trainingsid) => AxiosService.put(GLOBELCONSTANT.COURSE.MARK_COURSE_COMPLETED + `course-content-sid=${contentSid}&section-sid=${sectionSid}&training-sid=${trainingsid}`),
   getCompletedCourses: (trainingsid) => AxiosService.get(GLOBELCONSTANT.COURSE.GET_COMPLETED_COURSES + `training-sid=${trainingsid}`),
-  cloneCourseAndContents:(coursesid) => AxiosService.patch(GLOBELCONSTANT.COURSE.CLONE_COURSE_AND_CONTENTS + `?course-sid=${coursesid}`),
+  cloneCourseAndContents: (coursesid) => AxiosService.patch(GLOBELCONSTANT.COURSE.CLONE_COURSE_AND_CONTENTS + `?course-sid=${coursesid}`),
   updateCourseContent: (payload) => AxiosService.post(GLOBELCONSTANT.COURSE.UPDATE_COURSE_CONTENT, payload),
 
 
@@ -180,10 +180,19 @@ const RestService = {
   //notification
 
   getNotification: () => AxiosService.get(GLOBELCONSTANT.NOTIFICATION.GET_NOTIFICATION),
-  deleteAllNotifications: () => AxiosService.delete(GLOBELCONSTANT.NOTIFICATION.DELETE_ALL_NOTIFICATIONS)
+  deleteAllNotifications: () => AxiosService.delete(GLOBELCONSTANT.NOTIFICATION.DELETE_ALL_NOTIFICATIONS),
 
-
-
+  //labs
+  getAllLabCategories: () => AxiosService.get(GLOBELCONSTANT.LABS.GET_ALL_LAB_CATEGORIES),
+  filterLabs: (labs) => AxiosService.get(GLOBELCONSTANT.LABS.FILTER_LABS + `?filter=${labs}`),
+  filterAccountLabs: (labs) => AxiosService.get(GLOBELCONSTANT.LABS.FILTER_ACCOUNT_LABS + `?filter=${labs}`),
+  getAllLabs: () => AxiosService.get(GLOBELCONSTANT.LABS.GET_ALL_LABS),
+  getAccountLabs: () => AxiosService.get(GLOBELCONSTANT.LABS.GET_LABS_IN_ACCOUNT),
+  selectLabInCourse: (labId, courseSid, sectionSid) => AxiosService.post(GLOBELCONSTANT.LABS.ADD_LAB_IN_COURSE + `${labId}/add-lab-in-course?course-sid=${courseSid}&section-sid=${sectionSid}`),
+  addLabsToAccount: (labId) => AxiosService.post(GLOBELCONSTANT.LABS.ADD_LAB_TO_ACCOUNT + `${labId}/add-lab-to-account`),
+  ec2GuacamolePOC: (labId, sectionSid, trainingSid) => AxiosService.post(GLOBELCONSTANT.LABS.EC2_GUACAMOLEPOC + `${labId}/start-lab?section-sid=${sectionSid}&training_sid=${trainingSid}`),
+  stopEC2InstanceAndTerminateGuacamoleServer: (conString) => AxiosService.delete(GLOBELCONSTANT.LABS.STOP_EC2_INSTANCE_AND_TERMINATE_GUACAMOLE_SERVER + `?connection-string=${conString}`),
+  terminateEC2InstanceAndTerminateGuacamoleServer: (conString) => AxiosService.delete(GLOBELCONSTANT.LABS.TERMINATE_EC2_INSTANCE_AND_TERMINATE_GUACAMOLE_SERVER + `?connection-string=${conString}`)
 
 };
 
