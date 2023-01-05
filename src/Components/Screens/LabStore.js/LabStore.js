@@ -11,7 +11,7 @@ import CardHeader from "../../Common/CardHeader";
 import MyLab from "./MyLab/MyLab";
 
 const dummyData = [
-    { label: 'Infrastructure & DevOps', icon: ICN_ON_GOING, link: '', desc: 'Implement, deploy, migrate and maintain application in the cloud' },
+    { label: 'Infrastructure & DevOps',pic:'https://mountainss.files.wordpress.com/2018/06/devops-tool-chain.png', icon: ICN_ON_GOING, link: '', desc: 'Implement, deploy, migrate and maintain application in the cloud' },
     { label: 'Website Development', icon: ICN_ON_GOING, link: '', desc: 'For software engineers who develop web applications in the cloud' },
     { label: 'App Development', icon: ICN_ON_GOING, link: '', desc: 'For developer who develops mobile apps in the cloud' },
     { label: 'Big Data', icon: ICN_ON_GOING, link: '', desc: 'Design, build, analyze Big Data Solutions' },
@@ -60,15 +60,18 @@ const LabStore = ({ location }) => {
         return (<div className="catalog-container">
             {categorieList.map(res => <div className="catalogBox">
                 <div className="catalogBox-info">
-                    <div>
+                    
+                <div ><img src="https://cdn.hackr.io/uploads/posts/large/1570190199BHjChzs3MR.jpg" width="100%" height="230px" alt="Lab" title={res} style={{borderTopLeftRadius:"15px",borderTopRightRadius:"15px"}}/></div>
+                <div className="catalog-content" >
                         <div className="cat-title-md">{res}</div>
                         {/* <div className="cat-title-sm">{res.desc}</div> */}
-                    </div>
+                  
                     <div className="text-right">
                         <BtnPrimary onClick={() => {
                             navigate('labstore/lab-list', { state: { title: 'LAB STORE', subTitle: "Catalog", subPath: "labstore"} });
                             filterLabs(res);
-                            }}>Show All {labsFromCategoryCount} Lab(s)</BtnPrimary>
+                            }} className="labbutton">Show All {labsFromCategoryCount} Lab(s)</BtnPrimary>
+                    </div>
                     </div>
                 </div>
             </div>)}
