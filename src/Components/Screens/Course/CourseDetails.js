@@ -17,7 +17,7 @@ import AppContext from '../../../Store/AppContext'
 import DynamicTable from '../../Common/DynamicTable/DynamicTable'
 import DropdownItem from '../../Common/DropdownItem/DropdownItem';
 import { Dropdown, DropdownButton } from "react-bootstrap";
-import '../../Common/InputField/inputField.css';
+// import '../../Common/InputField/inputField.css';
 import { string } from 'prop-types';
 
 const CourseDetails = ({ location }) => {
@@ -759,14 +759,15 @@ const CourseDetails = ({ location }) => {
 
                                             <>
                                                 <form onSubmit={handleSubmit}>
-                                                    <div className="row">
+                                                    <div className="row mb-3 mx-1">
 
                                                         {/* <TextInput name="assets" label="Assets" /> */}
-                                                        <label className="mb-2 label form-label col-2">Lab Category</label>
+                                                    
                                                         <div className="col-6" >
+                                                                <label className="mb-2 label form-label ">Lab Category</label>
                                                             <div className="input-wrapper">
 
-                                                                <select className="input-field" onChange={(e) => filterAccountLabs(e.target.value)}>
+                                                                <select className="form-control"  style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => filterAccountLabs(e.target.value)}>
                                                                 <option value=""disabled selected hidden>Select Lab Category</option>
                                                                     {
                                                                         categorieList.map((item) => {
