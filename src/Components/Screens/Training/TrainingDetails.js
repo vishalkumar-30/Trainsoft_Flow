@@ -48,6 +48,9 @@ const TrainingDetails = ({ location }) => {
     const [labId, setLabId] = useState('');
     const [type, setType] = useState('');
     const [labConnection, setLabConnection] = useState('');
+    const [stopConnection, setStopConnection] = useState('');
+    const [stopServer, setStopServer] = useState('');
+    const [showButton, setShowButton] = useState(false);
     const Toast = useToast();
     const navigate = useNavigate();
 
@@ -106,7 +109,7 @@ const TrainingDetails = ({ location }) => {
                         storeType(data.type)
                     }
                     showFeedBack(data.last)
-                    
+
                     modalF(data.last);
                     markCourseAsCompleted(data.sid, data.sectionSid);
                     setShowcoursename(data.contentName);
@@ -120,7 +123,7 @@ const TrainingDetails = ({ location }) => {
 
                 }} style={{ cursor: "pointer" }} > {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB") ? <ScienceIcon />
                     : (data.type === "ASSESSMENT") ? <AssessmentIcon /> : <SummarizeRoundedIcon />}
-                    {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName} 
+                    {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
 
                     {/* <button style={{
                         backgroundColor: "transparent",
@@ -170,6 +173,7 @@ const TrainingDetails = ({ location }) => {
         clearSelection: false
     });
 
+    //get all section and content
     const getTrainingContentsByTrainingSid = async () => {
         try {
             let sum = 0;
@@ -182,6 +186,8 @@ const TrainingDetails = ({ location }) => {
                         setTrainingDetailsList(response.data.courseSectionResponseTO);
                         setType(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].type);
                         setVdlink(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentLink);
+                        storeLabId(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labId);
+                        setContentSid(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].sectionSid);
                     }
 
                     response.data.courseSectionResponseTO.map((i) => {
@@ -264,12 +270,21 @@ const TrainingDetails = ({ location }) => {
             let trainingSid = location.state.sid;
             let sectionSid = contentSid
             spinner.show();
-            RestService.ec2GuacamolePOC(labId, sectionSid, trainingSid).then(
+            await RestService.ec2GuacamolePOC(labId, sectionSid, trainingSid).then(
                 response => {
-                    setLabConnection(response.data);
+                    if (response.status === 200) {
+                        Toast.success({ message: 'You can start lab now', time: 3000 });
+                        setLabConnection(response.data.split('#')[1]);
+                        setStopConnection(response.data.split('#')[1]);
+                        setStopServer('');
+                        setTimeout(function () {
+                            setShowButton(true);
+                          }, 18000);
+                    }    
                 },
                 err => {
                     spinner.hide();
+                    Toast.error({ message: 'Try again', time: 2000 });
                 }
             ).finally(() => {
                 spinner.hide();
@@ -283,35 +298,77 @@ const TrainingDetails = ({ location }) => {
     const stopEC2InstanceAndTerminateGuacamoleServer = async () => {
         try {
             spinner.show();
-            RestService.stopEC2InstanceAndTerminateGuacamoleServer(labConnection).then(
-                response => {
-                    Toast.success({ message: 'Lab stop successfully', time: 3000 });
-                },
-                err => {
+            if(labConnection.length > 0){
+                RestService.stopEC2InstanceAndTerminateGuacamoleServer(labConnection).then(
+                    response => {
+                        Toast.success({ message: 'Lab stop successfully', time: 3000 });
+                        setLabConnection('');
+                        setStopServer(response.data);
+                    },
+                    err => {
+                        Toast.error({ message: 'Try again', time: 3000 });
+                        spinner.hide();
+                    }
+                ).finally(() => {
                     spinner.hide();
-                }
-            ).finally(() => {
-                spinner.hide();
-            });
+                });
+            }
+            else{
+                RestService.stopEC2InstanceAndTerminateGuacamoleServer(stopConnection).then(
+                    response => {
+                        Toast.success({ message: 'Lab stop successfully', time: 3000 });
+                        setStopServer(response.data);
+                        
+                    },
+                    err => {
+                        spinner.hide();
+                        Toast.error({ message: 'Try again', time: 3000 });
+                    }
+                ).finally(() => {
+                    spinner.hide();
+                });
+
+            }
+ 
         } catch (err) {
             console.error("error occur on stopEC2InstanceAndTerminateGuacamoleServer()", err)
         }
     }
 
-     //terminate lab 
-     const terminateEC2InstanceAndTerminateGuacamoleServer = async () => {
+    //terminate lab 
+    const terminateEC2InstanceAndTerminateGuacamoleServer = async () => {
         try {
             spinner.show();
-            RestService.terminateEC2InstanceAndTerminateGuacamoleServer(labConnection).then(
+            if(labConnection.length > 0){
+                RestService.terminateEC2InstanceAndTerminateGuacamoleServer(labConnection).then(
+                    response => {
+                        Toast.success({ message: 'Lab terminate successfully', time: 3000 });
+                        setLabConnection('');
+                        setStopConnection('');
+                        setShowButton(false);
+                    },
+                    err => {
+                        spinner.hide();
+                        Toast.error({ message: 'Try again', time: 3000 });
+                    }
+                ).finally(() => {
+                    spinner.hide();
+                });
+            }else{
+            RestService.terminateEC2InstanceAndTerminateGuacamoleServer(stopConnection).then(
                 response => {
                     Toast.success({ message: 'Lab terminate successfully', time: 3000 });
+                    setStopConnection('');
+                    setShowButton(false);
                 },
                 err => {
                     spinner.hide();
+                    Toast.error({ message: 'Try again', time: 3000 });
                 }
             ).finally(() => {
                 spinner.hide();
             });
+        }
         } catch (err) {
             console.error("error occur on terminateEC2InstanceAndTerminateGuacamoleServer()", err)
         }
@@ -323,6 +380,9 @@ const TrainingDetails = ({ location }) => {
         getCompletedCourses();
     }, []);
 
+    console.log(labConnection);
+    console.log("labs "+ labId);
+    console.log("sid "+ contentSid);
     return (
         <>
             <div className="row" >
@@ -344,27 +404,36 @@ const TrainingDetails = ({ location }) => {
                             : (type === "LAB") ?
                                 <div >
                                     <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                        
-                                        {labConnection.length === 0 ?  <button onClick={()=> ec2GuacamolePOC()}>Start Lab</button> : <a href={labConnection} target="_blank" rel="noopener noreferrer">Start Now</a>}
+
+                                        {(labConnection.length > 0 && stopConnection.length > 0)?  <a href={`https://lab.trainsoft.live/#${labConnection}`} target="_blank" rel="noopener noreferrer">Start Now</a> : <button onClick={() => 
+                                            {
+                                                ec2GuacamolePOC();
+                                               
+                                            }}>Start Lab</button> }
                                     </div>
+                                    {
+                                        showButton ? 
+                                    <>
                                     <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                        <button onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>Stop Lab</button>
+                                        <button onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>{stopServer.length === 0 ? "Stop Lab" : "Stopped"}</button>
                                     </div>
                                     <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
                                         <button onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Terminate Lab</button>
                                     </div>
+                                    </>
+                                    : ''}
                                 </div>
                                 :
                                 (type === "ASSESSMENT") ?
                                     <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                         <a href={vdlink} target="_blank" rel="noopener noreferrer">Start Assessment</a>
+                                        <a href={vdlink} target="_blank" rel="noopener noreferrer">Start Assessment</a>
                                     </div>
                                     :
-                                    (type === "TRAINING_SESSION") ? 
-                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                        <button onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
-                                    </div>
-                                    : ''
+                                    (type === "TRAINING_SESSION") ?
+                                        <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                            <button onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
+                                        </div>
+                                        : ''
 
                     }
 
