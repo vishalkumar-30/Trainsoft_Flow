@@ -52,7 +52,7 @@ const LabList = ({ list = [], myLab = false}) => {
                     <div>
                         {myLab ? <div>
                             <BtnPrimary className="btn-block">Select Training</BtnPrimary>
-                        </div> : <BtnPrimary className="btn-block" onClick={() => {setShow(true); setLabId(res.labId)}}>+ Import Now</BtnPrimary>}
+                        </div> : res.importStatus === "IMPORTED" ? "Lab Already Imported" : <BtnPrimary className="btn-block" onClick={() => {setShow(true); setLabId(res.labId)}}>+ Import Now</BtnPrimary>}
                     </div>
                     <div className="">
                         {myLab ? <BtnPrimary className="btn-block my-2">Assign Now</BtnPrimary> : <div className="title-sm text-white">500 + active imports</div>}
