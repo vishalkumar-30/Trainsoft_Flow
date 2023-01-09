@@ -11,6 +11,22 @@
   background-repeat: no-repeat;
   /* background-attachment: fixed; */
   background-position: center  ;
+ 
+}
+.assesmentimg{
+  background-image: url("../../../Assets/Images/assesment.webp");
+  background-repeat: no-repeat;
+  /* background-attachment: fixed; */
+  background-position: 1% 38%  ;
+  background-size: 100%;
+}
+
+.zoommeeting{
+  background-image: url("../../../Assets/Images/joinnow.jpeg");
+  background-repeat: no-repeat;
+  /* background-attachment: fixed; */
+  background-position: 1% 38%  ;
+  background-size: 100%;
 }
 .user-pf{
     width: 100px;
