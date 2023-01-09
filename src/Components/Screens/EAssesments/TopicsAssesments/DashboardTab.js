@@ -55,7 +55,7 @@ const DashboardTab = () => {
         sortDirection: null,
         sortEnabled: true,
         isSearchEnabled: false,
-        render: (res) => <>{res.score ? `${res.score}%` : '-' }</>
+        render: (res) => <>{res.score ? `${res.score.toFixed(2)}%` : '-' }</>
       }
     },
     headerTextColor: "#454E50", // user can change table header text color

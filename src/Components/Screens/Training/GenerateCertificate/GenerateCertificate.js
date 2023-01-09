@@ -7,7 +7,7 @@ const GenerateCertificate = (props) => {
     const { spinner } = useContext(AppContext)
     const generateTrainingCertificate = () => {
          spinner.show();
-        axios.get(`http://3.109.158.95:8089/insled/v2/generate-completion-certificate?trainingSid=${props.trainingSid}`,
+        axios.get(`https://trainsoft.live/insled/v2/generate-completion-certificate?trainingSid=${props.trainingSid}`,
           {
               responseType: 'blob',
               headers: {
