@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BsModal } from "../../Common/BsUtils";
 import { BtnPrimary } from "../../Common/Buttons/Buttons";
 import SearchBox from "../../Common/SearchBox/SearchBox"
-import { ICN_ON_GOING, ICN_STAR } from "../../Common/Icon"
+import { ICN_ON_GOING, ICN_STAR ,ICN_TIME} from "../../Common/Icon"
 import AddLab from "./AddLab";
 import "./Styles.css";
 
@@ -33,8 +33,8 @@ const LabList = ({ list = [], myLab = false}) => {
                     </div>
                     <div className="text-md">
                         <div className="flx f12">
-                            <div className="mr-3">
-                                2 hours
+                            <div className="mr-3" >
+                            2 hours
                                 </div>
                             <div className="mr-3">
                                 Intermediate
@@ -52,10 +52,12 @@ const LabList = ({ list = [], myLab = false}) => {
                     <div>
                         {myLab ? <div>
                             <BtnPrimary className="btn-block">Select Training</BtnPrimary>
-                        </div> : res.importStatus === "IMPORTED" ? <BtnPrimary className="bg-success imprtbtn"  >&#xf121; Lab Already Imported</BtnPrimary>: <BtnPrimary className="btn-block" onClick={() => {setShow(true); setLabId(res.labId)}}>+ Import Now</BtnPrimary>}
+                        </div> : res.importStatus === "IMPORTED" ? <BtnPrimary className="bg-success imprtbtn" disabled={true} >&#xf121; Lab Already Imported</BtnPrimary>: <BtnPrimary className="btn-block" onClick={() => {setShow(true); setLabId(res.labId)}}>+ Import Now</BtnPrimary>}
                     </div>
                     <div className="">
-                        {myLab ? <BtnPrimary className="btn-block my-2">Assign Now</BtnPrimary> : <div className="title-sm text-white">500 + active imports</div>}
+                        {myLab ? <BtnPrimary className="btn-block my-2">Assign Now</BtnPrimary> : ""
+                        // <div className="title-sm text-white">500 + active imports</div>
+                        }
 
 
                         <div className="star-icon">
