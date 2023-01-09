@@ -428,13 +428,17 @@ const TrainingDetails = ({ location }) => {
                                 </div>
                                 :
                                 (type === "ASSESSMENT") ?
-                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                        <a href={vdlink} target="_blank" rel="noopener noreferrer">Start Assessment</a>
+                                <div className="assesmentimg row ml-1" >
+                                    <div style={{ width: "180px", textAlign: "center", textDecoration: "none",background:"blue",  padding: "15px 20px", marginLeft: "250px", marginBottom: "10px", marginTop: "100px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                        <a href={vdlink} target="_blank" rel="noopener noreferrer"  style={{color: "#fff", fontSize:"15px"}}>Start Assessment</a>
+                                    </div>
                                     </div>
                                     :
                                     (type === "TRAINING_SESSION") ?
-                                        <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                            <button onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
+                                    <div className="zoommeeting row ml-1">
+                                        <div style={{ width: "120px", textAlign: "center", textDecoration: "none", color: "white",background:"blue", padding: "10px 10px", marginLeft: "20px", marginBottom: "80px", marginTop: "85px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                            <button style={{color: "#fff", fontSize:"15px"}} onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
+                                        </div>
                                         </div>
                                         : ''
 
