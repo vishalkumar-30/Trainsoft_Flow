@@ -402,10 +402,10 @@ const TrainingDetails = ({ location }) => {
                     {(type === "EXTERNAL_LINK" || type === "VIDEO") ? <VideoMediaPlayer url={vdlink} />
                         : (type === "PHOTO" || type === "DOCUMENTS") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
                             : (type === "LAB") ?
-                                <div >
-                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                <div className="labbacimg row ml-1" style={{display:"flex", flexDirection:"column"}} >
+                                    <div  style={{ width: "130px", textAlign: "center", textDecoration: "none", background:"blue ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
 
-                                        {(labConnection.length > 0 && stopConnection.length > 0)?  <a href={`https://lab.trainsoft.live/#${labConnection}`} target="_blank" rel="noopener noreferrer">Start Now</a> : <button onClick={() => 
+                                        {(labConnection.length > 0 && stopConnection.length > 0)?  <a href={`https://lab.trainsoft.live/#${labConnection}`} target="_blank" rel="noopener noreferrer">Start Now</a> : <button style={{color: "#fff", fontSize:"15px"}} onClick={() => 
                                             {
                                                 ec2GuacamolePOC();
                                                
@@ -414,11 +414,11 @@ const TrainingDetails = ({ location }) => {
                                     {
                                         showButton ? 
                                     <>
-                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                        <button onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>{stopServer.length === 0 ? "Stop Lab" : "Stopped"}</button>
+                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background:"red ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                        <button style={{color: "#fff", fontSize:"15px"}} onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>{stopServer.length === 0 ? "Stop Lab" : "Stopped"}</button>
                                     </div>
-                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", color: "white", padding: "15px 20px", marginLeft: "280px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                        <button onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Terminate Lab</button>
+                                    <div style={{ width: "160px", textAlign: "center", textDecoration: "none",background:"red ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                        <button style={{color: "#fff", fontSize:"15px"}} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Terminate Lab</button>
                                     </div>
                                     </>
                                     : ''}
