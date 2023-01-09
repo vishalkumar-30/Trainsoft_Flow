@@ -15,26 +15,29 @@ import { TrainingProvider } from "./Store/TrainingContext";
 import VsCode from "./Components/Screens/VsCode/VsCode";
 import MeetingClose from "./Components/Zoom/MeetingClose";
 import { AssessmentProvider } from "./Store/AssessmentContext";
-
-
-
+import PrivateRoute from "./Components/Common/PrivateRoute/PrivateRoute";
+import { Redirect } from '@reach/router';
 
 
 function App() {
-   const {spinner} = useContext(AppContext)
+   const {spinner} = useContext(AppContext);
+   
   return (<>
       <Spinner value={spinner}/>
       <AssessmentProvider>
       <TrainingProvider>
          <Router>
             <LandingHome path="/"/>
-            <ResetPwd path="/reset/:token"/>
-            <Login path="/login"/>
-            <Assessment path="/assessment/:assessmentSid/:companySid/:virtualAccountSid"/>
-            <Dashboard path="/*"/>
-            <ClassLab path="class/*"/>
-            <VsCode path="vscode"/>
-            <MeetingClose path="/zoomclose"/>
+            {
+               localStorage.getItem('REACTAPP.TOKEN') ? <Redirect from="/login" to="/dashboard" noThrow /> : 
+               <Login path="/login"/>
+            }
+            <PrivateRoute component={MeetingClose} path="zoomclose" />
+            <PrivateRoute component={ResetPwd} path="/reset/:token" />
+            <PrivateRoute component={Assessment} path="/assessment/:assessmentSid/:companySid/:virtualAccountSid" />
+            <PrivateRoute component={Dashboard} path="/*" />
+            <PrivateRoute component={ClassLab} path="class/*" />
+            <PrivateRoute component={VsCode} path="vscode" />
          </Router>
       </TrainingProvider>
       </AssessmentProvider>

@@ -89,7 +89,7 @@ const AssessmentRender = ({ data, fromMyAt = false, count, setPageNo, key = "" }
                         {res.status === "QUIT" && <div className="text-danger font-weight-bold">Quit</div>}
                         {res.status === "COMPLETED" && <div className="aic jce">
                             {/* <div className="nav-link text-primary pointer font-weight-bold">{ICN_DOWNLOADS} Download Certificate</div>  */}
-                            <div>Score: <span className="title-md">{res.score}%</span></div></div>}
+                            <div>Score: <span className="title-md">{res.score.toFixed(2)}%</span></div></div>}
                         {res.status === "STARTED" && <Button className="disabled">Resume</Button>}
                         {res.status === "QUIT" &&<div> <Button onClick={() => { setFromLogin(true); navigate(`../assessment/${res.quizSetSid}/${user.companySid}/${user.sid}`, { state: { from: "assessmentDashboard" } }) }}>Try Again</Button></div>}
 

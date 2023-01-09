@@ -405,7 +405,10 @@ const TrainingDetails = ({ location }) => {
                                 <div className="labbacimg row ml-1" style={{display:"flex", flexDirection:"column"}} >
                                     <div  style={{ width: "130px", textAlign: "center", textDecoration: "none", background:"blue ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
 
-                                        {(labConnection.length > 0 && stopConnection.length > 0)?  <a href={`https://lab.trainsoft.live/#${labConnection}`} target="_blank" rel="noopener noreferrer">Start Now</a> : <button style={{color: "#fff", fontSize:"15px"}} onClick={() => 
+                                        {(labConnection.length > 0 && stopConnection.length > 0)?  
+                                        <button style={{color: "#fff", fontSize:"15px"}} onClick={()=>window.open(`https://lab.trainsoft.live/#${labConnection}`, '_blank')}>Start Now</button> 
+                                        : 
+                                        <button style={{color: "#fff", fontSize:"15px"}} onClick={() => 
                                             {
                                                 ec2GuacamolePOC();
                                                

@@ -158,7 +158,7 @@ const AssessmentDashboard = () => {
                             <div>{res.virtualAccountTO?.appuser?.name}</div>
                         </div>
                         <div className="title-sm">
-                            {res.percentage}%
+                            {res.percentage.toFixed(2)}%
                         </div>
                     </div>)}
                     {categoryUser.length === 0 && <NoDataFound title="Data not found" />}
