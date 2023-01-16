@@ -1,4 +1,4 @@
-import  { useContext,useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import { ICN_ARROW, ICN_PARTICIPANT } from '../../../Common/Icon';
 import { navigate, Router } from '../../../Common/Router';
@@ -18,22 +18,23 @@ import RestService from '../../../../Services/api.service';
 import AppContext from '../../../../Store/AppContext';
 
 const icon = [
-    {name: "Technology",mark:"70",images:ICN_TECH},
-    {name: "Psychometric",mark:"60", images:ICN_PER},
-    {name: "Skills",mark:"78",images:ICN_SKILL},
-    {name: "Personality Index",mark:"55",images:ICN_PSY},
-    {name: "Aptitude Tests",mark:"99",images:ICN_APTI},
-    {name: "Domain Test",mark:"89",images:ICN_DMAIN},
+    { name: "Technology", mark: "70", images: ICN_TECH },
+    { name: "Psychometric", mark: "60", images: ICN_PER },
+    { name: "Skills", mark: "78", images: ICN_SKILL },
+    { name: "Personality Index", mark: "55", images: ICN_PSY },
+    { name: "Aptitude Tests", mark: "99", images: ICN_APTI },
+    { name: "Domain Test", mark: "89", images: ICN_DMAIN },
 ]
 
 
 
-const CatalogueList = () =>{
-    const {user,spinner} = useContext(AppContext)
-    const {category,setBookmark,setMyAssessment} = useContext(AssessmentContext)
-
-      //  getBookmark 
-      const getBookmark = async (categorySid) => {
+const CatalogueList = () => {
+    const { user, spinner } = useContext(AppContext)
+    const { setBookmark, setMyAssessment } = useContext(AssessmentContext)
+    const [category, setCategory] = useState([]);
+    
+    //  getBookmark 
+    const getBookmark = async (categorySid) => {
         spinner.show("Loading... wait");
         try {
             let { data } = await RestService.getBookmark(user.sid)
@@ -45,51 +46,70 @@ const CatalogueList = () =>{
         }
     }
 
-     // get my assessment 
-   const getMyAssessment = async () => {
-    spinner.show("Loading... wait");
-    try {
-      let { data } = await RestService.getMyAssessment('ALL',user.sid)
-      setMyAssessment(data);
-      spinner.hide();
-    } catch (err) {
-      spinner.hide();
-      console.error("error occur on getMyAssessment()", err)
+    // get my assessment 
+    const getMyAssessment = async () => {
+        spinner.show("Loading... wait");
+        try {
+            let { data } = await RestService.getMyAssessment('ALL', user.sid)
+            setMyAssessment(data);
+            spinner.hide();
+        } catch (err) {
+            spinner.hide();
+            console.error("error occur on getMyAssessment()", err)
+        }
     }
-  }
 
+    //get all assessment category
+    const getAllCategory = () => {
+        try {
+            spinner.show();
+            RestService.getAllCategory().then(res => {
+                setCategory(res.data)
+                spinner.hide();
+            }, err => {
+                spinner.hide();
+            }
+            );
+        }
+        catch (err) {
+            console.error('error occur on searchCourse()', err)
+            spinner.hide();
+        }
+    }
     useEffect(() => {
-       getBookmark()
-       getMyAssessment()
-    }, [])
-    return(<>
-       <div className="catalog-box">
-            {category.map(res=>
-                    <div className="box-shadow catalog-list" key={res.sid}>
+        getBookmark();
+        getMyAssessment();
+        getAllCategory();
+    }, []);
+
+    console.log(category);
+    return (<>
+        <div className="catalog-box">
+            {category.map(res =>
+                <div className="box-shadow catalog-list" key={res.sid}>
                     <div className="catalog-img">
-                        <img src={icon.find(resp=>resp.name=== res.name)?.images}/>
+                        <img src={icon.find(resp => resp.name === res.name)?.images} />
                     </div>
-                    <div className="catalog-link pointer"  onClick={()=>navigate('catalogue/catalogDetails',{ state: { path:'catalogue', title: 'Catalogue',data:res } })}>
+                    <div className="catalog-link pointer" onClick={() => navigate('catalogue/catalogDetails', { state: { path: 'catalogue', title: 'Catalogue', data: res } })}>
                         <div className="link">{res.name}</div>
                         <div className="">
-                        {ICN_ARROW}
+                            {ICN_ARROW}
                         </div>
                     </div>
-            </div>
-                )}
+                </div>
+            )}
         </div>
     </>)
 
 }
 
-const Catalogue = ()=>{
-    return(
+const Catalogue = () => {
+    return (
         <Router>
-            <CatalogueList path="/"/>
-            <CatalogueDetails path="catalogDetails/*"/>
+            <CatalogueList path="/" />
+            <CatalogueDetails path="catalogDetails/*" />
         </Router>
     )
 }
 
 export default Catalogue;
-

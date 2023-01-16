@@ -50,6 +50,8 @@ import PlayCircleFilledWhiteIcon from '@material-ui/icons/PlayCircleFilledWhite'
 import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+export const ICN_BACK = <KeyboardBackspaceIcon/>
 export const ICN_TIME=<AccessTimeIcon/>
 export const ICN_EXPANDED = <AspectRatioIcon/>
 export const ICN_ASSESS_ATTEND = <img src={ASSESS}/>

@@ -9,9 +9,10 @@ import RestService from '../../../Services/api.service';
 import AxiosService from '../../../Services/axios.service';
 import { TokenService } from '../../../Services/storage.service';
 import './auth.css'
-import { ICN_TRAINSOFT } from '../../Common/Icon';
+import { ICN_TRAINSOFT ,ICN_BACK } from '../../Common/Icon';
 import GLOBELCONSTANT from '../../../Constant/GlobleConstant';
 import AssessmentContext from '../../../Store/AssessmentContext';
+import { Link } from '@reach/router';
 
 
 
@@ -103,7 +104,13 @@ const Login = ({location}) => {
 
 
     return (<div className="loginScreen" >
+        
+    <div  class="d-flex p-5 align-items-center justify-content-center col-12 loginbackground" >
+
+    
             <div className="login-container">
+                <p className='text-center'><Link to="/" >{ICN_BACK}Back to homepage</Link></p>
+               
               
                 {tabPanel === "login" && <> 
                  <Formik
@@ -115,7 +122,7 @@ const Login = ({location}) => {
                     // validationSchema={schema}
                     onSubmit={(values) => onLogin(values)}>
                     {({ handleSubmit }) => (<>
-                        <form onSubmit={handleSubmit} className="login-form">
+                        <form onSubmit={handleSubmit} className="login-form  my-2">
                         <div className="text-center mb-3">
                 {ICN_TRAINSOFT}
                 
@@ -200,6 +207,7 @@ const Login = ({location}) => {
                 </>
                 }
 
+            </div>
             </div>
         
     </div>)

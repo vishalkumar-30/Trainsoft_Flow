@@ -9,8 +9,23 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-}
+        
+          background-color: #F5F8FB;
 
+         
+}
+.loginbackground{
+ background: url("../../../Assets/Images/Mediamodifier-Design.svg") ; 
+
+      
+   
+
+          background-repeat: no-repeat;
+          background-position: center center;
+          background-attachment: fixed;
+          background-size: 100%;
+          height: 100vh;
+}
 .loginLeftScreen {
   width: 100%;
   height: 100%;
@@ -69,6 +84,8 @@
 
 .login-container {
   width: 450px;
+
+  margin-left: -38px;
 }
 
 .login-form {
