@@ -5,7 +5,7 @@ import { useNavigate } from "@reach/router"
 import useToast from "../../../../Store/ToastHook";
 import AppContext from "../../../../Store/AppContext";
 import RestService from "../../../../Services/api.service";
-
+import CountdownTimer from "../../../Common/CountdownTimer/CountdownTimer";
 
 function Labs(props) {
     const [labDescription, setLabDescription] = useState(props.location.state.labDescription);
@@ -17,7 +17,7 @@ function Labs(props) {
     const [vdlink, setVdlink] = useState("");
     const [feed, setFeed] = useState(false);
     const [modal, setModal] = useState(false);
-    const [showcoursename, setShowcoursename] = useState('');
+    // const [showcoursename, setShowcoursename] = useState('');
     const [zoomInfo, setZoomInfo] = useState({});
     const [contentLength, setContentLength] = useState(0);
     const [contentSid, setContentSid] = useState(props.location.state.contentSid);
@@ -29,9 +29,11 @@ function Labs(props) {
     const [stopConnection, setStopConnection] = useState('');
     const [stopServer, setStopServer] = useState('');
     const [showButton, setShowButton] = useState(false);
+    const [labDuration, setLabDuration] = useState(props.location.state.labDuration);
+    const [labName, setLabName] = useState(props.location.state.showcoursename);
     const Toast = useToast();
     const navigate = useNavigate();
-
+    
     //start lab 
     const ec2GuacamolePOC = async () => {
         try {
@@ -41,7 +43,7 @@ function Labs(props) {
             await RestService.ec2GuacamolePOC(labId, sectionSid, trainingSid).then(
                 response => {
                     if (response.status === 200) {
-                        Toast.success({ message: 'You can start lab now', time: 3000 });
+                        Toast.success({ message: 'Lab Started Successfully', time: 3000 });
                         setLabConnection(response.data.split('#')[1]);
                         setStopConnection(response.data.split('#')[1]);
                         localStorage.setItem('connectionString', response.data.split('#')[1]);
@@ -139,6 +141,7 @@ function Labs(props) {
                         setShowButton(false);
                         localStorage.removeItem('appearButton');
                         localStorage.removeItem('connectionString');
+                        localStorage.removeItem("end_date");
                     },
                     err => {
                         spinner.hide();
@@ -155,6 +158,7 @@ function Labs(props) {
                         setShowButton(false);
                         localStorage.removeItem('appearButton');
                         localStorage.removeItem('connectionString');
+                        localStorage.removeItem("end_date");
                     },
                     err => {
                         spinner.hide();
@@ -173,6 +177,7 @@ function Labs(props) {
                         setShowButton(false);
                         localStorage.removeItem('appearButton');
                         localStorage.removeItem('connectionString');
+                        localStorage.removeItem("end_date");
                     },
                     err => {
                         spinner.hide();
@@ -186,56 +191,69 @@ function Labs(props) {
             console.error("error occur on terminateEC2InstanceAndTerminateGuacamoleServer()", err)
         }
     }
-
+   
+    console.log(labDuration);
 
     return (
         <>
-           <div className="row">
+            <div className="row">
 
-           <div className="col-3 jumbotron pl-5">
-           <p>Labs</p>
-            <p>Lab Description : &nbsp; {labDescription}</p><br/>
-            <p>Lab Overview : &nbsp; {labOverview}</p><br/>
-            <p>Lab Solution : &nbsp; {labSolution}</p><br/>
-           </div>
-            <div className="col-9" style={{background:"gray"}}>
-{/* labbacimg */}
-                <div className=" row ml-1"  >
-                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "18px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+                <div className="col-3 jumbotron pl-5">
+                    <h4 className="text-center">{labName}</h4>
+                    <p>Lab Description : &nbsp; {labDescription}</p><br />
+                    <p>Lab Overview : &nbsp; {labOverview}</p><br />
+                    <p>Lab Solution : &nbsp; {labSolution}</p><br />
+                </div>
+                <div className="col-9" style={{ background: "gray" }}>
+                    {/* labbacimg */}
+                    <div className=" row ml-1"  >
+                        <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "18px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
 
-                        {(labConnection.length > 0 && stopConnection.length > 0) || localStorage.getItem('connectionString') ?
-                            <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => window.open(`https://lab.trainsoft.live/#${labConnection}`, '_blank')}>Start Now</button>
-                            :
-                            <button style={{ color: "#fff", fontSize: "15px" }} onClick={() =>
+                            {(labConnection.length > 0 && stopConnection.length > 0) && localStorage.getItem('connectionString') ?
+                                <div>
+                                    <p className="text-white">Started</p>
+                                </div>
+                                :
+
+                                <button style={{ color: "#fff", fontSize: "15px" }} onClick={() =>
 
 
-                                ec2GuacamolePOC()
-                            }>Start Lab</button>}
+                                    ec2GuacamolePOC()
+                                }>Start Lab</button>}
+                        </div>
+
+                        {
+                            showButton || localStorage.getItem('appearButton') ?
+                                <>
+                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+                                        <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>{stopServer.length === 0 ? "Pause Lab" : "Paused"}</button>
+                                    </div>
+                                    <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "#471579", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+                                        <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Complete Lab</button>
+                                    </div>
+                                </>
+                                : ''}
+                        <div style={{ marginLeft: "80px", marginBottom: "50px", marginTop: "50px" }}>
+                            {
+                                labConnection.length > 0 || localStorage.getItem('connectionString') ?
+                                    <CountdownTimer {...{ timeLimit: labDuration, callback: (time) => { } }} />
+                                    : ''
+                            }
+                        </div>
+
+
                     </div>
-                   
-                    {
-                        (localStorage.getItem('appearButton')) ?
-                            <>
-                                <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
-                                    <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>{stopServer.length === 0 ? "Pause Lab" : "Paused"}</button>
-                                </div>
-                                <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "#471579", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
-                                    <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Complete Lab</button>
-                                </div>
-                            </>
-                            : ''}
-                </div>
 
-                
-            <div className="py-2 " style={{marginTop:"-10px"}}>{
+
+                    <div className="py-2 " style={{ marginTop: "-10px" }}>{
                         (labConnection.length > 0 && stopConnection.length > 0) || localStorage.getItem('connectionString') ?
-                    
-                        <iframe src={`https://lab.trainsoft.live/#${labConnection}`} width="100%" height="600px"  />
-                        : <p>Please Click on Start Lab</p>}
+
+                            <iframe src={`https://lab.trainsoft.live/#${labConnection}`} width="100%" height="600px" />
+                            : <p>Please Click on Start Lab</p>}
+                    </div>
+
                 </div>
-                
             </div>
-           </div>
 
 
 
