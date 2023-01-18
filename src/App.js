@@ -17,7 +17,7 @@ import MeetingClose from "./Components/Zoom/MeetingClose";
 import { AssessmentProvider } from "./Store/AssessmentContext";
 import PrivateRoute from "./Components/Common/PrivateRoute/PrivateRoute";
 import { Redirect } from '@reach/router';
-
+import Labs from "./Components/Screens/Training/Labs/Labs";
 
 function App() {
    const {spinner} = useContext(AppContext);
@@ -38,6 +38,7 @@ function App() {
             <PrivateRoute component={Dashboard} path="/*" />
             <PrivateRoute component={ClassLab} path="class/*" />
             <PrivateRoute component={VsCode} path="vscode" />
+            <PrivateRoute component={Labs} path="labs" />
          </Router>
       </TrainingProvider>
       </AssessmentProvider>

@@ -38,6 +38,9 @@ const Main = ({ questions }) => {
                 response => {
                     spinner.hide();
                     Toast.success({ message: `Congratulation! You have submitted your assessment successfully`, time: 3000 });
+                    localStorage.removeItem("status");
+                    localStorage.removeItem("instruction");
+                    localStorage.removeItem("end_date");
                     setFinished(true);
                 },
                 err => {
@@ -82,7 +85,10 @@ const Main = ({ questions }) => {
                                     answers & then submit
                                 </div>
                             </div>
-                            <Submit onClick={() => handleSubmitAssessment()}>Submit Assessment</Submit>
+                            <Submit onClick={() => {
+                                handleSubmitAssessment(); 
+                            
+                            }}>Submit Assessment</Submit>
                         </div>
                     }
                     {

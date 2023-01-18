@@ -24,6 +24,7 @@ const QuitModal = ({ show, setShow }) => {
       RestService.quitAssessment(instruction.sid, assUserInfo.sid).then(
         response => {
           spinner.hide();
+          localStorage.removeItem("status");
           Toast.success({ message: `Quit assessment successfully`, time: 3000 });
         },
         err => {

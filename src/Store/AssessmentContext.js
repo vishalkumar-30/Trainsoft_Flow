@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import RestService from '../Services/api.service';
 const AssessmentContext = React.createContext({});
 export default AssessmentContext;
 
@@ -12,7 +13,19 @@ export const AssessmentProvider = (props) => {
     const [bookmark,setBookmark] = useState([])
     const [myAssessment,setMyAssessment] = useState([])
 
+    // get All topic
+    const getAllCategory = async () => {
+        try {
+        let { data } = await RestService.getAllCategory()
+        setCategory(data)
+        } catch (err) {
+        console.error("error occur on getAllTopic()", err)
+        }
+    }
 
+    useEffect(() => {
+        getAllCategory()
+    }, [])
    
     const appData = {
         category,
