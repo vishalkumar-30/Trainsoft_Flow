@@ -55,6 +55,7 @@ const TrainingDetails = ({ location }) => {
     const [labDescription, setLabDescription] = useState('');
     const [labOverview, setLabOverview] = useState('');
     const [labSolution, setLabSolution] = useState('');
+    const [labDuration, setLabDuration] = useState(0);
     const Toast = useToast();
     const navigate = useNavigate();
     let trainingSid = location.state.sid;
@@ -112,6 +113,7 @@ const TrainingDetails = ({ location }) => {
                         setLabDescription(data.labContent.labDescription);
                         setLabOverview(data.labContent.labOverview);
                         setLabSolution(data.labContent.labSolution);
+                        setLabDuration(Number(data.durationInMinutes.split('.')[0]));
                     }
                     if (data.type) {
                         storeType(data.type)
@@ -199,6 +201,12 @@ const TrainingDetails = ({ location }) => {
                         setVdlink(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentLink);
                         storeLabId(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labId);
                         setContentSid(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].sectionSid);
+                        setLabDescription(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labDescription);
+                        setLabOverview(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labOverview);
+                        setLabSolution(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labSolution);
+                        setLabDuration(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].durationInMinutes);
+                        setShowcoursename(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentName)
+
                     }
 
                     response.data.courseSectionResponseTO.map((i) => {
@@ -575,25 +583,13 @@ const TrainingDetails = ({ location }) => {
                                 <div className="labbacimg row ml-1" style={{ display: "flex", flexDirection: "column" }} >
                                     <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "blue ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
 
-                                        {(labConnection.length > 0 && stopConnection.length > 0) || localStorage.getItem('connectionString') ?
-                                            <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => window.open(`https://lab.trainsoft.live/#${labConnection}`, '_blank')}>Start Now</button>
-                                            :
+                                        {
                                             <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/labs", {state: {
-                                                labDescription, labOverview, labSolution, labId, contentSid, trainingSid
+                                                labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename
                                             }})
                                             }>Open Sandbox</button>}
                                     </div>
-                                    {
-                                        (showButton || localStorage.getItem('appearButton')) ?
-                                            <>
-                                                <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "red ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                                    <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>{stopServer.length === 0 ? "Pause Lab" : "Paused"}</button>
-                                                </div>
-                                                <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "red ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                                    <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Complete Lab</button>
-                                                </div>
-                                            </>
-                                            : ''}
+                                   
                                 </div>
                                 :
                                 (type === "ASSESSMENT") ?
