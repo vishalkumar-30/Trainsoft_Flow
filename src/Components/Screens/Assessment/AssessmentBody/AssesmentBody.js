@@ -11,11 +11,25 @@ const AssessmentBody = ({location}) => {
     questions
   } = useContext(AssessmentContext);
   const [introDialog, setIntroDialog] = useState(true);
-
+  const [intro, setIntro] = useState(false);
+  
+  const status = () => {
+    localStorage.setItem("status", false);
+    localStorage.setItem('instruction', JSON.stringify(instruction));
+    setIntro(false);
+  }
+  setTimeout(status, 5000);
+console.log(instruction);
   return (
     <div className={styles.container}>
-      <IntroDialog {...{open: introDialog, setOpen: setIntroDialog,location}} />
+      {
+        localStorage.getItem("status") === "false" ? 
+        <IntroDialog {...{open: intro, setOpen: setIntroDialog,location}} />
+        :
+        <IntroDialog {...{open: introDialog, setOpen: setIntroDialog,location}} />
+      }
       <Header {...{introDialog, instruction,location}} />
+      
       <Main {...{questions: questions}}/>
     </div>
   );

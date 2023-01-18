@@ -9,18 +9,19 @@ import RestService from '../../../Services/api.service';
 import AxiosService from '../../../Services/axios.service';
 import { TokenService } from '../../../Services/storage.service';
 import './auth.css'
-import { ICN_TRAINSOFT ,ICN_BACK } from '../../Common/Icon';
+import { ICN_TRAINSOFT, ICN_BACK } from '../../Common/Icon';
 import GLOBELCONSTANT from '../../../Constant/GlobleConstant';
-import AssessmentContext from '../../../Store/AssessmentContext';
 import { Link } from '@reach/router';
+import AssessmentContext from '../../../Store/AssessmentContext';
 
 
 
 const Login = ({location}) => {
     const {setUserValue,spinner} = useContext(AppContext)
-    const {setCategory} = useContext(AssessmentContext)
+    // const {setCategory} = useContext(AssessmentContext);
     const [tabPanel,setTabPanel] = useState("login")
     const Toast = useToast();
+    const [agree, setAgree] = useState(false);
 
     const [isCapsLockOn, setIsCapsLockOn] = useState(false);
     const checkCapsLock = (event) => {
@@ -88,20 +89,19 @@ const Login = ({location}) => {
     }
 
 
-    // get All topic
-    const getAllCategory = async () => {
-        try {
-        let { data } = await RestService.getAllCategory()
-        setCategory(data)
-        } catch (err) {
-        console.error("error occur on getAllTopic()", err)
-        }
-    }
+    // // get All topic
+    // const getAllCategory = async () => {
+    //     try {
+    //     let { data } = await RestService.getAllCategory()
+    //     setCategory(data)
+    //     } catch (err) {
+    //     console.error("error occur on getAllTopic()", err)
+    //     }
+    // }
 
-    useEffect(() => {
-        getAllCategory()
-    }, [])
-
+    // useEffect(() => {
+    //     getAllCategory()
+    // }, [])
 
     return (<div className="loginScreen" >
         
@@ -133,9 +133,9 @@ const Login = ({location}) => {
                             {isCapsLockOn && (
         <p style={{color:"red", marginTop:"-20px",marginBottom:"10px", fontSize:"12px"}}>Caps Lock is on</p>
       )}
-                            <Checkbox className="mb-3 tnc-label" name="term" label="I accept the terms of service and privacy policy" id="term"/>
+                            <Checkbox className="mb-3 tnc-label" name="term" label="I accept the terms of service and privacy policy" id="agree" onClick={(e) => setAgree(e.target.checked)}/>
                             <div className="text-right">
-                                <Button className="btn-am btn-block py-2" type="submit">Login</Button>
+                                <Button className="btn-am btn-block py-2" disabled={!agree} type="submit">Login</Button>
                                
                             </div>
                             <div className="text-right mt-2 f13 link" onClick={()=> setTabPanel("forget")}>

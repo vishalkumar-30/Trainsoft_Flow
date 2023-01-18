@@ -135,6 +135,7 @@ useEffect(() => {
     filterAssessment()
   }, [])
 
+  console.log(categoryAssessment);
     return(<>
         <div className="row">
           <div className="col-sm-3 jcb border-bottom px-3">

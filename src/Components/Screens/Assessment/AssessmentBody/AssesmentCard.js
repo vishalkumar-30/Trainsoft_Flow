@@ -24,7 +24,6 @@ const AssessmentCard = ({ question, review = false, setReview,  index, correct =
       } = useContext(AssessmentContext);
       const [activeOption, setActiveOption] = useState(selectedAnswers[question?.sid]?.answerId);
       const [submitStatus, setSubmitStatus] = useState(false);
-
       // this method to submit your answer
       const handleSubmitAnswer = () => {
         if(AppUtils.isNotEmptyObject(selectedAnswer) && AppUtils.isNotEmptyObject(question)) {
@@ -37,8 +36,10 @@ const AssessmentCard = ({ question, review = false, setReview,  index, correct =
               "quizSetSid": instruction.sid,
               "virtualAccountSid": assUserInfo.sid
             }
+            console.log(payload);
             RestService.submitAnswer(payload).then(
               response => {
+              
                 setSubmitStatus(false);
                 setQuestionIndex(inReview ? -1 : questionIndex + 1);
                 setAnswer(question.sid, activeOption, response.data.sid);
