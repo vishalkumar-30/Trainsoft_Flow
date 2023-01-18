@@ -159,4 +159,10 @@
     top: 10%;
     padding: 20px;
   }
-  
+  iframe{
+    margin: 0;
+    padding: 0;
+  }
+  viewer-toolbar{
+    display: none !important;
+  }

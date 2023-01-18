@@ -11,12 +11,12 @@
 .product-text {
     float: left;
     width: auto;
-    display: none;
+    display: flex;
     font-size:14px
 }
-.product:hover .product-text {
+/* .product:hover .product-text {
     display: flex;
-}
+} */
 .modalprogress{
     position: absolute;
     background: #ffffff;

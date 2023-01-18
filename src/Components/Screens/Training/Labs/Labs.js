@@ -190,14 +190,18 @@ function Labs(props) {
 
     return (
         <>
-            <p>Labs</p>
-            <p>{labDescription}</p>
-            <p>{labOverview}</p>
-            <p>{labSolution}</p>
-            <div>
+           <div className="row">
 
-                <div className="labbacimg row ml-1" style={{ display: "flex", flexDirection: "column" }} >
-                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "blue ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
+           <div className="col-3 jumbotron pl-5">
+           <p>Labs</p>
+            <p>Lab Description : &nbsp; {labDescription}</p><br/>
+            <p>Lab Overview : &nbsp; {labOverview}</p><br/>
+            <p>Lab Solution : &nbsp; {labSolution}</p><br/>
+           </div>
+            <div className="col-9" style={{background:"gray"}}>
+{/* labbacimg */}
+                <div className=" row ml-1"  >
+                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "18px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
 
                         {(labConnection.length > 0 && stopConnection.length > 0) || localStorage.getItem('connectionString') ?
                             <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => window.open(`https://lab.trainsoft.live/#${labConnection}`, '_blank')}>Start Now</button>
@@ -212,22 +216,28 @@ function Labs(props) {
                     {
                         (localStorage.getItem('appearButton')) ?
                             <>
-                                <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "red ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
                                     <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>{stopServer.length === 0 ? "Pause Lab" : "Paused"}</button>
                                 </div>
-                                <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "red ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "#471579", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
                                     <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Complete Lab</button>
                                 </div>
                             </>
                             : ''}
                 </div>
-                <div>{
+
+                
+            <div className="py-2 " style={{marginTop:"-10px"}}>{
                         (labConnection.length > 0 && stopConnection.length > 0) || localStorage.getItem('connectionString') ?
                     
-                        <iframe src={`https://lab.trainsoft.live/#${labConnection}`} width="100%" height="600px" />
+                        <iframe src={`https://lab.trainsoft.live/#${labConnection}`} width="100%" height="600px"  />
                         : <p>Please Click on Start Lab</p>}
                 </div>
+                
             </div>
+           </div>
+
+
 
         </>
 
