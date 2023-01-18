@@ -101,8 +101,8 @@ const getAllCategory = async () => {
                         {/* ..........End Technology Activity......... */}
 
                         {/* ..........Analytic......... */}
-                        <Card title="Analytic" className="mt-3" action={true}>
-                            <div className="flx">
+                        <Card  className="mt-3" action={true}>
+                            {/* <div className="flx">
                                 <div className="text-center ">
                                     <CircularProgressbar
                                         maxValue="1000"
@@ -137,14 +137,23 @@ const getAllCategory = async () => {
                                     <div className="mt-2">Total Learners</div>
                                 </div>
 
-                            </div>
+                            </div> */}
+                              <Card title="Average Attendance"  action={true}>
+                            {/* <Charts ChartType="activities" labelLeft="Employee percentile" /> */}
+                            <img src='https://course-content-storage.s3.amazonaws.com/Average+Attendance.png'  class="img-fluid"/>
+                        </Card>
+                        <Card title="Labs Completed" className='mt-2'><img src='https://course-content-storage.s3.amazonaws.com/Labs+Completed.png'  class="img-fluid"/></Card>
+                        </Card>
+
+                        <Card title="weekly Login">
+                            <img src="https://course-content-storage.s3.amazonaws.com/Weekly+Logins.png" class="img-fluid"/>
                         </Card>
                         {/* ..........End Analytic......... */}
                     </div>
 
                     <div className="col-md-5">
                         {/* ..........Batches......... */}
-                        <Card className="full-h" title="Batches Stats" action={true}>
+                        <Card  title="Batches Stats" action={true}>
                             <div className="table-bless">
                                 <Table className="table-borderless">
                                     <thead>
@@ -165,8 +174,22 @@ const getAllCategory = async () => {
                                     </tbody>
                                 </Table>
                             </div>
+                            
                         </Card>
                         {/* ..........End Batches......... */}
+
+                       
+
+                            <Card title="Trainer Feedback" className='mt-3'>
+                                <img src='https://course-content-storage.s3.amazonaws.com/Trainer+Feedback.png' class="img-fluid" />
+                            </Card>
+
+                            <Card title="Training Feedback" className='mt-3'>
+                                <img src='https://course-content-storage.s3.amazonaws.com/Training+Feedback.png' class="img-fluid" />
+                            </Card>
+                            <Card title="Monthly Assessment Score" className='mt-3'>
+                                <img src='https://course-content-storage.s3.amazonaws.com/Monthly+Assessment+Score_.png' class="img-fluid" />
+                            </Card>
                     </div>
                 </div>
             </div>

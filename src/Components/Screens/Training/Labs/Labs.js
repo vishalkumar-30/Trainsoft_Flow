@@ -1,7 +1,8 @@
 import { useContext, useState, useEffect } from "react";
+import ReactMarkdown from 'react-markdown'
 
-import { useNavigate } from "@reach/router"
-
+import { useNavigate, Link } from "@reach/router"
+import "./labs.css"
 import useToast from "../../../../Store/ToastHook";
 import AppContext from "../../../../Store/AppContext";
 import RestService from "../../../../Services/api.service";
@@ -195,16 +196,37 @@ function Labs(props) {
     console.log(labDuration);
 
     return (
-        <>
-            <div className="row">
+        <div style={{ background: "gray" }}>
+            <div className="row" style={{height:"800px"}}>
 
-                <div className="col-3 jumbotron pl-5">
-                    <h4 className="text-center">{labName}</h4>
-                    <p>Lab Description : &nbsp; {labDescription}</p><br />
-                    <p>Lab Overview : &nbsp; {labOverview}</p><br />
-                    <p>Lab Solution : &nbsp; {labSolution}</p><br />
+                <div className="col-3 jumbotron pl-5 lab" >
+               
+             
+           
+                    <h3 className="text-center " style={{fontSize:"18px", fontWeight:"bold"}} >{labName}</h3>
+                    <hr/>
+                    <br/>
+                    <h5 style={{fontSize:"18px", fontWeight:"bold"}}>Lab Description</h5>
+                    
+                   
+<ReactMarkdown>
+
+ {labDescription}
+                    
+</ReactMarkdown>
+<br/>
+<hr/>
+<h5 style={{fontSize:"18px", fontWeight:"bold"}}>Lab Steps</h5>
+
+
+<ReactMarkdown>
+
+{labOverview}
+</ReactMarkdown>
+                
+                    {/* <p>Lab Solution : &nbsp; {labSolution}</p><br /> */}
                 </div>
-                <div className="col-9" style={{ background: "gray" }}>
+                <div className="col-9" style={{ background: "black" }}>
                     {/* labbacimg */}
                     <div className=" row ml-1"  >
                         <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "18px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
@@ -249,7 +271,7 @@ function Labs(props) {
                         (labConnection.length > 0 && stopConnection.length > 0) || localStorage.getItem('connectionString') ?
 
                             <iframe src={`https://lab.trainsoft.live/#${labConnection}`} width="100%" height="600px" />
-                            : <p>Please Click on Start Lab</p>}
+                            : <p className="text-white">Please Click on Start Lab</p>}
                     </div>
 
                 </div>
@@ -257,7 +279,7 @@ function Labs(props) {
 
 
 
-        </>
+        </div>
 
     )
 }

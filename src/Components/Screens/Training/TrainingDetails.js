@@ -98,7 +98,7 @@ const TrainingDetails = ({ location }) => {
         columns: {
 
             "contentName": {
-                "title": "Content Name",
+                // "title": "Content Name",
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
@@ -181,7 +181,7 @@ const TrainingDetails = ({ location }) => {
         // call this callback function onSearch method in input field on onChange handler eg: <input type="text" onChange={(e) => onSearch(e.target.value)}/>
         // this search is working for search enable fields(column) eg. isSearchEnabled: true, in tale column configuration
         searchQuery: "",
-        tableCustomClass: "ng-table sort-enabled", // table custom class
+        tableCustomClass: "ng-table1 sort-enabled", // table custom class
         // showCheckbox: true,
         clearSelection: false
     });
@@ -580,8 +580,8 @@ const TrainingDetails = ({ location }) => {
                     {(type === "EXTERNAL_LINK" || type === "VIDEO") ? <VideoMediaPlayer url={vdlink} />
                         : (type === "PHOTO" || type === "DOCUMENTS") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
                             : (type === "LAB") ?
-                                <div className="labbacimg row ml-1" style={{ display: "flex", flexDirection: "column" }} >
-                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "blue ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
+                                    <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
 
                                         {
                                             <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/labs", {state: {
@@ -660,6 +660,12 @@ const TrainingDetails = ({ location }) => {
                         )
                     }) : ''}
 
+
+<DropdownItem title="Fun Activity" total="1" theme="dark">
+<a href ="https://course-content-storage.s3.amazonaws.com/1674058186578_linux42.html" target="_blank">Fun With Linux</a>
+
+                                       
+                                    </DropdownItem>
                 </div>
             </div>
         </>

@@ -1,0 +1,9 @@
+.lab {
+    height: 800px;
+
+    overflow-y: hidden;
+  }
+  
+  .lab:hover {
+    overflow-y: scroll;
+  }

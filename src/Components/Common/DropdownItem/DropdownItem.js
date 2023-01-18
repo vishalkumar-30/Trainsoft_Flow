@@ -102,7 +102,7 @@ const headerBarDark = css`
     font-weight: bold;
     &:hover{
       background-color: #ececec;
-border-radius:10px
+border-radius:1px
     }`;
 
 const accordionContainerDark = css`
