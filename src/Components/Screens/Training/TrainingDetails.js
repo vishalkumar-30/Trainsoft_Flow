@@ -55,7 +55,7 @@ const TrainingDetails = ({ location }) => {
     const [labDescription, setLabDescription] = useState('');
     const [labOverview, setLabOverview] = useState('');
     const [labSolution, setLabSolution] = useState('');
-    const [labDuration, setLabDuration] = useState(0);
+    const [labDuration, setLabDuration] = useState('');
     const Toast = useToast();
     const navigate = useNavigate();
     let trainingSid = location.state.sid;
@@ -198,14 +198,24 @@ const TrainingDetails = ({ location }) => {
                     if (response.status === 200) {
                         setTrainingDetailsList(response.data.courseSectionResponseTO);
                         setType(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].type);
-                        setVdlink(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentLink);
-                        storeLabId(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labId);
+                        setVdlink(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentLink !== null ?
+                            response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentLink : '');
+                        setLabId(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labId !== null ?
+                            response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labId : '');
                         setContentSid(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].sectionSid);
-                        setLabDescription(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labDescription);
-                        setLabOverview(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labOverview);
-                        setLabSolution(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labSolution);
-                        setLabDuration(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].durationInMinutes);
-                        setShowcoursename(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentName)
+                        setLabDescription(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
+                            !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labDescription
+                            : '');
+                        setLabOverview(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
+                            !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labOverview
+                            : '');
+
+                        setLabSolution(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
+                            !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labSolution : '');
+                        setLabDuration(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].durationInMinutes !== null ?
+                            response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].durationInMinutes : '');
+
+                        setShowcoursename(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentName);
 
                     }
 
@@ -224,7 +234,6 @@ const TrainingDetails = ({ location }) => {
             console.error("error occur on getSession()", err)
         }
     }
-
     //update content mark as completed
     const markCourseAsCompleted = (contentSid, sectionSid) => {
         try {

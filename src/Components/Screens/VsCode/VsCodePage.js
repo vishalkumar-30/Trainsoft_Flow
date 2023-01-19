@@ -8,7 +8,7 @@ const VsCodePage = ()=>{
   
 
     const onOpen =()=>{
-        window.open('http://ec2-65-1-145-196.ap-south-1.compute.amazonaws.com:9046/#/home/project')
+        window.open('https://ip_172_31_14_32-apurv-1998.cdr.co/?folder=%2Fhome%2Fcoder/sample')
     }
 
     return(<>

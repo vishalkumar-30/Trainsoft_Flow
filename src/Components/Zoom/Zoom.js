@@ -17,7 +17,7 @@ function Zoom({zoomInfo}) {
   const  {user,ROLE} = useContext(AppContext)
 
   // setup your signature endpoint here: https://github.com/zoom/websdk-sample-signature-node.js
-  var signatureEndpoint = 'http://trainsoft.live:4000'
+  var signatureEndpoint = 'https://trainsoft.co.in'
   var sdkKey = 'UBo0tyPxYuNove8nZhzrXDvwHV4InH8ryl3G'
   var meetingNumber = zoomInfo.meetingId
   var role  = ROLE.INSTRUCTOR ? 1 : 0
