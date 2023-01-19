@@ -7,7 +7,7 @@
 }
 .dynamic-table-wrapper{
   overflow-x: auto;
-  min-height: 250px;
+  min-height: auto;
   
 }
 .ng-container {
