@@ -28,13 +28,14 @@ function App() {
       <TrainingProvider>
          <Router>
             <LandingHome path="/"/>
+            <Assessment path="/assessment/:assessmentSid/:companySid/:virtualAccountSid" />
             {
                localStorage.getItem('REACTAPP.TOKEN') ? <Redirect from="/login" to="/dashboard" noThrow /> : 
                <Login path="/login"/>
             }
             <PrivateRoute component={MeetingClose} path="zoomclose" />
             <PrivateRoute component={ResetPwd} path="/reset/:token" />
-            <PrivateRoute component={Assessment} path="/assessment/:assessmentSid/:companySid/:virtualAccountSid" />
+            {/* <PrivateRoute component={Assessment} path="/assessment/:assessmentSid/:companySid/:virtualAccountSid" /> */}
             <PrivateRoute component={Dashboard} path="/*" />
             <PrivateRoute component={ClassLab} path="class/*" />
             <PrivateRoute component={VsCode} path="vscode" />

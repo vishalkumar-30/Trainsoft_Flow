@@ -38,7 +38,7 @@ const ASSESSMENT_SCHEMA = Yup.object().shape({
   appuser: Yup.object().shape({
     name: Yup.string().required("Name is required"),
     emailId: Yup.string().email("Please enter valid email").required("Email id is required"),
-    // phoneNumber: Yup.string().required("Mobile number is required").matches(phoneRegExp,"Mobile number is not valid"),
+    phoneNumber: Yup.string().required("Mobile number is required").matches(phoneRegExp,"Mobile number is not valid"),
   })
 })
 
@@ -265,13 +265,13 @@ export const AssessmentDialog = () => {
                         />
                        
                       </Form.Group>
-                      {/* <Form.Group>
+                      <Form.Group>
                         <TextInput
                           label="Mobile Number"
                           placeholder="Mobile Number"
                           name="appuser.phoneNumber"
                         />
-                      </Form.Group> */}
+                      </Form.Group>
                       {
                         params.assessmentSid == 0
                         && <>
