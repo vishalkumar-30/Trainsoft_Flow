@@ -3,6 +3,19 @@
     height: 400px;
     
 }
+
+/* loadin joining meeting */
+.loading-main {
+    position: absolute;
+    top: 50%;
+    left: 30% !important;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+
+
 .gallery-video-container__main-view {
     margin-top: 0px;
 }
@@ -135,7 +148,9 @@
     overflow: hidden scroll;
 }
 .media-preview-container{
-    margin: 10px 1000px 0px 10px !important;
+    margin: 10px 860px 0px 10px !important;
+    padding: 20px;
+    background-color: black;
 }
 
 /* full screen Zoom video css */
@@ -159,7 +174,7 @@
     height: 32px;
     z-index: 101;
 }
-#wc-content {
+/* #wc-content {
     
     margin-left: 820px !important;
 }
@@ -175,4 +190,4 @@
 }
 .video-avatar__avatar-name{
     font-size: 30px !important;
-}
+} */

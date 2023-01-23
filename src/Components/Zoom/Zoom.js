@@ -18,6 +18,8 @@ function Zoom({zoomInfo}) {
 
   // setup your signature endpoint here: https://github.com/zoom/websdk-sample-signature-node.js
   var signatureEndpoint = 'https://trainsoft.co.in'
+
+  //  var signatureEndpoint = 'http://localhost:4000'
   var sdkKey = 'UBo0tyPxYuNove8nZhzrXDvwHV4InH8ryl3G'
   var meetingNumber = zoomInfo.meetingId
   var role  = ROLE.INSTRUCTOR ? 1 : 0
@@ -50,8 +52,8 @@ function Zoom({zoomInfo}) {
   function startMeeting(signature) {
     document.getElementById('zmmtg-root').style.display = 'block';
     document.getElementById('zmmtg-root').style.marginLeft = '790px';
-    // document.getElementById('content_container').style.justifyContent = 'left'
-    document.getElementById('zmmtg-root').style.justifyContent='left'
+   
+    // document.getElementById('zmmtg-root').style.justifyContent='left'
  
     ZoomMtg.init({
       leaveUrl: leaveUrl,
@@ -87,9 +89,11 @@ function Zoom({zoomInfo}) {
 }, [])
 
   return (
-    <div className="App">
+    // <div className="App">
      
-    </div> 
+    // </div> 
+    <>
+    </>
   );
 }
 
