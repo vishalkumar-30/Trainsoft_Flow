@@ -65,7 +65,7 @@ const CreateStep5 = ({ location, handleNext, handleBack }) => {
                                     <div className="file-upload">
                                         <div className="upload-width" id="copy_url">
                                             
-                                            {`https://www.trainsoft.io/assessment/${assessmentVal.sid}/${user.companySid}/0`}
+                                            {`https://www.trainsoft.live/assessment/${assessmentVal.sid}/${user.companySid}/0`}
                                         </div>
                                         <div>
                                         <Button variant="contained" color="primary" component="span"  onClick={()=>copyUrl()}>
