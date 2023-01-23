@@ -136,6 +136,10 @@ const RestService = {
   getAssestUser: (assId) => AxiosService.get(GLOBELCONSTANT.ASSESSMENT.GET_ASSESSMENT_USER.replace("{assID}", assId)),
   getQuestionById: (qId) => AxiosService.get(GLOBELCONSTANT.ASSESSMENT.GET_QUESTION_BY_SID.replace("{qId}", qId)),
   changeQuestionStatus: (qId, status) => AxiosService.put(GLOBELCONSTANT.ASSESSMENT.CHANGE_QUESTION_STATUS.replace("{qId}", qId).replace("{status}", status)),
+  getAllTopics: () => AxiosService.get(GLOBELCONSTANT.ASSESSMENT.GET_ALL_TOPICS),
+  getAllAssessmentsInATopic: (topicSid) => AxiosService.get(GLOBELCONSTANT.ASSESSMENT.GET_ALL_ASSESSMENTS_IN_A_TOPIC + `?topic_sid=${topicSid}`),
+  addAssessmentToCourse: (assessmentSid, courseSid, sectionSid) => AxiosService.post(GLOBELCONSTANT.ASSESSMENT.ADD_ASSESSMENT_TO_COURSE + `?assessment_sid=${assessmentSid}&course_sid=${courseSid}&section_sid=${sectionSid}`),
+
 
   // assessment dashboard
   getTopUser: (cSid, caSid) => AxiosService.get(GLOBELCONSTANT.ASSESSMENT_DASHBOARD.GET_TOP_USER.replace("{cSid}", cSid).replace("{caSid}", caSid)),

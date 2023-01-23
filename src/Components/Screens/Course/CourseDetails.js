@@ -46,6 +46,8 @@ const CourseDetails = ({ location }) => {
     const [files, setFiles] = useState();
     const [accountLabs, setAccountLabs] = useState([]);
     const [categorieList, setCategorieList] = useState([]);
+    const [topics, setTopics] = useState([]);
+    const [assessment, setAssessments] = useState([]);
     
     //validation
     const schema = Yup.object().shape({
@@ -505,7 +507,7 @@ const CourseDetails = ({ location }) => {
             );
         }
         catch (err) {
-            console.error('error occur on createCourse', err)
+            console.error('error occur on selectLabInCourse', err)
         }
     }
 
@@ -529,10 +531,75 @@ const CourseDetails = ({ location }) => {
         }
     }
 
+    // get All Topics
+    const getAllTopics = () => {
+        try {
+            spinner.show();
+            RestService.getAllTopics().then(
+                response => {
+                    if (response.status === 200) {
+                        setTopics(response.data);
+                        setAssessments([]);
+                    }
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on getAllTopics()", err)
+        }
+    }
+
+     // get All Assessments
+     const getAllAssessmentsInATopic = (topicSid) => {
+        try {
+            spinner.show();
+            RestService.getAllAssessmentsInATopic(topicSid).then(
+                response => {
+                    if (response.status === 200) {
+                        setAssessments(response.data);
+                    }
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on getAllAssessmentsInATopic()", err)
+        }
+    }
+
+    // add assessment to course
+    const addAssessmentToCourse = (data) => {
+        const assessmentSid = data.assessmentName.assessmentSid
+        const courseSid = location.state.sid;
+        const courseSectionSid = sectionSid;
+        try {
+            spinner.show();
+            RestService.addAssessmentToCourse(assessmentSid, courseSid, courseSectionSid).then(res => {
+                setShow(false)
+                getSection();
+                Toast.success({ message: `Assessment added successfully` });
+                spinner.hide();
+            }, err => console.log(err)
+            );
+        }
+        catch (err) {
+            console.error('error occur on addAssessmentToCourse', err)
+        }
+    }
+    
+    
     useEffect(() => {
         getSection();
         getTrainings();
         getAllLabCategories();
+        getAllTopics();
     }, [])
 
     return (<>
@@ -629,6 +696,7 @@ const CourseDetails = ({ location }) => {
                                                         <option value="2">Document</option>
                                                         <option value="3">Meeting</option>
                                                         <option value="4">Lab</option>
+                                                        <option value="5">Assessment</option>
                                                     </select>
                                                 </div>
 
@@ -678,7 +746,7 @@ const CourseDetails = ({ location }) => {
                                                 </div>
                                             )}
                                         <div className="text-right mt-2" >
-                                            {showhide === '3' || showhide === '4' ? "" : <Button type="submit" className=" px-4">{isEdit ? "Update" : "Add"} </Button>}
+                                            {showhide === '3' || showhide === '4' ||showhide === '5' ? "" : <Button type="submit" className=" px-4">{isEdit ? "Update" : "Add"} </Button>}
 
                                         </div>
                                     </form>
@@ -788,6 +856,64 @@ const CourseDetails = ({ location }) => {
                                                         </div>
                                                         <div className="col-6" >
                                                             <SelectInput label="Lab-Details" bindKey="labName" payloadKey="labId" name="labName" value={values.labId} option={accountLabs} />
+                                                        </div>
+
+                                                    </div>
+                                                    <div>
+                                                        <Button className="btn-block py-2 mt-3" type="submit">Confirm</Button>
+                                                    </div>
+                                                </form>
+                                            </>
+                                        )}
+
+                                    </Formik>
+
+                                )}
+                            {
+                                showhide === '5' && isEdit === false && (
+                                    <Formik
+                                        initialValues={{
+                                            assessmentSid: ''
+                                        }}
+                                        onSubmit={(value) => { addAssessmentToCourse(value) }}
+
+                                    >
+                                        {({ handleSubmit, setFieldValue, isValid, values }) => (
+
+                                            <>
+                                                <form onSubmit={handleSubmit}>
+                                                    <div className="row mb-3 mx-1">
+
+                                                        {/* <TextInput name="assets" label="Assets" /> */}
+                                                    
+                                                        <div className="col-6" >
+                                                                <label className="mb-2 label form-label ">Topics</label>
+                                                                {/* <div className="col-6" >
+                                                                <SelectInput label="Topic" bindKey="topicName" value={values.topicSid} payloadKey="topicSid" name="topicName" option={topics} onChange={e => {hello(e.target.value)}}/>
+                                                            </div> */}
+                                                            <div className="input-wrapper">
+
+                                                                <select className="form-control"  style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => getAllAssessmentsInATopic(e.target.value)}>
+                                                                <option value=""disabled selected hidden>Select Topic</option>
+                                                                    {
+                                                                        topics.map((item) => {
+                                                                            return(
+                                                                                <>
+                                                                                     <option value={item.topicSid}>{item.topicName}</option>
+                                                                                </>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                
+                                                                </select>
+
+                                                            </div>
+
+
+                                                            {/* <SelectInput label="Lab-Category" option={categorieList} /> */}
+                                                        </div>
+                                                        <div className="col-6" >
+                                                            <SelectInput label="Assessment" bindKey="assessmentName" payloadKey="assessmentSid" name="assessmentName" value={values.assessmentSid} option={assessment} />
                                                         </div>
 
                                                     </div>
