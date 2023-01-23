@@ -290,7 +290,7 @@ const GLOBELCONSTANT = {
             "appuser": {
                 "emailId": "",
                 "name": "",
-                "phoneNumber": ""
+                "phoneNumber": "9870643070"
             },
             "categoryTopicValue": {
                 "category": null,
