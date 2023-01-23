@@ -26,7 +26,7 @@ const USER_SCHEMA = Yup.object().shape({
   appuser: Yup.object().shape({
     name: Yup.string().required("Name is required"),
     emailId: Yup.string().email("Please enter valid email").required("Email id is required"),
-    phoneNumber: Yup.string().required("Mobile number is required").matches(phoneRegExp,"Mobile number is not valid"),
+    // phoneNumber: Yup.string().required("Mobile number is required").matches(phoneRegExp,"Mobile number is not valid"),
   }),
   categoryTopicValue: Yup.object().shape({
     category: Yup.object().nullable().required("Category is required"),
@@ -38,7 +38,7 @@ const ASSESSMENT_SCHEMA = Yup.object().shape({
   appuser: Yup.object().shape({
     name: Yup.string().required("Name is required"),
     emailId: Yup.string().email("Please enter valid email").required("Email id is required"),
-    phoneNumber: Yup.string().required("Mobile number is required").matches(phoneRegExp,"Mobile number is not valid"),
+    // phoneNumber: Yup.string().required("Mobile number is required").matches(phoneRegExp,"Mobile number is not valid"),
   })
 })
 
@@ -83,7 +83,8 @@ export const AssessmentDialog = () => {
     }
   }
 
-  // get assessment instruction
+  // get assessment instruction 
+  //payload
   const getAssessmentInstruction = async (values) => {
     try {
       spinner.show("Loading... Please wait...");
@@ -132,6 +133,7 @@ export const AssessmentDialog = () => {
   }
 
   // get assessment by assessment sid
+  //paylod
   const getAssessmentBySid = async (values, sid) => {
     try {
       spinner.show("Loading... Please wait...");
@@ -265,13 +267,13 @@ export const AssessmentDialog = () => {
                         />
                        
                       </Form.Group>
-                      <Form.Group>
+                      {/* <Form.Group>
                         <TextInput
                           label="Mobile Number"
                           placeholder="Mobile Number"
                           name="appuser.phoneNumber"
                         />
-                      </Form.Group>
+                      </Form.Group> */}
                       {
                         params.assessmentSid == 0
                         && <>
