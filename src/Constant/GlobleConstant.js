@@ -226,7 +226,9 @@ const GLOBELCONSTANT = {
         GET_QUESTIONS_SEARCH_COUNT: API_ASSES + "count/question/{searchString}/{sid}",
         GET_ASSESSMENT_SEARCH_COUNT: API_ASSES + "search/assessment/{searchString}/{cSid}/{tSid}",
         GET_TOPIC_SEARCH_COUNT: API_ASSES + "search/question/{searchString}/{sid}",
-
+        GET_ALL_TOPICS: API_HOST_V2 + "get-all-topics",
+        GET_ALL_ASSESSMENTS_IN_A_TOPIC: API_HOST_V2 + "topic/get-all-assessments",
+        ADD_ASSESSMENT_TO_COURSE: API_HOST_V2 + "add-assessment-to-course"
 
 
 
