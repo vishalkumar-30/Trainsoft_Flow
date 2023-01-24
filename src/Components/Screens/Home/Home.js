@@ -13,6 +13,10 @@ import "react-circular-progressbar/dist/styles.css";
 import './home.css'
 import RestService from '../../../Services/api.service';
 import AssessmentContext from '../../../Store/AssessmentContext';
+import WeeklyLogin from '../../Common/Graph/AreaGraph/WeeklyLogin';
+import AverageTrainerFeedback from '../../Common/Graph/BarGraph/AverageTrainerFeedback';
+import AverageTrainingFeedback from '../../Common/Graph/BarGraph/AverageTrainingFeedback';
+import AverageAssesmentscore from '../../Common/Graph/AreaGraph/AverageAssesmentscore';
 
 
 
@@ -59,7 +63,7 @@ const getAllCategory = async () => {
 
     return (<div>
         <div className="row">
-            <div className="col-md-8">
+            <div className="col-md-5">
                 {/* ..........user info......... */}
                 <Card title="">
                     <div className="user-info">
@@ -73,12 +77,21 @@ const getAllCategory = async () => {
 
                             </div>
                         </div>
+
+                        
+
+
                     </div>
                 </Card>
                 {/* ..........End user info......... */}
 
             </div>
-            <div className="col-md-4 ">
+            <div className="col-md-2 ">
+<Card  >
+<WeeklyLogin/>
+</Card>
+            </div>
+            <div className="col-md-5 ">
                 {/* ..........Lms insight......... */}
                 <Card title={`${user.role === ROLE.SUPERVISOR ? 'Lms insight' : 'Attendance Rate'} `} action={true}>
                     <div className="">
@@ -90,6 +103,38 @@ const getAllCategory = async () => {
                 {/* ..........End Lms insight......... */}
             </div>
         </div>
+{/* <div className="row m-3">
+<Card title="Weekly Login" >
+                           <WeeklyLogin/>
+                        </Card>
+</div> */}
+        <div className='row mt-2' >
+     <div  className='col-6'>
+     <Card title="Average Trainer Feedback" >
+                           <AverageTrainerFeedback/>
+                        </Card>
+        </div>
+
+        <div  className='col-6'>
+     <Card title="Average Training Feedback" >
+                           <AverageTrainingFeedback/>
+                        </Card>
+        </div>
+
+
+
+
+        </div>
+
+{/* Average TrAINING aSSESMENT SCORE  */}
+
+<div className="row mt-3">
+<Card title="Average Training Asssment Score" >
+                           <AverageAssesmentscore/>
+                        </Card>
+
+</div>
+
         <div className="row mt-3">
             <div className="col-md-8">
                 <div className="row">
@@ -98,57 +143,11 @@ const getAllCategory = async () => {
                         <Card title="Technology Activity" action={true}>
                             <Charts ChartType="activities" labelLeft="Employee percentile" />
                         </Card>
-                        {/* ..........End Technology Activity......... */}
 
-                        {/* ..........Analytic......... */}
-                        <Card  className="mt-3" action={true}>
-                            {/* <div className="flx">
-                                <div className="text-center ">
-                                    <CircularProgressbar
-                                        maxValue="1000"
-                                        minValue="1" value="580"
-                                        text={`580`}
-                                        styles={buildStyles({
-                                            trailColor: "#F5FBFF",
-                                            pathColor: "#2D62ED",
-                                        })} />
-                                    <div className="mt-2">Active Learner</div>
-                                </div>
-                                <div className="text-center mx-4">
-                                    <CircularProgressbar
-                                        value="70"
-                                        text={`70%`}
-                                        styles={buildStyles({
-                                            trailColor: "#F5FBFF",
-                                            pathColor: "#7D00B5",
-                                        })} />
-                                    <div className="mt-2">Visitor Rate</div>
-                                </div>
-
-                                <div className="text-center">
-                                    <CircularProgressbar
-                                        maxValue="1000"
-                                        minValue="1" value="789"
-                                        text={`789`}
-                                        styles={buildStyles({
-                                            trailColor: "#F5FBFF",
-                                            pathColor: "#00CCF2",
-                                        })} />
-                                    <div className="mt-2">Total Learners</div>
-                                </div>
-
-                            </div> */}
-                              <Card title="Average Attendance"  action={true}>
-                            {/* <Charts ChartType="activities" labelLeft="Employee percentile" /> */}
-                            <img src='https://course-content-storage.s3.amazonaws.com/Average+Attendance.png'  class="img-fluid"/>
-                        </Card>
-                        <Card title="Labs Completed" className='mt-2'><img src='https://course-content-storage.s3.amazonaws.com/Labs+Completed.png'  class="img-fluid"/></Card>
-                        </Card>
-
-                        <Card title="weekly Login">
-                            <img src="https://course-content-storage.s3.amazonaws.com/Weekly+Logins.png" class="img-fluid"/>
-                        </Card>
-                        {/* ..........End Analytic......... */}
+                      
+                     
+                      
+                      
                     </div>
 
                     <div className="col-md-5">
@@ -192,6 +191,11 @@ const getAllCategory = async () => {
                             </Card>
                     </div>
                 </div>
+
+
+
+
+
             </div>
             <div className="col-md-4 column">
                 <div className="mb-3">

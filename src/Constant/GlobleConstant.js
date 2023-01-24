@@ -233,6 +233,13 @@ const GLOBELCONSTANT = {
 
 
     },
+SUPERVISOR_DASHBOARD:{
+GET_AVERAGE_TRAINER_FEEDBACK: API_HOST_V2 + 'average-trainer-feedback',
+GET_AVERAGE_TRAINING_FEEDBACK: API_HOST_V2 + 'average-training-feedback',
+WEEKLY_USERS_LOGIN_HISTORY: API_HOST_V2 + 'weekly-user-login-history',
+},
+
+
     ASSESSMENT_DASHBOARD: {
         GET_TOP_USER: API_ASSES + 'get/topTen/leaderboard/{cSid}/{caSid}',
         GET_ALL_CATEGORY_SCORE: API_ASSES + "get/category/average/score/{sid}",

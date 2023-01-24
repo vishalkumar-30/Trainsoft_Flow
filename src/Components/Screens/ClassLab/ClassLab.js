@@ -37,7 +37,7 @@ const ClassLab = (props) => {
 
     return (<>
 
-        <div className="p-4 full-w full-h">
+<div className="p-4 full-w full-h">
             <div className="row full-w full-h ">
                 <div className={`full-w  column ${isFull ? "d-none" : "col-sm-6"}`}>
                     <div className="title-lg pointer" onClick={ ()=> navigate('/dashboard') }>TrainSoft - {!isTrainer ? 'Learner' : 'Instructor'}</div>
@@ -75,7 +75,7 @@ const ClassLab = (props) => {
                 </div>
 
                 {/* right panel */}
-                <div className={`${isFull ? "col-md-12" : "col-sm-6"}  column`}>
+                <div className={`${isFull ? "col-md-12" : "col-sm-6"} column `} >
                     <div className="flx jce">
                         {/* <BtnSquare className="mr-3 expZoom" onClick={()=>setIsFull(!isFull)}>{ICN_EXPANDED}</BtnSquare> */}
                         {/* <BtnSquare className="mr-3">{ICN_RECORD}</BtnSquare>
@@ -89,7 +89,7 @@ const ClassLab = (props) => {
                         <BtnSquare className="mr-3">{ICN_EXIT}</BtnSquare> */}
                     </div>
 
-                    <div >
+                  
                         <div className="video-container " >
                             {/* <div className="video-action">
                                     <img src={vid}/>
@@ -102,14 +102,14 @@ const ClassLab = (props) => {
                            {/* <object type="text/html" data={GLOBELCONSTANT.ZOOM_PATH + '/'+ zoomInfo.meetingId} style={{ width: "100%", height: "100%" }}>
                                 <p>backup content</p>
                             </object>  */}
-                            <div  >
+                          
                                 <Zoom zoomInfo={zoomInfo2} />
                             {/* <Zoom zoomInfo={zoomInfo}   /> */}
-                            </div>
+                         
                              
                         </div>
                         
-                    </div>
+                   
                     {/* <div className="flx mt-3 ">
                         <div className="tab-btn">Class conversation</div>
                         <div className="tab-btn secondary-color">Private message</div>
