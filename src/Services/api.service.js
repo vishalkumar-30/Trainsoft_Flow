@@ -196,7 +196,12 @@ const RestService = {
   addLabsToAccount: (labId) => AxiosService.post(GLOBELCONSTANT.LABS.ADD_LAB_TO_ACCOUNT + `${labId}/add-lab-to-account`),
   ec2GuacamolePOC: (labId, sectionSid, trainingSid) => AxiosService.post(GLOBELCONSTANT.LABS.EC2_GUACAMOLEPOC + `${labId}/start-lab?section-sid=${sectionSid}&training_sid=${trainingSid}`),
   stopEC2InstanceAndTerminateGuacamoleServer: (conString) => AxiosService.delete(GLOBELCONSTANT.LABS.STOP_EC2_INSTANCE_AND_TERMINATE_GUACAMOLE_SERVER + `?connection-string=${conString}`),
-  terminateEC2InstanceAndTerminateGuacamoleServer: (conString) => AxiosService.delete(GLOBELCONSTANT.LABS.TERMINATE_EC2_INSTANCE_AND_TERMINATE_GUACAMOLE_SERVER + `?connection-string=${conString}`)
+  terminateEC2InstanceAndTerminateGuacamoleServer: (conString) => AxiosService.delete(GLOBELCONSTANT.LABS.TERMINATE_EC2_INSTANCE_AND_TERMINATE_GUACAMOLE_SERVER + `?connection-string=${conString}`),
+
+  // SUPRVISERDASHBOARD
+  getAverageTrainerFeedback :() => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.GET_AVERAGE_TRAINER_FEEDBACK),
+  getAverageTrainingFeedback :() => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.GET_AVERAGE_TRAINING_FEEDBACK),
+  weeklyUsersLoginHistory:() => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.WEEKLY_USERS_LOGIN_HISTORY) ,
 
 };
 
