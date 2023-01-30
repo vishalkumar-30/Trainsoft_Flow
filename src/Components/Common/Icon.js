@@ -51,8 +51,8 @@ import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-
-
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+export const FILTER_ICON =<FilterAltIcon/>
 export const ICN_BACK = <KeyboardBackspaceIcon/>
 export const ICN_TIME=<AccessTimeIcon/>
 export const ICN_EXPANDED = <AspectRatioIcon/>
