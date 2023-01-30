@@ -3,7 +3,7 @@ import Charts from '../../Charts/Charts'
 import Table from 'react-bootstrap/Table'
 import { ICN_COPY, ICN_COMING_BATCHES } from '../../Common/Icon';
 import { Progress, Card } from '../../Common/BsUtils';
-import {CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import CalenderGraph from '../../Common/CalenderGraph/CalenderGraph';
 import AppContext from '../../../Store/AppContext';
 import useFetch from "../../../Store/useFetch";
@@ -17,16 +17,17 @@ import WeeklyLogin from '../../Common/Graph/AreaGraph/WeeklyLogin';
 import AverageTrainerFeedback from '../../Common/Graph/BarGraph/AverageTrainerFeedback';
 import AverageTrainingFeedback from '../../Common/Graph/BarGraph/AverageTrainingFeedback';
 import AverageAssesmentscore from '../../Common/Graph/AreaGraph/AverageAssesmentscore';
+import Trainingpichart from '../../Common/Graph/PiChart/Trainingpichart';
 
 
 
 const AdminHome = () => {
-    const { user, batches, course , ROLE, spinner,setCategory} = useContext(AppContext)
-    const [batchCount,setBatchCount]  = useState(0)
+    const { user, batches, course, ROLE, spinner, setCategory } = useContext(AppContext)
+    const [batchCount, setBatchCount] = useState(0)
 
-      // get batches by sid
+    // get batches by sid
 
-      const getBatchCount = async () => {
+    const getBatchCount = async () => {
         try {
             RestService.getCount("vw_batch").then(
                 response => {
@@ -43,18 +44,18 @@ const AdminHome = () => {
         }
     }
 
-// get All topic
-const getAllCategory = async () => {
-    spinner.show("Loading... wait");
-    try {
-      let { data } = await RestService.getAllCategory()
-      setCategory(data)
-      spinner.hide();
-    } catch (err) {
-      spinner.hide();
-      console.error("error occur on getAllTopic()", err)
+    // get All topic
+    const getAllCategory = async () => {
+        spinner.show("Loading... wait");
+        try {
+            let { data } = await RestService.getAllCategory()
+            setCategory(data)
+            spinner.hide();
+        } catch (err) {
+            spinner.hide();
+            console.error("error occur on getAllTopic()", err)
+        }
     }
-  }
     useEffect(() => {
         getBatchCount();
         getAllCategory()
@@ -70,7 +71,7 @@ const getAllCategory = async () => {
                         <div className="title-lg">Welcome back {user.name}!</div>
                         <div>
                             <p className="mb-2">Since your last login on the system, there were:</p>
-                               <div>
+                            <div>
                                 <div className="aic"><div className="red-circle"></div> <div>21 new enrollment</div></div>
                                 <div className="aic"><div className="red-circle"></div> <div>15 courses completed </div></div>
                                 <div className="aic"><div className="red-circle"></div> <div>45 new messages </div></div>
@@ -78,7 +79,7 @@ const getAllCategory = async () => {
                             </div>
                         </div>
 
-                        
+
 
 
                     </div>
@@ -87,9 +88,9 @@ const getAllCategory = async () => {
 
             </div>
             <div className="col-md-2 ">
-<Card  >
-<WeeklyLogin/>
-</Card>
+                <Card  >
+                    <WeeklyLogin />
+                </Card>
             </div>
             <div className="col-md-5 ">
                 {/* ..........Lms insight......... */}
@@ -103,37 +104,37 @@ const getAllCategory = async () => {
                 {/* ..........End Lms insight......... */}
             </div>
         </div>
-{/* <div className="row m-3">
+        {/* <div className="row m-3">
 <Card title="Weekly Login" >
                            <WeeklyLogin/>
                         </Card>
 </div> */}
         <div className='row mt-2' >
-     <div  className='col-6'>
-     <Card title="Average Trainer Feedback" >
-                           <AverageTrainerFeedback/>
-                        </Card>
+            <div className='col-6'>
+                <Card title="Average Trainer Feedback" >
+                    <AverageTrainerFeedback />
+                </Card>
+            </div>
+
+            <div className='col-6'>
+                <Card title="Average Training Feedback" >
+                    <AverageTrainingFeedback />
+                </Card>
+            </div>
+
+
+
+
         </div>
 
-        <div  className='col-6'>
-     <Card title="Average Training Feedback" >
-                           <AverageTrainingFeedback/>
-                        </Card>
-        </div>
+        {/* Average TrAINING aSSESMENT SCORE  */}
 
-
-
+        <div className="row mt-3">
+            <Card title="Average Training Asssment Score" >
+                <AverageAssesmentscore />
+            </Card>
 
         </div>
-
-{/* Average TrAINING aSSESMENT SCORE  */}
-
-<div className="row mt-3">
-<Card title="Average Training Asssment Score" >
-                           <AverageAssesmentscore/>
-                        </Card>
-
-</div>
 
         <div className="row mt-3">
             <div className="col-md-8">
@@ -143,16 +144,17 @@ const getAllCategory = async () => {
                         <Card title="Technology Activity" action={true}>
                             <Charts ChartType="activities" labelLeft="Employee percentile" />
                         </Card>
-
-                      
-                     
-                      
-                      
+                    </div>
+                    <div className="col-md-7 pr-0 pt-3">
+                        {/* ..........Month wise Training Reflection......... */}
+                        <Card title="Filter Training based on date">
+                            <Trainingpichart />
+                        </Card>
                     </div>
 
                     <div className="col-md-5">
                         {/* ..........Batches......... */}
-                        <Card  title="Batches Stats" action={true}>
+                        <Card title="Batches Stats" action={true}>
                             <div className="table-bless">
                                 <Table className="table-borderless">
                                     <thead>
@@ -173,22 +175,22 @@ const getAllCategory = async () => {
                                     </tbody>
                                 </Table>
                             </div>
-                            
+
                         </Card>
                         {/* ..........End Batches......... */}
 
-                       
 
-                            <Card title="Trainer Feedback" className='mt-3'>
-                                <img src='https://course-content-storage.s3.amazonaws.com/Trainer+Feedback.png' class="img-fluid" />
-                            </Card>
 
-                            <Card title="Training Feedback" className='mt-3'>
-                                <img src='https://course-content-storage.s3.amazonaws.com/Training+Feedback.png' class="img-fluid" />
-                            </Card>
-                            <Card title="Monthly Assessment Score" className='mt-3'>
-                                <img src='https://course-content-storage.s3.amazonaws.com/Monthly+Assessment+Score_.png' class="img-fluid" />
-                            </Card>
+                        <Card title="Trainer Feedback" className='mt-3'>
+                            <img src='https://course-content-storage.s3.amazonaws.com/Trainer+Feedback.png' class="img-fluid" />
+                        </Card>
+
+                        <Card title="Training Feedback" className='mt-3'>
+                            <img src='https://course-content-storage.s3.amazonaws.com/Training+Feedback.png' class="img-fluid" />
+                        </Card>
+                        <Card title="Monthly Assessment Score" className='mt-3'>
+                            <img src='https://course-content-storage.s3.amazonaws.com/Monthly+Assessment+Score_.png' class="img-fluid" />
+                        </Card>
                     </div>
                 </div>
 
@@ -200,34 +202,34 @@ const getAllCategory = async () => {
             <div className="col-md-4 column">
                 <div className="mb-3">
                     <div className="row">
-                            <div className="col-6">
-                                <div className="grid-batch">
-                                    <div className="mb10">{ICN_COPY}</div>
-                                    <div>
-                                        <div className="batch-title">{batchCount}</div>
-                                        <div className="batch-label">On-going batches</div>
-                                    </div>
-                                    <div className="jce">
-                                        <div className="grid-batch-icon">
-                                            <i className="bi bi-arrows-angle-expand"></i>
-                                        </div>
+                        <div className="col-6">
+                            <div className="grid-batch">
+                                <div className="mb10">{ICN_COPY}</div>
+                                <div>
+                                    <div className="batch-title">{batchCount}</div>
+                                    <div className="batch-label">On-going batches</div>
+                                </div>
+                                <div className="jce">
+                                    <div className="grid-batch-icon">
+                                        <i className="bi bi-arrows-angle-expand"></i>
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-6">
-                                <div className="grid-batch bg-purple">
-                                    <div className="mb10">{ICN_COMING_BATCHES}</div>
-                                    <div>
-                                        <div className="batch-title">{course.length}</div>
-                                        <div className="batch-label">Total Course</div>
-                                                </div>
-                                    <div className="jce">
-                                        <div className="grid-batch-icon">
-                                            <i className="bi bi-arrows-angle-expand"></i>
-                                        </div>
+                        </div>
+                        <div className="col-6">
+                            <div className="grid-batch bg-purple">
+                                <div className="mb10">{ICN_COMING_BATCHES}</div>
+                                <div>
+                                    <div className="batch-title">{course.length}</div>
+                                    <div className="batch-label">Total Course</div>
+                                </div>
+                                <div className="jce">
+                                    <div className="grid-batch-icon">
+                                        <i className="bi bi-arrows-angle-expand"></i>
                                     </div>
-                                </div>  
-                            </div> 
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {/* ..........Calender......... */}
@@ -241,21 +243,21 @@ const getAllCategory = async () => {
 }
 
 const Home = () => {
-    const { setCourse,setBatches,setDepartment,spinner } = useContext(AppContext)
-    const {setCategory} = useContext(AssessmentContext)
+    const { setCourse, setBatches, setDepartment, spinner } = useContext(AppContext)
+    const { setCategory } = useContext(AssessmentContext)
 
-        // get All topic
-const getAllCategory = async () => {
-    spinner.show("Loading... wait");
-    try {
-      let { data } = await RestService.getAllCategory()
-      setCategory(data)
-      spinner.hide();
-    } catch (err) {
-      spinner.hide();
-      console.error("error occur on getAllTopic()", err)
+    // get All topic
+    const getAllCategory = async () => {
+        spinner.show("Loading... wait");
+        try {
+            let { data } = await RestService.getAllCategory()
+            setCategory(data)
+            spinner.hide();
+        } catch (err) {
+            spinner.hide();
+            console.error("error occur on getAllTopic()", err)
+        }
     }
-  }
     // get all courses
     const allCourse = useFetch({
         method: "get",
@@ -267,29 +269,29 @@ const getAllCategory = async () => {
         method: "get",
         url: GLOBELCONSTANT.BATCHES.GET_BATCH_LIST,
         errorMsg: 'error occur on get Batches'
-     });
+    });
 
- // get all batches
- const  allDepartment= useFetch({
-    method: "get",
-    url: GLOBELCONSTANT.INSTRUCTOR.GET_INSTRUCTOR,
-    errorMsg: 'error occur on get Batches'
- });
+    // get all batches
+    const allDepartment = useFetch({
+        method: "get",
+        url: GLOBELCONSTANT.INSTRUCTOR.GET_INSTRUCTOR,
+        errorMsg: 'error occur on get Batches'
+    });
 
 
-  
+
 
     useEffect(() => {
         getAllCategory()
         allCourse.response && setCourse(allCourse.response)
         allBatches.response && setBatches(allBatches.response)
         allDepartment.response && setDepartment(allDepartment.response)
-    }, [allCourse.response,allBatches.response,allDepartment.response])
+    }, [allCourse.response, allBatches.response, allDepartment.response])
 
     return (<>
-    <Router>
-         <AdminHome path="/" />
-    </Router>
+        <Router>
+            <AdminHome path="/" />
+        </Router>
     </>)
 
 }
