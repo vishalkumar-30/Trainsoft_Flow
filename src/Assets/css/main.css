@@ -155,13 +155,14 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  height: 2rem;
+  /* height: 2rem; */
   overflow: hidden;
   line-height: 0;
-  font-size: .75rem;
-  background-color: #ffffff;
-  border-radius: .25rem;
+  font-size: 14px;
+  background-color: #e9ecef;
+  border-radius: 20px;
   margin-bottom: 10px;
+
 }
 
 .progress-bar {
@@ -184,7 +185,7 @@
   background-color: #007bff;
   -webkit-transition: width .6s ease;
   transition: width .6s ease;
-  border-radius: 20px;
+  border-radius: 5px;
 }
 
 .progress-sh {

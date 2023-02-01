@@ -5,6 +5,7 @@ import { CustomToggle } from '../../Services/MethodFactory';
 import { ICN_CLOSE, ICN_EXPAND } from './Icon'
 import "./bsUtils.css";
 
+
 // model
 export const BsModal = ({ children, setShow, show, headerTitle, size = "md",headerAction=null }) => {
     return (
@@ -36,7 +37,7 @@ export const BsModal = ({ children, setShow, show, headerTitle, size = "md",head
 }
 
 // progress bar
-export const Progress = ({ value = 0, variant, label = "", className = "" }) => <ProgressBar className={className} label={label} variant={variant} now={value} />
+export const Progress = ({ value = 0, variant, label = "",striped , className = "" }) => <ProgressBar className={className} label={label} variant={variant} now={value} striped ={striped } />
 
 // dropdown
 export const BsDropDown = ({ children, header = "", direction = "right" }) => <Dropdown className="dropdown-menus">

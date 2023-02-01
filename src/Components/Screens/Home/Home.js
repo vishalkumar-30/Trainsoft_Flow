@@ -24,6 +24,37 @@ import Trainingpichart from '../../Common/Graph/PiChart/Trainingpichart';
 const AdminHome = () => {
     const { user, batches, course, ROLE, spinner, setCategory } = useContext(AppContext)
     const [batchCount, setBatchCount] = useState(0)
+    const [trainingprogrss,setTrainingprogrss]=useState([])
+    const[ongoingTrainingCount,setongoingTrainingCount]=useState(0);
+
+
+
+  const getTrainingprogress = async () => {
+  
+
+    try {
+        
+        spinner.show();
+        RestService.getOngoingTrainingProgress().then(
+            response => {
+               
+                setTrainingprogrss(response.data.trainingDetails);
+                setongoingTrainingCount(response.data.ongoingTrainingCount);
+               
+
+            },
+            err => {
+                spinner.hide();
+            }
+        ).finally(() => {
+            spinner.hide();
+        });
+    } catch (err) {
+        console.error("error occur on getTrainings()", err)
+    }
+}
+
+
 
     // get batches by sid
 
@@ -58,13 +89,15 @@ const AdminHome = () => {
     }
     useEffect(() => {
         getBatchCount();
-        getAllCategory()
+        getAllCategory();
+       
+        getTrainingprogress()
 
     }, [])
 
     return (<div>
         <div className="row">
-            <div className="col-md-5">
+            <div className="col-md-6">
                 {/* ..........user info......... */}
                 <Card title="">
                     <div className="user-info">
@@ -88,28 +121,53 @@ const AdminHome = () => {
 
             </div>
             <div className="col-md-2 ">
-                <Card  >
+                
                     <WeeklyLogin />
-                </Card>
+             
             </div>
-            <div className="col-md-5 ">
-                {/* ..........Lms insight......... */}
-                <Card title={`${user.role === ROLE.SUPERVISOR ? 'Lms insight' : 'Attendance Rate'} `} action={true}>
-                    <div className="">
-                        <div className="lms-card"><div className="lms-card-g">AWS Solution Architect</div><div>45 Enrolled <span></span></div></div>
-                        <div className="lms-card"><div className="lms-card-p">Machine Learning</div><div>40 Enrolled</div> <span></span></div>
-                        <div className="lms-card"><div className="lms-card-g">Splunk</div><div>40 Enrolled</div> <span></span></div>
-                    </div>
-                </Card>
-                {/* ..........End Lms insight......... */}
+           
+
+            <div className="col-md-2 ">
+             
+               
+                <div className="grid-batch bg-purple">
+                                <div className="mb10">{ICN_COMING_BATCHES}</div>
+                                <div>
+                                    <div className="batch-title">{course.length}</div>
+                                    <div className="batch-label">Total Course</div>
+                                </div>
+                                <div className="jce">
+                                    <div className="grid-batch-icon">
+                                        <i className="bi bi-arrows-angle-expand"></i>
+                                    </div>
+                                </div>
+                            </div>
+             
+              
             </div>
+
+            <div className="col-md-2 ">
+             
+              
+             <div className="grid-batch">
+                             <div className="mb10">{ICN_COPY}</div>
+                             <div>
+                                 <div className="batch-title">{batchCount}</div>
+                                 <div className="batch-label">On-going batches</div>
+                             </div>
+                             <div className="jce">
+                                 <div className="grid-batch-icon">
+                                     <i className="bi bi-arrows-angle-expand"></i>
+                                 </div>
+                             </div>
+                         </div>
+          
+           
+         </div>
+
         </div>
-        {/* <div className="row m-3">
-<Card title="Weekly Login" >
-                           <WeeklyLogin/>
-                        </Card>
-</div> */}
-        <div className='row mt-2' >
+     
+        <div className='row mt-3' >
             <div className='col-6'>
                 <Card title="Average Trainer Feedback" >
                     <AverageTrainerFeedback />
@@ -129,47 +187,43 @@ const AdminHome = () => {
 
         {/* Average TrAINING aSSESMENT SCORE  */}
 
-        <div className="row mt-3">
+        <div className="row mt-3 mx-1">
             <Card title="Average Training Asssment Score" >
                 <AverageAssesmentscore />
             </Card>
 
         </div>
-
         <div className="row mt-3">
-            <div className="col-md-8">
-                <div className="row">
-                    <div className="col-md-7 pr-0">
-                        {/* ..........Technology Activity......... */}
-                        <Card title="Technology Activity" action={true}>
-                            <Charts ChartType="activities" labelLeft="Employee percentile" />
-                        </Card>
-                    </div>
-                    <div className="col-md-7 pr-0 pt-3">
-                        {/* ..........Month wise Training Reflection......... */}
-                        <Card title="Filter Training based on date">
+            <div className="col-md-6">
+           
+                <Card title="Filter Training based on date">
                             <Trainingpichart />
                         </Card>
-                    </div>
+               
 
-                    <div className="col-md-5">
-                        {/* ..........Batches......... */}
-                        <Card title="Batches Stats" action={true}>
-                            <div className="table-bless">
+            </div>
+            <div className="col-md-6  ">
+               
+            <Card title="Average Training Progress"  >
+            <div className="title-sm  mt-2">OngoingTrainingCount {ongoingTrainingCount}</div>
+        
+                            <div className="table-bless py-5" style={{height:"480px",overflowX:"scroll"}}>
+                                
                                 <Table className="table-borderless">
-                                    <thead>
+                                    <thead style={{fontSize: "15px",
+    fontWeight: "600"}}>
                                         <tr>
                                             <td>Name</td>
-                                            <td className="progress-w">Progress</td>
-                                            <td className="avgScore-w">Avg score</td>
+                                            <td style={{width:"60%"}} >Progress</td>
+                                            {/* <td className="avgScore-w">Avg score</td> */}
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {batches.slice(0, 10).map((res, i) =>
+                                        {trainingprogrss.map((res, i) =>
                                             <tr key={i}>
-                                                <td>{res.name}</td>
-                                                <td><Progress className="mb-2 progress-sh" variant={i % 2 === 0 ? 'secondary' : 'danger'} value={50} /></td>
-                                                <td className="text-right">{50}</td>
+                                                <td>{res.trainingName}</td>
+                                                <td><Progress  striped     label={`${res.completionPercentage}%`} variant={i % 2 === 0 ? 'secondary' : 'danger'} value={res.completionPercentage}  /></td>
+                                                {/* <td className="text-right">{50}</td> */}
                                             </tr>
                                         )}
                                     </tbody>
@@ -177,68 +231,11 @@ const AdminHome = () => {
                             </div>
 
                         </Card>
-                        {/* ..........End Batches......... */}
-
-
-
-                        <Card title="Trainer Feedback" className='mt-3'>
-                            <img src='https://course-content-storage.s3.amazonaws.com/Trainer+Feedback.png' class="img-fluid" />
-                        </Card>
-
-                        <Card title="Training Feedback" className='mt-3'>
-                            <img src='https://course-content-storage.s3.amazonaws.com/Training+Feedback.png' class="img-fluid" />
-                        </Card>
-                        <Card title="Monthly Assessment Score" className='mt-3'>
-                            <img src='https://course-content-storage.s3.amazonaws.com/Monthly+Assessment+Score_.png' class="img-fluid" />
-                        </Card>
-                    </div>
-                </div>
-
-
-
-
-
             </div>
-            <div className="col-md-4 column">
-                <div className="mb-3">
-                    <div className="row">
-                        <div className="col-6">
-                            <div className="grid-batch">
-                                <div className="mb10">{ICN_COPY}</div>
-                                <div>
-                                    <div className="batch-title">{batchCount}</div>
-                                    <div className="batch-label">On-going batches</div>
-                                </div>
-                                <div className="jce">
-                                    <div className="grid-batch-icon">
-                                        <i className="bi bi-arrows-angle-expand"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-6">
-                            <div className="grid-batch bg-purple">
-                                <div className="mb10">{ICN_COMING_BATCHES}</div>
-                                <div>
-                                    <div className="batch-title">{course.length}</div>
-                                    <div className="batch-label">Total Course</div>
-                                </div>
-                                <div className="jce">
-                                    <div className="grid-batch-icon">
-                                        <i className="bi bi-arrows-angle-expand"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* ..........Calender......... */}
-                <Card title="Calender" className="full-h">
-                    <CalenderGraph />
-                </Card>
-                {/* ..........End Calender......... */}
-            </div>
+
+       
         </div>
+    
     </div>)
 }
 
