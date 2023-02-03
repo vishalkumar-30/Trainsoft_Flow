@@ -1,7 +1,11 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import AppContext from '../../../../Store/AppContext';
 import RestService from '../../../../Services/api.service';
-import { PieChart, Pie, Sector } from "recharts";
+import { PieChart, Pie, Sector ,Line} from "recharts";
+import { FILTER_ICON } from '../../Icon';
+
+
+import $ from 'jquery';
 
 const Trainingpichart = () => {
 
@@ -195,9 +199,9 @@ const Trainingpichart = () => {
   }
 
   const data = [
-    { name: "Completed", value: completedTraining },
-    { name: "Ongoing", value: onGoingTraining },
-    { name: "Upcoming", value: upComingTraining }
+    { name: "Completed", value: completedTraining,fill:"#E62E7A" },
+    { name: "Ongoing", value: onGoingTraining ,fill:"#33FFD7"},
+    { name: "Upcoming", value: upComingTraining ,fill:"#FCE22A" }
   ];
   const renderActiveShape = (props) => {
     const RADIAN = Math.PI / 180;
@@ -281,19 +285,32 @@ const Trainingpichart = () => {
     filterTrainingsBasedOnDateRange();
   }, [])
 
+
+ 
+
+$(function() {
+    $( "#datepicker" ).datepicker({format: 'mm-dd-yyyy',
+        endDate: '+0d',
+        autoclose: true });
+  })
+
   return (
     <>
       <div className='row p-1'>
         <div className='col-4'>
           <label for="from">From Date:</label>
-          <input type="date" defaultValue={lastWeekDisplay} onChange={(e) => setFromDate(e.target.value)} />
+          <input type="date"  defaultValue={lastWeekDisplay} onChange={(e) => setFromDate(e.target.value)} id="datepicker"/>
         </div>
         <div className='col-4'>
           <label for="to">To Date:</label>
-          <input type="date" defaultValue={today} onChange={(e) => setToDate(e.target.value)} />
+          <input type="date" defaultValue={today} onChange={(e) => setToDate(e.target.value)} id="datepicker"/>
         </div>
-        <div className='col-2'>  <button onClick={() => filterTrainingsBasedOnDateRange()}>Filter</button></div>
+        <div className='col-4 pt-4'>  <button className=' btn btn-sm btn-primary px-3 ml-2'  onClick={() => filterTrainingsBasedOnDateRange()}>Ok{FILTER_ICON}</button></div>
+        <div>
+          <p className='text-danger p-2'>Note : Please select Date to Filter Training Details</p>
+        </div>
       </div>
+     
       <PieChart width={400} height={400}>
         <Pie
           activeIndex={activeIndex}
@@ -307,6 +324,8 @@ const Trainingpichart = () => {
           dataKey="value"
           onMouseEnter={onPieEnter}
         />
+         <Line name="pv of pages" type="monotone" dataKey="value" stroke="#8884d8" />
+  <Line name="uv of pages" type="monotone" dataKey="value" stroke="#82ca9d" />
       </PieChart>
     </>
 

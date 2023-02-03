@@ -20,6 +20,7 @@
     "fabric": "^4.3.1",
     "formik": "^2.2.6",
     "html-react-parser": "^1.2.1",
+    "jquery": "^3.6.3",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
     "rct-bs-alert": "0.0.4",

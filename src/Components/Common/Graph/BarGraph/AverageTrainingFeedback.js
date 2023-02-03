@@ -50,12 +50,14 @@ const AverageTrainingFeedback = () => {
     {
       name: "Completed",
 
-      rating: avgTrainingFeedbackCompleted.trainingFeedbackAverage
+      rating: avgTrainingFeedbackCompleted.trainingFeedbackAverage,
+      fill:"#0088FE",
     },
     {
       name: "Ongoing",
 
-      rating: avgTrainingFeedbackOnGoing.trainingFeedbackAverage
+      rating: avgTrainingFeedbackOnGoing.trainingFeedbackAverage,
+      fill:"#7DFCD8"
     }
   ];
   
@@ -79,7 +81,7 @@ const AverageTrainingFeedback = () => {
     if (active && payload && payload.length) {
       return (
         <div className="custom-tooltip" style={{ padding: "10px" }}>
-          <p className="intro">{getIntroOfPage(label)}</p>
+          <p className="title-md" >{getIntroOfPage(label)}</p>
         </div>
       );
     }
@@ -93,12 +95,12 @@ const AverageTrainingFeedback = () => {
 
   return (
     <BarChart
-      width={600}
-      height={500}
+      width={550}
+      height={400}
       data={data}
       margin={{
         top: 10,
-        right: 30,
+       
         left: 20,
         bottom: 25
       }}
@@ -108,9 +110,9 @@ const AverageTrainingFeedback = () => {
         <Label value="Training" offset={-20} position="insideBottom" />
       </XAxis>
       <YAxis label={{ value: 'Rating', angle: -90, position: 'insideLeft' }} />
-      <Tooltip content={<CustomTooltip />} cursor={false} />
+      <Tooltip content={<CustomTooltip />} cursor={false} wrapperStyle={{ width: 130, backgroundColor: `{data.fill}` }} />
 
-      <Bar dataKey="rating" fill="#0088FE" />
+      <Bar dataKey="rating" fill="fill" />
     </BarChart>
   );
 }

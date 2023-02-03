@@ -203,7 +203,8 @@ const RestService = {
   getAverageTrainingFeedback :() => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.GET_AVERAGE_TRAINING_FEEDBACK),
   weeklyUsersLoginHistory:() => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.WEEKLY_USERS_LOGIN_HISTORY),
   getTrainingsAverageScore: () => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.GET_TRAININGS_AVERAGE_SCORE),
-  filterTrainingsBasedOnDateRange: (fromDate, toDate) => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.FILTER_TRAININGS_BASED_ON_DATE_RANGE + `?from=${fromDate}&to=${toDate}`)
+  filterTrainingsBasedOnDateRange: (fromDate, toDate) => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.FILTER_TRAININGS_BASED_ON_DATE_RANGE + `?from=${fromDate}&to=${toDate}`),
+  getOngoingTrainingProgress :() => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.GET_ONGOING_TRAINING_PROGRESS), 
 };
 
 

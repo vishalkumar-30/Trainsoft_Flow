@@ -238,7 +238,8 @@ const GLOBELCONSTANT = {
         GET_AVERAGE_TRAINING_FEEDBACK: API_HOST_V2 + 'average-training-feedback',
         WEEKLY_USERS_LOGIN_HISTORY: API_HOST_V2 + 'weekly-user-login-history',
         GET_TRAININGS_AVERAGE_SCORE: API_HOST_V2 + 'training-average-assessment-score',
-        FILTER_TRAININGS_BASED_ON_DATE_RANGE: API_HOST_V2 + 'filter-trainings-date-range'
+        FILTER_TRAININGS_BASED_ON_DATE_RANGE: API_HOST_V2 + 'filter-trainings-date-range',
+        GET_ONGOING_TRAINING_PROGRESS:API_HOST_V2 + 'get-ongoing-training-progress',
     },
 
 
