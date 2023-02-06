@@ -13,10 +13,10 @@ import "react-circular-progressbar/dist/styles.css";
 import './home.css'
 import RestService from '../../../Services/api.service';
 import AssessmentContext from '../../../Store/AssessmentContext';
-import WeeklyLogin from '../../Common/Graph/AreaGraph/WeeklyLogin';
+import WeeklyLogin from '../../Common/Graph/LineGraph/WeeklyLogin';
 import AverageTrainerFeedback from '../../Common/Graph/BarGraph/AverageTrainerFeedback';
 import AverageTrainingFeedback from '../../Common/Graph/BarGraph/AverageTrainingFeedback';
-import AverageAssesmentscore from '../../Common/Graph/AreaGraph/AverageAssesmentscore';
+import AverageAssesmentscore from '../../Common/Graph/LineGraph/AverageAssesmentscore';
 import Trainingpichart from '../../Common/Graph/PiChart/Trainingpichart';
 
 
@@ -205,8 +205,14 @@ const AdminHome = () => {
             <div className="col-md-6  ">
                
             <Card title="Average Training Progress"  >
-            <div className="title-sm  mt-2">OngoingTrainingCount {ongoingTrainingCount}</div>
-        
+            <div className="user-info">
+         
+            <div className="title-sm  my-3">OngoingTrainingCount {ongoingTrainingCount}</div>
+            <div className='row'>
+            <div className="aic px-2"><div className="red-circle"></div> <div>Progress is less than 50% </div></div>
+            <div className="aic px-2"><div className="blue-circle"></div> <div>Progress is Greater than 50% </div></div>
+            </div>
+            </div>
                             <div className="table-bless py-5" style={{height:"480px",overflowX:"scroll"}}>
                                 
                                 <Table className="table-borderless">
@@ -222,7 +228,7 @@ const AdminHome = () => {
                                         {trainingprogrss.map((res, i) =>
                                             <tr key={i}>
                                                 <td>{res.trainingName}</td>
-                                                <td><Progress  striped     label={`${res.completionPercentage}%`} variant={i % 2 === 0 ? 'secondary' : 'danger'} value={res.completionPercentage}  /></td>
+                                                <td><Progress  striped     label={`${res.completionPercentage}%`} variant={res.completionPercentage<=50? 'danger' : '#7DFCD8'} value={res.completionPercentage}  /></td>
                                                 {/* <td className="text-right">{50}</td> */}
                                             </tr>
                                         )}

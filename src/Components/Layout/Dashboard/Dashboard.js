@@ -26,6 +26,7 @@ import TopicAssesment from "../../Screens/EAssesments/TopicAssesments";
 import AssessmentDashboard from "../../Screens/AssessmentScreen/AssessmentDashbord/AssessmentDashbord";
 import Catalogue from "../../Screens/AssessmentScreen/Catalogue/Catalogue";
 import MyAssessment from "../../Screens/AssessmentScreen/MyAssessment/MyAssessment";
+import InstructorDashboard from "../../Screens/Home/InstructorDashboard";
 
 const Dashboard = ({ location }) => {
   return (
@@ -51,6 +52,7 @@ const Dashboard = ({ location }) => {
             <Router>
               <Home path="dashboard" />
               <UserHome path="home" />
+              <InstructorDashboard path="instdashboard"/>
               <Report path="report/*" />
               <Setting path="setting" />
               <Batches path="batches/*" />

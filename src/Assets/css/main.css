@@ -705,6 +705,14 @@ p {
   margin-right: 10px;
 }
 
+.blue-circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #007bff;
+  margin-right: 10px;
+}
+
 .text-sm {
   font-size: 13px;
   opacity: 0.5;

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import AppContext from '../../../../Store/AppContext';
 import RestService from '../../../../Services/api.service';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Label, ResponsiveContainer } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Label } from "recharts";
 
 export default function AverageAssesmentscore() {
 
@@ -35,29 +35,11 @@ export default function AverageAssesmentscore() {
     getTrainingsAverageScore();
   }, []);
 
-  // const perChunk = 8 // items per chunk    
-
-  // const inputArray = ['a', 'b', 'c', 'd', 'e']
-
-  // const result = trainingAverageScore.reduce((resultArray, item, index) => {
-  //   const chunkIndex = Math.floor(index / perChunk)
-
-  //   if (!resultArray[chunkIndex]) {
-  //     resultArray[chunkIndex] = [] // start a new chunk
-  //   }
-
-  //   resultArray[chunkIndex].push(item)
-
-  //   return resultArray
-  // }, []);
-
-  // console.log(result);
-
   return (
     <>
       <ResponsiveContainer width="100%"
         height={500}>
-        <AreaChart
+        <LineChart
 
           data={trainingAverageScore}
           margin={{
@@ -79,17 +61,15 @@ export default function AverageAssesmentscore() {
             }}
           />
 
-          <Area
+          <Line
             type="monotone"
             dataKey="trainingAverageScore"
             stroke="#8884d8"
-            fill="#8884d8"
+            activeDot={{ r: 8 }}
           />
-        </AreaChart>
+        </LineChart>
 
       </ResponsiveContainer>
     </>
   );
 }
-
-

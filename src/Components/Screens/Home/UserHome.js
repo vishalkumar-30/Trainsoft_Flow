@@ -1,16 +1,89 @@
-import React, { useContext ,useEffect} from 'react'
+import React, { useContext ,useEffect,useState} from 'react'
+import Table from 'react-bootstrap/Table'
+
 import Charts from '../../Charts/Charts'
-import {  Card} from '../../Common/BsUtils';
+import { Progress, Card} from '../../Common/BsUtils';
 import "react-circular-progressbar/dist/styles.css";
 import CalenderGraph from '../../Common/CalenderGraph/CalenderGraph';
 import AppContext from '../../../Store/AppContext';
 import './home.css'
 import RestService from '../../../Services/api.service';
 import AssessmentContext from '../../../Store/AssessmentContext';
+import LineGraph from '../../Common/Graph/Learner/LineGraph/AssesmentScore';
+import AverageAssesmentLearnerscore from '../../Common/Graph/Learner/LineGraph/AssesmentScore';
 
 const UserHome = () => {
     const {user,spinner} = useContext(AppContext)
     const {setCategory} = useContext(AssessmentContext)
+
+    const [trainingprogrss,setTrainingprogrss]=useState([])
+    const[ongoingTrainingCount,setongoingTrainingCount]=useState([]);
+    
+const [rank,setRank]=useState([])
+
+    const getLearnersAssessmentScore = () => {
+        try {
+    
+          spinner.show();
+          RestService.getLearnersAssessmentScore().then(
+            response => {
+              if (response.status === 200) {
+                console.log('hello')
+                setRank(response.data)
+               
+             
+              }
+    
+            },
+            err => {
+              spinner.hide();
+            }
+          ).finally(() => {
+            spinner.hide();
+          });
+        } catch (err) {
+          console.error("error occur on getTrainingsAverageScore()", err)
+        }
+      }
+
+
+
+
+
+
+
+
+
+
+
+  const getLearnerAllTrainingsProgress = async () => {
+  
+
+    try {
+        
+        spinner.show();
+        RestService.getLearnerAllTrainingsProgress().then(
+            response => {
+               
+                setTrainingprogrss(response.data.progressDetails);
+                setongoingTrainingCount(response.data.ongoingTrainingCount);
+               
+
+            },
+            err => {
+                spinner.hide();
+            }
+        ).finally(() => {
+            spinner.hide();
+        });
+    } catch (err) {
+        console.error("error occur on getTrainings()", err)
+    }
+}
+
+
+
+
     // get All topic
 const getAllCategory = async () => {
     spinner.show("Loading... wait");
@@ -24,14 +97,16 @@ const getAllCategory = async () => {
     }
   }
   useEffect(() => {
-     getAllCategory()
+     getAllCategory();
+     getLearnerAllTrainingsProgress();
+     getLearnersAssessmentScore();
   }, [])
     
     return (<div>
         <div className="row">
-            <div className="col-md-6">
+            <div className="col-md-6 " >
                 {/* ..........user info......... */}
-                <Card title="">
+                <Card title="" >
                     <div className="user-info">
                         <div className="title-lg">Welcome back {user.name}!</div>
                         <div>
@@ -40,37 +115,121 @@ const getAllCategory = async () => {
                                 <div className="jcb"> <div className="aic"> <div className="red-circle"></div>Course - Python fundamentals </div> <div>5 Jul 2020</div></div>
                                 <div className="jcb"> <div className="aic"><div className="red-circle"></div> Final assessment - AWS </div><div>6 Jul 2020</div></div>
 
-
+                                <div className="jcb"> <div className="aic"> <div ></div> </div> <div></div></div>
+                                
                             </div>
                         </div>
                     </div>
                 </Card>
                 {/* ..........End user info......... */}
                    {/* ..........Technology Activity......... */}
-                   <Card title="Course Progress" action={true} className="mt-2">
-                            <Charts ChartType="course" labelLeft="Progress" />
-                        </Card>
+                  
                         {/* ..........End Technology Activity......... */}
 
             </div>
             <div className="col-md-6 ">
                 {/* ..........Lms insight......... */}
-                <Card title="Feed" action={true}>
-                    <div className="feed-list">
-                        <div className="title-md tw">New course update</div>
-                        <div className="f12 op5">Mon, 20 Jun 2020 12:03:05</div>
-                        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                             Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</div>
-                    </div>
-                </Card>
+           
+                <Card title="Assessment-wise Rank"  >
+               {/* <div className="user-info">
+            
+               <div className="title-sm  my-3">OngoingTrainingCount {ongoingTrainingCount}</div>
+               <div className='row'>
+               <div className="aic px-2"><div className="red-circle"></div> <div>Progress is less than 50% </div></div>
+               <div className="aic px-2"><div className="blue-circle"></div> <div>Progress is Greater than 50% </div></div>
+               </div>
+               </div> */}
+                               <div className="table-bless " style={{height:"140px",overflowX:"scroll"}}>
+                                   
+                                   <Table className="table-borderless">
+                                       <thead style={{fontSize: "15px",
+       fontWeight: "600"}}>
+                                           <tr>
+                                               <td>Assessment Name</td>
+                                               <td  >Rank</td>
+                                               {/* <td className="avgScore-w">Avg score</td> */}
+                                           </tr>
+                                       </thead>
+                                       <tbody>
+                                           
+                                       {rank.map((res, i) =>
+                                               <tr key={i}>
+                                                   <td>{res.assessmentName}</td>
+                                                   <td>{res.rank}</td>
+                                                   {/* <td className="text-right">{50}</td> */}
+                                               </tr>
+                                           )}
+                                        
+                                       </tbody>
+                                   </Table>
+                               </div>
+   
+                           </Card>
+            
                 {/* ..........End Lms insight......... */}
                  {/* ..........Calender......... */}
-                 <Card title="Calender" className=" mt-2">
-                        <CalenderGraph/>
-                    </Card>
+                
                     {/* ..........End Calender......... */}
             </div>
         </div>
+        <Card title="AsssmentScore Details" action={true} className="mt-3">
+                            {/* <Charts ChartType="course" labelLeft="Progress" /> */}
+                            <AverageAssesmentLearnerscore/>
+                        </Card>
+
+
+<div className='row mt-3'>
+<div className="col-md-6  ">
+               
+               <Card title="Average Training Progress"  >
+               <div className="user-info">
+            
+               <div className="title-sm  my-3">OngoingTrainingCount {ongoingTrainingCount}</div>
+               <div className='row'>
+               <div className="aic px-2"><div className="red-circle"></div> <div>Progress is less than 50% </div></div>
+               <div className="aic px-2"><div className="blue-circle"></div> <div>Progress is Greater than 50% </div></div>
+               </div>
+               </div>
+                               <div className="table-bless py-5" style={{height:"480px",overflowX:"scroll"}}>
+                                   
+                                   <Table className="table-borderless">
+                                       <thead style={{fontSize: "15px",
+       fontWeight: "600"}}>
+                                           <tr>
+                                               <td>Name</td>
+                                               <td style={{width:"60%"}} >Progress</td>
+                                               {/* <td className="avgScore-w">Avg score</td> */}
+                                           </tr>
+                                       </thead>
+                                       <tbody>
+                                           {trainingprogrss.map((res, i) =>
+                                               <tr key={i}>
+                                                   <td>{res.trainingName}</td>
+                                                   <td><Progress  striped     label={`${res.completion}%`} variant={res.completion<=50? 'danger' : '#7DFCD8'} value={res.completion}  /></td>
+                                                   {/* <td className="text-right">{50}</td> */}
+                                               </tr>
+                                           )}
+                                       </tbody>
+                                   </Table>
+                               </div>
+   
+                           </Card>
+               </div>
+
+
+               <div className="col-md-6  ">
+<Card title="Training Session" >
+    
+<CalenderGraph/>
+</Card>
+               </div>
+</div>
+
+
+
+
+
+
     </div>)
 }
 
