@@ -243,27 +243,17 @@ const GLOBELCONSTANT = {
     },
 
     LEARNER_DASHBOARD: {
-        // GET_AVERAGE_TRAINER_FEEDBACK: API_HOST_V2 + 'average-trainer-feedback',
-        // GET_AVERAGE_TRAINING_FEEDBACK: API_HOST_V2 + 'average-training-feedback',
-        // WEEKLY_USERS_LOGIN_HISTORY: API_HOST_V2 + 'weekly-user-login-history',
-        // GET_TRAININGS_AVERAGE_SCORE: API_HOST_V2 + 'training-average-assessment-score',
-        // FILTER_TRAININGS_BASED_ON_DATE_RANGE: API_HOST_V2 + 'filter-trainings-date-range',
-        // GET_ONGOING_TRAINING_PROGRESS:API_HOST_V2 + 'get-ongoing-training-progress',
         GET_LEARNERS_ASSESSMENT_SCORE:API_HOST_V2 + 'learner/assessment-score-details',
         GET_LEARNER_ALL_TRAININGS_PROGRESS:API_HOST_V2 + 'learner/ongoing-training-progress',
         GET_LEARNER_TRAINING_SESSIONS:API_HOST_V2 + 'learner/get-training-sessions',
        
     },
+    INSTRUCTOR_DASHBOARD : {
+        GET_TRAINERS_TRAINING_SESSIONS: API_HOST_V2 + "instructor/get-daily-training-sessions",
+        GET_INSTRUCTOR_FEEDBACK_DETAILS: API_HOST_V2 + "instructor/get-feedback-details",
+        GET_TRAINERS_WEEKLY_SESSIONs: API_HOST_V2 + "instructor/get-weekly-sessions"
 
-
-
-
-
-
-
-
-
-
+    },
 
     ASSESSMENT_DASHBOARD: {
         GET_TOP_USER: API_ASSES + 'get/topTen/leaderboard/{cSid}/{caSid}',
