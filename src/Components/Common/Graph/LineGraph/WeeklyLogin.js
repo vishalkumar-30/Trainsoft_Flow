@@ -2,7 +2,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import AppContext from '../../../../Store/AppContext';
 import RestService from '../../../../Services/api.service';
-import { ICN_COPY, ICN_COMING_BATCHES, ICN_PEOPLE } from '../../../Common/Icon';
+import { ICN_COPY, ICN_COMING_BATCHES, ICN_PEOPLE } from '../../Icon';
 
 const WeeklyLogin = () => {
     const [weeklyuserlogin, setWeeklyuserlogin] = useState('')

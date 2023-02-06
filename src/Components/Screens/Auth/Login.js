@@ -48,7 +48,24 @@ const Login = ({location}) => {
                         if(data.role === GLOBELCONSTANT.ROLE.ASSESS_USER){
                             navigate('/assessment', { state: { title: 'Dashboard'} })
                         }else{
-                            data.role === GLOBELCONSTANT.ROLE.LEARNER ?  navigate('/home', { state: { title: 'Home'} }) :(data.role === GLOBELCONSTANT.ROLE.INSTRUCTOR || data.role === GLOBELCONSTANT.ROLE.SUPERVISOR) && navigate('/dashboard', { state: { title: 'Dashboard'} })
+                            let Role=data.role;
+                            switch(Role) {
+                              case GLOBELCONSTANT.ROLE.LEARNER:
+                                navigate('/home', { state: { title: 'Home'} })
+                               break;
+                              case GLOBELCONSTANT.ROLE.SUPERVISOR:
+                                navigate('/dashboard', { state: { title:'Dashboard'} })
+                               break;
+                               case GLOBELCONSTANT.ROLE.INSTRUCTOR:
+                                navigate('/instdashboard', { state: { title:'Instructor'} })
+                               break;
+                              default:
+                                navigate('/dashboard', { state: { title:'Dashboard'} })
+                            }
+
+                            // data.role === GLOBELCONSTANT.ROLE.LEARNER ?  navigate('/home', { state: { title: 'Home'} }): data.role === GLOBELCONSTANT.ROLE.SUPERVISOR? navigate('/dashboard', { state: { title:'Dashboard'} }):
+                            // data.role === GLOBELCONSTANT.ROLE.INSTRUCTOR? navigate('/instdashboard', { state: { title: 'Instructor'} }):null
+                            
                         }
                         
  
