@@ -174,4 +174,35 @@
   padding-top: 10px;
   padding-bottom: 15px;
 }
+.rbc-agenda-view table.rbc-agenda-table tbody > tr > td {
+  padding: 10px 10px;
 
+  font-size: 18px;
+  color: #49167E;
+  text-align: center;
+}
+
+
+.rbc-agenda-view table.rbc-agenda-table thead > tr > th {
+  padding: 10px 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  background: #49167E;
+  color: #fff;
+  font-size: 18px;
+}
+
+
+.rbc-time-view .rbc-row {
+
+  text-align: center;
+ 
+  background: #49167E;
+  color: #fff;
+  font-size: 18px;
+  min-height: 20px;
+}
+
+.rbc-today {
+  background-color: #eaf6ff59;
+}
