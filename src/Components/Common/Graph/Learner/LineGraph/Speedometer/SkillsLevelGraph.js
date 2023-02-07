@@ -10,7 +10,7 @@ const SkillsLevelGraph = () => {
         width={540}
         height={400}
         needleHeightRatio={0.8}
-        value={1000}
+        value={400}
   
        
         currentValueText="Skill Meter"
@@ -48,8 +48,8 @@ const SkillsLevelGraph = () => {
         ringWidth={100}
         needleTransitionDuration={3333}
         needleTransition="easeElastic"
-        needleColor={"#90f2ff"}
-        textColor={"#d8dee9"}
+        needleColor={"#49167E"}
+        textColor={"#49167E"}
       />
     </div>
   

@@ -206,16 +206,20 @@ const RestService = {
   filterTrainingsBasedOnDateRange: (fromDate, toDate) => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.FILTER_TRAININGS_BASED_ON_DATE_RANGE + `?from=${fromDate}&to=${toDate}`),
   getOngoingTrainingProgress: () => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.GET_ONGOING_TRAINING_PROGRESS),
 
+  getAllTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.GET_ALL_TRAINING_SESSIONS),
+
 
   // LEARNERDASHBOARD
   getLearnersAssessmentScore: () => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_LEARNERS_ASSESSMENT_SCORE),
   getLearnerAllTrainingsProgress: () => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_LEARNER_ALL_TRAININGS_PROGRESS),
   getLearnerTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_LEARNER_TRAINING_SESSIONS),
+  getallLearnerTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_ALL_TRAINING_SESSIONS),
 
   //INSTRUCTORDASHBOARD(
   getTrainersTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_TRAINERS_TRAINING_SESSIONS),
   getInstructorFeedbackDetails: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_INSTRUCTOR_FEEDBACK_DETAILS),
-  getTrainersWeeklySessions: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_TRAINERS_WEEKLY_SESSIONs)
+  getTrainersWeeklySessions: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_TRAINERS_WEEKLY_SESSIONs),
+  getTrainerTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_ALL_TRAINING_SESSIONS)
 };
 
 

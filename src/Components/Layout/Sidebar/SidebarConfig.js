@@ -35,7 +35,14 @@ export const AdminConfig = [
         title: "Dashboard",
         pathname: "dashboard",
         disabled: false,
-        role:[GLOBELCONSTANT.ROLE.SUPERVISOR,GLOBELCONSTANT.ROLE.INSTRUCTOR]
+        role:[GLOBELCONSTANT.ROLE.SUPERVISOR]
+    },
+    {
+        icon: ICN_DASHBOARD,
+        title: "Dashboard",
+        pathname: "instdashboard",
+        disabled: false,
+        role:[GLOBELCONSTANT.ROLE.INSTRUCTOR]
     },
     {
         icon: ICN_ORG_MGT,
@@ -112,7 +119,7 @@ export const AdminConfig = [
         title: "Report",
         pathname: "report",
         disabled: true,
-        role:[GLOBELCONSTANT.ROLE.SUPERVISOR,GLOBELCONSTANT.ROLE.INSTRUCTOR,GLOBELCONSTANT.ROLE.LEARNER]
+        role:[GLOBELCONSTANT.ROLE.SUPERVISOR]
     },
     {
         icon: ICN_CALENDER,
