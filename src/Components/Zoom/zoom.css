@@ -156,8 +156,8 @@
 /* full screen Zoom video css */
 .footer__btns-container {
 
-    margin-left: -320px  ;
-    width:250px
+    margin-left: -220px  ;
+    width:350px
 }
 /* .footer__leave-btn-container {
    
@@ -174,7 +174,7 @@
     height: 32px;
     z-index: 101;
 }
-/* #wc-content {
+#wc-content {
     
     margin-left: 820px !important;
 }
@@ -190,4 +190,4 @@
 }
 .video-avatar__avatar-name{
     font-size: 30px !important;
-} */
+}
