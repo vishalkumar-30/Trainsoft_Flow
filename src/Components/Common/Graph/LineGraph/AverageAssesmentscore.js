@@ -58,11 +58,12 @@ export default function AverageAssesmentscore() {
               value: "Avg Training Assessmt Score",
               angle: -90,
               position: "insideLeft"
+
             }}
           />
 
           <Line
-            type="monotone"
+   
             dataKey="trainingAverageScore"
             stroke="#8884d8"
             activeDot={{ r: 8 }}

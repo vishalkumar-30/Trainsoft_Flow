@@ -197,7 +197,7 @@ function Labs(props) {
 
     return (
         <div style={{ background: "gray" }}>
-            <div className="row" style={{height:"800px"}}>
+            <div className="row" style={{height:"100%"}}>
 
                 <div className="col-3 jumbotron pl-5 lab" >
                
