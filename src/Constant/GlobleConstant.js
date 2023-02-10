@@ -275,6 +275,12 @@ const GLOBELCONSTANT = {
         FILTER_COUNT: API_ASSES + 'assessments/tags-difficulty/count',
         GET_MYASSESSMENT_COUNT: API_ASSES + 'get/myAssessment/count/{sid}'
     },
+    REPORT: {
+        GENERATE_REPORT: API_HOST_V2 + "generate-report"
+    },
+    INSTRUCTOR: {
+        GET_INSTRUCTOR: API_HOST + "vaccounts/INSTRUCTOR/1/200",
+    },
     ACCESS_LEVEL: [
         { key: "ALL", name: "All" },
         { key: "BATCH_MGMT", name: "Batch Management" },

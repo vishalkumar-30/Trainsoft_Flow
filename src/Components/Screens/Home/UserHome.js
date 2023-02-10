@@ -142,7 +142,7 @@ const UserHome = () => {
                </div>
                </div> */}
                     <div className="table-bless " style={{ height: "120px", overflowX: "scroll" }}>
-
+{rank.length == 0 ? "No assessment Taken":
                         <Table className="table-borderless">
                             <thead style={{
                                 fontSize: "15px",
@@ -166,6 +166,7 @@ const UserHome = () => {
 
                             </tbody>
                         </Table>
+                        }
                     </div>
 
                 </Card>
@@ -192,12 +193,12 @@ const UserHome = () => {
                     <div className="user-info">
 
                         <div className="title-sm  my-3">OngoingTrainingCount {ongoingTrainingCount}</div>
-                        <div className='row'>
+                        {/* <div className='row'>
                             <div className="aic px-2"><div className="red-circle"></div> <div>Progress is less than 50% </div></div>
                             <div className="aic px-2"><div className="blue-circle"></div> <div>Progress is Greater than 50% </div></div>
-                        </div>
+                        </div> */}
                     </div>
-                    <div className="table-bless py-5" style={{ height: "300px", overflowX: "scroll" }}>
+                    <div className="table-bless py-2" style={{ height: "300px", overflowX: "scroll" }}>
 
                         <Table className="table-borderless">
                             <thead style={{

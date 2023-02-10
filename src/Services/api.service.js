@@ -219,7 +219,13 @@ const RestService = {
   getTrainersTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_TRAINERS_TRAINING_SESSIONS),
   getInstructorFeedbackDetails: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_INSTRUCTOR_FEEDBACK_DETAILS),
   getTrainersWeeklySessions: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_TRAINERS_WEEKLY_SESSIONs),
-  getTrainerTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_ALL_TRAINING_SESSIONS)
+  getTrainerTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_ALL_TRAINING_SESSIONS),
+
+  //Report
+  generateReport: (assessmentSid, instructor, labId, passPercentage, reportName, trainingSid) => AxiosService.patch(GLOBELCONSTANT.REPORT.GENERATE_REPORT + `?assessment=${assessmentSid}&instructor=${instructor}&lab=${labId}&pass-percentage=${passPercentage}&report-type=${reportName}&training=${trainingSid}`),
+
+  //get instructor
+  getInstructor: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR.GET_INSTRUCTOR)
 };
 
 
