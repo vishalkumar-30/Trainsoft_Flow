@@ -100,7 +100,7 @@ export const AdminConfig = [
         pathname: "labstore",
         subPath:'labstore',
         disabled: false,
-        role:[GLOBELCONSTANT.ROLE.SUPERVISOR,GLOBELCONSTANT.ROLE.INSTRUCTOR,GLOBELCONSTANT.ROLE.LEARNER],
+        role:[GLOBELCONSTANT.ROLE.SUPERVISOR],
         Children: [
             {
                 title: "Catalog",

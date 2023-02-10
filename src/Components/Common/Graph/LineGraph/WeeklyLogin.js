@@ -37,7 +37,7 @@ const WeeklyLogin = () => {
                 <div className="mb10">{ICN_PEOPLE}</div>
                 <div>
                     <div className="batch-title">{weeklyuserlogin}</div>
-                    <div className="batch-label">Daily Login</div>
+                    <div className="batch-label">Weekly Login</div>
                 </div>
                 <div className="jce">
                     <div className="grid-batch-icon">
