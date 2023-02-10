@@ -218,7 +218,7 @@ const ReportDownload = () => {
     }
 
     useEffect(() => {
-        axios.get("http://trainsoft.live:8089/insled/v2/get-report-seed-data").then((res) => {
+        axios.get("http://trainsoft.live/insled/v2/get-report-seed-data").then((res) => {
             setReport(res.data);
         });
         getTrainings();
