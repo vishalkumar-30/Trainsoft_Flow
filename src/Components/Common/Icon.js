@@ -52,6 +52,8 @@ import FileCopyIcon from '@mui/icons-material/FileCopy';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import DownloadIcon from '@mui/icons-material/Download';
+export const DOWNLOAD_ICON =<DownloadIcon/>
 export const FILTER_ICON =<FilterAltIcon/>
 export const ICN_BACK = <KeyboardBackspaceIcon/>
 export const ICN_TIME=<AccessTimeIcon/>
