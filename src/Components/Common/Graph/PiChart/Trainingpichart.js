@@ -297,15 +297,15 @@ $(function() {
   return (
     <>
       <div className='row p-1'>
-        <div className='col-4'>
+        <div className='col-5'>
           <label for="from">From Date:</label>
-          <input type="date"  defaultValue={lastWeekDisplay} onChange={(e) => setFromDate(e.target.value)} id="datepicker"/>
+          <input type="date" className='form-control'  defaultValue={lastWeekDisplay} onChange={(e) => setFromDate(e.target.value)} id="datepicker"/>
         </div>
-        <div className='col-4'>
+        <div className='col-5'>
           <label for="to">To Date:</label>
-          <input type="date" defaultValue={today} onChange={(e) => setToDate(e.target.value)} id="datepicker"/>
+          <input type="date" className='form-control' defaultValue={today} onChange={(e) => setToDate(e.target.value)} id="datepicker"/>
         </div>
-        <div className='col-4 pt-4'>  <button className=' btn btn-sm btn-primary px-3 ml-2'  onClick={() => filterTrainingsBasedOnDateRange()}>Ok{FILTER_ICON}</button></div>
+        <div className='col-2 mt-4'>  <button className=' btn btn-sm btn-primary mt-1'  onClick={() => filterTrainingsBasedOnDateRange()}>Ok{FILTER_ICON}</button></div>
         <div>
           <p className='text-danger p-2'>Note : Please select Date to Filter Training Details</p>
         </div>
