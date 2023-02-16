@@ -14,80 +14,82 @@ const Report = ({ location }) => {
     const {user} = useContext(AppContext)
     return (
         <div className="table-shadow p-3">
-            <CardHeader {...{ location }} />
+            {/* <CardHeader {...{ location }} /> */}
+            <p style={{fontSize: "16px", color: "#49167E", fontWeight: "600"}}>Download Report</p>
             <div className="flx tab-btn-group mb-3">
-                <TabBtn active={location.state.subPath === "batch"} onClick={() => navigate("/report", { state: { title: 'Report', subTitle: "Batch", subPath: "batch" } })}>Batch</TabBtn>
-                <TabBtn active={location.state.subPath === "course"} onClick={() => navigate("/report/course", { state: { title: 'Report', subTitle: "Course", subPath: "course" } })}>Course</TabBtn>
-               {user.role !== "user" &&  <TabBtn active={location.state.subPath === "participants"} onClick={() => navigate("/report/participants", { state: { title: 'Report', subTitle: "Participants", subPath: "participants" } })}>Participants</TabBtn>}
-               {user.role !== "user" &&  <TabBtn active={location.state.subPath === "download"} onClick={() => navigate("/report/download", { state: { title: 'Report', subTitle: "Download", subPath: "download" } })}>Download</TabBtn>}
+                {/* <TabBtn active={location.state.subPath === "batch"} onClick={() => navigate("/report", { state: { title: 'Report', subTitle: "Batch", subPath: "batch" } })}>Batch</TabBtn> */}
+                {/* <TabBtn active={location.state.subPath === "download"} onClick={() => navigate("/report", { state: { title: 'Report', subTitle: "Download", subPath: "download" } })}>Download</TabBtn> */}
+                {/* <TabBtn active={location.state.subPath === "course"} onClick={() => navigate("/report/course", { state: { title: 'Report', subTitle: "Course", subPath: "course" } })}>Course</TabBtn>
+               {user.role !== "user" &&  <TabBtn active={location.state.subPath === "participants"} onClick={() => navigate("/report/participants", { state: { title: 'Report', subTitle: "Participants", subPath: "participants" } })}>Participants</TabBtn>} */}
+               {/* {user.role !== "user" &&  <TabBtn active={location.state.subPath === "download"} onClick={() => navigate("/report/download", { state: { title: 'Report', subTitle: "Download", subPath: "download" } })}>Download</TabBtn>} */}
 
             </div>
             <Router>
-                <Batch path="/" />
+                {/* <Batch path="/" />
                 <Course path="course" />
-                <Participants path="participants" />
-                <ReportDownload path="download" />
+                <Participants path="participants" /> */}
+                <ReportDownload path="/" />
             </Router>
         </div>)
 }
 export default Report
 
-const Batch = ({ label = "Progress Overview" }) => {
-    return (<>
-        <div className="report-container">
-            <div className="chart-report">
-                <div className="mb-3">{label}</div>
-                <ReportChart ChartType="report" labelLeft="Employee percentile" />
-            </div>
-            <div className="report-action">
-                <div className="action-list action-list-top ">
-                    <div className="aic">{ICN_BOOK}</div>
-                    <div className="text-center">
-                        <div className="title-lg">ITU_1</div>
-                        <div>Explore More</div>
-                    </div>
-                </div>
-                <div className="action-list">
-                    <div className="text-center">
-                        <div>Progress</div>
-                        <div>{ICN_PROGRESS}</div>
-                    </div>
-                    <div>
-                        <div className="title-lg">60%</div>
-                    </div>
-                </div>
-                <div className="action-list">
-                    <div className="text-center">
-                        <div>Score</div>
-                        <div>{ICN_STORE}</div>
-                    </div>
-                    <div className="text-center">
-                        <div className="title-lg">65%</div>
-                    </div>
-                </div>
-                <div className="action-list">
-                    <div className="text-center">
-                        <div >Lab</div>
-                        <div>{ICN_LIBRARY}</div>
-                    </div>
-                    <div>
-                        <div className="title-lg">60%</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </>)
-}
+// const Batch = ({ label = "Progress Overview" }) => {
+//     return (<>
+//         <div className="report-container">
+//             <div className="chart-report">
+//                 <div className="mb-3">{label}</div>
+//                 <ReportChart ChartType="report" labelLeft="Employee percentile" />
+//             </div>
+//             <div className="report-action">
+//                 <div className="action-list action-list-top ">
+//                     <div className="aic">{ICN_BOOK}</div>
+//                     <div className="text-center">
+//                         <div className="title-lg">ITU_1</div>
+//                         <div>Explore More</div>
+//                     </div>
+//                 </div>
+//                 <div className="action-list">
+//                     <div className="text-center">
+//                         <div>Progress</div>
+//                         <div>{ICN_PROGRESS}</div>
+//                     </div>
+//                     <div>
+//                         <div className="title-lg">60%</div>
+//                     </div>
+//                 </div>
+//                 <div className="action-list">
+//                     <div className="text-center">
+//                         <div>Score</div>
+//                         <div>{ICN_STORE}</div>
+//                     </div>
+//                     <div className="text-center">
+//                         <div className="title-lg">65%</div>
+//                     </div>
+//                 </div>
+//                 <div className="action-list">
+//                     <div className="text-center">
+//                         <div >Lab</div>
+//                         <div>{ICN_LIBRARY}</div>
+//                     </div>
+//                     <div>
+//                         <div className="title-lg">60%</div>
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+//     </>)
+// }
 
-const Course = () => {
-    return (<>
-        <Batch label="Technology Overview" />
-    </>)
-}
+// const Course = () => {
+//     return (<>
+//         <Batch label="Technology Overview" />
+//     </>)
+// }
 
-const Participants = () => {
-    return (<>
-        <Batch label="Participants Overview" />
-    </>)
-}
+// const Participants = () => {
+//     return (<>
+//         <Batch label="Participants Overview" />
+//     </>)
+// }
 

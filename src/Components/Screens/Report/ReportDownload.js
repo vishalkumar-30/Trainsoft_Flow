@@ -227,7 +227,6 @@ const ReportDownload = () => {
 
     }, []);
 
-
     return (<>
         <div className='col-6'>
             <label className="mb-2 label form-label ">Report Type</label>
@@ -320,8 +319,8 @@ const ReportDownload = () => {
         {
             reportName === "5A62C2B0C2BD382348C692CB9C4F61C2B1C2BCC2B5E280BAC2B356C2B35EC2AE374E416DC592E280B073C38036C5BEC2B2C391" ?
 
-            <p className='ml-4 mb-2 label form-label'>Coming Soon</p>
-            :''
+                <p className='ml-4 mb-2 label form-label'>Coming Soon</p>
+                : ''
         }
 
         {
@@ -373,7 +372,6 @@ const ReportDownload = () => {
                                                         )
                                                     })
                                                 }
-
                                             </select>
                                             <div className=" mt-2">
                                                 <Button type="submit" className=" mr-2 px-4">Generate Report {DOWNLOAD_ICON} </Button>
@@ -389,7 +387,7 @@ const ReportDownload = () => {
                     </>)}
                 </Formik>
                 : ""}
-        
+
         {
             reportName === "E2809DC3BE07C3A22F414E22C28D57C3B32A74C39304C3A3C2BA40C2A903764242C2B5CB8632C38441657FC38AC385" ?
 
@@ -442,22 +440,22 @@ const ReportDownload = () => {
                                                 }
 
                                             </select>
-                                         
+
 
                                         </div>
-                                       
+
                                     </>
 
                                 </div>
-                        
+
                             </div>
                             <div className='row'>
-                            <div className=" mt-2">
-                                                <Button type="submit" className=" mr-2 px-4">Generate Report {DOWNLOAD_ICON} </Button>
-                                            </div>
+                                <div className=" mt-2">
+                                    <Button type="submit" className=" mr-2 px-4">Generate Report {DOWNLOAD_ICON} </Button>
+                                </div>
                             </div>
 
-                           
+
                         </form>
                     </>)}
                 </Formik>
@@ -487,7 +485,7 @@ const ReportDownload = () => {
                     </>)}
                 </Formik>
                 : ""}
-            
+
     </>)
 }
 export default ReportDownload
