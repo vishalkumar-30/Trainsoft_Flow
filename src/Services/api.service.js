@@ -52,6 +52,8 @@ const RestService = {
   getCompletedCourses: (trainingsid) => AxiosService.get(GLOBELCONSTANT.COURSE.GET_COMPLETED_COURSES + `training-sid=${trainingsid}`),
   cloneCourseAndContents: (coursesid) => AxiosService.patch(GLOBELCONSTANT.COURSE.CLONE_COURSE_AND_CONTENTS + `?course-sid=${coursesid}`),
   updateCourseContent: (payload) => AxiosService.post(GLOBELCONSTANT.COURSE.UPDATE_COURSE_CONTENT, payload),
+  deleteCourseContent: (contentSid, sectionSid) => AxiosService.delete(GLOBELCONSTANT.COURSE.DELETE_COURSE_CONTENT + `?course-content-sid=${contentSid}&course-section-sid=${sectionSid}`),
+  deleteCourseSection: (sectionSid) => AxiosService.delete(GLOBELCONSTANT.COURSE.DELETE_COURSE_SECTION + `?section-sid=${sectionSid}`),
 
 
   //batches

@@ -4,7 +4,7 @@ import { Link, Router } from "../../Common/Router";
 import { BsModal } from "../../Common/BsUtils";
 import moment from 'moment';
 import { ICN_TRASH, ICN_EDIT, ICN_UPLOAD } from "../../Common/Icon";
-import { Button, Cancel } from "../../Common/Buttons/Buttons"
+import { Button, Cancel, ButtonDelete } from "../../Common/Buttons/Buttons"
 import { TextArea, DateInput, TimeInput, TextInput, SelectInput } from "../../Common/InputField/InputField"
 import CardHeader from '../../Common/CardHeader'
 import SessionList from '../../Common/SessionList/SessionList'
@@ -48,7 +48,7 @@ const CourseDetails = ({ location }) => {
     const [categorieList, setCategorieList] = useState([]);
     const [topics, setTopics] = useState([]);
     const [assessment, setAssessments] = useState([]);
-    
+  
     //validation
     const schema = Yup.object().shape({
         topicDescription: Yup.string()
@@ -87,7 +87,9 @@ const CourseDetails = ({ location }) => {
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
-                render: (data) => data.contentName
+                render: (data) => 
+                data.contentName
+
             },
             // "description": {
             //     "title": "Description",
@@ -122,7 +124,7 @@ const CourseDetails = ({ location }) => {
             {
                 "title": "Delete",
                 "icon": ICN_TRASH,
-                // "onClick": (data) => deleteCourse(data.sid)
+                "onClick": (data) => deleteCourseContent(data.sid, data.sectionSid)
             }
         ],
         actionCustomClass: "no-chev esc-btn-dropdown", // user can pass their own custom className name to add/remove some css style on action button
@@ -140,14 +142,15 @@ const CourseDetails = ({ location }) => {
     const getSection = async () => {
         try {
             let courseSid = location.state.sid;
-            console.log(courseSid)
             spinner.show();
             RestService.getAllSectionsAndCourseContents(courseSid).then(
                 response => {
                     if (response.status === 200) {
                         setSessionList(response.data.courseSectionResponseTO);
                     }
-                    console.log(response.status)
+                    else if(response.status === 204){
+                        setSessionList([]);
+                    }
                 },
                 err => {
                     spinner.hide();
@@ -553,8 +556,8 @@ const CourseDetails = ({ location }) => {
         }
     }
 
-     // get All Assessments
-     const getAllAssessmentsInATopic = (topicSid) => {
+    // get All Assessments
+    const getAllAssessmentsInATopic = (topicSid) => {
         try {
             spinner.show();
             RestService.getAllAssessmentsInATopic(topicSid).then(
@@ -593,7 +596,39 @@ const CourseDetails = ({ location }) => {
             console.error('error occur on addAssessmentToCourse', err)
         }
     }
-    
+
+    //delete course content
+    const deleteCourseContent = (contentSid, sectionSid) => {
+        try {
+            spinner.show();
+            RestService.deleteCourseContent(contentSid, sectionSid).then(res => {
+                Toast.success({ message: `Content deleted successfully` });
+                spinner.hide();
+                getSection();
+            }, err => console.log(err)
+            );
+        }
+        catch (err) {
+            console.error('error occur on deleteCourseContent', err)
+        }
+    }
+
+    //delete course section
+    const deleteCourseSection = (sectionSid) => {
+        try {
+            spinner.show();
+            RestService.deleteCourseSection(sectionSid).then(res => {
+                Toast.success({ message: `Section deleted successfully` });
+                spinner.hide();
+                //window.location.reload(true);
+                getSection();
+            }, err => console.log(err)
+            );
+        }
+        catch (err) {
+            console.error('error occur on deleteCourseSection', err)
+        }
+    }
     
     useEffect(() => {
         getSection();
@@ -602,6 +637,7 @@ const CourseDetails = ({ location }) => {
         getAllTopics();
     }, [])
 
+    console.log(sessionList);
     return (<>
         <div className="table-shadow p-3 pb-5">
             <CardHeader {...{
@@ -746,7 +782,7 @@ const CourseDetails = ({ location }) => {
                                                 </div>
                                             )}
                                         <div className="text-right mt-2" >
-                                            {showhide === '3' || showhide === '4' ||showhide === '5' ? "" : <Button type="submit" className=" px-4">{isEdit ? "Update" : "Add"} </Button>}
+                                            {showhide === '3' || showhide === '4' || showhide === '5' ? "" : <Button type="submit" className=" px-4">{isEdit ? "Update" : "Add"} </Button>}
 
                                         </div>
                                     </form>
@@ -830,28 +866,25 @@ const CourseDetails = ({ location }) => {
                                                     <div className="row mb-3 mx-1">
 
                                                         {/* <TextInput name="assets" label="Assets" /> */}
-                                                    
+
                                                         <div className="col-6" >
-                                                                <label className="mb-2 label form-label ">Lab Category</label>
+                                                            <label className="mb-2 label form-label ">Lab Category</label>
                                                             <div className="input-wrapper">
 
-                                                                <select className="form-control"  style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => filterAccountLabs(e.target.value)}>
-                                                                <option value=""disabled selected hidden>Select Lab Category</option>
+                                                                <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => filterAccountLabs(e.target.value)}>
+                                                                    <option value="" disabled selected hidden>Select Lab Category</option>
                                                                     {
                                                                         categorieList.map((item) => {
-                                                                            return(
+                                                                            return (
                                                                                 <>
-                                                                                     <option value={item}>{item}</option>
+                                                                                    <option value={item}>{item}</option>
                                                                                 </>
                                                                             )
                                                                         })
                                                                     }
-                                                                
+
                                                                 </select>
-
                                                             </div>
-
-
                                                             {/* <SelectInput label="Lab-Category" option={categorieList} /> */}
                                                         </div>
                                                         <div className="col-6" >
@@ -885,30 +918,27 @@ const CourseDetails = ({ location }) => {
                                                     <div className="row mb-3 mx-1">
 
                                                         {/* <TextInput name="assets" label="Assets" /> */}
-                                                    
+
                                                         <div className="col-6" >
-                                                                <label className="mb-2 label form-label ">Topics</label>
-                                                                {/* <div className="col-6" >
+                                                            <label className="mb-2 label form-label ">Topics</label>
+                                                            {/* <div className="col-6" >
                                                                 <SelectInput label="Topic" bindKey="topicName" value={values.topicSid} payloadKey="topicSid" name="topicName" option={topics} onChange={e => {hello(e.target.value)}}/>
                                                             </div> */}
                                                             <div className="input-wrapper">
 
-                                                                <select className="form-control"  style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => getAllAssessmentsInATopic(e.target.value)}>
-                                                                <option value=""disabled selected hidden>Select Topic</option>
+                                                                <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => getAllAssessmentsInATopic(e.target.value)}>
+                                                                    <option value="" disabled selected hidden>Select Topic</option>
                                                                     {
                                                                         topics.map((item) => {
-                                                                            return(
+                                                                            return (
                                                                                 <>
-                                                                                     <option value={item.topicSid}>{item.topicName}</option>
+                                                                                    <option value={item.topicSid}>{item.topicName}</option>
                                                                                 </>
                                                                             )
                                                                         })
                                                                     }
-                                                                
                                                                 </select>
-
                                                             </div>
-
 
                                                             {/* <SelectInput label="Lab-Category" option={categorieList} /> */}
                                                         </div>
@@ -931,10 +961,6 @@ const CourseDetails = ({ location }) => {
                     </BsModal>
             }
 
-
-
-
-
             {/* <DynamicTable {...{ configuration, sourceData: sessionList, onPageChange: (e) => getSection(e) }} /> */}
             <div style={{ width: "100%", background: "#FAFAFA", borderRadius: "10px" }}>
                 {sessionList.map((item) => {
@@ -946,6 +972,10 @@ const CourseDetails = ({ location }) => {
                                     setShow(true); setContentType("Add Content"); setSectionSid(item.sid); setShowhide(""); setIsEdit(false); setType(''); setAccountLabs('')
 
                                 }}>Add Content</Button>
+
+                                <ButtonDelete className="mb-2 float-right" onClick={()=> deleteCourseSection(item.sid)}>Delete Section</ButtonDelete>
+
+
                                 <DynamicTable  {...{ configuration, sourceData: item.courseContentResposeTOList, onPageChange: (e) => getSection(e) }} />
                             </DropdownItem>
                         </>

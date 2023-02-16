@@ -21,6 +21,7 @@ import Labs from "./Components/Screens/Training/Labs/Labs";
 
 function App() {
    const {spinner} = useContext(AppContext);
+   const user = JSON.parse(localStorage.getItem('user'));
    
   return (<>
       <Spinner value={spinner}/>
@@ -30,7 +31,10 @@ function App() {
             <LandingHome path="/"/>
             <Assessment path="/assessment/:assessmentSid/:companySid/:virtualAccountSid" />
             {
-               localStorage.getItem('REACTAPP.TOKEN') ? <Redirect from="/login" to="/dashboard" noThrow /> : 
+               localStorage.getItem('REACTAPP.TOKEN') && user.role === "SUPERVISOR" ? <Redirect from="/login" to="/dashboard" noThrow /> :
+               localStorage.getItem('REACTAPP.TOKEN') && user.role === "INSTRUCTOR"? <Redirect from="/login" to="/instdashboard" noThrow /> : 
+               localStorage.getItem('REACTAPP.TOKEN') && user.role === "LEARNER"? <Redirect from="/login" to="/home" noThrow /> :
+
                <Login path="/login"/>
             }
             <PrivateRoute component={MeetingClose} path="zoomclose" />

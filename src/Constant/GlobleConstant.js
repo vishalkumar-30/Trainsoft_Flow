@@ -102,7 +102,9 @@ const GLOBELCONSTANT = {
         MARK_COURSE_COMPLETED: API_HOST_V2 + "mark-course-completed?",
         CLONE_COURSE_AND_CONTENTS: API_HOST_V2 + "clone-course-and-contents",
         UPDATE_COURSE_CONTENT: API_HOST_V2 + "update-course-content",
-        BULK_CREATE_COURSE_SECTION_AND_CONTENT: API_HOST_V2 + "bulk-create-course-section-and-content"
+        BULK_CREATE_COURSE_SECTION_AND_CONTENT: API_HOST_V2 + "bulk-create-course-section-and-content",
+        DELETE_COURSE_CONTENT: API_HOST_V2 + "delete-course-content",
+        DELETE_COURSE_SECTION: API_HOST_V2 + "delete-course-section"
     },
     BATCHES: {
         GET_BATCH_SID: API_HOST + 'batch/{batchSid}',
@@ -300,9 +302,9 @@ const GLOBELCONSTANT = {
         LEARNER: "LEARNER",
         ASSESS_USER: "ASSESS_USER"
     },
-    SAMPLE_TEMPLATE: "https://sessionassests.s3.ap-south-1.amazonaws.com/User_Upload_template.xlsx",
+    SAMPLE_TEMPLATE: "https://course-content-storage.s3.amazonaws.com/User_Upload_template.xlsx",
     UPLOAD_ASSES_TEMPLATE: "https://sessionassests.s3.ap-south-1.amazonaws.com/Assement_User_Upload_template.xlsx",
-    UPLOAD_QUESTION_TEMPLES: "https://sessionassests.s3.ap-south-1.amazonaws.com/BulkQuestion_Templete.csv",
+    UPLOAD_QUESTION_TEMPLES: "https://course-content-storage.s3.amazonaws.com/BulkQuestion_Template.csv",
     QUILL: {
         toolbar: [
             [{ font: [] }, { 'header': [1, 2, 3, 4, 5, 6, false] }],

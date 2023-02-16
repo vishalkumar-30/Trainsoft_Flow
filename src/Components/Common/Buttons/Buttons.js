@@ -38,6 +38,11 @@ export const Button = ({ children, className='', onClick, type = "button", disab
     </>)
 }
 
+export const ButtonDelete = ({ children, className='', onClick, type = "button", disabled = false, name = "Submit" }) => {
+    return (<>
+        <button  style={{borderRadius:"20px"}} type={type} onClick={onClick} disabled={disabled} className={"btn btn-sm btn-danger px-3 " + className}>{!children && name} {children}</button>
+    </>)
+}
 /*
     Common button 
     @param {Objects} className - optional className for Cancel
