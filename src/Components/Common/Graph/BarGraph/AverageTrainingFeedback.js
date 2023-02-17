@@ -66,11 +66,11 @@ const AverageTrainingFeedback = () => {
 
   const getIntroOfPage = (label) => {
     if (label === "Completed") {
-      let msg = `Total Training: ${avgTrainingFeedbackCompleted.trainingCount}`;
+      let msg = `Total Completed Training: ${avgTrainingFeedbackCompleted.trainingCount}`;
       return msg;
     }
     if (label === "Ongoing") {
-      let msg = `Total Training: ${avgTrainingFeedbackOnGoing.trainingCount}`;
+      let msg = `Total Ongoing Training: ${avgTrainingFeedbackOnGoing.trainingCount}`;
       return msg;
     }
 
@@ -110,7 +110,7 @@ const AverageTrainingFeedback = () => {
         <Label value="Training" offset={-20} position="insideBottom" />
       </XAxis>
       <YAxis label={{ value: 'Rating', angle: -90, position: 'insideLeft' }} />
-      <Tooltip content={<CustomTooltip />} cursor={false} wrapperStyle={{ width: 130, backgroundColor: `{data.fill}` }} />
+      <Tooltip content={<CustomTooltip />}  wrapperStyle={{ width: 100, backgroundColor: `{data.fill}` }} />
 
       <Bar dataKey="rating" fill="fill" />
     </BarChart>

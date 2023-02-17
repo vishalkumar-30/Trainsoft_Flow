@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import AppContext from '../../../../Store/AppContext';
 import RestService from '../../../../Services/api.service';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Label } from "recharts";
+import {Tooltip, LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Label } from "recharts";
 
 export default function AverageAssesmentscore() {
 
@@ -61,6 +61,7 @@ export default function AverageAssesmentscore() {
 
             }}
           />
+            <Tooltip />
 
           <Line
    
