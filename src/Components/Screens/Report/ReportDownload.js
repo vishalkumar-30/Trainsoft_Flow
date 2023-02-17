@@ -257,7 +257,7 @@ const ReportDownload = () => {
                     onSubmit={(values) => generateReport()}>
                     {({ handleSubmit }) => (<>
                         <form onSubmit={handleSubmit} className="my-3">
-                            <div className='row mx-3'>
+                            <div className='row ml-2'>
                                 <div className="jcc">
                                     <><div className='col'>
                                         <label className="mb-2 label form-label ">Training</label>
@@ -278,7 +278,7 @@ const ReportDownload = () => {
 
                                         </select>
                                     </div>
-                                        <div>
+                                      
                                             <div className='row'>
                                                 <div className='col-6'>
                                                     <label className="mb-2 label form-label ">Assessment</label>
@@ -301,17 +301,18 @@ const ReportDownload = () => {
                                                 </div>
                                                 <div className='col-6'>
                                                     <label for="fname">Pass Percentage:</label>
-                                                    <input type="text" value={passPercentage} onChange={e => setPassPercentage(e.target.value)} className="form-control" />
+                                                    <input type="text" value={passPercentage} onChange={e => setPassPercentage(e.target.value)} className="form-control" style={{borderRadius:"20px", background:"#F8FAFB"}} />
                                                 </div>
-                                                <div className=" mt-5">
-                                                    <Button type="submit" className=" mr-2 px-4">Generate Report {DOWNLOAD_ICON} </Button>
-                                                </div>
+                                               
                                             </div>
-                                        </div>
+                                       
                                     </>
 
                                 </div>
                             </div>
+                            <div className=" mt-5 ml-4">
+                                                    <Button type="submit" className="  px-4">Generate Report {DOWNLOAD_ICON} </Button>
+                                                </div>
                         </form>
                     </>)}
                 </Formik>
@@ -332,8 +333,8 @@ const ReportDownload = () => {
                     }}
                     onSubmit={(values) => generateLabReport()}>
                     {({ handleSubmit, values }) => (<>
-                        <form onSubmit={handleSubmit} className="my-5">
-                            <div className='row'>
+                        <form onSubmit={handleSubmit} className="my-3">
+                            <div className='row ml-2'>
                                 <div className="jcc">
                                     <>
                                         <div className='col'>
@@ -373,9 +374,7 @@ const ReportDownload = () => {
                                                     })
                                                 }
                                             </select>
-                                            <div className=" mt-2">
-                                                <Button type="submit" className=" mr-2 px-4">Generate Report {DOWNLOAD_ICON} </Button>
-                                            </div>
+                                           
 
                                         </div>
                                     </>
@@ -383,6 +382,9 @@ const ReportDownload = () => {
                                 </div>
 
                             </div>
+                            <div className=" mt-5 ml-4">
+                                                <Button type="submit" className=" px-4">Generate Report {DOWNLOAD_ICON} </Button>
+                                            </div>
                         </form>
                     </>)}
                 </Formik>
@@ -398,7 +400,7 @@ const ReportDownload = () => {
                     onSubmit={(values) => generateLabReport()}>
                     {({ handleSubmit, values }) => (<>
                         <form onSubmit={handleSubmit} className="my-3">
-                            <div className='row'>
+                            <div className='row ml-2'>
                                 <div className="jcc">
                                     <>
                                         <div className='col'>
@@ -449,11 +451,11 @@ const ReportDownload = () => {
                                 </div>
 
                             </div>
-                            <div className='row'>
-                                <div className=" mt-2">
-                                    <Button type="submit" className=" mr-2 px-4">Generate Report {DOWNLOAD_ICON} </Button>
+                           
+                                <div className=" mt-5 ml-4">
+                                    <Button type="submit" className="px-4">Generate Report {DOWNLOAD_ICON} </Button>
                                 </div>
-                            </div>
+                          
 
 
                         </form>
@@ -472,7 +474,7 @@ const ReportDownload = () => {
                     }}
                     onSubmit={(values) => generateThreeReport()}>
                     {({ handleSubmit, values }) => (<>
-                        <form onSubmit={handleSubmit} className="my-5">
+                        <form onSubmit={handleSubmit} className="my-3">
 
                             <div className='row'>
                                 <div className="jcc">
