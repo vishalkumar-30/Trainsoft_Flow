@@ -173,6 +173,9 @@ const GLOBELCONSTANT = {
         STOP_EC2_INSTANCE_AND_TERMINATE_GUACAMOLE_SERVER: API_HOST_V2 + "stop-instance",
         TERMINATE_EC2_INSTANCE_AND_TERMINATE_GUACAMOLE_SERVER: API_HOST_V2 + "terminate-instance"
     },
+    SUPPORT: {
+        SUBMIT_TICKET: API_HOST_V2 + "submit-ticket"
+    },
     API: {
         ASSESSMENT: {
             GET_ASSESSMENT_BY_SID: ASSESSMENT_V1 + "assessment/",

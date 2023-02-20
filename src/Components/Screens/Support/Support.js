@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { BtnPrimary, TabBtn } from "../../Common/Buttons/Buttons";
 import SearchBox from "../../Common/SearchBox/SearchBox"
 import { ICN_TRASH, ICN_EDIT } from "../../Common/Icon";
@@ -14,48 +14,12 @@ import moment from 'moment'
 import { Helmet } from "react-helmet";
 import { BsCheckbox } from '../../Common/BsUtils';
 import axios from 'axios';
+import RestService from '../../../Services/api.service';
+import useToast from '../../../Store/ToastHook';
+import AppContext from '../../../Store/AppContext';
+import '../../Common/InputField/inputField.css';
 
 const Support = ({ location }) => {
-    const [subtypes, setSubTypes] = useState([]);
-
-    //get sub types
-    const getSupportTypeAndSubTypes = () => {
-
-        axios.get('http://3.109.158.95:8089/insled/v2/get-support-types-sub-types',
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-
-                setSubTypes(response.data);
-                // console.log(response.data);
-                // for(let i =0; i<response.data.length; i++){
-                //     // console.log(response.data[i].subTypes.length);
-                //     for(let j =0; j<response.data[i].subTypes.length; j++){
-                //         setTypes(types => [...types, response.data[i].subTypes[j].typeName ])
-                //         // types.push(response.data[i].subTypes[j].typeName);
-                //         // console.log(response.data[i].subTypes[j].typeName)
-                //         // if(response.data[i].subTypes === "Operational"){
-                //         //     types.push(response.data[i].subTypes[j].typeName);
-                            
-                //         // }
-                //         // else{
-                //         //     types.push(response.data[i].subTypes[j].typeName);
-                //         // }
-                //     }
-                    
-                // }
-            })
-            .catch(err => console.error("YO YOU GOT AN ERROR IN getSupportTypeAndSubTypes() ", err))
-    }
-
-    useEffect(()=>{
-        getSupportTypeAndSubTypes();
-    }, []);
-
-    console.log(subtypes);
     return (<>
         <Helmet>
             {/* <title>Support</title> */}
@@ -64,11 +28,11 @@ const Support = ({ location }) => {
         <div className="table-shadow p-3">
             <CardHeader {...{ location }} />
             <div className="flx storeTab-shadow mb-3">
-                <TabBtn active={location.state.subPath === "support"} onClick={() => navigate("/support", { state: { title: 'SUPPORT', subTitle: "", subPath: "support" } })}>Raise a ticket</TabBtn>
+                <TabBtn active={location.state.subPath === "support"} onClick={() => navigate("/support/ticket", { state: { title: 'SUPPORT', subTitle: "", subPath: "support" } })}>Raise a ticket</TabBtn>
                 <TabBtn active={location.state.subPath === "history"} onClick={() => navigate("/support/history", { state: { title: 'SUPPORT', subTitle: "History", subPath: "history" } })}>History</TabBtn>
             </div>
             <Router>
-                <SupportContainer path="/" />
+                <SupportContainer path="/ticket" />
                 <SupportHistory path="history" />
             </Router>
 
@@ -78,25 +42,126 @@ const Support = ({ location }) => {
 export default Support
 
 const SupportContainer = ({ location }) => {
+
+    const [typeList, setTypeList] = useState([]);
+    const [types, setTypes] = useState('');
+    const [subTypes, setSubTypes] = useState('');
+    const [subject, setSubject] = useState('');
+    const [problemDescription, setProblemDescription] = useState('');
+    const Toast = useToast();
+    const { spinner } = useContext(AppContext);
+    let subtypes = [];
+
+    //get sub types
+    const getSupportTypeAndSubTypes = () => {
+
+        axios.get('http://15.207.110.45:8089/insled/v2/get-support-types-sub-types',
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+
+                setTypeList(response.data);
+
+            })
+            .catch(err => console.error("YO YOU GOT AN ERROR IN getSupportTypeAndSubTypes() ", err))
+    }
+
+    // submit ticket
+    const submitSupportTicket = () => {
+        try {
+            let payload = {
+                "problemDescription": problemDescription,
+                "subType": subTypes,
+                "subject": subject,
+                "type": types
+            }
+            // if (subTypes === "Batch" || subTypes === "Calendar" || subTypes === "Reports") {
+            //     payload.type = "Operational"
+            // }
+            // else if (subTypes === "Lab Store" || subTypes === "VS Code" || subTypes === "Course Content"
+            //     || subTypes === "Zoom" || subTypes === "Compiler") {
+            //     payload.type = "Technical"
+            // }
+
+            spinner.show();
+            RestService.submitSupportTicket(payload).then(res => {
+                Toast.success({ message: `Ticket Raised Successfully` });
+                spinner.hide();
+                setProblemDescription('');
+                setSubject('');
+                setSubTypes('');
+            }, err => console.log(err)
+            );
+        }
+        catch (err) {
+            console.error('error occur on submitSupportTicket', err)
+        }
+    }
+
+    typeList.map((i) => {
+        return (
+            i.subTypes.map((j) => {
+                return (
+                    subtypes.push({
+                        "subtype": j.typeName,
+                        "type": `${i.typeName},${j.typeName}`
+                    })
+                )
+            })
+        )
+    })
+
+    useEffect(() => {
+        getSupportTypeAndSubTypes();
+    }, []);
+
+    console.log(types);
+
     return (<div className="">
 
         <div className="row">
             <div className="col-md-6">
                 <Formik
                     initialValues={{
-                        "ticketType": '',
                         "subject": '',
-                        "description": ''
                     }}
                     // validationSchema={schema}
-                    onSubmit={(values) => console.log(values)}>
+                    onSubmit={(values) => submitSupportTicket()}>
                     {({ handleSubmit }) => (<>
                         <form onSubmit={handleSubmit}>
-                            <SelectInput name="ticketType" label="Ticket Type" option={['Course', "Calender", 'Reports', 'Lab Store', 'VS Code', 'Compiler']} />
-                            <TextInput name="subject" label="subject" />
-                            <TextArea name="description" label="Problem description" />
+                            <label className="mb-2 label form-label ">Ticket Type</label>
+                            <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
+                                setSubTypes(e.target.value.split(',')[1]);
+                                setTypes(e.target.value.split(',')[0]);
+
+                            }}>
+                                <option selected="true" disabled="disabled">Select Ticket Types</option>
+                                {
+                                    subtypes.map((item) => {
+
+                                        return (
+                                            <>
+                                                <option value={item.type}>{item.subtype}</option>
+                                            </>
+                                        )
+                                    })
+                                }
+                            </select>
+                            {/* <SelectInput name="ticketType" label="Ticket Type" option={['Course', "Calender", 'Reports', 'Lab Store', 'VS Code', 'Compiler']} /> */}
+                            <label className="mb-2 label form-label ">Subject</label>
+                            <input type="text" className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} value={subject} onChange={e => setSubject(e.target.value)} />
+                            {/* <TextInput name="subject" label="subject" /> */}
+                            <label className="mb-2 label form-label ">Problem description</label>
+                            <div className='input-field'>
+                                <textarea className="form-control form-control-sm" value={problemDescription} onChange={e => setProblemDescription(e.target.value)} />
+                            </div>
+
+                            {/* <TextArea name="description" label="Problem description" /> */}
                             <div className="text-right mt-4">
-                                <Button type="submit" className="px-4">Submit</Button>
+                                <Button type="submit" disabled={subTypes.length === 0 || subject.length <= 5 || problemDescription.length <= 5} className="px-4">Submit</Button>
                             </div>
                         </form>
                     </>)}
