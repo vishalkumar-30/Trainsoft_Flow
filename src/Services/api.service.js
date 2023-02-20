@@ -227,7 +227,10 @@ const RestService = {
   generateReport: (assessmentSid, instructor, labId, passPercentage, reportName, trainingSid) => AxiosService.patch(GLOBELCONSTANT.REPORT.GENERATE_REPORT + `?assessment=${assessmentSid}&instructor=${instructor}&lab=${labId}&pass-percentage=${passPercentage}&report-type=${reportName}&training=${trainingSid}`),
 
   //get instructor
-  getInstructor: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR.GET_INSTRUCTOR)
+  getInstructor: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR.GET_INSTRUCTOR),
+
+  //support
+  submitSupportTicket: (payload) => AxiosService.post(GLOBELCONSTANT.SUPPORT.SUBMIT_TICKET, payload)
 };
 
 
