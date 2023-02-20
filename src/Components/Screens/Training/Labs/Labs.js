@@ -196,8 +196,8 @@ function Labs(props) {
     console.log(labDuration);
 
     return (
-        <div style={{ background: "gray" }}>
-            <div className="row" style={{height:"100%"}}>
+        <div >
+            <div className="labbody vh-100 " >
 
                 <div className="col-3 jumbotron pl-5 lab" >
                
@@ -226,7 +226,7 @@ function Labs(props) {
                 
                     {/* <p>Lab Solution : &nbsp; {labSolution}</p><br /> */}
                 </div>
-                <div className="col-9" style={{ background: "black" }}>
+                <div className="col-9 mainbody" style={{ background: "black" }}>
                     {/* labbacimg */}
                     <div className=" row ml-1"  >
                         <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "18px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>

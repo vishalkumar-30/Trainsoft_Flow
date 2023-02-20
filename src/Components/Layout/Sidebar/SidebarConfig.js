@@ -114,6 +114,37 @@ export const AdminConfig = [
             }
         ]
     },
+
+// tickets 
+
+{
+    icon: ICN_LAB_STORE,
+    title: "Ticket",
+    pathname: "Ticket",
+    subPath:'openticket',
+    disabled: false,
+    role:[GLOBELCONSTANT.ROLE.SUPERVISOR],
+    Children: [
+        {
+            title: "OpenTicket",
+            pathName:'openticket',
+            disabled: false,
+        },
+        {
+            title: "My Ticket",
+            pathName:'myticket',
+            disabled: false,
+        }
+    ]
+},
+
+
+
+
+
+
+
+
     {
         icon: ICN_REPORT,
         title: "Report",
@@ -157,6 +188,7 @@ export const AdminConfig = [
         disabled: true,
         role: [GLOBELCONSTANT.ROLE.ASSESS_USER]
     },
+    
    
     // {
     //     icon: ICN_VSCODE,

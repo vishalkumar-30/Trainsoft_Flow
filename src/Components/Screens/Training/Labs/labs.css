@@ -1,9 +1,23 @@
 .lab {
-    height: 800px;
-
+    height: 100vh;
+text-align: left;
     overflow-y: scroll;
   }
   
   /* .lab:hover {
     overflow-y: scroll;
   } */
+.mainbody{
+  height: 100vh;
+}
+
+.labbody {
+  display: flex;
+  flex-wrap: wrap;
+  
+}
+/* .labbaodyscreen{
+height: 100vh;
+} */
+
+
