@@ -1,18 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { BtnPrimary, TabBtn } from "../../Common/Buttons/Buttons";
-import SearchBox from "../../Common/SearchBox/SearchBox"
-import { ICN_TRASH, ICN_EDIT } from "../../Common/Icon";
 import { navigate, Router, Link } from "../../Common/Router";
 import { Formik } from "formik"
 import { Button } from "../../Common/Buttons/Buttons"
-import { TextArea } from "../../Common/InputField/InputField"
 import CardHeader from '../../Common/CardHeader'
-import { TextInput, SelectInput } from '../../Common/InputField/InputField'
 import "./style.css";
 import DynamicTable from "../../Common/DynamicTable/DynamicTable";
 import moment from 'moment'
 import { Helmet } from "react-helmet";
-import { BsCheckbox } from '../../Common/BsUtils';
 import axios from 'axios';
 import RestService from '../../../Services/api.service';
 import useToast from '../../../Store/ToastHook';
@@ -27,7 +22,7 @@ const Support = ({ location }) => {
         </Helmet>
         <div className="table-shadow p-3">
             <CardHeader {...{ location }} />
-            <div className="flx storeTab-shadow mb-3">
+            <div className="flx tab-btn-group mb-3">
                 <TabBtn active={location.state.subPath === "support"} onClick={() => navigate("/support/ticket", { state: { title: 'SUPPORT', subTitle: "", subPath: "support" } })}>Raise a ticket</TabBtn>
                 <TabBtn active={location.state.subPath === "history"} onClick={() => navigate("/support/history", { state: { title: 'SUPPORT', subTitle: "History", subPath: "history" } })}>History</TabBtn>
             </div>
@@ -41,7 +36,7 @@ const Support = ({ location }) => {
 }
 export default Support
 
-const SupportContainer = ({ location }) => {
+const SupportContainer = () => {
 
     const [typeList, setTypeList] = useState([]);
     const [types, setTypes] = useState('');
@@ -78,14 +73,6 @@ const SupportContainer = ({ location }) => {
                 "subject": subject,
                 "type": types
             }
-            // if (subTypes === "Batch" || subTypes === "Calendar" || subTypes === "Reports") {
-            //     payload.type = "Operational"
-            // }
-            // else if (subTypes === "Lab Store" || subTypes === "VS Code" || subTypes === "Course Content"
-            //     || subTypes === "Zoom" || subTypes === "Compiler") {
-            //     payload.type = "Technical"
-            // }
-
             spinner.show();
             RestService.submitSupportTicket(payload).then(res => {
                 Toast.success({ message: `Ticket Raised Successfully` });
@@ -118,7 +105,6 @@ const SupportContainer = ({ location }) => {
         getSupportTypeAndSubTypes();
     }, []);
 
-    console.log(types);
 
     return (<div className="">
 
@@ -150,16 +136,13 @@ const SupportContainer = ({ location }) => {
                                     })
                                 }
                             </select>
-                            {/* <SelectInput name="ticketType" label="Ticket Type" option={['Course', "Calender", 'Reports', 'Lab Store', 'VS Code', 'Compiler']} /> */}
+
                             <label className="mb-2 label form-label ">Subject</label>
                             <input type="text" className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} value={subject} onChange={e => setSubject(e.target.value)} />
-                            {/* <TextInput name="subject" label="subject" /> */}
                             <label className="mb-2 label form-label ">Problem description</label>
                             <div className='input-field'>
                                 <textarea className="form-control form-control-sm" value={problemDescription} onChange={e => setProblemDescription(e.target.value)} />
                             </div>
-
-                            {/* <TextArea name="description" label="Problem description" /> */}
                             <div className="text-right mt-4">
                                 <Button type="submit" disabled={subTypes.length === 0 || subject.length <= 5 || problemDescription.length <= 5} className="px-4">Submit</Button>
                             </div>
@@ -178,50 +161,58 @@ const SupportContainer = ({ location }) => {
 }
 
 const SupportHistory = ({ location }) => {
-    const value = [
-        { tid: '1232', ticketType: 'Course', raisedDate: '15/03/2021', creationDate: '15/03/2021', status: 'Completed' },
-        { tid: '1232', ticketType: 'Report', raisedDate: '15/03/2021', creationDate: '15/03/2021', status: 'Closed' },
-        { tid: '1232', ticketType: 'Batches', raisedDate: '15/03/2021', creationDate: '15/03/2021', status: 'In Progress' },
-        { tid: '1232', ticketType: 'Lab Store', raisedDate: '15/03/2021', creationDate: '15/03/2021', status: 'Open' },
-        { tid: '1232', ticketType: 'Course', raisedDate: '15/03/2021', creationDate: '15/03/2021', status: 'Completed' }
+    const [historyList, setHistoryList] = useState([]);
+    let status1 = "closed";
 
-    ]
+    //get user tickets by status
+    const getUserTicketsByStatus = (status1) => {
+
+        try {
+            RestService.getUserTicketsByStatus(status1).then(res => {
+                if (res.status === 200) {
+                    setHistoryList(res.data);
+                }
+            }, err => console.log(err)
+            );
+        }
+        catch (err) {
+            console.error('error occur on getUserTicketsByStatus', err)
+        }
+    }
+
     const [configuration, setConfiguration] = useState({
         columns: {
-            "tid": {
-                "title": "Ticket ID",
+            "ticketNumber": {
+                "title": "Ticket Number",
                 "sortDirection": null,
-                "sortEnabled": true,
-                isSearchEnabled: false,
-
+                "sortEnabled": true
             },
-            "ticketType": {
+            "subType": {
                 "title": "Ticket Type",
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
 
             },
-            "raisedDate": {
+            "createdOn": {
                 "title": "Raised Date",
                 "sortDirection": null,
                 "sortEnabled": true,
-                isSearchEnabled: false
+                isSearchEnabled: false,
+                render: (data) => data.createdOn.split('T')[0]
             }
             ,
-            "creationDate": {
-                "title": "Creation Date",
+            "subject": {
+                "title": "Subject",
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
-                render: (data) => moment(data.createdOn).format('Do MMMM YYYY')
             },
-            "status": {
-                "title": "Status",
+            "ticketOwnerName": {
+                "title": "Ticket Owner",
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
-                render: (data) => moment(data.createdOn).format('Do MMMM YYYY')
             }
         },
         headerTextColor: '#454E50', // user can change table header text color
@@ -233,18 +224,7 @@ const SupportHistory = ({ location }) => {
             configuration.sortDirection = configuration.columns[sortKey].sortDirection;
             setConfiguration({ ...configuration });
         },
-        actions: [
-            {
-                "title": "Edit",
-                "icon": ICN_EDIT,
-                "onClick": (data, i) => console.log(data)
-            },
-            {
-                "title": "Delete",
-                "icon": ICN_TRASH,
-                "onClick": (data, i) => console.log(data)
-            }
-        ],
+
         actionCustomClass: "no-chev esc-btn-dropdown", // user can pass their own custom className name to add/remove some css style on action button
         actionVariant: "", // user can pass action button variant like primary, dark, light,
         actionAlignment: true, // user can pass alignment property of dropdown menu by default it is alignLeft 
@@ -252,16 +232,47 @@ const SupportHistory = ({ location }) => {
         // this search is working for search enable fields(column) eg. isSearchEnabled: true, in tale column configuration
         searchQuery: "",
         tableCustomClass: "ng-table sort-enabled", // table custom class
-        showCheckbox: true,
         clearSelection: false
     });
+
+    useEffect(() => {
+        getUserTicketsByStatus(status1);
+    }, []);
+
     return (<div className="">
-        <div className="flx mb-3 ml-3">
-            <BsCheckbox label="Closed" id="Closed" />
-            <BsCheckbox className="mx-4" label="Open" id="open" />
-            <BsCheckbox label="In Progress" id="inProgress" />
+
+        <div className="aic mt-3 mb-3 " >
+            
+            <div class="form-check aic " style={{ fontSize: "15px" }} >
+
+                <input type="radio" id="closed" name="status" value="closed" defaultChecked onChange={e => {
+
+                    getUserTicketsByStatus(e.target.id);
+                }} />
+                <label class="form-check-label mx-3">Closed</label>
+
+            </div>
+            <div className=' form-check aic" mx-5' style={{ fontSize: "15px" }}>
+                <input type="radio" id="open" name="status" value="open" onChange={e => {
+
+                    getUserTicketsByStatus(e.target.id);
+                }} />
+                
+                <label class="form-check-label mx-3">Open</label>
+            </div>
+            <div class="form-check aic " style={{ fontSize: "15px" }} >
+
+                <input type="radio" id="in_progress" name="status" value="in_progress" onChange={e => {
+
+                    getUserTicketsByStatus(e.target.id);
+                }} />
+                <label class="form-check-label mx-3">In Progress</label>
+
+            </div>
+
         </div>
-        <DynamicTable {...{ configuration, sourceData: value }} />
+        <DynamicTable {...{ configuration, sourceData: historyList }} />
+
     </div>)
 }
 

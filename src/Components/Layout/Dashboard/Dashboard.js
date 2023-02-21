@@ -27,6 +27,9 @@ import AssessmentDashboard from "../../Screens/AssessmentScreen/AssessmentDashbo
 import Catalogue from "../../Screens/AssessmentScreen/Catalogue/Catalogue";
 import MyAssessment from "../../Screens/AssessmentScreen/MyAssessment/MyAssessment";
 import InstructorDashboard from "../../Screens/Home/InstructorDashboard";
+import Tickets from "../../Screens/Tickets/Tickets";
+import TicketDashboard from "../../Screens/Home/TicketDashboard";
+import Events from "../../Screens/Tickets/Events";
 
 const Dashboard = ({ location }) => {
   return (
@@ -52,6 +55,7 @@ const Dashboard = ({ location }) => {
             <Router>
               <Home path="dashboard" />
               <UserHome path="home" />
+              <TicketDashboard path="/techsupport"/>
               <InstructorDashboard path="instdashboard"/>
               <Report path="report/*" />
               <Setting path="setting" />
@@ -65,6 +69,7 @@ const Dashboard = ({ location }) => {
               <Labs path="labs/*" />
               <User path="user" />
               <Support path="support/*" />
+             <Tickets path="ticket/*"/>
               <LabStore path="labstore/*" />
               <CodeEditor path="compiler/*" />
               <Zoom path="zoom/:id" />
@@ -72,6 +77,7 @@ const Dashboard = ({ location }) => {
               <AssessmentDashboard path="assessment"/>
               <Catalogue path="catalogue/*"/>
               <MyAssessment path="myAssessment"/>
+              <Events path="events"/>
             </Router>
           </div>
         </div>

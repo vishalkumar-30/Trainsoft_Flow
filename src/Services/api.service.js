@@ -19,6 +19,7 @@
 
 *
 */
+import { Global } from "recharts";
 import GLOBELCONSTANT from "../Constant/GlobleConstant.js";
 import AxiosService from "./axios.service.js";
 const zoomAuth = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6InRHY3VUTmpkUVVTM2prVHdfZWF6OWciLCJleHAiOjE2MTY1NzM4OTMsImlhdCI6MTYxNTk2OTA3OX0.2Aqdh7qmOJvNUx3JijVb5XqMwdiZS0ggvNbJTPljtgA"
@@ -230,7 +231,12 @@ const RestService = {
   getInstructor: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR.GET_INSTRUCTOR),
 
   //support
-  submitSupportTicket: (payload) => AxiosService.post(GLOBELCONSTANT.SUPPORT.SUBMIT_TICKET, payload)
+  submitSupportTicket: (payload) => AxiosService.post(GLOBELCONSTANT.SUPPORT.SUBMIT_TICKET, payload),
+  getTicketsByRole: (status) => AxiosService.get(GLOBELCONSTANT.SUPPORT.GET_TICKETS_BY_ROLE + `?status=${status}`),
+  takeTicketOwnership: (ticketSid) => AxiosService.put(GLOBELCONSTANT.SUPPORT.OWN_TICKET + `?ticket-sid=${ticketSid}`),
+  getTicketHistory: (ticketSid) => AxiosService.get(GLOBELCONSTANT.SUPPORT.GET_TICKET_HISTORY + `?ticket-sid=${ticketSid}`),
+  getUserTicketsByStatus: (status) => AxiosService.get(GLOBELCONSTANT.SUPPORT.GET_USER_TICKETS + `?status=${status}`),
+  startConversation: (ticketSid, payload) => AxiosService.post(GLOBELCONSTANT.SUPPORT.START_CONVERSION + `?ticket-sid=${ticketSid}`, payload)
 };
 
 

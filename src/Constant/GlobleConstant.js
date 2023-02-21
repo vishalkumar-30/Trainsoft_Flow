@@ -174,7 +174,12 @@ const GLOBELCONSTANT = {
         TERMINATE_EC2_INSTANCE_AND_TERMINATE_GUACAMOLE_SERVER: API_HOST_V2 + "terminate-instance"
     },
     SUPPORT: {
-        SUBMIT_TICKET: API_HOST_V2 + "submit-ticket"
+        SUBMIT_TICKET: API_HOST_V2 + "submit-ticket",
+        GET_TICKETS_BY_ROLE: API_HOST_V2 + "get-tickets-by-role",
+        OWN_TICKET: API_HOST_V2 + "own-ticket",
+        GET_TICKET_HISTORY: API_HOST_V2 + "get-ticket-history",
+        GET_USER_TICKETS: API_HOST_V2 + "get-user-tickets",
+        START_CONVERSION: API_HOST_V2 + "start-conversation"
     },
     API: {
         ASSESSMENT: {
@@ -303,7 +308,9 @@ const GLOBELCONSTANT = {
         SUPERVISOR: "SUPERVISOR",
         INSTRUCTOR: "INSTRUCTOR",
         LEARNER: "LEARNER",
-        ASSESS_USER: "ASSESS_USER"
+        ASSESS_USER: "ASSESS_USER",
+        TECH_SUPPORT: "TECHNICAL_SUPPORT",
+        OPERATION_SUPPORT: "OPERATION_SUPPORT"
     },
     SAMPLE_TEMPLATE: "https://course-content-storage.s3.amazonaws.com/User_Upload_template.xlsx",
     UPLOAD_ASSES_TEMPLATE: "https://sessionassests.s3.ap-south-1.amazonaws.com/Assement_User_Upload_template.xlsx",
@@ -319,6 +326,20 @@ const GLOBELCONSTANT = {
             [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }], // outdent/indent
             ['link', 'image'], // embeds
             ['emoji'],
+            // ['clean'] // remove formatting button
+        ],
+    },
+    QUILL_EVENTS: {
+        toolbar: [
+            [{ font: [] }, { 'header': [1, 2, 3, 4, 5, 6, false] }],
+            [{ align: [] }], // 'direction'
+            ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+            [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+            // [{ script: 'super' }, { script: 'sub' }], // superscript/subscript
+            ['code-block', 'blockquote'],
+            [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }], // outdent/indent
+            // ['link', 'image'], // embeds
+            // ['emoji'],
             // ['clean'] // remove formatting button
         ],
     },

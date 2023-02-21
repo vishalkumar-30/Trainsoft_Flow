@@ -34,7 +34,8 @@ function App() {
                localStorage.getItem('REACTAPP.TOKEN') && user.role === "SUPERVISOR" ? <Redirect from="/login" to="/dashboard" noThrow /> :
                localStorage.getItem('REACTAPP.TOKEN') && user.role === "INSTRUCTOR"? <Redirect from="/login" to="/instdashboard" noThrow /> : 
                localStorage.getItem('REACTAPP.TOKEN') && user.role === "LEARNER"? <Redirect from="/login" to="/home" noThrow /> :
-
+               localStorage.getItem('REACTAPP.TOKEN') && user.role === "TECHNICAL_SUPPORT"? <Redirect from="/login" to="/techsupport" noThrow /> :
+               localStorage.getItem('REACTAPP.TOKEN') && user.role === "OPERATION_SUPPORT"? <Redirect from="/login" to="/techsupport" noThrow /> :
                <Login path="/login"/>
             }
             <PrivateRoute component={MeetingClose} path="zoomclose" />
