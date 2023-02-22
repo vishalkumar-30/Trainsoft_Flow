@@ -11,16 +11,24 @@ import { Button } from '../../Common/Buttons/Buttons';
 import "./events.css"
 import { useNavigate } from '@reach/router';
 import CardHeader from '../../Common/CardHeader';
-import {ICN_BACK} from '../../Common/Icon'
+import { ICN_BACK } from '../../Common/Icon'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+
 const Events = (props) => {
 
+    const navigate = useNavigate();
     const [ticketHistory, setTicketHistory] = useState([]);
-    const [fieldValue, setFieldValue] = useState('')
+    const [fieldValue, setFieldValue] = useState('');
+    const [resolve, setResolve] = useState(false);
     const ticketSid = props.location.state[0];
     const Toast = useToast();
     const { spinner } = useContext(AppContext);
     const ticketNumber = props.location.state[1];
     const status = props.location.state[2];
+    const ticketRaisedName = props.location.state[3];
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userSid = user.sid;
+    const { name } = user;
 
     //get ticket history
     const getTicketHistory = (ticketSid) => {
@@ -60,48 +68,84 @@ const Events = (props) => {
         }
     }
 
+    //resolve ticket
+    const closeTicket = (commentSid) => {
+        try {
+            let payload = {
+                "resolution": "RESOLVED",
+            }
+            spinner.show();
+            RestService.closeTicket(commentSid, payload).then(res => {
+                if (res.status === 200) {
+                    spinner.hide();
+                    Toast.success({ message: `Ticket Resolved and Closed` });
+                    setResolve(true);
+                }
+
+            }, err => {
+                console.log(err);
+                Toast.error({ message: `Something went wrong` });
+            }
+            );
+        }
+        catch (err) {
+            console.error('error occur on closeTicket', err)
+        }
+    }
+
     useEffect(() => {
         getTicketHistory(ticketSid);
     }, []);
-    const navigate = useNavigate();
+
     return (
         <>
-        <div className='title-lg '>
-        <button   onClick={() => navigate(-1)}>{ICN_BACK}Go back</button>
-       <div>Timeline for Ticket No : - {ticketNumber} and status is  - {status}</div>
-        </div>
-        <div className='bg-white mainevent '>
-  
-           <div className='a'>
-           {
-                ticketHistory.map((history) => {
-                    return (
-                        < div className='py-2  container '>
-                            <Card className='my-2 p-3 h6'>{history.timeline.split(' ')[1]==='replied'?<p className='text-info h6'>{history.timeline}</p>:history.timeline}</Card>
-                            {
-                                history.conversation != null ?  
-                                    parse(history.conversation.comment)
-                                    : ''
-                            }
-                        </div>
-                    )
-                })
-            }
-           </div>
-            {
-                status==='CLOSED'? '':<div className="full-h column pb-4 mx-5 " style={{background:"#e9ecef",borderRadius:"20px"}}>
-                <ReactQuill
-            
-                className='bg-white '
-                    modules={GLOBELCONSTANT.QUILL_EVENTS}
-                    value={fieldValue}
-                    onChange={setFieldValue}
-                />
-                <div className="flx px-3 jce"><Button className="btn btn-primary px-4" disabled={fieldValue.length ===11  } onClick={() => startConversation()} >Submit</Button></div>
-            
+            <div className='title-lg '>
+                <button onClick={() => navigate(-1)}>{ICN_BACK}Go back</button>
+                <div>Timeline for Ticket No : - {ticketNumber} and status is  - {status}</div>
             </div>
-            }
-        </div >
+            <div className='bg-white mainevent '>
+
+                <div className='a'>
+                    {
+                        ticketHistory.map((history, index, { length }) => {
+                            return (
+                                < div className='py-2  container '>
+                                    <Card className='my-2 p-2 h6'>{history.timeline.split(' ')[1] === 'replied' ? <p className='text-info h6'>{history.timeline}</p> : history.timeline}</Card>
+                                    {
+                                        history.conversation != null ?
+                                            <div className='d-flex'>
+                                              <div className='mx-4 '>  {parse(history.conversation.comment)}</div>
+                                                {
+                                                    status === "IN_PROGRESS" && userSid !== history.conversation.commentedBySid && ticketRaisedName === name && length - 1 === index ? 
+                                                        resolve ? <CheckCircleOutlineIcon /> 
+                                                        :
+                                                        <button className='mx-3 px-2 bg-info text-white'style={{borderRadius:"10px"}} onClick={() => closeTicket(history.conversation.sid)}>Resolve</button>
+                                                        : ''
+                                                }
+
+                                            </div>
+
+                                            : ''
+                                    }
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+                {
+                    status === 'CLOSED' ? '' : <div className="full-h column pb-4 mx-5 " style={{ background: "#e9ecef", borderRadius: "20px" }}>
+                        <ReactQuill
+
+                            className='bg-white '
+                            modules={GLOBELCONSTANT.QUILL_EVENTS}
+                            value={fieldValue}
+                            onChange={setFieldValue}
+                        />
+                        <div className="flx px-3 jce"><Button className="btn btn-primary px-4" disabled={fieldValue.length === 11} onClick={() => startConversation()} >Submit</Button></div>
+
+                    </div>
+                }
+            </div >
         </>
 
     )
