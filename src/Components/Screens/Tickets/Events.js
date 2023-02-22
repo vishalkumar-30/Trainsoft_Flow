@@ -7,7 +7,11 @@ import GLOBELCONSTANT from '../../../Constant/GlobleConstant';
 import 'react-quill/dist/quill.snow.css';
 import parse from 'html-react-parser';
 import { Card } from 'react-bootstrap';
-
+import { Button } from '../../Common/Buttons/Buttons';
+import "./events.css"
+import { useNavigate } from '@reach/router';
+import CardHeader from '../../Common/CardHeader';
+import {ICN_BACK} from '../../Common/Icon'
 const Events = (props) => {
 
     const [ticketHistory, setTicketHistory] = useState([]);
@@ -15,6 +19,8 @@ const Events = (props) => {
     const ticketSid = props.location.state[0];
     const Toast = useToast();
     const { spinner } = useContext(AppContext);
+    const ticketNumber = props.location.state[1];
+    const status = props.location.state[2];
 
     //get ticket history
     const getTicketHistory = (ticketSid) => {
@@ -57,32 +63,46 @@ const Events = (props) => {
     useEffect(() => {
         getTicketHistory(ticketSid);
     }, []);
-
+    const navigate = useNavigate();
     return (
-        <div>
-            {
+        <>
+        <div className='title-lg '>
+        <button   onClick={() => navigate(-1)}>{ICN_BACK}Go back</button>
+       <div>Timeline for Ticket No : - {ticketNumber} and status is  - {status}</div>
+        </div>
+        <div className='bg-white mainevent '>
+  
+           <div className='a'>
+           {
                 ticketHistory.map((history) => {
                     return (
-                        <>
-                            <Card><p>{history.timeline}</p></Card>
+                        < div className='py-2  container '>
+                            <Card className='my-2 p-3 h6'>{history.timeline.split(' ')[1]==='replied'?<p className='text-info h6'>{history.timeline}</p>:history.timeline}</Card>
                             {
                                 history.conversation != null ?  
                                     parse(history.conversation.comment)
                                     : ''
                             }
-                        </>
+                        </div>
                     )
                 })
             }
-            <div className="full-h column">
+           </div>
+            {
+                status==='CLOSED'? '':<div className="full-h column pb-4 mx-5 " style={{background:"#e9ecef",borderRadius:"20px"}}>
                 <ReactQuill
+            
+                className='bg-white '
                     modules={GLOBELCONSTANT.QUILL_EVENTS}
                     value={fieldValue}
                     onChange={setFieldValue}
                 />
-                <div className="flx px-3 jce"><button onClick={() => startConversation()} className="px-4">Submit</button></div>
+                <div className="flx px-3 jce"><Button className="btn btn-primary px-4" disabled={fieldValue.length ===11  } onClick={() => startConversation()} >Submit</Button></div>
+            
             </div>
+            }
         </div >
+        </>
 
     )
 }

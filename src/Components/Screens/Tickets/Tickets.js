@@ -172,7 +172,7 @@ const MyTickets = () => {
                 "sortEnabled": true,
                 render: (data) => <Link onClick={() => {
                     console.log(data.sid);
-                    navigate("/events", { state: [data.sid]});
+                    navigate("/events", { state: [data.sid, data.ticketNumber, data.status]});
                 }}>{data.ticketNumber}</Link>
             },
             "subType": {

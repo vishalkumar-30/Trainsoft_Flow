@@ -13,9 +13,13 @@ import { ICN_TRAINSOFT, ICN_BACK } from '../../Common/Icon';
 import GLOBELCONSTANT from '../../../Constant/GlobleConstant';
 import { Link } from '@reach/router';
 import AssessmentContext from '../../../Store/AssessmentContext';
-
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import hidePwdImg from "./hide-password.svg"
+import showPwdImg from "./show-password.svg"
 const Login = ({ location }) => {
     const { setUserValue, spinner } = useContext(AppContext)
+    const [isRevealPwd, setIsRevealPwd] = useState(false);
     // const {setCategory} = useContext(AssessmentContext);
     const [tabPanel, setTabPanel] = useState("login")
     const Toast = useToast();
@@ -58,10 +62,10 @@ const Login = ({ location }) => {
                                 navigate('/instdashboard', { state: { title: 'Instructor' } })
                                 break;
                             case GLOBELCONSTANT.ROLE.TECH_SUPPORT:
-                                navigate('/techsupport', { state: { title: 'Support' } })
+                                navigate('/ticket', { state: { title: 'Support' } })
                                 break;
                             case GLOBELCONSTANT.ROLE.OPERATION_SUPPORT:
-                                navigate('/techsupport', { state: { title: 'Support' } })
+                                navigate('/ticket', { state: { title: 'Support' } })
                                 break;
                             default:
                                 navigate('/dashboard', { state: { title: 'Dashboard' } })
@@ -149,7 +153,15 @@ const Login = ({ location }) => {
                                 </div>
                                 <div className="text-center mb-3">Login to your Account</div>
                                 <TextInput name="email" label="User Name" />
-                                <TextInput onKeyUp={checkCapsLock} name="password" type="password" label="Password" />
+                                <div className='pwd-container'>
+                                <TextInput  onKeyUp={checkCapsLock} name="password" type={isRevealPwd ? "text"  : "password"} label="Password" />
+                                
+                                <img
+          title={isRevealPwd ? "Hide password" : "Show password"}
+          src={isRevealPwd ? hidePwdImg : showPwdImg}
+          onClick={() => setIsRevealPwd(prevState => !prevState)}
+        />
+                                </div>
                                 {isCapsLockOn && (
                                     <p style={{ color: "red", marginTop: "-20px", marginBottom: "10px", fontSize: "12px" }}>Caps Lock is on</p>
                                 )}

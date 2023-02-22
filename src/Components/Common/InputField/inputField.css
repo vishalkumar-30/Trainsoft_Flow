@@ -15,6 +15,10 @@
 	border: 0px;
 	background-color: #fff0;
 }
+
+.input-field input[type=text]{
+	outline: none !important;
+}
 .input-field .form-control:focus {
 	color: #495057;
 	background-color: rgba(255, 255, 255, 0);

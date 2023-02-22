@@ -1,12 +1,14 @@
 .lab {
     height: 100vh;
-text-align: left;
+
     overflow-y: scroll;
   }
+  .lab::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
   
-  /* .lab:hover {
-    overflow-y: scroll;
-  } */
 .mainbody{
   height: 100vh;
 }
