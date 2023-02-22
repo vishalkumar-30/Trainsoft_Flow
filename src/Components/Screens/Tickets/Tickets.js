@@ -76,7 +76,7 @@ const OpenTickets = () => {
                 "title": "Ticket Number",
                 "sortDirection": null,
                 "sortEnabled": true,
-                isSearchEnabled: false,
+                isSearchEnabled: true,
 
             },
             "subType": {
@@ -100,13 +100,12 @@ const OpenTickets = () => {
                 "sortEnabled": true,
                 isSearchEnabled: false,
             },
-            // "status": {
-            //     "title": "Status",
-            //     "sortDirection": null,
-            //     "sortEnabled": true,
-            //     isSearchEnabled: false,
-            //     render: (data) => moment(data.createdOn).format('Do MMMM YYYY')
-            // },
+            "raisedByName": {
+                "title": "Raised By",
+                "sortDirection": null,
+                "sortEnabled": true,
+                isSearchEnabled: false
+            },
             "": {
 
                 isSearchEnabled: false,
@@ -171,7 +170,6 @@ const MyTickets = () => {
                 "sortDirection": null,
                 "sortEnabled": true,
                 render: (data) => <Link onClick={() => {
-                    console.log(data.sid);
                     navigate("/events", { state: [data.sid, data.ticketNumber, data.status]});
                 }}>{data.ticketNumber}</Link>
             },
@@ -196,12 +194,12 @@ const MyTickets = () => {
                 "sortEnabled": true,
                 isSearchEnabled: false,
             },
-            "ticketOwnerName": {
-                "title": "Ticket Owner",
+            "raisedByName": {
+                "title": "Raised By",
                 "sortDirection": null,
                 "sortEnabled": true,
-                isSearchEnabled: false,
-            }
+                isSearchEnabled: false
+            },
         },
         headerTextColor: '#454E50', // user can change table header text color
         sortBy: null,  // by default sort table by name key

@@ -236,7 +236,8 @@ const RestService = {
   takeTicketOwnership: (ticketSid) => AxiosService.put(GLOBELCONSTANT.SUPPORT.OWN_TICKET + `?ticket-sid=${ticketSid}`),
   getTicketHistory: (ticketSid) => AxiosService.get(GLOBELCONSTANT.SUPPORT.GET_TICKET_HISTORY + `?ticket-sid=${ticketSid}`),
   getUserTicketsByStatus: (status) => AxiosService.get(GLOBELCONSTANT.SUPPORT.GET_USER_TICKETS + `?status=${status}`),
-  startConversation: (ticketSid, payload) => AxiosService.post(GLOBELCONSTANT.SUPPORT.START_CONVERSION + `?ticket-sid=${ticketSid}`, payload)
+  startConversation: (ticketSid, payload) => AxiosService.post(GLOBELCONSTANT.SUPPORT.START_CONVERSION + `?ticket-sid=${ticketSid}`, payload),
+  closeTicket: (commendSid, payload) => AxiosService.put(GLOBELCONSTANT.SUPPORT.RESOLVE_TICKET + `?comment-sid=${commendSid}`, payload) 
 };
 
 

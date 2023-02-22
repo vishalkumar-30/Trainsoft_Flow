@@ -179,7 +179,8 @@ const GLOBELCONSTANT = {
         OWN_TICKET: API_HOST_V2 + "own-ticket",
         GET_TICKET_HISTORY: API_HOST_V2 + "get-ticket-history",
         GET_USER_TICKETS: API_HOST_V2 + "get-user-tickets",
-        START_CONVERSION: API_HOST_V2 + "start-conversation"
+        START_CONVERSION: API_HOST_V2 + "start-conversation",
+        RESOLVE_TICKET: API_HOST_V2 + "resolve-ticket"
     },
     API: {
         ASSESSMENT: {

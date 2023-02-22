@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { BtnPrimary, TabBtn } from "../../Common/Buttons/Buttons";
-import { navigate, Router, Link } from "../../Common/Router";
+import { navigate, Router } from "../../Common/Router";
+import { Link } from "@material-ui/core";
 import { Formik } from "formik"
 import { Button } from "../../Common/Buttons/Buttons"
 import CardHeader from '../../Common/CardHeader'
@@ -185,7 +186,19 @@ const SupportHistory = ({ location }) => {
             "ticketNumber": {
                 "title": "Ticket Number",
                 "sortDirection": null,
-                "sortEnabled": true
+                "sortEnabled": true,
+                isSearchEnabled: false,
+                render: (data) => 
+                    data.status === 'OPEN' ? data.ticketNumber
+                    :
+                    <>
+                        <Link onClick={() => {
+                            if (data.status === 'CLOSED' || data.status === 'IN_PROGRESS') {
+                                navigate("/events", { state: [data.sid, data.ticketNumber, data.status, data.raisedByName] });
+                            }
+                        }}>{data.ticketNumber}</Link>
+                    </>
+                
             },
             "subType": {
                 "title": "Ticket Type",
@@ -242,7 +255,7 @@ const SupportHistory = ({ location }) => {
     return (<div className="">
 
         <div className="aic mt-3 mb-3 " >
-            
+
             <div class="form-check aic " style={{ fontSize: "15px" }} >
 
                 <input type="radio" id="closed" name="status" value="closed" defaultChecked onChange={e => {
@@ -257,7 +270,7 @@ const SupportHistory = ({ location }) => {
 
                     getUserTicketsByStatus(e.target.id);
                 }} />
-                
+
                 <label class="form-check-label mx-3">Open</label>
             </div>
             <div class="form-check aic " style={{ fontSize: "15px" }} >
