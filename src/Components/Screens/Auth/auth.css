@@ -96,3 +96,23 @@
   border-radius: 20px;
 }
 /*# sourceMappingURL=auth.css.map */
+
+
+.pwd-container {
+  position: relative;
+  /* width: 295px; */
+}
+
+/* .pwd-container .input {
+  padding: 5px 30px 5px 10px;
+  font-size: 20px;
+} */
+
+.pwd-container img {
+  cursor: pointer;
+  position: absolute;
+  width: 20px;
+  right: 8px;
+  top: 40px;
+}
+
