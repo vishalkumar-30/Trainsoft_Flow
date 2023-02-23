@@ -29,7 +29,7 @@ const CodeEditor = ({themesColor=false}) => {
             "script": editorRef.current.getValue(),
             "language": lang.language,
         }
-        axios.post(`http://ec2-65-1-14-123.ap-south-1.compute.amazonaws.com/insled/v1/jdoodle/execute`, payload)
+        axios.post(`https://trainsoft.live/insled/v1/jdoodle/execute`, payload)
             .then(({ data }) => {
                 setOutput(data.output)
                 setInputTab(false)

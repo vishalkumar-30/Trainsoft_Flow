@@ -137,7 +137,18 @@
    
     
 } */
-
+div#zmmtg-root {
+    margin-top: 96px !important;
+    border-radius: 10px !important;
+}
+#zmmtg-root {
+    width: 47% !important;
+    height: 86% !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    background-color: #000 !important;
+}
 .om{
     background: white;
     height: 548px;
@@ -151,6 +162,7 @@
     margin: 10px 860px 0px 10px !important;
     padding: 20px;
     background-color: black;
+    margin-bottom: 150px !important;
 }
 
 /* full screen Zoom video css */
