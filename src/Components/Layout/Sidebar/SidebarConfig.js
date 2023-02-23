@@ -161,6 +161,13 @@ export const AdminConfig = [
         role: [GLOBELCONSTANT.ROLE.SUPERVISOR, GLOBELCONSTANT.ROLE.INSTRUCTOR, GLOBELCONSTANT.ROLE.LEARNER]
     },
     {
+        icon: ICN_CALENDER,
+        title: "Notes",
+        pathname: "notes",
+        disabled: true,
+        role: [GLOBELCONSTANT.ROLE.LEARNER]
+    },
+    {
         icon: ICN_COMPILER,
         title: "Compiler",
         pathname: "compiler",

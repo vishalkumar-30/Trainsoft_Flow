@@ -226,6 +226,11 @@ const SupportHistory = ({ location }) => {
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
+            },
+            "": {
+
+                isSearchEnabled: false,
+                render: (data) => data.status === 'CLOSED' ?<button className='btn btn-sm btn-primary px-3' >Reopen</button>:<button style={{display:"none"}}></button>
             }
         },
         headerTextColor: '#454E50', // user can change table header text color
