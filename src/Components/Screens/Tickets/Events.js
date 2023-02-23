@@ -13,6 +13,7 @@ import { useNavigate } from '@reach/router';
 import CardHeader from '../../Common/CardHeader';
 import { ICN_BACK } from '../../Common/Icon'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { border } from '@material-ui/system';
 
 const Events = (props) => {
 
@@ -112,12 +113,24 @@ const Events = (props) => {
                     {
                         ticketHistory.map((history, index, { length }) => {
                             return (
-                                < div className='py-2  container '>
-                                    <Card className='my-2 p-2 h6'>{history.timeline.split(' ')[1] === 'replied' ? <p className='text-info h6'>{history.timeline}</p> : history.timeline}</Card>
+                                < div className='p-2 '>
+                                    <Card style ={{background: "#e9ecef"}} className='my-1 p-2 h6'>{history.timeline.split(' ')[1] === 'replied' ? <p className='text-info '>{history.timeline}</p> : history.timeline}</Card>
                                     {
-                                        history.conversation != null ?
-                                            <div className='d-flex'>
-                                              <div className='mx-4 '>  {parse(history.conversation.comment)}</div>
+                                        history.conversation != null ? 
+
+                                            <div className='d-flex ' >
+                                            {
+                                                history.timeline.includes('_') ? 
+                                                <div className=' p-3 pl-2 mr-3 replyclass' style={{ height:"100%", width:"100%"}}>  { 
+                                                    parse(history.conversation.comment)
+                                                    }</div>
+                                                    :
+                                                    <div className='replyclassright p-3 pl-2 ml-3'>
+                                                        {parse(history.conversation.comment)}
+                                                    </div>
+
+                                            }
+                                              
                                                 {
                                                     status === "IN_PROGRESS" && userSid !== history.conversation.commentedBySid && ticketRaisedName === name && length - 1 === index ? 
                                                         resolve ? <CheckCircleOutlineIcon /> 
@@ -136,7 +149,7 @@ const Events = (props) => {
                     }
                 </div>
                 {
-                    status === 'CLOSED' ? '' : <div className="full-h column pb-4 mx-5 " style={{ background: "#e9ecef", borderRadius: "20px" }}>
+                    status === 'CLOSED' ? '' : <div className="full-h py-1  " style={{background: "#e9ecef"}} >
                         <ReactQuill
 
                             className='bg-white '
