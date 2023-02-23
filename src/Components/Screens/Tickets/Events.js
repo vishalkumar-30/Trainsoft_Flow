@@ -99,9 +99,12 @@ const Events = (props) => {
 
     return (
         <>
-            <div className='title-lg '>
+            <div className='title-md d-flex ' style={{justifyContent:"space-between"}}>
+                <div >
+                    
                 <button onClick={() => navigate(-1)}>{ICN_BACK}Go back</button>
-                <div>Timeline for Ticket No : - {ticketNumber} and status is  - {status}</div>
+                    </div>
+                <div >Your Ticket No : {ticketNumber} and status is : {status}</div>
             </div>
             <div className='bg-white mainevent '>
 

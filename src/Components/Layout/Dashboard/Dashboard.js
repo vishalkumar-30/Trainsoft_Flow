@@ -30,6 +30,7 @@ import InstructorDashboard from "../../Screens/Home/InstructorDashboard";
 import Tickets from "../../Screens/Tickets/Tickets";
 import TicketDashboard from "../../Screens/Home/TicketDashboard";
 import Events from "../../Screens/Tickets/Events";
+import OurNotes from "../../Screens/ClassLab/ClassNotes/AvailableNotes/OurNotes";
 
 const Dashboard = ({ location }) => {
   return (
@@ -68,6 +69,7 @@ const Dashboard = ({ location }) => {
               <Calender path="calender/*" />
               <Labs path="labs/*" />
               <User path="user" />
+              <OurNotes path ="notes"/>
               <Support path="support/*" />
              <Tickets path="ticket/*"/>
               <LabStore path="labstore/*" />

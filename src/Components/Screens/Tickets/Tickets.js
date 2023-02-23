@@ -19,8 +19,8 @@ const Tickets = ({ location }) => {
             <CardHeader {...{ location }} />
             <div className="flx tab-btn-group mb-3 ">
 
-                <TabBtn active={location.state.subPath === "ticket"} onClick={() => navigate("/ticket", { state: { title: 'Open ticket', subTitle: "", subPath: "ticket" } })} >Open Ticket</TabBtn>
-                <TabBtn active={location.state.subPath === "myticket"} onClick={() => navigate("/ticket/myticket", { state: { title: 'My ticket', subTitle: "", subPath: "myticket" } })}>My Ticket</TabBtn>
+                <TabBtn active={location.state.subPath === "ticket"} onClick={() => navigate("/ticket", { state: { title: 'Ticket', subTitle: "Open Ticket", subPath: "ticket" } })} >Open Ticket</TabBtn>
+                <TabBtn active={location.state.subPath === "myticket"} onClick={() => navigate("/ticket/myticket", { state: { title: 'Ticket', subTitle: "My Ticket", subPath: "myticket" } })}>My Ticket</TabBtn>
             </div>
             <Router>
                 <OpenTickets path="/" />
