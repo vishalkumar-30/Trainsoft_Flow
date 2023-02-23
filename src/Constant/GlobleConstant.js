@@ -152,7 +152,9 @@ const GLOBELCONSTANT = {
         GET_INSTRUCTOR_TRAINING: API_HOST + "trainer/trainings/{pageNo}/{pageSize}",
         GET_LEARNER_TRAINING: API_HOST + "learner/trainings",
         UPDATE_SE_TRAINING: API_HOST + "update/session/{sessionSid}/{status}/{meetingId}",
-        GET_TRAINING_CONTENT_BY_SID: API_HOST_V2 + "get-training-content-by-sid?training_sid"
+        GET_TRAINING_CONTENT_BY_SID: API_HOST_V2 + "get-training-content-by-sid?training_sid",
+        SAVES_NOTES: API_HOST_V2 + "user/save-notes",
+        GET_NOTES: API_HOST_V2 + "user/get-notes"
     },
     FEEDBACK: {
         SUBMIT_FEEDBAK: API_HOST_V2 + "submit-feedback?"
@@ -180,7 +182,8 @@ const GLOBELCONSTANT = {
         GET_TICKET_HISTORY: API_HOST_V2 + "get-ticket-history",
         GET_USER_TICKETS: API_HOST_V2 + "get-user-tickets",
         START_CONVERSION: API_HOST_V2 + "start-conversation",
-        RESOLVE_TICKET: API_HOST_V2 + "resolve-ticket"
+        RESOLVE_TICKET: API_HOST_V2 + "resolve-ticket",
+        REOPEN_TICKETS: API_HOST_V2 + "reopen-ticket"
     },
     API: {
         ASSESSMENT: {
@@ -339,7 +342,7 @@ const GLOBELCONSTANT = {
             // [{ script: 'super' }, { script: 'sub' }], // superscript/subscript
             ['code-block', 'blockquote'],
             [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }], // outdent/indent
-            // ['link', 'image'], // embeds
+            ['link'], // embeds
             // ['emoji'],
             // ['clean'] // remove formatting button
         ],

@@ -111,7 +111,9 @@ const TrainingDetails = ({ location }) => {
                         ...zoomInfo,
                         ...{
                             "meetingId": data.meetingId,
-                            "password": data.meetingPwd
+                            "password": data.meetingPwd,
+                            "trainingSid": location.state.sid,
+                            "trainingSessionSid": data.sid
                         }
                     }))
 

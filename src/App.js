@@ -18,6 +18,7 @@ import { AssessmentProvider } from "./Store/AssessmentContext";
 import PrivateRoute from "./Components/Common/PrivateRoute/PrivateRoute";
 import { Redirect } from '@reach/router';
 import Labs from "./Components/Screens/Training/Labs/Labs";
+import DisplayNotes from "./Components/Screens/ClassLab/ClassNotes/AvailableNotes/DisplayNotes";
 
 function App() {
    const {spinner} = useContext(AppContext);
@@ -45,6 +46,7 @@ function App() {
             <PrivateRoute component={ClassLab} path="class/*" />
             <PrivateRoute component={VsCode} path="vscode" />
             <PrivateRoute component={Labs} path="labs" />
+            {/* <PrivateRoute component={DisplayNotes} path="/notes/mynotes" /> */}
          </Router>
       </TrainingProvider>
       </AssessmentProvider>

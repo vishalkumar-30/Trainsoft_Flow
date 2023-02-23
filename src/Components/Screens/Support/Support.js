@@ -24,11 +24,11 @@ const Support = ({ location }) => {
         <div className="table-shadow p-3">
             <CardHeader {...{ location }} />
             <div className="flx tab-btn-group mb-3">
-                <TabBtn active={location.state.subPath === "support"} onClick={() => navigate("/support/ticket", { state: { title: 'SUPPORT', subTitle: "", subPath: "support" } })}>Raise a ticket</TabBtn>
+                <TabBtn active={location.state.subPath === "support"} onClick={() => navigate("/support", { state: { title: 'SUPPORT', subTitle: "Raise a ticket", subPath: "support" } })}>Raise a ticket</TabBtn>
                 <TabBtn active={location.state.subPath === "history"} onClick={() => navigate("/support/history", { state: { title: 'SUPPORT', subTitle: "History", subPath: "history" } })}>History</TabBtn>
             </div>
             <Router>
-                <SupportContainer path="/ticket" />
+                <SupportContainer path="/" />
                 <SupportHistory path="history" />
             </Router>
 
@@ -163,6 +163,8 @@ const SupportContainer = () => {
 
 const SupportHistory = ({ location }) => {
     const [historyList, setHistoryList] = useState([]);
+    const Toast = useToast();
+    const { spinner } = useContext(AppContext);
     let status1 = "closed";
 
     //get user tickets by status
@@ -181,6 +183,23 @@ const SupportHistory = ({ location }) => {
         }
     }
 
+    //reopen closed tickets 
+    const reopenSupportTicket = (ticketSid) => {
+        try {
+
+            spinner.show();
+            RestService.reopenSupportTicket(ticketSid).then(res => {
+                Toast.success({ message: `Ticket status changed to InProgress Successfully` });
+                spinner.hide();
+                getUserTicketsByStatus(status1);
+            }, err => console.log(err)
+            );
+        }
+        catch (err) {
+            console.error('error occur on reopenSupportTicket', err)
+        }
+    }
+
     const [configuration, setConfiguration] = useState({
         columns: {
             "ticketNumber": {
@@ -188,17 +207,17 @@ const SupportHistory = ({ location }) => {
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
-                render: (data) => 
+                render: (data) =>
                     data.status === 'OPEN' ? data.ticketNumber
-                    :
-                    <>
-                        <Link onClick={() => {
-                            if (data.status === 'CLOSED' || data.status === 'IN_PROGRESS') {
-                                navigate("/events", { state: [data.sid, data.ticketNumber, data.status, data.raisedByName] });
-                            }
-                        }}>{data.ticketNumber}</Link>
-                    </>
-                
+                        :
+                        <>
+                            <Link onClick={() => {
+                                if (data.status === 'CLOSED' || data.status === 'IN_PROGRESS') {
+                                    navigate("/events", { state: [data.sid, data.ticketNumber, data.status, data.raisedByName] });
+                                }
+                            }}>{data.ticketNumber}</Link>
+                        </>
+
             },
             "subType": {
                 "title": "Ticket Type",
@@ -230,7 +249,7 @@ const SupportHistory = ({ location }) => {
             "": {
 
                 isSearchEnabled: false,
-                render: (data) => data.status === 'CLOSED' ?<button className='btn btn-sm btn-primary px-3' >Reopen</button>:<button style={{display:"none"}}></button>
+                render: (data) => data.status === 'CLOSED' ? <button className='btn btn-sm btn-primary px-3' onClick={()=> reopenSupportTicket(data.sid)}>Reopen</button> : <button style={{ display: "none" }}></button>
             }
         },
         headerTextColor: '#454E50', // user can change table header text color

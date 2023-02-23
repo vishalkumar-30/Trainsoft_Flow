@@ -59,8 +59,6 @@ function Zoom({zoomInfo}) {
       leaveUrl: leaveUrl,
       success: (success) => {
         console.log(success)
-        {console.log(zoomInfo)}
-
         ZoomMtg.join({
           signature: signature,
           meetingNumber: meetingNumber,

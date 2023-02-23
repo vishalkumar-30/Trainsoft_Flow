@@ -1,0 +1,16 @@
+.noteList {
+    width: 98%;
+    padding: 15px;
+    display: flex;
+ overflow: hidden;
+    height: auto;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    /* border: 1px solid #ddd; */
+    border-radius: 5px;
+    border-bottom:1px solid #ddd;  border-right: 1px solid #ddd; 
+    border-left: 2px solid red;
+    margin-left: 10px;
+    transition: all 0.9s ease-in-out ;
+    background: #ffffcc;
+}

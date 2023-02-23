@@ -31,6 +31,7 @@ import Tickets from "../../Screens/Tickets/Tickets";
 import TicketDashboard from "../../Screens/Home/TicketDashboard";
 import Events from "../../Screens/Tickets/Events";
 import OurNotes from "../../Screens/ClassLab/ClassNotes/AvailableNotes/OurNotes";
+import DisplayNotes from "../../Screens/ClassLab/ClassNotes/AvailableNotes/DisplayNotes";
 
 const Dashboard = ({ location }) => {
   return (
@@ -70,6 +71,7 @@ const Dashboard = ({ location }) => {
               <Labs path="labs/*" />
               <User path="user" />
               <OurNotes path ="notes"/>
+              <DisplayNotes path="/notes/mynotes" />
               <Support path="support/*" />
              <Tickets path="ticket/*"/>
               <LabStore path="labstore/*" />
