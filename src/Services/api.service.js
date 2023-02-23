@@ -108,6 +108,8 @@ const RestService = {
   unScheduleSession: (sessionSid, status, meetingSid) => AxiosService.post(GLOBELCONSTANT.TRAINING.UNSCHEDULE_SESSION.replace("{sessionSid}", sessionSid).replace("{status}", status).replace("{meetingId}", meetingSid)),
   zoomParticipant: () => AxiosService.get('https://api.zoom.us/v2/users/kumarkanhiya21@gmail.com/meetings?page_size=30&type=live', zoomAuth),
   getTrainingContentsByTrainingSid: (trainingSid) => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_TRAINING_CONTENT_BY_SID + `=${trainingSid}`),
+  saveUserNotes: (trainingSessionSid, trainingSid, payload) => AxiosService.post(GLOBELCONSTANT.TRAINING.SAVES_NOTES + `?training-session-sid=${trainingSessionSid}&training-sid=${trainingSid}`, payload),
+  getUserNotes: () => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_NOTES),
   // getTrainingByRole: (pageNo,pageSize) => AxiosService.get(GLOBELCONSTANT.TRAINING.PARTICIPANT_BY_ROLE.replace("{pageNo}",pageNo).replace("{pageSize}",pageSize)),
 
   // assessment
@@ -237,7 +239,8 @@ const RestService = {
   getTicketHistory: (ticketSid) => AxiosService.get(GLOBELCONSTANT.SUPPORT.GET_TICKET_HISTORY + `?ticket-sid=${ticketSid}`),
   getUserTicketsByStatus: (status) => AxiosService.get(GLOBELCONSTANT.SUPPORT.GET_USER_TICKETS + `?status=${status}`),
   startConversation: (ticketSid, payload) => AxiosService.post(GLOBELCONSTANT.SUPPORT.START_CONVERSION + `?ticket-sid=${ticketSid}`, payload),
-  closeTicket: (commendSid, payload) => AxiosService.put(GLOBELCONSTANT.SUPPORT.RESOLVE_TICKET + `?comment-sid=${commendSid}`, payload) 
+  closeTicket: (commendSid, payload) => AxiosService.put(GLOBELCONSTANT.SUPPORT.RESOLVE_TICKET + `?comment-sid=${commendSid}`, payload),
+  reopenSupportTicket: (ticketSid) => AxiosService.put(GLOBELCONSTANT.SUPPORT.REOPEN_TICKETS + `?ticket-sid=${ticketSid}`)
 };
 
 
