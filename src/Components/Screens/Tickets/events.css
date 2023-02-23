@@ -8,3 +8,16 @@
 .mainevent{
     border-radius: 10px;
 }
+
+.replyclass{
+    border-bottom:1px solid #DCDCDC; border-right:1px solid #DCDCDC; border-left:4px solid #49167E; 
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.replyclassright{
+    height: 100%;
+    width: 100%;
+    border-bottom:1px solid #DCDCDC; border-right:4px solid #49167E; border-left:1px solid #DCDCDC;  border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
