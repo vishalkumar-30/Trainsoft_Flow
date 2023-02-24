@@ -70,7 +70,7 @@ const Dashboard = ({ location }) => {
               <Calender path="calender/*" />
               <Labs path="labs/*" />
               <User path="user" />
-              <OurNotes path ="notes"/>
+              <OurNotes path ="notes/*"/>
               <DisplayNotes path="/notes/mynotes" />
               <Support path="support/*" />
              <Tickets path="ticket/*"/>

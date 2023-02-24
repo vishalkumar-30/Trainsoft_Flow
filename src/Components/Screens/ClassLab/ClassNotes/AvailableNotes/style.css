@@ -1,3 +1,4 @@
+
 .noteList {
     width: 98%;
     padding: 15px;
@@ -13,4 +14,37 @@
     margin-left: 10px;
     transition: all 0.9s ease-in-out ;
     background: #ffffcc;
+    
 }
+
+
+.catalognote {
+    padding: 10px;
+    margin:10px;
+    /* display: flex; */
+    /* background-color: #fff; */
+    /* color: white; */
+    width: 30%;
+    min-width: 280px;
+    height: auto;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    box-shadow: 0px 3px 6px #272d3b33;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    /* transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12); */
+}
+
+.catalog-content-text {
+    padding: 20px;
+    /* background: #ececec; */
+    /* border-bottom-left-radius: 20px; */
+    /* border-bottom-right-radius: 20px; */
+}
+.catalog-container-notes {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+    margin-top: 10px;
+}
+

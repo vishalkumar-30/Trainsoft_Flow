@@ -3,6 +3,7 @@ import RestService from '../../../../../Services/api.service';
 import { navigate } from '../../../../Common/Router';
 import { BtnPrimary } from '../../../../Common/Buttons/Buttons';
 import '../../../LabStore.js/Styles.css';
+import './style.css';
 
 const OurNotes = () => {
 
@@ -30,22 +31,27 @@ const OurNotes = () => {
 
  
 
-  return (<div className="catalog-container">
-    {notesList.map(res => <div className="catalogBox">
-      <div className="catalogBox-info">
+  return (<div className="catalog-container-notes  ">
 
-        <div ><img src="https://img.freepik.com/free-vector/notes-concept-illustration_114360-689.jpg?w=740&t=st=1677154291~exp=1677154891~hmac=ca7d5942c831d69ce0376ee07ac793beccaffa53d536287fbbbfa3d50ccf373d" width="100%" height="230px" alt="Lab" title={res.trainingName} style={{ borderTopLeftRadius: "15px", borderTopRightRadius: "15px" }} /></div>
-        <div className="catalog-content" >
+
+    
+    {notesList.map(res => <div className="catalognote border-primary">
+      <div className="catalogBox-info ">
+
+        {/* <div ><img src="https://img.freepik.com/free-vector/notes-concept-illustration_114360-689.jpg?w=740&t=st=1677154291~exp=1677154891~hmac=ca7d5942c831d69ce0376ee07ac793beccaffa53d536287fbbbfa3d50ccf373d" width="100%" height="230px" alt="Lab" title={res.trainingName} style={{ borderTopLeftRadius: "15px", borderTopRightRadius: "15px" }} /></div> */}
+        <div className="catalog-content-text" >
           <div className="cat-title-md">{res.trainingName}</div>
           {/* <div className="cat-title-sm">{res.desc}</div> */}
 
           <div className="text-right">
-            <BtnPrimary onClick={()=> navigate("/notes/mynotes", { state: [res.trainingSessionNotes] })}>Show Notes</BtnPrimary> 
+            <BtnPrimary onClick={()=> navigate("/notes/mynotes", { state: [res.trainingSessionNotes, 'My Notes'] })}>Show Notes</BtnPrimary> 
           </div>
         </div>
       </div>
     </div>)}
-
+    
+   
+  
   </div>)
 }
 
