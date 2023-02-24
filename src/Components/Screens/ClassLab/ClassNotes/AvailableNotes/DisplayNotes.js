@@ -4,7 +4,10 @@ import DropdownItem from '../../../../Common/DropdownItem/DropdownItem';
 import "./style.css"
 const DisplayNotes = (props) => {
     return (
+        <><div class="page-title"><div class="title-lg mb-0">{ props.location.state[1]}</div></div>
         <div>
+        
+          
             <div >
                 {props.location.state[0].map((res) => {
                     return (
@@ -24,7 +27,7 @@ const DisplayNotes = (props) => {
                 )}
 
             </div>
-        </div>)
+        </div></>)
 }
 
 export default DisplayNotes
