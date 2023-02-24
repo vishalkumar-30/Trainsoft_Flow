@@ -18,7 +18,6 @@ import { AssessmentProvider } from "./Store/AssessmentContext";
 import PrivateRoute from "./Components/Common/PrivateRoute/PrivateRoute";
 import { Redirect } from '@reach/router';
 import Labs from "./Components/Screens/Training/Labs/Labs";
-import DisplayNotes from "./Components/Screens/ClassLab/ClassNotes/AvailableNotes/DisplayNotes";
 
 function App() {
    const {spinner} = useContext(AppContext);
