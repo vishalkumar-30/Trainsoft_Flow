@@ -51,7 +51,7 @@ const LabStore = ({ location }) => {
 
     const [categorieList, setCategorieList] = useState([]);
     const [labsFromCategory, setLabsFromCategory] = useState([]);
-    const [labsFromCategoryCount, setLabsFromCategoryCount] = useState('');
+    // const [labsFromCategoryCount, setLabsFromCategoryCount] = useState('');
     const [accountLabs, setAccountLabs] = useState([]);
     const { user, spinner, setCourse, ROLE } = useContext(AppContext);
 
@@ -70,7 +70,7 @@ const LabStore = ({ location }) => {
                         <BtnPrimary onClick={() => {
                             navigate('labstore/lab-list', { state: { title: 'LAB STORE', subTitle: "Catalog", subPath: "labstore"} });
                             filterLabs(res);
-                            }} className="labbutton">Show All {labsFromCategoryCount} Lab(s)</BtnPrimary>
+                            }} className="labbutton">Show All Lab(s)</BtnPrimary>
                     </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@ const LabStore = ({ location }) => {
             RestService.filterLabs(labs).then(
                 response => {
                     setLabsFromCategory(response.data.labDetails);
-                    setLabsFromCategoryCount(response.data.count);
+                    // setLabsFromCategoryCount(response.data.count);
                 },
                 err => {
                     spinner.hide();
