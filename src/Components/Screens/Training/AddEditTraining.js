@@ -10,6 +10,7 @@ import AppContext from "../../../Store/AppContext";
 import * as Yup from 'yup';
 
 import '../Batches/batches.css'
+import Multisteptrainingprocess from "./Multisteptraining/Multisteptrainingprocess";
 
 const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit }) => {
     const Toast = useToast()
@@ -119,13 +120,15 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
         getAllInstructor()
     }, [])
     return (<>
+
         <Modal
             size="lg"
             show={show}
             onHide={() => setShow(false)}
-            dialogClassName="modal-90w"
+            dialogClassName="modal-100w"
             aria-labelledby="example-custom-modal-styling-title"
         >
+            
             <Modal.Body className="px-5 py-4">
                 <div className="jcb mb-3">
                     <div className="title-md ">{isEdit ? "Update" : 'Add'} Training</div>
@@ -134,6 +137,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                     </div>
                     </div>
                 </div>
+                <Multisteptrainingprocess/>
                 <div className="form-container">
                     <Formik
                         onSubmit={(value) => { !isEdit ? createTraining(value) : editTraining(value) }}
