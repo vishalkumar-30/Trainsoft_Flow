@@ -14,7 +14,7 @@ const CreateAssessment = ({ location }) => {
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
 
-  const handleNext = () => {
+  const handleNext = () => {     
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
