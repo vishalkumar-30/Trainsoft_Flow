@@ -240,7 +240,11 @@ const RestService = {
   getUserTicketsByStatus: (status) => AxiosService.get(GLOBELCONSTANT.SUPPORT.GET_USER_TICKETS + `?status=${status}`),
   startConversation: (ticketSid, payload) => AxiosService.post(GLOBELCONSTANT.SUPPORT.START_CONVERSION + `?ticket-sid=${ticketSid}`, payload),
   closeTicket: (commendSid, payload) => AxiosService.put(GLOBELCONSTANT.SUPPORT.RESOLVE_TICKET + `?comment-sid=${commendSid}`, payload),
-  reopenSupportTicket: (ticketSid) => AxiosService.put(GLOBELCONSTANT.SUPPORT.REOPEN_TICKETS + `?ticket-sid=${ticketSid}`)
+  reopenSupportTicket: (ticketSid) => AxiosService.put(GLOBELCONSTANT.SUPPORT.REOPEN_TICKETS + `?ticket-sid=${ticketSid}`),
+
+  //coding questions
+  getAllCodingQuestions: () => AxiosService.get(GLOBELCONSTANT.CODING.GET_ALL_CODING_QUESTIONS),
+  addCodingQuestionToSection: (courseSid,sectionSid, questionId) => AxiosService.post(GLOBELCONSTANT.CODING.ADD_CODING_QUESTIONS_TO_SECTION + `?course_sid=${courseSid}&question_id=${questionId}&section_sid=${sectionSid}`)
 };
 
 

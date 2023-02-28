@@ -48,7 +48,8 @@ const CourseDetails = ({ location }) => {
     const [categorieList, setCategorieList] = useState([]);
     const [topics, setTopics] = useState([]);
     const [assessment, setAssessments] = useState([]);
-  
+    const [codingQuestion, setCodingQuestion] = useState([]);
+
     //validation
     const schema = Yup.object().shape({
         topicDescription: Yup.string()
@@ -87,8 +88,8 @@ const CourseDetails = ({ location }) => {
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
-                render: (data) => 
-                data.contentName
+                render: (data) =>
+                    data.contentName
 
             },
             // "description": {
@@ -148,7 +149,7 @@ const CourseDetails = ({ location }) => {
                     if (response.status === 200) {
                         setSessionList(response.data.courseSectionResponseTO);
                     }
-                    else if(response.status === 204){
+                    else if (response.status === 204) {
                         setSessionList([]);
                     }
                 },
@@ -556,6 +557,29 @@ const CourseDetails = ({ location }) => {
         }
     }
 
+    // get All Coding questions
+    const getAllCodingQuestions = async () => {
+        try {
+
+            spinner.show();
+            RestService.getAllCodingQuestions().then(
+                response => {
+                    if (response.status === 200) {
+                        setCodingQuestion(response.data);
+                    }
+
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on getAllCodingQuestions()", err)
+        }
+    }
+
     // get All Assessments
     const getAllAssessmentsInATopic = (topicSid) => {
         try {
@@ -597,6 +621,26 @@ const CourseDetails = ({ location }) => {
         }
     }
 
+    //add coding question to course section
+    const addCodingQuestionToSection = (data) => {
+        const courseSid = location.state.sid;
+        const courseSectionSid = sectionSid;
+        const questionId = data.question.questionId;
+        try {
+            spinner.show();
+            RestService.addCodingQuestionToSection(courseSid, courseSectionSid, questionId ).then(res => {
+                setShow(false)
+                getSection();
+                Toast.success({ message: `Coding question added successfully` });
+                spinner.hide();
+            }, err => console.log(err)
+            );
+        }
+        catch (err) {
+            console.error('error occur on addAssessmentToCourse', err)
+        }
+
+    }
     //delete course content
     const deleteCourseContent = (contentSid, sectionSid) => {
         try {
@@ -629,15 +673,16 @@ const CourseDetails = ({ location }) => {
             console.error('error occur on deleteCourseSection', err)
         }
     }
-    
+
     useEffect(() => {
         getSection();
         getTrainings();
         getAllLabCategories();
         getAllTopics();
+        getAllCodingQuestions();
     }, [])
 
-    console.log(sessionList);
+
     return (<>
         <div className="table-shadow p-3 pb-5">
             <CardHeader {...{
@@ -733,6 +778,7 @@ const CourseDetails = ({ location }) => {
                                                         <option value="3">Meeting</option>
                                                         <option value="4">Lab</option>
                                                         <option value="5">Assessment</option>
+                                                        <option value="6">Coding Question</option>
                                                     </select>
                                                 </div>
 
@@ -782,7 +828,7 @@ const CourseDetails = ({ location }) => {
                                                 </div>
                                             )}
                                         <div className="text-right mt-2" >
-                                            {showhide === '3' || showhide === '4' || showhide === '5' ? "" : <Button type="submit" className=" px-4">{isEdit ? "Update" : "Add"} </Button>}
+                                            {showhide === '3' || showhide === '4' || showhide === '5' || showhide === '6' ? "" : <Button type="submit" className=" px-4">{isEdit ? "Update" : "Add"} </Button>}
 
                                         </div>
                                     </form>
@@ -957,6 +1003,39 @@ const CourseDetails = ({ location }) => {
                                     </Formik>
 
                                 )}
+                            {
+                                showhide === '6' && isEdit === false && (
+                                    <Formik
+                                        initialValues={{
+                                            questionSid: ''
+                                        }}
+                                        onSubmit={(value) => { addCodingQuestionToSection(value) }}
+
+                                    >
+                                        {({ handleSubmit, setFieldValue, isValid, values }) => (
+
+                                            <>
+                                                <form onSubmit={handleSubmit}>
+                                                    <div className="row mb-3 mx-1">
+
+                                                        {/* <TextInput name="assets" label="Assets" /> */}
+
+
+                                                        <label className="mb-2 label form-label">Coding Questions</label>
+                                                        <SelectInput className="form-control" label="Coding Question" bindKey="question" payloadKey="questionId" name="question" value={values.questionId} option={codingQuestion} />
+
+
+                                                    </div>
+                                                    <div>
+                                                        <Button className="btn-block py-2 mt-3" type="submit">Confirm</Button>
+                                                    </div>
+                                                </form>
+                                            </>
+                                        )}
+
+                                    </Formik>
+
+                                )}
                         </div>
                     </BsModal>
             }
@@ -973,7 +1052,7 @@ const CourseDetails = ({ location }) => {
 
                                 }}>Add Content</Button>
 
-                                <ButtonDelete className="mb-2 float-right" onClick={()=> deleteCourseSection(item.sid)}>Delete Section</ButtonDelete>
+                                <ButtonDelete className="mb-2 float-right" onClick={() => deleteCourseSection(item.sid)}>Delete Section</ButtonDelete>
 
 
                                 <DynamicTable  {...{ configuration, sourceData: item.courseContentResposeTOList, onPageChange: (e) => getSection(e) }} />
