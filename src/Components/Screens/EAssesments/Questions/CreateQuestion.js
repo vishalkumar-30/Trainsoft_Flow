@@ -88,7 +88,7 @@ const CreateQuestion = ({ location }) => {
       console.error("error occur on getQuestionType()", err);
     }
   }
-
+console.log(questionType)
   // initialize component
   useEffect(() => {
     getQuestionType();
@@ -126,7 +126,7 @@ const CreateQuestion = ({ location }) => {
                   </Form.Group>
                   <Form.Group>
                     <TextInput
-                      label="Question Title"
+                      label="Question Description"
                       placeholder="Name"
                       name="name"
                     />
@@ -161,29 +161,37 @@ const CreateQuestion = ({ location }) => {
                       <RadioBoxKey name="difficulty" options={GLOBELCONSTANT.DIFFICULTY} />
                     </div>
                   </Form.Group>
-                  <Form.Group>
-                    <Form.Label className="label">
-                      Answer Choice Ordering
-                    </Form.Label>
-                    <div style={{ marginBottom: "10px" }}>
-                      <RadioBoxKey name="answerOrderType" options={GLOBELCONSTANT.ANSWER_ORDER_TYPE} />
-                    </div>
-                  </Form.Group>
+                 {
+                  values.questionType !=="DESCRIPTIVE" ? <><Form.Group>
+                  <Form.Label className="label">
+                    Answer Choice Ordering
+                  </Form.Label>
+                  <div style={{ marginBottom: "10px" }}>
+                    <RadioBoxKey name="answerOrderType" options={GLOBELCONSTANT.ANSWER_ORDER_TYPE} />
+                  </div>
+                </Form.Group>
 
-                  <AnswerSelector {...{
-                      values, 
-                      ordering: values.answerOrderType, 
-                      setFieldValue,
-                      deletedAnswers,
-                      setDeletedAnswers
-                  }}/>
+                <AnswerSelector {...{
+                    values, 
+                    ordering: values.answerOrderType, 
+                    setFieldValue,
+                    deletedAnswers,
+                    setDeletedAnswers
+                }}/>
 
-                  <Form.Group>
-                    <TextArea
-                      label="Answer Explanation"
-                      name="answerExplanation"
-                    />
-                  </Form.Group>
+                <Form.Group>
+                  <TextArea
+                    label="Answer Explanation"
+                    name="answerExplanation"
+                  />
+                </Form.Group>
+                
+                </>
+                :''
+                 }
+
+
+
                       { /* 
                   <Form.Group>
                     <TextArea
