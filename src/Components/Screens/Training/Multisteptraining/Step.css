@@ -74,3 +74,14 @@
   .form-duration .input-field{
     background: rgba(255, 255, 255, 0) !important;
   }
+
+  .table-shadow1 {
+  
+    /* overflow: hidden; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+ 
+    background-color: #fff;
+    height: 100%;
+}

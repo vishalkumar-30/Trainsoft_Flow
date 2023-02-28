@@ -51,7 +51,7 @@ const SupportContainer = () => {
     //get sub types
     const getSupportTypeAndSubTypes = () => {
 
-        axios.get('http://15.207.110.45:8089/insled/v2/get-support-types-sub-types',
+        axios.get('https://trainsoft.live/insled/v2/get-support-types-sub-types',
             {
                 headers: {
                     'Content-Type': 'application/json'
