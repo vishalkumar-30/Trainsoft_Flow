@@ -7,11 +7,13 @@ import useToast from "../../../../Store/ToastHook";
 import AppContext from "../../../../Store/AppContext";
 import RestService from "../../../../Services/api.service";
 import CountdownTimer from "../../../Common/CountdownTimer/CountdownTimer";
+import CodeEditor from "../../ClassLab/CodeEditor/CodeEditor";
 
 function Labs(props) {
     const [labDescription, setLabDescription] = useState(props.location.state.labDescription);
     const [labOverview, setLabOverview] = useState(props.location.state.labOverview);
     const [labSolution, setLabSolution] = useState(props.location.state.labSolution);
+    const [labType, setLabType] = useState(props.location.state.type);
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
     const { spinner } = useContext(AppContext)
     // const {setTraining,training} = useContext(TrainingContext)
@@ -30,11 +32,12 @@ function Labs(props) {
     const [stopConnection, setStopConnection] = useState('');
     const [stopServer, setStopServer] = useState('');
     const [showButton, setShowButton] = useState(false);
+    const [showEditor, setShowEditor] = useState(false);
     const [labDuration, setLabDuration] = useState(props.location.state.labDuration);
     const [labName, setLabName] = useState(props.location.state.showcoursename);
     const Toast = useToast();
     const navigate = useNavigate();
-    
+
     //start lab 
     const ec2GuacamolePOC = async () => {
         try {
@@ -192,89 +195,102 @@ function Labs(props) {
             console.error("error occur on terminateEC2InstanceAndTerminateGuacamoleServer()", err)
         }
     }
-   
-    console.log(labDuration);
 
     return (
         <div >
             <div className="labbody vh-100 " >
 
                 <div className="col-3 jumbotron pl-5 lab" >
-               
-             
-           
-                    <h3 className="text-center " style={{fontSize:"18px", fontWeight:"bold"}} >{labName}</h3>
-                    <hr/>
-                    <br/>
-                    <h5 style={{fontSize:"18px", fontWeight:"bold"}}>Lab Description</h5>
-                    
-                   
-<ReactMarkdown>
-
- {labDescription}
-                    
-</ReactMarkdown>
-<br/>
-<hr/>
-<h5 style={{fontSize:"18px", fontWeight:"bold"}}>Lab Steps</h5>
 
 
-<ReactMarkdown>
 
-{labOverview}
-</ReactMarkdown>
-                
+                    <h3 className="text-center " style={{ fontSize: "18px", fontWeight: "bold" }} >{labName}</h3>
+                    <hr />
+                    <br />
+                    <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>Lab Description</h5>
+
+
+                    <ReactMarkdown>
+
+                        {labDescription}
+
+                    </ReactMarkdown>
+                    <br />
+                    <hr />
+                    <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>Lab Steps</h5>
+
+
+                    <ReactMarkdown>
+
+                        {labOverview}
+                    </ReactMarkdown>
+
                     {/* <p>Lab Solution : &nbsp; {labSolution}</p><br /> */}
                 </div>
-                <div className="col-9 mainbody" style={{ background: "black" }}>
-                    {/* labbacimg */}
-                    <div className=" row ml-1"  >
-                        <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "18px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
-
-                            {(labConnection.length > 0 && stopConnection.length > 0) && localStorage.getItem('connectionString') ?
-                                <div>
-                                    <p className="text-white">Started</p>
-                                </div>
-                                :
-
-                                <button style={{ color: "#fff", fontSize: "15px" }} onClick={() =>
-
-
-                                    ec2GuacamolePOC()
-                                }>Start Lab</button>}
-                        </div>
-
-                        {
-                            showButton || localStorage.getItem('appearButton') ?
-                                <>
-                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
-                                        <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>{stopServer.length === 0 ? "Pause Lab" : "Paused"}</button>
-                                    </div>
-                                    <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "#471579", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
-                                        <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Complete Lab</button>
-                                    </div>
-                                </>
-                                : ''}
-                        <div style={{ marginLeft: "80px", marginBottom: "50px", marginTop: "50px" }}>
+                {
+                    labType !== null ?
+                        <div className="col-9 mainbody" style={{ background: "black" }}>
+                            <button className="btn btn-primary" style={{ color: "#fff", fontSize: "15px" }} onClick={() =>{setShowEditor(true)}}>Start Lab</button>
                             {
-                                labConnection.length > 0 || localStorage.getItem('connectionString') ?
-                                    <CountdownTimer {...{ timeLimit: labDuration, callback: (time) => { } }} />
-                                    : ''
+                                showEditor ? 
+                                <CodeEditor trainingSid={props.location.state.trainingSid } codingQuestionId={props.location.state.codingQuestionId}/>
+                                : <p className="text-white">Please Click on Start Lab</p>
                             }
+                           
+
                         </div>
 
+                        :
 
-                    </div>
+                        <div className="col-9 mainbody" style={{ background: "black" }}>
+                            {/* labbacimg */}
+                            <div className=" row ml-1"  >
+                                <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "18px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+
+                                    {(labConnection.length > 0 && stopConnection.length > 0) && localStorage.getItem('connectionString') ?
+                                        <div>
+                                            <p className="text-white">Started</p>
+                                        </div>
+                                        :
+
+                                        <button style={{ color: "#fff", fontSize: "15px" }} onClick={() =>
 
 
-                    <div className="py-2 " style={{ marginTop: "-10px" }}>{
-                        (labConnection.length > 0 && stopConnection.length > 0) || localStorage.getItem('connectionString') ?
+                                            ec2GuacamolePOC()
+                                        }>Start Lab</button>}
+                                </div>
 
-                            <iframe src={`https://lab.trainsoft.live/#${labConnection}`} width="100%" height="600px" />
-                            : <p className="text-white">Please Click on Start Lab</p>}
-                    </div>
+                                {
+                                    showButton || localStorage.getItem('appearButton') ?
+                                        <>
+                                            <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+                                                <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>{stopServer.length === 0 ? "Pause Lab" : "Paused"}</button>
+                                            </div>
+                                            <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "#471579", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+                                                <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Complete Lab</button>
+                                            </div>
+                                        </>
+                                        : ''}
+                                <div style={{ marginLeft: "80px", marginBottom: "50px", marginTop: "50px" }}>
+                                    {
+                                        labConnection.length > 0 || localStorage.getItem('connectionString') ?
+                                            <CountdownTimer {...{ timeLimit: labDuration, callback: (time) => { } }} />
+                                            : ''
+                                    }
+                                </div>
 
-                </div>
+
+                            </div>
+
+                            <div className="py-2 " style={{ marginTop: "-10px" }}>{
+                                (labConnection.length > 0 && stopConnection.length > 0) || localStorage.getItem('connectionString') ?
+
+                                    <iframe src={`https://lab.trainsoft.live/#${labConnection}`} width="100%" height="600px" />
+                                    : <p className="text-white">Please Click on Start Lab</p>}
+                            </div>
+
+                        </div>
+                }
             </div>
 
 

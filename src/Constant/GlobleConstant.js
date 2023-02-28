@@ -295,6 +295,11 @@ const GLOBELCONSTANT = {
     INSTRUCTOR: {
         GET_INSTRUCTOR: API_HOST + "vaccounts/INSTRUCTOR/1/200",
     },
+
+    CODING: {
+        GET_ALL_CODING_QUESTIONS: API_HOST_V2 + "get-all-coding-questions",
+        ADD_CODING_QUESTIONS_TO_SECTION: API_HOST_V2 + "add-coding-question-to-section"
+    },
     ACCESS_LEVEL: [
         { key: "ALL", name: "All" },
         { key: "BATCH_MGMT", name: "Batch Management" },

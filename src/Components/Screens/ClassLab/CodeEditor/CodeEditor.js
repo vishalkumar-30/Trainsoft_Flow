@@ -10,7 +10,7 @@ import './codeEditor.css'
 import OutputIcon from '@mui/icons-material/Output';
 import { height } from '@mui/system';
 
-const CodeEditor = ({ themesColor = false }) => {
+const CodeEditor = (props) => {
     const { spinner } = useContext(AppContext);
     const [inputData, setInputData] = useState('');
     const editorRef = useRef(null);
@@ -37,6 +37,21 @@ const CodeEditor = ({ themesColor = false }) => {
                 setOutput(data.output);
                 setResults(data.codeAnalysis);
                 setInputTab(false);
+                setSpinners(false);
+            })
+    }
+    const submitCode = () => {
+        const trainingSid = props.trainingSid;
+        const codingQuestionId = props.codingQuestionId;
+        setSpinners(true)
+        const payload = {
+            "code": editorRef.current.getValue(),
+    
+        }
+        axios.post(`https://trainsoft.live/insled/v1/jdoodle/evaluate?coding_question_id=${codingQuestionId}&training_sid=${trainingSid}`, payload)
+            .then(({ data }) => {
+                setOutput(data.output);
+                // setResults(data.codeAnalysis);
                 setSpinners(false);
             })
     }
@@ -119,18 +134,7 @@ const CodeEditor = ({ themesColor = false }) => {
 
                     </div>
                 }
-                {/* {
-                    results.length > 0 ?
-                        <div className="editor-output" >
-                            <div>
-                                <p style={{ fontSize: "15px", fontWeight: "bold", color: '#00000094' }}>{results.split('\n')[0]}</p>
-                                <p>{results.split('\n')[2]}</p>
-                                <p>{results.split('\n')[3]}</p>
-                                <p>{results.split('\n')[5]}</p>
-                                <p>{results.split('\n')[6]}</p>
-                            </div>
-                        </div> : ''
-                } */}
+                <button className="class-mode bg-primary my-3" style={{float: 'right'}}onClick={submitCode}>Submit</button>
             </div>
         </div>
     </>)

@@ -38,6 +38,7 @@ const TrainingDetails = ({ location }) => {
     const [labOverview, setLabOverview] = useState('');
     const [labSolution, setLabSolution] = useState('');
     const [labDuration, setLabDuration] = useState('');
+    const [codingQuestionId, setCodingQuestionId] = useState('');
     const navigate = useNavigate();
     let trainingSid = location.state.sid;
 
@@ -102,6 +103,9 @@ const TrainingDetails = ({ location }) => {
                     if (data.sid != null) {
                         markCourseAsCompleted(data.sid, data.sectionSid);
                     }
+                    if(data.codingQuestionId !== null){
+                        setCodingQuestionId(data.codingQuestionId);
+                    }
                     showFeedBack(data.last)
 
                     modalF(data.last);
@@ -117,7 +121,7 @@ const TrainingDetails = ({ location }) => {
                         }
                     }))
 
-                }} style={{ cursor: "pointer" }} > {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB") ? <ScienceIcon />
+                }} style={{ cursor: "pointer" }} > {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB" || data.type === "CODING") ? <ScienceIcon />
                     : (data.type === "ASSESSMENT") ? <AssessmentIcon /> : <SummarizeRoundedIcon />}
                     {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
 
@@ -281,7 +285,6 @@ const TrainingDetails = ({ location }) => {
         getCompletedCourses();
     }, []);
 
-    console.log(labDescription);
 
     return (
         <>
@@ -307,14 +310,14 @@ const TrainingDetails = ({ location }) => {
                     {/* <VideoMediaPlayer /> */}
                     {(type === "EXTERNAL_LINK" || type === "VIDEO") ? <VideoMediaPlayer url={vdlink} />
                         : (type === "PHOTO" || type === "DOCUMENTS") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
-                            : (type === "LAB") ?
+                            : (type === "LAB" || type === "CODING") ?
                                 <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
                                     <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
 
                                         {
                                             <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/labs", {
                                                 state: {
-                                                    labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename
+                                                    labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename, type, codingQuestionId
                                                 }
                                             })
                                             }>Open Sandbox</button>}
