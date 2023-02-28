@@ -49,7 +49,7 @@ const QuestionDetails = ({ location }) => {
           {question.name}
           </Form.Label>
         </Form.Group>
-        <AnswerSelector {...{question}} />
+       {question.questionType !== 'DESCRIPTIVE' ? <> <AnswerSelector {...{question}} />
         <Form.Group>
           {/* <Form.Label>Tags</Form.Label>
           <br />
@@ -67,13 +67,14 @@ const QuestionDetails = ({ location }) => {
             Java
           </div> */}
         </Form.Group>
+        
         <Form.Group>
           <Form.Label>Answer Explaination</Form.Label>
           <br />
           <Form.Label style={{ fontWeight: 600 }}>
            {question?.answerExplanation}
           </Form.Label>
-        </Form.Group>
+        </Form.Group></>:''}
         <div
           style={{
             borderTop: "1px solid #0000003E",

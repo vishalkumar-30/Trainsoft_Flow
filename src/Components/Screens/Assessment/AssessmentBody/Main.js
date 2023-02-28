@@ -9,6 +9,7 @@ import RestService from '../../../../Services/api.service';
 import AppUtils from '../../../../Services/Utils';
 import useToast from "../../../../Store/ToastHook";
 import TimesUpModal from "./TimesUpModal";
+import ReactQuill from "react-quill";
 
 const Main = ({ questions }) => {
     const {
@@ -59,6 +60,7 @@ const Main = ({ questions }) => {
         }
     }, [hasExamEnd])
 
+    console.log(questions)
     return (
         <div className={styles.main}>
             { finished && <FinishScreen {...{ questions }} /> }
@@ -82,6 +84,7 @@ const Main = ({ questions }) => {
                                     answers & then submit
                                 </div>
                             </div>
+                            
                             <Submit onClick={() => handleSubmitAssessment()}>Submit Assessment</Submit>
                         </div>
                     }
@@ -99,11 +102,21 @@ const Main = ({ questions }) => {
                                 }}/>)
                             }
                         </> 
-                        : <AssessmentCard {...{question: activeQuestion, questions}} />
+                        : <div><AssessmentCard {...{question: activeQuestion, questions}} /> <ReactQuill/> : '' </div>
                     }
                 </>
             }
+               {/* {questions.map((i)=>{
+                return(
+                    <>
+                    {i.isDescriptive ? <ReactQuill/> : '' }
+                    </>
+                )
+               })
+                
+               } */}
             {show && <TimesUpModal {...{show, setShow, callBack: () => handleSubmitAssessment()}}/>}
+         
         </div>
     );
 }
