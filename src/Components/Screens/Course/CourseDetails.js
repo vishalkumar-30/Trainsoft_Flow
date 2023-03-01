@@ -1020,9 +1020,9 @@ const CourseDetails = ({ location }) => {
 
                                                         {/* <TextInput name="assets" label="Assets" /> */}
 
-
-                                                        <label className="mb-2 label form-label">Coding Questions</label>
-                                                        <SelectInput className="form-control" label="Coding Question" bindKey="question" payloadKey="questionId" name="question" value={values.questionId} option={codingQuestion} />
+                                                       <div style={{width: "100%"}}>
+                                                       <SelectInput className="form-control" label="Coding Question" bindKey="question" payloadKey="questionId" name="question" value={values.questionId} option={codingQuestion} />
+                                                       </div>
 
 
                                                     </div>

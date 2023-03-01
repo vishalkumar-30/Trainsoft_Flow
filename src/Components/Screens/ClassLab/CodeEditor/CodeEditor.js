@@ -9,6 +9,7 @@ import Editors from './Editor';
 import './codeEditor.css'
 import OutputIcon from '@mui/icons-material/Output';
 import { height } from '@mui/system';
+import { data } from 'jquery';
 
 const CodeEditor = (props) => {
     const { spinner } = useContext(AppContext);
@@ -17,10 +18,12 @@ const CodeEditor = (props) => {
     const [lang, setLang] = useState(Language[0]);
     const [lightTheams, setLightTheams] = useState(false);
     const [output, setOutput] = useState('');
+    const [submitoutput, setSubmitoutput] = useState('');
     const [results, setResults] = useState('');
     const [inputTab, setInputTab] = useState(true);
     const [spinners, setSpinners] = useState(false);
     const [language, setLanguage] = useState();
+
     const handleEditorDidMount = (editor, monaco) => {
         editorRef.current = editor;
     }
@@ -44,13 +47,17 @@ const CodeEditor = (props) => {
         const trainingSid = props.trainingSid;
         const codingQuestionId = props.codingQuestionId;
         setSpinners(true)
+        
         const payload = {
             "code": editorRef.current.getValue(),
     
         }
         axios.post(`https://trainsoft.live/insled/v1/jdoodle/evaluate?coding_question_id=${codingQuestionId}&training_sid=${trainingSid}`, payload)
             .then(({ data }) => {
-                setOutput(data.output);
+                // setOutput(data.output);
+                console.log(data)
+                setSubmitoutput(data)
+
                 // setResults(data.codeAnalysis);
                 setSpinners(false);
             })
@@ -61,7 +68,7 @@ const CodeEditor = (props) => {
         setInputTab(true);
         setLanguage(lang.value)
     }, [lang])
-
+console.log(submitoutput)
     return (<>
         <div className="editor-wrapper">
             <div className="jcb">
@@ -134,7 +141,8 @@ const CodeEditor = (props) => {
 
                     </div>
                 }
-                <button className="class-mode bg-primary my-3" style={{float: 'right'}}onClick={submitCode}>Submit</button>
+             <div className='d-flex ' style={{justifyContent:"space-between"}}>   <button className="class-mode bg-primary my-3" style={{float: 'right'}}onClick={submitCode}>Submit</button>
+                <h4 className='title-lg mt-3 ' >Hidden Test Cases :- {submitoutput}</h4></div>
             </div>
         </div>
     </>)

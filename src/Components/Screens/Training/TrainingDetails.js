@@ -41,6 +41,7 @@ const TrainingDetails = ({ location }) => {
     const [labSolution, setLabSolution] = useState('');
     const [labDuration, setLabDuration] = useState('');
     const [codingQuestionId, setCodingQuestionId] = useState('');
+    const [codingQuestiondesc, setCodingQuestiondesc] = useState('');
     const navigate = useNavigate();
     let trainingSid = location.state.sid;
 
@@ -107,6 +108,7 @@ const TrainingDetails = ({ location }) => {
                     }
                     if(data.codingQuestionId !== null){
                         setCodingQuestionId(data.codingQuestionId);
+                        setCodingQuestiondesc(data.codingQuestionDescription);
                     }
                     showFeedBack(data.last)
 
@@ -319,7 +321,7 @@ const TrainingDetails = ({ location }) => {
                                         {
                                             <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/labs", {
                                                 state: {
-                                                    labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename, type, codingQuestionId
+                                                    labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename, type, codingQuestionId,codingQuestiondesc
                                                 }
                                             })
                                             }>Open Sandbox</button>}
