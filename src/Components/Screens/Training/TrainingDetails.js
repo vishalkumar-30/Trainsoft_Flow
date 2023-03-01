@@ -18,6 +18,8 @@ import ProgressBar from "../../Common/ProgressBar/ProgressBar";
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import ScienceIcon from '@mui/icons-material/Science';
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import CodeIcon from '@mui/icons-material/Code';
+
 
 const TrainingDetails = ({ location }) => {
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
@@ -121,9 +123,9 @@ const TrainingDetails = ({ location }) => {
                         }
                     }))
 
-                }} style={{ cursor: "pointer" }} > {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB" || data.type === "CODING") ? <ScienceIcon />
-                    : (data.type === "ASSESSMENT") ? <AssessmentIcon /> : <SummarizeRoundedIcon />}
-                    {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
+                }} style={{ cursor: "pointer" }} > {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB" ) ? <ScienceIcon />
+                : (data.type === "ASSESSMENT") ? <AssessmentIcon /> : (data.type === "CODING") ? <CodeIcon /> :<SummarizeRoundedIcon />}
+                {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
 
                     {/* <button style={{
                         backgroundColor: "transparent",
