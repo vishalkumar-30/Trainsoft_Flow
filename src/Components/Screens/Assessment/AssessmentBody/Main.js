@@ -9,7 +9,6 @@ import RestService from '../../../../Services/api.service';
 import AppUtils from '../../../../Services/Utils';
 import useToast from "../../../../Store/ToastHook";
 import TimesUpModal from "./TimesUpModal";
-import ReactQuill from "react-quill";
 
 const Main = ({ questions }) => {
     const {
@@ -102,19 +101,10 @@ const Main = ({ questions }) => {
                                 }}/>)
                             }
                         </> 
-                        : <div><AssessmentCard {...{question: activeQuestion, questions}} /> <ReactQuill/> : '' </div>
+                        : <AssessmentCard {...{question: activeQuestion, questions}} />
                     }
                 </>
             }
-               {/* {questions.map((i)=>{
-                return(
-                    <>
-                    {i.isDescriptive ? <ReactQuill/> : '' }
-                    </>
-                )
-               })
-                
-               } */}
             {show && <TimesUpModal {...{show, setShow, callBack: () => handleSubmitAssessment()}}/>}
          
         </div>

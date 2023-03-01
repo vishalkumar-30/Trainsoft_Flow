@@ -19,13 +19,20 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import * as Yup from 'yup';
 import GLOBELCONSTANT from '../../../Constant/GlobleConstant'
-
-
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+// import labvideo from "../../../Assets/Video/Lab.mov";
+// import etraining from "../../../Assets/Video/Training_Session.mov";
+// import assesment from  "../../../Assets/Video/Assessment.mov";
+// import selfpacedleraning from  "../../../Assets/Video/Course_And_Training_Creation.mov";
 const LandingHome = () => {
     const [open, setOpen] = useState(false);
     const [contact,setContact] = useState({})
     const [submited,setSubmited] = useState(false)
-
+    const [lgShow, setLgShow] = useState(false);
+    const[Screeningmodal,setScreeningmodal] = useState(false);
+    const[Lab,setLab] = useState(false);
+    const[SelfPaced,setSelfPaced] = useState(false);
     // field validation
     const schema = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required("Required!"),
@@ -78,6 +85,72 @@ const LandingHome = () => {
 
 
         </div>
+    
+        {/* <div class="row mb-3 mx-1"><label class="mb-2 label form-label">Content Type</label><select name="usertype" class="form-control" style="border-radius: 30px; background-color: rgb(248, 250, 251);"><option value="">--Select Type--</option><option value="1">Video</option><option value="2">Document</option><option value="3">Meeting</option><option value="4">Lab</option><option value="5">Assessment</option></select></div> */}
+     
+      <Modal
+        size="lg"
+        show={lgShow}
+        onHide={() => setLgShow(false)}
+        aria-labelledby="example-modal-sizes-title-lg"
+      >
+        <Modal.Header closeButton style={{background:"black"}}>
+          <Modal.Title id="example-modal-sizes-title-lg">
+           
+          </Modal.Title>
+        </Modal.Header>
+        <video width="100%" height="100%" controls>
+  <source src="https://learnlytica.s3.ap-south-1.amazonaws.com/Trainsoft+Sample+videos/Assessment.mp4" type="video/mp4"/>
+</video>
+      </Modal>
+      <Modal
+        size="lg"
+        show={Screeningmodal}
+        onHide={() => setScreeningmodal(false)}
+        aria-labelledby="example-modal-sizes-title-lg"
+      >
+        <Modal.Header closeButton style={{background:"black"}}>
+          <Modal.Title id="example-modal-sizes-title-lg">
+           
+          </Modal.Title>
+        </Modal.Header>
+        <video width="100%" height="100%" controls>
+  <source src="https://learnlytica.s3.ap-south-1.amazonaws.com/Trainsoft+Sample+videos/Course+and+Training+Creation.mp4" type="video/mp4"/>
+</video>
+      </Modal>
+      <Modal
+        size="lg"
+        show={Lab}
+        onHide={() => setLab(false)}
+        aria-labelledby="example-modal-sizes-title-lg"
+      >
+        <Modal.Header closeButton style={{background:"black"}}>
+         
+        </Modal.Header>
+       
+            {/* <iframe src='https://www.youtube.com/watch?v=f9datDFhvhY' frameborder="0" allowfullscreen height="1200px" width="800px"></iframe> */}
+            <video width="100%" height="100%" controls>
+  <source src="https://learnlytica.s3.ap-south-1.amazonaws.com/Trainsoft+Sample+videos/Lab.mp4" type="video/mp4"/>
+</video>
+            
+      </Modal>
+      <Modal
+        size="lg"
+        show={SelfPaced}
+        onHide={() => setSelfPaced(false)}
+        aria-labelledby="example-modal-sizes-title-lg"
+      >
+        <Modal.Header closeButton style={{background:"black"}}>
+          <Modal.Title id="example-modal-sizes-title-lg">
+          
+          </Modal.Title>
+        </Modal.Header>
+        
+        <video width="100%" height="100%" controls>
+  <source src="https://learnlytica.s3.ap-south-1.amazonaws.com/Trainsoft+Sample+videos/Training+Session.mp4" type="video/mp4"/>
+</video>
+       
+      </Modal>
         <div className="section-dk section" id="about">
             <div className="row jcc text-center my-4">
                 <div className="col-md-6">
@@ -103,7 +176,7 @@ const LandingHome = () => {
                         </div>
                         <div className="card-footer-action">
                             <div className="">
-                               <Cancel className=""><span>{ICN_PLAY_CIRCLE}</span>SEE HOW</Cancel>
+                               <Cancel className="" onClick={() => setLgShow(true)}><span>{ICN_PLAY_CIRCLE}</span>SEE HOW</Cancel>
                             </div>
                             <div className="">
                                 <BtnWarning onClick={()=>setOpen(true)}>CONTACT US</BtnWarning>
@@ -124,7 +197,7 @@ const LandingHome = () => {
                         </div>
                         <div className="card-footer-action">
                             <div className="">
-                               <Cancel className=""><span>{ICN_PLAY_CIRCLE}</span>SEE HOW</Cancel>
+                               <Cancel className="" onClick={() => setScreeningmodal(true)}><span>{ICN_PLAY_CIRCLE}</span>SEE HOW</Cancel>
                             </div>
                             <div className="">
                                 <BtnWarning onClick={()=>navigate('/assessment/0/0/0')}>TRY NOW</BtnWarning>
@@ -144,7 +217,7 @@ const LandingHome = () => {
                         </div>
                         <div className="card-footer-action">
                             <div className="">
-                               <Cancel className=""><span>{ICN_PLAY_CIRCLE}</span>SEE HOW</Cancel>
+                               <Cancel className="" onClick={() => setLab(true)}><span>{ICN_PLAY_CIRCLE}</span>SEE HOW</Cancel>
                             </div>
                             <div className="">
                                 <BtnWarning onClick={()=>setOpen(true)}>CONTACT US</BtnWarning>
@@ -164,7 +237,7 @@ const LandingHome = () => {
                         </div>
                         <div className="card-footer-action">
                             <div className="">
-                                <Cancel className=""><span>{ICN_PLAY_CIRCLE}</span>SEE HOW</Cancel>
+                                <Cancel className="" onClick={() => setSelfPaced(true)}><span>{ICN_PLAY_CIRCLE}</span>SEE HOW</Cancel>
                             </div>
                             <div className="">
                                 <BtnWarning onClick={()=>setOpen(true)}>CONTACT US</BtnWarning>

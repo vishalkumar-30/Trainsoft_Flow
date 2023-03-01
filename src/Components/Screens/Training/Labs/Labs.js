@@ -11,6 +11,7 @@ import CodeEditor from "../../ClassLab/CodeEditor/CodeEditor";
 
 function Labs(props) {
     const [labDescription, setLabDescription] = useState(props.location.state.labDescription);
+    const [codingQuestiondesc, setcodingQuestiondesc] = useState(false);
     const [labOverview, setLabOverview] = useState(props.location.state.labOverview);
     const [labSolution, setLabSolution] = useState(props.location.state.labSolution);
     const [labType, setLabType] = useState(props.location.state.type);
@@ -195,7 +196,11 @@ function Labs(props) {
             console.error("error occur on terminateEC2InstanceAndTerminateGuacamoleServer()", err)
         }
     }
+useEffect(()=>{
+    props.location.state.codingQuestiondesc ? 
+setcodingQuestiondesc(props.location.state.codingQuestiondesc):setcodingQuestiondesc(false)
 
+},[])
     return (
         <div >
             <div className="labbody vh-100 " >
@@ -210,27 +215,35 @@ function Labs(props) {
                     <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>Lab Description</h5>
 
 
-                    <ReactMarkdown>
+                {
 
-                        {labDescription}
+codingQuestiondesc !== false ?<ReactMarkdown>
+	{codingQuestiondesc}
+	</ReactMarkdown>
+    :<ReactMarkdown>
+	  {labDescription}
+	</ReactMarkdown>
+	
 
-                    </ReactMarkdown>
+
+} 
                     <br />
                     <hr />
-                    <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>Lab Steps</h5>
-
-
-                    <ReactMarkdown>
-
-                        {labOverview}
-                    </ReactMarkdown>
-
+                    
+           
+               { console.log(typeof(codingQuestiondesc))}
+             {codingQuestiondesc !== false ? "":       
+    <ReactMarkdown>
+               <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>Lab Steps</h5>
+    {labOverview}
+   </ReactMarkdown>
+}
                     {/* <p>Lab Solution : &nbsp; {labSolution}</p><br /> */}
                 </div>
                 {
-                    labType !== null ?
-                        <div className="col-9 mainbody" style={{ background: "black" }}>
-                            <button className="btn btn-primary" style={{ color: "#fff", fontSize: "15px" }} onClick={() =>{setShowEditor(true)}}>Start Lab</button>
+                    labType === 'CODING' ?
+                        <div className="col-9 mainbody" >
+                            <button className="btn btn-primary mt-3" style={{ color: "#fff", fontSize: "15px" }} onClick={() =>{setShowEditor(true)}}>Start Lab</button>
                             {
                                 showEditor ? 
                                 <CodeEditor trainingSid={props.location.state.trainingSid } codingQuestionId={props.location.state.codingQuestionId}/>
