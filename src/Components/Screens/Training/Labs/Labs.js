@@ -232,11 +232,12 @@ codingQuestiondesc !== false ?<ReactMarkdown>
                     
            
                { console.log(typeof(codingQuestiondesc))}
-             {codingQuestiondesc !== false ? "":       
+             {codingQuestiondesc !== false ? "":    <><h5 style={{ fontSize: "18px", fontWeight: "bold" }}>Lab Steps</h5>
     <ReactMarkdown>
-               <h5 style={{ fontSize: "18px", fontWeight: "bold" }}>Lab Steps</h5>
+           
     {labOverview}
-   </ReactMarkdown>
+   </ReactMarkdown></>   
+                 
 }
                     {/* <p>Lab Solution : &nbsp; {labSolution}</p><br /> */}
                 </div>
