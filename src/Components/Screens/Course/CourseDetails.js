@@ -49,6 +49,8 @@ const CourseDetails = ({ location }) => {
     const [topics, setTopics] = useState([]);
     const [assessment, setAssessments] = useState([]);
     const [codingQuestion, setCodingQuestion] = useState([]);
+    const [instructorDocuments, setInstructorDocuments] = useState(false);
+    const [instructorVideo, setInstructorVideo] = useState(false);
 
     //validation
     const schema = Yup.object().shape({
@@ -211,18 +213,30 @@ const CourseDetails = ({ location }) => {
 
     //create new upload in course section
     const createUploadCourseSection = (data) => {
+
         const courseSectionSid = sectionSid;
         try {
             spinner.show();
             let formData = new FormData();
 
             formData.append("content-title", data.contentTitle);
+            if(instructorDocuments){
+                formData.append("instructor_specific", instructorDocuments);
+            }
+            else if(instructorVideo){
+                formData.append("instructor_specific", instructorVideo);
+            }
+            else{
+                formData.append("instructor_specific", false);
+            }
 
             typeof document === 'object' ? formData.append("file", document) : formData.append("content-link", data.contentLink);
 
             RestService.uploadCourseContent(formData, courseSectionSid).then(res => {
                 getSection();
-                setShow(false)
+                setShow(false);
+                setInstructorDocuments(false);
+                setInstructorVideo(false);
                 setSessionList([...sessionList, res.data])
                 Toast.success({ message: `Section Content is Successfully Created` });
                 spinner.hide();
@@ -628,7 +642,7 @@ const CourseDetails = ({ location }) => {
         const questionId = data.question.questionId;
         try {
             spinner.show();
-            RestService.addCodingQuestionToSection(courseSid, courseSectionSid, questionId ).then(res => {
+            RestService.addCodingQuestionToSection(courseSid, courseSectionSid, questionId).then(res => {
                 setShow(false)
                 getSection();
                 Toast.success({ message: `Coding question added successfully` });
@@ -681,7 +695,6 @@ const CourseDetails = ({ location }) => {
         getAllTopics();
         getAllCodingQuestions();
     }, [])
-
 
     return (<>
         <div className="table-shadow p-3 pb-5">
@@ -807,6 +820,12 @@ const CourseDetails = ({ location }) => {
                                                             }
 
                                                         </div>
+                                                        <div class="form-check aic " style={{ fontSize: "15px" }} >
+
+                                                            <input type="checkbox" id="closed" name="status" value="closed" onChange={(e)=>setInstructorVideo(e.target.checked)}/>
+                                                            <label class="form-check-label form-label mx-3 title-sm">Instructor Specific</label>
+
+                                                        </div>
                                                     </div>
                                                 </>
                                             )
@@ -825,7 +844,14 @@ const CourseDetails = ({ location }) => {
                                                         </div>
 
                                                     }
+                                                    <div class="form-check aic " style={{ fontSize: "15px" }} >
+
+                                                        <input type="checkbox" id="closed" name="status" onvalue="closed" onChange={(e)=>setInstructorDocuments(e.target.checked)}/>
+                                                        <label class="form-check-label form-label mx-3 title-sm">Instructor Specific</label>
+
+                                                    </div>
                                                 </div>
+
                                             )}
                                         <div className="text-right mt-2" >
                                             {showhide === '3' || showhide === '4' || showhide === '5' || showhide === '6' ? "" : <Button type="submit" className=" px-4">{isEdit ? "Update" : "Add"} </Button>}
@@ -1020,9 +1046,9 @@ const CourseDetails = ({ location }) => {
 
                                                         {/* <TextInput name="assets" label="Assets" /> */}
 
-                                                       <div style={{width: "100%"}}>
-                                                       <SelectInput className="form-control" label="Coding Question" bindKey="question" payloadKey="questionId" name="question" value={values.questionId} option={codingQuestion} />
-                                                       </div>
+                                                        <div style={{ width: "100%" }}>
+                                                            <SelectInput className="form-control" label="Coding Question" bindKey="question" payloadKey="questionId" name="question" value={values.questionId} option={codingQuestion} />
+                                                        </div>
 
 
                                                     </div>
@@ -1036,6 +1062,7 @@ const CourseDetails = ({ location }) => {
                                     </Formik>
 
                                 )}
+
                         </div>
                     </BsModal>
             }
