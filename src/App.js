@@ -12,7 +12,7 @@ import LandingHome from "./Components/LandingPage/Home/LandingHome";
 import ResetPwd from "./Components/Screens/Auth/ResetPwd";
 import Assessment from "./Components/Screens/Assessment/Assessment";
 import { TrainingProvider } from "./Store/TrainingContext";
-import VsCode from "./Components/Screens/VsCode/VsCode";
+import VsCode from "./Components/Screens/VsCode/VsCode"; 
 import MeetingClose from "./Components/Zoom/MeetingClose";
 import { AssessmentProvider } from "./Store/AssessmentContext";
 import PrivateRoute from "./Components/Common/PrivateRoute/PrivateRoute";
@@ -37,7 +37,9 @@ function App() {
                localStorage.getItem('REACTAPP.TOKEN') && user.role === "TECHNICAL_SUPPORT"? <Redirect from="/login" to="/techsupport" noThrow /> :
                localStorage.getItem('REACTAPP.TOKEN') && user.role === "OPERATION_SUPPORT"? <Redirect from="/login" to="/techsupport" noThrow /> :
                <Login path="/login"/>
+               
             }
+            <Login path="/login-edforce"/>
             <PrivateRoute component={MeetingClose} path="zoomclose" />
             <PrivateRoute component={ResetPwd} path="/reset/:token" />
             {/* <PrivateRoute component={Assessment} path="/assessment/:assessmentSid/:companySid/:virtualAccountSid" /> */}

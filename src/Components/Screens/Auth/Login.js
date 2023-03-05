@@ -9,7 +9,9 @@ import RestService from '../../../Services/api.service';
 import AxiosService from '../../../Services/axios.service';
 import { TokenService } from '../../../Services/storage.service';
 import './auth.css'
-import { ICN_TRAINSOFT, ICN_BACK } from '../../Common/Icon';
+import { ICN_TRAINSOFT, ICN_BACK,ICN_EDFORCE } from '../../Common/Icon';
+import TRAINSOFT from './../../../Assets/Images/trainsoft.png'
+import EDFORCE from './../../../Assets/Images/edforce.png'
 import GLOBELCONSTANT from '../../../Constant/GlobleConstant';
 import { Link } from '@reach/router';
 import AssessmentContext from '../../../Store/AssessmentContext';
@@ -17,7 +19,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import hidePwdImg from "./hide-password.svg"
 import showPwdImg from "./show-password.svg"
-const Login = ({ location }) => {
+const Login = (props) => {
     const { setUserValue, spinner } = useContext(AppContext)
     const [isRevealPwd, setIsRevealPwd] = useState(false);
     // const {setCategory} = useContext(AssessmentContext);
@@ -33,6 +35,7 @@ const Login = ({ location }) => {
             setIsCapsLockOn(false);
         }
     };
+   
     // on login the user
     const onLogin = (value) => {
         try {
@@ -148,7 +151,9 @@ const Login = ({ location }) => {
                         {({ handleSubmit }) => (<>
                             <form onSubmit={handleSubmit} className="login-form  my-2">
                                 <div className="text-center mb-3">
-                                    {ICN_TRAINSOFT}
+                                    
+                                {props.location.pathname == '/login'?<img src={TRAINSOFT}/>:<img src={EDFORCE}/>}
+                               
 
                                 </div>
                                 <div className="text-center mb-3">Login to your Account</div>
