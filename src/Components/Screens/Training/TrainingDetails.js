@@ -44,6 +44,7 @@ const TrainingDetails = ({ location }) => {
     const [codingQuestiondesc, setCodingQuestiondesc] = useState('');
     const navigate = useNavigate();
     let trainingSid = location.state.sid;
+    let username=JSON.parse(localStorage.getItem('user'))
 
     function Show(url) {
         setVdlink(url);
@@ -390,11 +391,23 @@ const TrainingDetails = ({ location }) => {
                                 </div>
                             </>
                         )
-                    }) : ''}
+                    }) : ''} 
 
 
-                    <DropdownItem title="Fun Activity" total="1" theme="dark">
-                        <a href="https://course-content-storage.s3.amazonaws.com/1674058186578_linux42.html" target="_blank">Fun With Linux</a>
+                    <DropdownItem title="Fun Activity" total="2" theme="dark">
+                    
+                    {console.log(username['name'])}
+                    {username.name==="Wipro"?
+                    <div>
+ <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/enterprise-administrator.html" target="_blank">Fun With Enterprise Administrator</a></div>
+ <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/ms-training.html" target="_blank">Fun With MS Training</a></div>
+ </div>:
+ <div>
+   <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/cloud-native-jeopardy.html" target="_blank">Fun With Cloud Native</a></div>
+   <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/kubernetes-jeopardy-game.html" target="_blank">Fun With Kubernetes</a></div>
+   </div>    }         
+                        
+                        
 
 
                     </DropdownItem>

@@ -43,6 +43,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import CallIcon from '@material-ui/icons/Call';
 import EmailIcon from '@material-ui/icons/Email';
 import TRAINSOFT from './../../Assets/Images/trainsoft.png'
+import EDFORCE from './../../Assets/Images/edforce.png'
 import PauseIcon from '@material-ui/icons/Pause';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
@@ -69,6 +70,7 @@ export const ICN_MYASSESSMENT = <svg xmlns="http://www.w3.org/2000/svg" width="1
 export const ICN_CATALOG = <svg xmlns="http://www.w3.org/2000/svg" width="18" height="15.75" viewBox="0 0 18 15.75"><path  fill="#fff" d="M16.313,18H1.688A1.687,1.687,0,0,1,0,16.313V3.938A1.687,1.687,0,0,1,1.688,2.25H16.313A1.687,1.687,0,0,1,18,3.938V16.313A1.687,1.687,0,0,1,16.313,18ZM4.5,5.344A1.406,1.406,0,1,0,5.906,6.75,1.406,1.406,0,0,0,4.5,5.344Zm0,3.375a1.406,1.406,0,1,0,1.406,1.406A1.406,1.406,0,0,0,4.5,8.719Zm0,3.375A1.406,1.406,0,1,0,5.906,13.5,1.406,1.406,0,0,0,4.5,12.094ZM14.625,7.313V6.188a.422.422,0,0,0-.422-.422H8.072a.422.422,0,0,0-.422.422V7.313a.422.422,0,0,0,.422.422H14.2A.422.422,0,0,0,14.625,7.313Zm0,3.375V9.563a.422.422,0,0,0-.422-.422H8.072a.422.422,0,0,0-.422.422v1.125a.422.422,0,0,0,.422.422H14.2A.422.422,0,0,0,14.625,10.688Zm0,3.375V12.938a.422.422,0,0,0-.422-.422H8.072a.422.422,0,0,0-.422.422v1.125a.422.422,0,0,0,.422.422H14.2A.422.422,0,0,0,14.625,14.063Z" transform="translate(0 -2.25)"/></svg>
 export const ICN_DASHBOARD = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="#fff"  d="M4.5,13.389h7.111V4.5H4.5Zm0,7.111h7.111V15.167H4.5Zm8.889,0H20.5V11.611H13.389Zm0-16V9.833H20.5V4.5Z" transform="translate(-4.5 -4.5)"/></svg>
 export const ICN_TRAINSOFT = <img src={TRAINSOFT}/>
+export const ICN_EDFORCE = <img src={EDFORCE}/>
 export const ICN_CIRCLE_C = <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"><g stroke="#c96dfa" strokeWidth="3px" fill="#fff" ><circle stroke="none" class="b" cx="7" cy="7" r="7"/><circle fill="none" class="c" cx="7" cy="7" r="5.5"/></g></svg>
 export const ICN_MARK  = <svg xmlns="http://www.w3.org/2000/svg" width="10.833" height="13.5" viewBox="0 0 10.833 13.5"><path fill="none" stroke="#9f9f9f" strokeWidth="1.5px" strokeLinecap="round" strokeLinejoin="round"   d="M16.833,16.5l-4.667-3.333L7.5,16.5V5.833A1.333,1.333,0,0,1,8.833,4.5H15.5a1.333,1.333,0,0,1,1.333,1.333Z" transform="translate(-6.75 -3.75)"/></svg>
 export const ICN_ARROW = <svg xmlns="http://www.w3.org/2000/svg" width="20.243" height="13.501" viewBox="0 0 20.243 13.501"><path   fill="#49167e" d="M20.784,11.51a.919.919,0,0,0-.007,1.294l4.275,4.282H8.782a.914.914,0,0,0,0,1.828H25.045L20.77,23.2a.925.925,0,0,0,.007,1.294.91.91,0,0,0,1.287-.007l5.794-5.836h0a1.026,1.026,0,0,0,.19-.288.872.872,0,0,0,.07-.352.916.916,0,0,0-.26-.64l-5.794-5.836A.9.9,0,0,0,20.784,11.51Z" transform="translate(-7.875 -11.252)"/></svg>
