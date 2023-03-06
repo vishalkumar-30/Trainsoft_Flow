@@ -479,6 +479,7 @@ import '../Batches/batches.css'
 const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit }) => {
 
     const [training, setTraining] = useState('');
+    const [trainingoverview, setTrainingoverview] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [courseName, setCourseName] = useState('');
@@ -731,9 +732,12 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                     )
 
                 }),
-                "status": "ENABLED"
+                "status": "ENABLED",
+                "trainingOverview": trainingoverview
 
             }
+
+            console.log(trainingoverview)
             RestService.createTraining(payload).then(res => {
                 Toast.success({ message: `Training is Successfully Created` });
                 getTrainings();
@@ -743,6 +747,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                 setInstructorName('');
                 setCourseName('');
                 setTraining('');
+                setTrainingoverview('')
                 setStartDate('');
                 setEndDate('');
                 setSelectedOption([]);
@@ -773,7 +778,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
         getAllInstructor();
         getAllBatchByPage();
     }, []);
-
+    console.log(trainingoverview)
     return (<>
         {
             isEdit ?
@@ -890,13 +895,30 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                                                                     <div className="row form-group">
                                                                         <div className="col">
                                                                             <label className="label form-label">Training Name:</label>
-                                                                            <div class="input-wrapper"><div class="input-field ">
+                                                                            <div class="input-wrapper">
+                                                                                <div class="input-field ">
 
-                                                                                <input className="form-control form-control-sm" type="text" value={training} onChange={(e) => setTraining(e.target.value)} />
-                                                                            </div></div>
+                                                                                    <input className="form-control form-control-sm" type="text" value={training} onChange={(e) => setTraining(e.target.value)} />
+                                                                                </div>
+                                                                            </div>
 
                                                                         </div>
 
+
+
+                                                                    </div>
+                                                                    <div className="row form-group">
+
+                                                                        <div className="col">
+                                                                            <label className="label form-label">Training Overview</label>
+                                                                            <div class="input-wrapper">
+                                                                                <div class="input-field ">
+
+                                                                                    <textarea className="form-control form-control-sm" type="text" value={trainingoverview} onChange={(e) => setTrainingoverview(e.target.value)} />
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
                                                                     </div>
 
                                                                     <div className="row  form-group">
@@ -927,6 +949,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
 
                                                                         <div className="col">
                                                                             <label className="label form-label">Select Existing Batch:</label>
+                                                                           
                                                                             <Select
                                                                                 class="input-wrapper"
                                                                                 value={selectedOption}
