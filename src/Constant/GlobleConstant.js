@@ -300,6 +300,13 @@ const GLOBELCONSTANT = {
         GET_ALL_CODING_QUESTIONS: API_HOST_V2 + "get-all-coding-questions",
         ADD_CODING_QUESTIONS_TO_SECTION: API_HOST_V2 + "add-coding-question-to-section"
     },
+
+    USERPROFILE: {
+        GET_PROFILE_DETAILS: API_HOST_V2 + "user/get-profile-details",
+        UPLOAD_PROFILE_PIC: API_HOST_V2 + "user/upload-profile-pic"
+    },
+
+
     ACCESS_LEVEL: [
         { key: "ALL", name: "All" },
         { key: "BATCH_MGMT", name: "Batch Management" },

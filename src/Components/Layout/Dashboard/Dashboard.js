@@ -32,6 +32,8 @@ import TicketDashboard from "../../Screens/Home/TicketDashboard";
 import Events from "../../Screens/Tickets/Events";
 import OurNotes from "../../Screens/ClassLab/ClassNotes/AvailableNotes/OurNotes";
 import DisplayNotes from "../../Screens/ClassLab/ClassNotes/AvailableNotes/DisplayNotes";
+import UserProfileSetting from "../Userprofile/UserProfileSetting";
+import ChangePassword from "../Userprofile/ChangePassword";
 
 const Dashboard = ({ location }) => {
   return (
@@ -70,6 +72,8 @@ const Dashboard = ({ location }) => {
               <Calender path="calender/*" />
               <Labs path="labs/*" />
               <User path="user" />
+              <UserProfileSetting path="profilesettings" />
+              {/* <ChangePassword path="password" /> */}
               <OurNotes path ="notes/*"/>
               <DisplayNotes path="/notes/mynotes" />
               <Support path="support/*" />

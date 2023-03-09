@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
-import { ICN_NOTIFICATION } from '../../Common/Icon';
+import { ICN_NOTIFICATION , USERPROFILE_ICON,LOGOUT_ICON } from '../../Common/Icon';
 import { CustomToggle } from '../../../Services/MethodFactory';
 import { ProfileImg } from '../../Common/BsUtils';
 import { navigate } from '../../Common/Router';
@@ -62,6 +62,10 @@ const Header = ({ location, children }) => {
         } catch (err) {
             console.error("error occur on LogOut()", err)
         }
+    }
+    //USERPROFILE
+    const Userprofile = () => {
+        navigate('/profilesettings')
     }
     const deleteAllNotifications = () => {
         try {
@@ -147,7 +151,9 @@ const Header = ({ location, children }) => {
                             <div><ProfileImg name={getUserName(user.name)} size="md" /></div>
                         </Dropdown.Toggle>
                         <Dropdown.Menu as="div" align="left">
-                            <Dropdown.Item onClick={() => LogOut()}>Logout</Dropdown.Item>
+                        <Dropdown.Item onClick={() => Userprofile()}>{USERPROFILE_ICON} Profile</Dropdown.Item>
+                            <Dropdown.Item onClick={() => LogOut()}>{LOGOUT_ICON} Logout</Dropdown.Item>
+                        
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>
