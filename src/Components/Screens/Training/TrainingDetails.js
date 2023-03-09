@@ -23,7 +23,7 @@ import useToast from "../../../Store/ToastHook";
 
 const TrainingDetails = ({ location }) => {
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
-    const { spinner } = useContext(AppContext)
+    const { user, ROLE, spinner } = useContext(AppContext);
     // const {setTraining,training} = useContext(TrainingContext)
     const [vdlink, setVdlink] = useState("");
     const Toast = useToast();
@@ -46,7 +46,7 @@ const TrainingDetails = ({ location }) => {
     const [codingQuestiondesc, setCodingQuestiondesc] = useState('');
     const navigate = useNavigate();
     let trainingSid = location.state.sid;
-    let username=JSON.parse(localStorage.getItem('user'))
+    let username = JSON.parse(localStorage.getItem('user'))
 
     function Show(url) {
         setVdlink(url);
@@ -109,9 +109,16 @@ const TrainingDetails = ({ location }) => {
                     if (data.sid != null) {
                         markCourseAsCompleted(data.sid, data.sectionSid);
                     }
-                    if(data.codingQuestionId !== null){
+                    if(data.labId != null){
+                        markCourseAsCompleted(data.labId, data.sectionSid);
+                    }
+                    // if(data.codingQuestionId != null){
+                    //     markCourseAsCompleted(data.codingQuestionId, data.sectionSid);
+                    // }
+                    if (data.codingQuestionId !== null) {
                         setCodingQuestionId(data.codingQuestionId);
                         setCodingQuestiondesc(data.codingQuestionDescription);
+                        markCourseAsCompleted(data.codingQuestionId, data.sectionSid);
                     }
                     showFeedBack(data.last)
 
@@ -128,9 +135,9 @@ const TrainingDetails = ({ location }) => {
                         }
                     }))
 
-                }} style={{ cursor: "pointer" }} > {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB" ) ? <ScienceIcon />
-                : (data.type === "ASSESSMENT") ? <AssessmentIcon /> : (data.type === "CODING") ? <CodeIcon /> :<SummarizeRoundedIcon />}
-                {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
+                }} style={{ cursor: "pointer" }} > {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB") ? <ScienceIcon />
+                    : (data.type === "ASSESSMENT") ? <AssessmentIcon /> : (data.type === "CODING") ? <CodeIcon /> : <SummarizeRoundedIcon />}
+                    {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
 
                     {/* <button style={{
                         backgroundColor: "transparent",
@@ -287,8 +294,8 @@ const TrainingDetails = ({ location }) => {
         }
     }
 
-     //get training by sid
-     const getTrainingBySid = () => {
+    //get training by sid
+    const getTrainingBySid = () => {
 
         try {
             let trainingSid = location.state.sid;
@@ -318,12 +325,27 @@ const TrainingDetails = ({ location }) => {
         getTrainingBySid();
 
         //Disable right click ;
-        document.addEventListener('contextmenu', (e) => {
-            Toast.error({ message: `Right click not allowed` });
-            e.preventDefault();
-          })
+        // document.addEventListener('contextmenu', (e) => {
+        //     Toast.error({ message: `Right click not allowed` });
+        //     e.preventDefault();
+        //   })
 
     }, []);
+
+    if(user.role === ROLE.LEARNER){
+        for(let i=0;i<trainingDetailsList.length;i++){
+            console.log(trainingDetailsList[i].courseContentResposeTOList.length)
+            for(let j=0; j<trainingDetailsList[i]["courseContentResposeTOList"].length;j++){
+                if(trainingDetailsList[i].courseContentResposeTOList[j]["instructorSpecific"] === true){
+                    console.log("d");
+                    trainingDetailsList[i].courseContentResposeTOList.splice(j, 1);
+                    
+                }
+                
+            }
+        }
+    }
+   
 
     return (
         <>
@@ -356,7 +378,7 @@ const TrainingDetails = ({ location }) => {
                                         {
                                             <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/labs", {
                                                 state: {
-                                                    labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename, type, codingQuestionId,codingQuestiondesc
+                                                    labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename, type, codingQuestionId, codingQuestiondesc
                                                 }
                                             })
                                             }>Open Sandbox</button>}
@@ -391,13 +413,13 @@ const TrainingDetails = ({ location }) => {
 
                         <div class="tab-panels">
                             <section id="marzen" class="tab-panel">
-                                
+
                                 {
                                     trainingBySid.trainingOverview != null ?
-                                    <p className="title-lg text-capitalize">{trainingBySid.trainingOverview}</p>
-                                    : 'Overview not Provided'
+                                        <p className="title-lg text-capitalize">{trainingBySid.trainingOverview}</p>
+                                        : 'Overview not Provided'
                                 }
-                               
+
                             </section>
                             <section id="rauchbier" class="tab-panel">
                                 <Qa />
@@ -429,23 +451,23 @@ const TrainingDetails = ({ location }) => {
                                 </div>
                             </>
                         )
-                    }) : ''} 
+                    }) : ''}
 
 
                     <DropdownItem title="Fun Activity" total="2" theme="dark">
-                    
-                    {console.log(username['name'])}
-                    {username.name==="Wipro"?
-                    <div>
- <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/enterprise-administrator.html" target="_blank">Fun With Enterprise Administrator</a></div>
- <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/ms-training.html" target="_blank">Fun With MS Training</a></div>
- </div>:
- <div>
-   <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/cloud-native-jeopardy.html" target="_blank">Fun With Cloud Native</a></div>
-   <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/kubernetes-jeopardy-game.html" target="_blank">Fun With Kubernetes</a></div>
-   </div>    }         
-                        
-                        
+
+                        {console.log(username['name'])}
+                        {username.name === "Wipro" ?
+                            <div>
+                                <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/enterprise-administrator.html" target="_blank">Fun With Enterprise Administrator</a></div>
+                                <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/ms-training.html" target="_blank">Fun With MS Training</a></div>
+                            </div> :
+                            <div>
+                                <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/cloud-native-jeopardy.html" target="_blank">Fun With Cloud Native</a></div>
+                                <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/kubernetes-jeopardy-game.html" target="_blank">Fun With Kubernetes</a></div>
+                            </div>}
+
+
 
 
                     </DropdownItem>

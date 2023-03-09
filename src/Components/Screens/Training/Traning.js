@@ -15,7 +15,7 @@ import AppContext from "../../../Store/AppContext";
 import TrainingContext, { TrainingProvider } from "../../../Store/TrainingContext";
 import { Toggle } from "../../Common/BsUtils";
 import AddEditTraining from "./AddEditTraining";
-import TrainingDetails2 from "./TrainingDetails2";
+
 const initialVal = {
     name: '',
     instructor: '',
@@ -27,14 +27,15 @@ const initialVal = {
 }
 
 const Trainings = ({ location }) => {
-    const { setCourse, setBatches, ROLE, course, spinner, user, batches } = useContext(AppContext)
-    const { setTraining } = useContext(TrainingContext)
-    const Toast = useToast()
+    const { setCourse, setBatches, ROLE, course, spinner, user, batches } = useContext(AppContext);
+    const { setTraining } = useContext(TrainingContext);
+    const Toast = useToast();
     const [show, setShow] = useState(false);
-    const [trainingList, setTrainingList] = useState([])
+    const [trainingList, setTrainingList] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
-    const [initialValues, setInitialValue] = useState(initialVal)
-    const [count, setCount] = useState(0)
+    const [initialValues, setInitialValue] = useState(initialVal);
+    const [count, setCount] = useState(0);
+    const newStatus = user.role === ROLE.SUPERVISOR ? 'status' : '';
 
     // get all batches
     const allBatches = useFetch({
@@ -42,7 +43,6 @@ const Trainings = ({ location }) => {
         url: GLOBELCONSTANT.BATCHES.GET_BATCH_LIST,
         errorMsg: 'error occur on get Batches'
     });
-
 
     const [configuration, setConfiguration] = useState({
         columns: {
@@ -91,11 +91,12 @@ const Trainings = ({ location }) => {
             }
             ,
             "status": {
-                "title": "Status",
+                "title": newStatus,
                 "sortDirection": null,
                 "sortEnabled": false,
                 isSearchEnabled: false,
-                render: (data) => <Toggle onChange={() => user.role === ROLE.SUPERVISOR && getTrainingsBySid(data.sid, "status")} id={data.sid} checked={data.status === 'ENABLED' ? true : false} />
+                render: (data) => user.role === ROLE.SUPERVISOR ? <Toggle onChange={() => user.role === ROLE.SUPERVISOR && getTrainingsBySid(data.sid, "status")} id={data.sid} checked={data.status === 'ENABLED' ? true : false} />
+                    : <p style={{ display: "none" }}></p>
             },
 
         },
@@ -156,7 +157,7 @@ const Trainings = ({ location }) => {
                 }
             )
         } catch (err) {
-            console.error("error occur on getTrainings()", err)
+            console.error("error occur on getTrainingsBySid()", err);
         }
     }
 
@@ -261,9 +262,9 @@ const Trainings = ({ location }) => {
 
     // initialize component
     useEffect(() => {
-        allBatches.response && setBatches(allBatches.response)
-        getTrainingCount()
-        getTrainings()
+        allBatches.response && setBatches(allBatches.response);
+        getTrainingCount();
+        getTrainings();
     }, [])
 
     return (<>
@@ -278,7 +279,27 @@ const Trainings = ({ location }) => {
                     showAction: user.role === ROLE.SUPERVISOR ? true : false
                 }} />
             </div>
+            <div className="aic mt-3 mb-3 " >
 
+                <div class="form-check aic " style={{ fontSize: "15px" }} >
+
+                    <input type="radio" id="enabled" name="status" value="ENABLED" defaultChecked />
+                    <label class="form-check-label mx-3">Enabled</label>
+
+                </div>
+                <div className=' form-check aic" mx-5' style={{ fontSize: "15px" }}>
+                    <input type="radio" id="disabled" name="status" value="DISABLED"  />
+
+                    <label class="form-check-label mx-3">Disabled</label>
+                </div>
+                <div class="form-check aic " style={{ fontSize: "15px" }} >
+
+                    <input type="radio" id="archived" name="status" value="ARCHIVED"  />
+                    <label class="form-check-label mx-3">Archived</label>
+
+                </div>
+
+            </div>
             <AddEditTraining {...{ getTrainings, show, setShow, initialValues, isEdit }} />
             <DynamicTable {...{ count, configuration, sourceData: trainingList, onPageChange: (e) => getTrainings(e) }} />
         </div>
@@ -287,13 +308,13 @@ const Trainings = ({ location }) => {
 
 const Training = () => {
     return (
-        
-            <Router>
-                <Trainings path="/" />
-                {/* <TrainingDetails2 path="training-details/*" /> */}
-                <TrainingDetails path="training-details/*" />
-            </Router>
-      
+
+        <Router>
+            <Trainings path="/" />
+            {/* <TrainingDetails2 path="training-details/*" /> */}
+            <TrainingDetails path="training-details/*" />
+        </Router>
+
     )
 
 }

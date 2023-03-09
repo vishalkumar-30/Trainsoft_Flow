@@ -1062,7 +1062,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
 
                                                                                         return (
                                                                                             <>
-                                                                                                <option value={item.sid}>{item.name}</option>
+                                                                                                <option value={item.vSid}>{item.name}</option>
                                                                                             </>
                                                                                         )
                                                                                     })
