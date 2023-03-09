@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
-import { ICN_NOTIFICATION , USERPROFILE_ICON,LOGOUT_ICON } from '../../Common/Icon';
+import { ICN_NOTIFICATION, USERPROFILE_ICON, LOGOUT_ICON } from '../../Common/Icon';
 import { CustomToggle } from '../../../Services/MethodFactory';
 import { ProfileImg } from '../../Common/BsUtils';
 import { navigate } from '../../Common/Router';
@@ -13,10 +13,28 @@ import RestService from '../../../Services/api.service';
 
 
 const Header = ({ location, children }) => {
-    const { spinner } = useContext(AppContext)
-    const { user, setUserValue } = useContext(AppContext)
+    const { spinner } = useContext(AppContext);
+    const { user, setUserValue } = useContext(AppContext);
     const [shownotification, setShownotification] = useState([])
     const [viewmore, setViewmore] = useState('');
+    const [userDetails, setUserDetails] = useState('');
+
+    // get USER SETTING DEATILS 
+    const getprofiledetails = () => {
+        try {
+            RestService.getprofiledetails().then(
+                response => {
+                    setUserDetails(response.data.profilePicLocation);
+                },
+                err => {
+                }
+            ).finally(() => {
+            });
+        } catch (err) {
+            console.error("error occur on getprofiledetails()", err)
+        }
+    }
+
     //get notification 
     const getNotification = () => {
         try {
@@ -46,8 +64,8 @@ const Header = ({ location, children }) => {
     const getUserName = (name) => {
         let a = ''
         try {
-            let b = name.split(' ')
-            a = `${b[0].charAt()}${b[1] ? b[1].charAt() : ''}`
+            let b = name.split(' ');
+            a = `${b[0].charAt()}${b[1] ? b[1].charAt() : ''}`;
         } catch (err) {
             console.error("Error occur on getUserName()", err)
         }
@@ -87,7 +105,8 @@ const Header = ({ location, children }) => {
     }
 
     useEffect(() => {
-        getNotification()
+        getNotification();
+        getprofiledetails();
     }, []);
 
     shownotification.sort((x, y) => {
@@ -97,7 +116,7 @@ const Header = ({ location, children }) => {
     return (<>
 
 
-        {location.state  &&
+        {location.state &&
             <div className="header">
                 <div className="page-title">
                     <div className="title-lg mb-0">
@@ -148,12 +167,20 @@ const Header = ({ location, children }) => {
 
                     <Dropdown className="">
                         <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                            <div><ProfileImg name={getUserName(user.name)} size="md" /></div>
+                            <div>
+                                {
+                                    userDetails.length > 0 ?
+                                        <ProfileImg url={userDetails} size="md" />
+                                        :
+                                        <ProfileImg name={getUserName(user.name)} size="md" />
+                                }
+
+                            </div>
                         </Dropdown.Toggle>
                         <Dropdown.Menu as="div" align="left">
-                        <Dropdown.Item onClick={() => Userprofile()}>{USERPROFILE_ICON} Profile</Dropdown.Item>
+                            <Dropdown.Item onClick={() => Userprofile()}>{USERPROFILE_ICON} Profile</Dropdown.Item>
                             <Dropdown.Item onClick={() => LogOut()}>{LOGOUT_ICON} Logout</Dropdown.Item>
-                        
+
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>
