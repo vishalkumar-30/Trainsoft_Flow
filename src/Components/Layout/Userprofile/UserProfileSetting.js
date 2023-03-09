@@ -16,15 +16,12 @@ const UserProfileSetting = () => {
         try {
             RestService.getprofiledetails().then(
                 response => {
-                    console.log(response.data)
                     setUserDetails(response.data);
                     setName(response.data.userName)
                 },
                 err => {
-
                 }
             ).finally(() => {
-
             });
         } catch (err) {
             console.error("error occur on getprofiledetails()", err)
@@ -37,12 +34,6 @@ const UserProfileSetting = () => {
             spinner.show("Please wait...");
             let formData = new FormData();
             formData.append("pic ", userImage);
-            // let payload = {
-            //     "sid": data.sid,
-            //     "description": data.description,
-            //     "name": data.name,
-            //     "status": 'ENABLED',
-            // }
             RestService.uploadProfilePic(formData).then(res => {
                 spinner.hide();
                 setUserImage('');
@@ -60,14 +51,9 @@ const UserProfileSetting = () => {
         getprofiledetails();
     }, [])
 
-    console.log(userImage);
     return (
         <div>
-
             <div class="container light-style flex-grow-1 container-p-y">
-
-
-
                 <div class="card overflow-hidden">
                     <div class="row no-gutters row-bordered row-border-light">
                         {/* <div class="col-md-3 pt-0">
@@ -99,7 +85,7 @@ const UserProfileSetting = () => {
 
                                                     <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png?w=740&t=st=1678184265~exp=1678184865~hmac=4ea9d8f4b990364a0182e03dd9af4ca25cab5bb5fbf06a6de1f71c8658898ed8" alt="upload pic" class="d-block ui-w-80" />
                                         }
-                                        {/* <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png?w=740&t=st=1678184265~exp=1678184865~hmac=4ea9d8f4b990364a0182e03dd9af4ca25cab5bb5fbf06a6de1f71c8658898ed8" alt="" class="d-block ui-w-80" /> */}
+                                       
                                         <div class="media-body ml-4">
                                             <label class="btn btn-outline-primary">
                                                 Upload new photo
@@ -134,10 +120,7 @@ const UserProfileSetting = () => {
                                                     <div class="form-group">
                                                         <label class="form-label">E-mail</label>
                                                         <input type="text" class="form-control mb-1" placeholder='Email' value={userDetails.emailId} disabled />
-                                                        {/* <div class="alert alert-warning mt-3">
-               Your email is not confirmed. Please check your inbox.<br/>
-               <a href="javascript:void(0)">Resend confirmation</a>
-             </div> */}
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -168,87 +151,16 @@ const UserProfileSetting = () => {
                                                     {/* <button type="button" class="btn btn-default">Cancel</button> */}
 
                                                 </div>
-
-
-
                                             </div>
-
-
-
-
-
                                         </div>
                                     </form>
 
                                 </div>
-                                {/* <div class="tab-pane fade" id="account-change-password">
-          <div class="card-body pb-2">
-
-            <div class="form-group">
-              <label class="form-label">Current password</label>
-              <input type="password" class="form-control"/>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">New password</label>
-              <input type="password" class="form-control"/>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Repeat new password</label>
-              <input type="password" class="form-control"/>
-            </div>
-
-          </div>
-        </div>
-        <div class="tab-pane fade" id="account-info">
-          <div class="card-body pb-2">
-
-            <div class="form-group">
-              <label class="form-label">Bio</label>
-              <textarea class="form-control" rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nunc arcu, dignissim sit amet sollicitudin iaculis, vehicula id urna. Sed luctus urna nunc. Donec fermentum, magna sit amet rutrum pretium, turpis dolor molestie diam, ut lacinia diam risus eleifend sapien. Curabitur ac nibh nulla. Maecenas nec augue placerat, viverra tellus non, pulvinar risus.</textarea>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Birthday</label>
-              <input type="text" class="form-control" value="May 3, 1995"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Country</label>
-              <select class="custom-select">
-                <option>USA</option>
-                <option selected="">Canada</option>
-                <option>UK</option>
-                <option>Germany</option>
-                <option>France</option>
-              </select>
-            </div>
-
-
-          </div>
-          <hr class="border-light m-0"/>
-          <div class="card-body pb-2">
-
-            <h6 class="mb-4">Contacts</h6>
-            <div class="form-group">
-              <label class="form-label">Phone</label>
-              <input type="text" class="form-control" value="+0 (123) 456 7891"/>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Website</label>
-              <input type="text" class="form-control" value=""/>
-            </div>
-
-          </div>
-  
-        </div> */}
-
+                                
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
 
