@@ -76,7 +76,7 @@ export const Breadcrumbs = () => <Breadcrumb>
 
 // profile
 // Assets/Images/vid.jpg
-export const ProfileImg = ({ url = null, name = "", size = "sm", onClick }) => {
+export const ProfileImg = ({ url = null, name = "", size = "md", onClick }) => {
     return (<>
         <div className={`user-profile profile-${size} text-uppercase`} onClick={onClick}>
             {url === null ? <div className="">{name}</div> : <img src={url} />}
