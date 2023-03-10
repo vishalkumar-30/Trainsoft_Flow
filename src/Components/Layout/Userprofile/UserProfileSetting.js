@@ -6,6 +6,7 @@ import "./userprofile.css";
 
 const UserProfileSetting = () => {
     const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
     const [userDetails, setUserDetails] = useState({});
     const [userImage, setUserImage] = useState('');
     const { spinner } = useContext(AppContext);
@@ -17,7 +18,8 @@ const UserProfileSetting = () => {
             RestService.getprofiledetails().then(
                 response => {
                     setUserDetails(response.data);
-                    setName(response.data.userName)
+                    setName(response.data.userName);
+                    setPassword(response.data.password);
                 },
                 err => {
                 }
@@ -47,9 +49,34 @@ const UserProfileSetting = () => {
             Toast.error({ message: `Something wrong!!` });
         }
     }
+
+    //update profile details
+    const updateProfileDetails = async () => {
+        try {
+
+            let payload = {
+                "name": name,
+                "password": password
+
+            }
+            await RestService.updateProfileDetails({updateTO: payload}).then(res => {
+                Toast.success({ message: `Profile updated Successfully` });
+                getprofiledetails();
+            }, err => console.log(err)
+            );
+        }
+        catch (err) {
+            console.error('error occur on updateProfileDetails', err)
+            Toast.error({ message: `Something wrong!!` });
+        }
+    }
+
     useEffect(() => {
         getprofiledetails();
-    }, [])
+    }, []);
+
+    console.log(name);
+    console.log(password);
 
     return (
         <div>
@@ -85,7 +112,7 @@ const UserProfileSetting = () => {
 
                                                     <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png?w=740&t=st=1678184265~exp=1678184865~hmac=4ea9d8f4b990364a0182e03dd9af4ca25cab5bb5fbf06a6de1f71c8658898ed8" alt="upload pic" class="d-block ui-w-80" />
                                         }
-                                       
+
                                         <div class="media-body ml-4">
                                             <label class="btn btn-outline-primary">
                                                 Upload new photo
@@ -94,10 +121,14 @@ const UserProfileSetting = () => {
 
                                             </label> &nbsp;
                                             {
-                                                typeof (userImage) === 'object' ?
+                                                typeof (userImage) === 'object' ? <>
 
                                                     <button type="button" class="btn btn-default md-btn-flat" onClick={() => setUserImage('')}>Reset
                                                     </button>
+                                                    <button type="button" class="btn btn-primary" onClick={() => uploadProfilePic()}>Save Picture</button>
+                                                </>
+
+
                                                     : ''
                                             }
                                             <div class="text-light small mt-1">Allowed JPG, JPEG or PNG. Max size of 800Kb</div>
@@ -105,22 +136,28 @@ const UserProfileSetting = () => {
                                     </div>
                                     <hr class="border-light m-0" />
 
-                                    <form>
+                                  
                                         <div class="card-body">
 
                                             <div className='row'>
-                                                <div className='col'>
+                                                <div className='col-4'>
                                                     <div class="form-group">
                                                         <label class="form-label">Name</label>
                                                         <input type="text" class="form-control" placeholder='Name' value={name} onChange={(e) => setName(e.target.value)} />
                                                     </div>
                                                 </div>
+                                                <div className='col-4'>
+                                                    <div class="form-group">
+                                                        <label class="form-label">Change Password</label>
+                                                        <input type="text" class="form-control" placeholder='Name' value={password} onChange={(e) => setPassword(e.target.value)} />
+                                                    </div>
+                                                </div>
 
-                                                <div className='col'>
+                                                <div className='col-4'>
                                                     <div class="form-group">
                                                         <label class="form-label">E-mail</label>
                                                         <input type="text" class="form-control mb-1" placeholder='Email' value={userDetails.emailId} disabled />
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -147,16 +184,17 @@ const UserProfileSetting = () => {
                                                 </div>
                                                 <div className='col mt-4'>
 
-                                                    <button type="button" class="btn btn-primary" onClick={() => uploadProfilePic()}>Save changes</button>
+                                                    <button type="button" class="btn btn-primary" onClick={()=>updateProfileDetails()}
+                                                    >Update</button>
                                                     {/* <button type="button" class="btn btn-default">Cancel</button> */}
 
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
+                                   
 
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>

@@ -303,7 +303,8 @@ const GLOBELCONSTANT = {
 
     USERPROFILE: {
         GET_PROFILE_DETAILS: API_HOST_V2 + "user/get-profile-details",
-        UPLOAD_PROFILE_PIC: API_HOST_V2 + "user/upload-profile-pic"
+        UPLOAD_PROFILE_PIC: API_HOST_V2 + "user/upload-profile-pic",
+        UPDATE_PROFILE_DETAILS: API_HOST_V2 + "user/update-profile"
     },
 
 

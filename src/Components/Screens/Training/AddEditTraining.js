@@ -12,6 +12,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import GLOBELCONSTANT from "../../../Constant/GlobleConstant";
 import { getAllBatches } from "../../../Services/service";
+import {MultiSelect} from "react-multi-select-component";
 import Select from 'react-select';
 import "./Multisteptraining/Step.css";
 import * as Yup from 'yup';
@@ -497,6 +498,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
 
     const [initialValue, setInitialValue] = useState(initialVal);
     const [selectedOption, setSelectedOption] = useState([]);
+    const [selected, setSelected] = useState([]);
 
     let batchData = [];
 
@@ -724,7 +726,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                 "courseSid": courseName,
                 "startDate": startDateTimestamp,
                 "endDate": endDateTimestamp,
-                "trainingBatchs": selectedOption.map((i) => {
+                "trainingBatchs": selected.map((i) => {
                     return (
                         {
                             "batchSid": i.value
@@ -750,7 +752,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                 setTrainingoverview('')
                 setStartDate('');
                 setEndDate('');
-                setSelectedOption([]);
+                setSelected([]);
             }, err => {
                 spinner.hide()
                 console.error(err)
@@ -770,7 +772,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
 
     for (let i = 0; i < batches.length; i++) {
         batchData.push(
-            { value: batches[i].sid, label: batches[i].name }
+            { label: batches[i].name, value: batches[i].sid }
         )
     }
 
@@ -778,7 +780,8 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
         getAllInstructor();
         getAllBatchByPage();
     }, []);
-    console.log(trainingoverview)
+
+    console.log(selected);
     return (<>
         {
             isEdit ?
@@ -949,14 +952,20 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
 
                                                                         <div className="col">
                                                                             <label className="label form-label">Select Existing Batch:</label>
-                                                                           
-                                                                            <Select
+                                                                            <MultiSelect
+                                                                                options={batchData}
+                                                                                value={selected}
+                                                                                onChange={setSelected}
+                                                                                labelledBy={"Select"}
+                                                                                
+                                                                            />
+                                                                            {/* <Select
                                                                                 class="input-wrapper"
                                                                                 value={selectedOption}
                                                                                 onChange={setSelectedOption}
                                                                                 isMulti
                                                                                 options={batchData}
-                                                                            />
+                                                                            /> */}
 
                                                                         </div>
                                                                         {
