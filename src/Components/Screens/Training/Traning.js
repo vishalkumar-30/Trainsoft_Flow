@@ -35,6 +35,7 @@ const Trainings = ({ location }) => {
     const [isEdit, setIsEdit] = useState(false);
     const [initialValues, setInitialValue] = useState(initialVal);
     const [count, setCount] = useState(0);
+    const [status, setStatus] = useState('ENABLED');
     const newStatus = user.role === ROLE.SUPERVISOR ? 'status' : '';
 
     // get all batches
@@ -265,7 +266,9 @@ const Trainings = ({ location }) => {
         allBatches.response && setBatches(allBatches.response);
         getTrainingCount();
         getTrainings();
-    }, [])
+    }, []);
+
+    console.log(trainingList);
 
     return (<>
         <div className="table-shadow">
@@ -279,29 +282,59 @@ const Trainings = ({ location }) => {
                     showAction: user.role === ROLE.SUPERVISOR ? true : false
                 }} />
             </div>
-            <div className="aic mt-3 mb-3 " >
+            {
+                user.role === ROLE.SUPERVISOR ?
+                    <div className="aic mt-3 mb-3 " >
 
-                <div class="form-check aic " style={{ fontSize: "15px" }} >
+                        <div class="form-check aic " style={{ fontSize: "15px" }} >
 
-                    <input type="radio" id="enabled" name="status" value="ENABLED" defaultChecked />
-                    <label class="form-check-label mx-3">Enabled</label>
+                            <input type="radio" id="ENABLED" name="status" value="ENABLED" defaultChecked
+                                onChange={(e) => setStatus(e.target.id)} />
+                            <label class="form-check-label mx-3">Enabled</label>
 
-                </div>
-                <div className=' form-check aic" mx-5' style={{ fontSize: "15px" }}>
-                    <input type="radio" id="disabled" name="status" value="DISABLED"  />
+                        </div>
+                        <div className=' form-check aic" mx-5' style={{ fontSize: "15px" }}>
+                            <input type="radio" id="DISABLED" name="status" value="DISABLED"
+                                onChange={(e) => setStatus(e.target.id)} />
 
-                    <label class="form-check-label mx-3">Disabled</label>
-                </div>
-                <div class="form-check aic " style={{ fontSize: "15px" }} >
+                            <label class="form-check-label mx-3">Disabled</label>
+                        </div>
+                        <div class="form-check aic " style={{ fontSize: "15px" }} >
 
-                    <input type="radio" id="archived" name="status" value="ARCHIVED"  />
-                    <label class="form-check-label mx-3">Archived</label>
+                            <input type="radio" id="ARCHIVED" name="status" value="ARCHIVED"
+                                onChange={(e) => setStatus(e.target.id)} />
+                            <label class="form-check-label mx-3">Archived</label>
 
-                </div>
+                        </div>
 
-            </div>
+                    </div>
+                    : ''
+                }
+
             <AddEditTraining {...{ getTrainings, show, setShow, initialValues, isEdit }} />
-            <DynamicTable {...{ count, configuration, sourceData: trainingList, onPageChange: (e) => getTrainings(e) }} />
+            {
+                status === "ENABLED" && user.role === ROLE.SUPERVISOR?
+                    <DynamicTable {...{
+                        count, configuration, sourceData: trainingList.filter(item => item.status === status),
+                        onPageChange: (e) => getTrainings(e)
+                    }} />
+                    :
+                    status === "DISABLED" && user.role === ROLE.SUPERVISOR?
+                        <DynamicTable {...{
+                            count, configuration, sourceData: trainingList.filter(item => item.status === status),
+                            onPageChange: (e) => getTrainings(e)
+                        }} />
+                        :
+                        status === "ARCHIVED" && user.role === ROLE.SUPERVISOR?
+                            <DynamicTable {...{
+                                count, configuration, sourceData: trainingList.filter(item => item.status === status),
+                                onPageChange: (e) => getTrainings(e)
+                            }} />
+                            : <DynamicTable {...{
+                                count, configuration, sourceData: trainingList,onPageChange: (e) => getTrainings(e)}} />
+
+            }
+
         </div>
     </>)
 }

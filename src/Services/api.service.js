@@ -248,7 +248,8 @@ const RestService = {
 
   //USERPROFILE
   getprofiledetails : () =>AxiosService.get(GLOBELCONSTANT.USERPROFILE.GET_PROFILE_DETAILS),
-  uploadProfilePic: (payload) => AxiosService.post(GLOBELCONSTANT.USERPROFILE.UPLOAD_PROFILE_PIC, payload)
+  uploadProfilePic: (payload) => AxiosService.post(GLOBELCONSTANT.USERPROFILE.UPLOAD_PROFILE_PIC, payload),
+  updateProfileDetails: (payload) => AxiosService.put(GLOBELCONSTANT.USERPROFILE.UPDATE_PROFILE_DETAILS, payload)
 };
 
 
