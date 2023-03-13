@@ -32,8 +32,6 @@ const Trainings = ({ location }) => {
     const Toast = useToast();
     const [show, setShow] = useState(false);
     const [trainingList, setTrainingList] = useState([]);
-    const [trainingList1, setTrainingList1] = useState([]);
-    const [trainingList2, setTrainingList2] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [initialValues, setInitialValue] = useState(initialVal);
     const [count, setCount] = useState(0);
@@ -196,46 +194,7 @@ const Trainings = ({ location }) => {
             spinner.show();
             RestService.getAllTrainingByPage(user.role, pagination, pageSize).then(
                 response => {
-                    setTrainingList(response.data.filter(item => item.status === 'ENABLED'));
-                },
-                err => {
-                    spinner.hide();
-                }
-            ).finally(() => {
-                spinner.hide();
-            });
-        } catch (err) {
-            console.error("error occur on getTrainings()", err)
-        }
-    }
-    const getTrainings1 = async (pagination = "1") => {
-        try {
-            let pageSize = 30;
-            spinner.show();
-            RestService.getAllTrainingByPage(user.role, pagination, pageSize).then(
-                response => {
-
-                    setTrainingList1(response.data.filter(item => item.status === 'DISABLED'));
-
-                },
-                err => {
-                    spinner.hide();
-                }
-            ).finally(() => {
-                spinner.hide();
-            });
-        } catch (err) {
-            console.error("error occur on getTrainings()", err)
-        }
-    }
-    const getTrainings2 = async (pagination = "1") => {
-        try {
-            let pageSize = 30;
-            spinner.show();
-            RestService.getAllTrainingByPage(user.role, pagination, pageSize).then(
-                response => {
-
-                    setTrainingList2(response.data.filter(item => item.status === 'ARCHIVED'));
+                    setTrainingList(response.data);
                 },
                 err => {
                     spinner.hide();
@@ -307,12 +266,8 @@ const Trainings = ({ location }) => {
         allBatches.response && setBatches(allBatches.response);
         getTrainingCount();
         getTrainings();
-        getTrainings1();
-        getTrainings2();
 
     }, []);
-
-    console.log(trainingList);
 
     return (<>
         <div className="table-shadow">
@@ -354,44 +309,44 @@ const Trainings = ({ location }) => {
                     </div>
                     : ''
             }
-
+            <AddEditTraining {...{ getTrainings, show, setShow, initialValues, isEdit }} />
 
             {
                 status === "ENABLED" && user.role === ROLE.SUPERVISOR ?
                     <>
-                        <AddEditTraining {...{ getTrainings, show, setShow, initialValues, isEdit }} />
+
                         <DynamicTable {...{
-                            count, configuration, sourceData: trainingList,
+                            count, configuration, sourceData: trainingList.filter(item => item.status === 'ENABLED'),
                             onPageChange: (e) => getTrainings(e)
                         }} />
                     </>
 
                     :
                     status === "DISABLED" && user.role === ROLE.SUPERVISOR ?
-                    <>
-                    <AddEditTraining {...{ getTrainings1, show, setShow, initialValues, isEdit }} />
-                    <DynamicTable {...{
-                        count, configuration, sourceData: trainingList1,
-                        onPageChange: (e) => getTrainings1(e)
-                    }} />
-                </>
+                        <>
+
+                            <DynamicTable {...{
+                                count, configuration, sourceData: trainingList.filter(item => item.status === 'DISABLED'),
+                                onPageChange: (e) => getTrainings(e)
+                            }} />
+                        </>
                         :
                         status === "ARCHIVED" && user.role === ROLE.SUPERVISOR ?
-                        <>
-                        <AddEditTraining {...{ getTrainings2, show, setShow, initialValues, isEdit }} />
-                        <DynamicTable {...{
-                            count, configuration, sourceData: trainingList2,
-                            onPageChange: (e) => getTrainings2(e)
-                        }} />
-                    </>
-                            : 
                             <>
-                        <AddEditTraining {...{ getTrainings, show, setShow, initialValues, isEdit }} />
-                        <DynamicTable {...{
-                            count, configuration, sourceData: trainingList,
-                            onPageChange: (e) => getTrainings(e)
-                        }} />
-                    </>
+
+                                <DynamicTable {...{
+                                    count, configuration, sourceData: trainingList.filter(item => item.status === 'ARCHIVED'),
+                                    onPageChange: (e) => getTrainings(e)
+                                }} />
+                            </>
+                            :
+                            <>
+
+                                <DynamicTable {...{
+                                    count, configuration, sourceData: trainingList,
+                                    onPageChange: (e) => getTrainings(e)
+                                }} />
+                            </>
 
             }
 

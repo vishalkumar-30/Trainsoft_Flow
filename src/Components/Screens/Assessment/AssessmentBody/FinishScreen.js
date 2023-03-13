@@ -119,7 +119,7 @@ const FinishScreen = ({ questions }) => {
                                 font: "normal normal 600 26px/16px Montserrat",
                                 color: "#49167E",
                             }}
-                        >{score.yourScore}%</div>
+                        >{score.yourScore.toFixed(2)}%</div>
                     </div>
 
                     <div

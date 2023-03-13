@@ -74,6 +74,7 @@ const User = ({ location }) => {
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
+                render: (data) => data.employeeId !== null?data.employeeId.substring(0, 3): "NA"
 
             },
             "emailId": {
@@ -193,9 +194,9 @@ const User = ({ location }) => {
             spinner.show();
             let val = data
             val.appuser.accessType = data.appuser.accessType.key
-            val.departmentVA.department.name = data.name.sid
+            val.departmentVA.department.name = data.departmentVA.department.name
             val.departmentVA.departmentRole = data.departmentVA.departmentRole.key
-            RestService.createParticipant(data).then(resp => {
+            RestService.createParticipant(val).then(resp => {
                 setShow(false)
                 spinner.hide();
                 getUsers()
@@ -205,7 +206,7 @@ const User = ({ location }) => {
         }
         catch (err) {
             spinner.hide();
-            console.error('error occur on createCourse', err)
+            console.error('error occur on createParticipant', err)
         }
     }
     // get all training
@@ -249,7 +250,7 @@ const User = ({ location }) => {
             RestService.updateParticipant(val).then(resp => {
                 setShow(false)
                 getUsers()
-                Toast.success({ message: `User is Successfully Created` });
+                Toast.success({ message: `User is Successfully Updated` });
             spinner.hide()
         }, err => {console.log(err);spinner.hide()}
             );
@@ -550,7 +551,7 @@ const User = ({ location }) => {
                                 </Form.Group>
                                 <Form.Group className="row">
                                     <div className="col-6">
-                                        <SelectInput label="Department" name="name" value={values.sid} bindKey="name" option={departmentList} />
+                                        <SelectInput label="Department" name="departmentVA.department" value={values.sid} bindKey="name" option={departmentList} />
                                     </div>
                                     <div className="col-6">
                                         <SelectInput label="Role" name="departmentVA.departmentRole" value={values.departmentVA.departmentRole} bindKey="name" option={GLOBELCONSTANT.DEPARTMENT_ROLE} />
@@ -564,13 +565,13 @@ const User = ({ location }) => {
                                         <SelectInput label="Privilege/Access Level" value={values.appuser.accessType} name="appuser.accessType" bindKey="name" option={GLOBELCONSTANT.ACCESS_LEVEL} />
                                     </div>
                                 </Form.Group>
-                                <Form.Group className="row">
+                                {/* <Form.Group className="row">
                                     <div className="col-6">
                                         <button type="button" onClick={() => generatePwd(setFieldValue)} className="btn btn-secondary btn-sm">
                                             Generate Password
                                             </button>
                                     </div>
-                                </Form.Group>
+                                </Form.Group> */}
                             </div>
                             {/* modal footer which contains action button to save data or cancel current action */}
                             <footer className="jcb">
