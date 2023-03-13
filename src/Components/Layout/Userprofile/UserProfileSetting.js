@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import RestService from '../../../Services/api.service';
 import AppContext from '../../../Store/AppContext';
 import useToast from '../../../Store/ToastHook';
+import axios from 'axios';
 import "./userprofile.css";
 
 const UserProfileSetting = () => {
@@ -11,6 +12,7 @@ const UserProfileSetting = () => {
     const [userImage, setUserImage] = useState('');
     const { spinner } = useContext(AppContext);
     const Toast = useToast();
+    const token = localStorage.getItem('REACTAPP.TOKEN');
 
     // get USER SETTING DEATILS 
     const getprofiledetails = () => {
@@ -51,18 +53,23 @@ const UserProfileSetting = () => {
     }
 
     //update profile details
-    const updateProfileDetails = async () => {
+    const updateProfileDetails = () => {
         try {
-
+            spinner.show("Please wait...");
             let payload = {
                 "name": name,
                 "password": password
 
             }
-            await RestService.updateProfileDetails({updateTO: payload}).then(res => {
+            axios.put(`https://trainsoft.live/insled/v2/user/update-profile?Authorization=${token}`,payload).then(res => {
+                console.log(payload);   
+                spinner.hide();
                 Toast.success({ message: `Profile updated Successfully` });
                 getprofiledetails();
-            }, err => console.log(err)
+            }, err => {
+                console.log(err);
+                spinner.hide();
+            }
             );
         }
         catch (err) {

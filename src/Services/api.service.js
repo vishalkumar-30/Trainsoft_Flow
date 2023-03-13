@@ -110,6 +110,7 @@ const RestService = {
   getTrainingContentsByTrainingSid: (trainingSid) => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_TRAINING_CONTENT_BY_SID + `=${trainingSid}`),
   saveUserNotes: (trainingSessionSid, trainingSid, payload) => AxiosService.post(GLOBELCONSTANT.TRAINING.SAVES_NOTES + `?training-session-sid=${trainingSessionSid}&training-sid=${trainingSid}`, payload),
   getUserNotes: () => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_NOTES),
+  getTrainingByStatus: (pageNo, pageSize, status) => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_TRAINING_BY_STATUS + `/${pageNo}/${pageSize}?status=${status}`),
   // getTrainingByRole: (pageNo,pageSize) => AxiosService.get(GLOBELCONSTANT.TRAINING.PARTICIPANT_BY_ROLE.replace("{pageNo}",pageNo).replace("{pageSize}",pageSize)),
 
   // assessment
@@ -231,6 +232,7 @@ const RestService = {
 
   //get instructor
   getInstructor: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR.GET_INSTRUCTOR),
+  getDepartments: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_DEPARTMENTS),
 
   //support
   submitSupportTicket: (payload) => AxiosService.post(GLOBELCONSTANT.SUPPORT.SUBMIT_TICKET, payload),
@@ -244,12 +246,11 @@ const RestService = {
 
   //coding questions
   getAllCodingQuestions: () => AxiosService.get(GLOBELCONSTANT.CODING.GET_ALL_CODING_QUESTIONS),
-  addCodingQuestionToSection: (courseSid,sectionSid, questionId) => AxiosService.post(GLOBELCONSTANT.CODING.ADD_CODING_QUESTIONS_TO_SECTION + `?course_sid=${courseSid}&question_id=${questionId}&section_sid=${sectionSid}`),
+  addCodingQuestionToSection: (courseSid, sectionSid, questionId) => AxiosService.post(GLOBELCONSTANT.CODING.ADD_CODING_QUESTIONS_TO_SECTION + `?course_sid=${courseSid}&question_id=${questionId}&section_sid=${sectionSid}`),
 
   //USERPROFILE
-  getprofiledetails : () =>AxiosService.get(GLOBELCONSTANT.USERPROFILE.GET_PROFILE_DETAILS),
-  uploadProfilePic: (payload) => AxiosService.post(GLOBELCONSTANT.USERPROFILE.UPLOAD_PROFILE_PIC, payload),
-  updateProfileDetails: (payload) => AxiosService.put(GLOBELCONSTANT.USERPROFILE.UPDATE_PROFILE_DETAILS, payload)
+  getprofiledetails: () => AxiosService.get(GLOBELCONSTANT.USERPROFILE.GET_PROFILE_DETAILS),
+  uploadProfilePic: (payload) => AxiosService.post(GLOBELCONSTANT.USERPROFILE.UPLOAD_PROFILE_PIC, payload)
 };
 
 
