@@ -225,7 +225,6 @@ const MyTickets = () => {
         getTicketsByRole(status1);
     }, []);
 
-    ;
     return (<div className="">
 
         <div className="aic mt-3 mb-3 " >

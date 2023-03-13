@@ -154,7 +154,8 @@ const GLOBELCONSTANT = {
         UPDATE_SE_TRAINING: API_HOST + "update/session/{sessionSid}/{status}/{meetingId}",
         GET_TRAINING_CONTENT_BY_SID: API_HOST_V2 + "get-training-content-by-sid?training_sid",
         SAVES_NOTES: API_HOST_V2 + "user/save-notes",
-        GET_NOTES: API_HOST_V2 + "user/get-notes"
+        GET_NOTES: API_HOST_V2 + "user/get-notes",
+        GET_TRAINING_BY_STATUS: API_HOST_V2 + "get-training-by-status"
     },
     FEEDBACK: {
         SUBMIT_FEEDBAK: API_HOST_V2 + "submit-feedback?"
@@ -268,9 +269,8 @@ const GLOBELCONSTANT = {
         GET_TRAINERS_TRAINING_SESSIONS: API_HOST_V2 + "instructor/get-daily-training-sessions",
         GET_INSTRUCTOR_FEEDBACK_DETAILS: API_HOST_V2 + "instructor/get-feedback-details",
         GET_TRAINERS_WEEKLY_SESSIONs: API_HOST_V2 + "instructor/get-weekly-sessions",
-        
         GET_ALL_TRAINING_SESSIONS: API_HOST_V2 + "instructor/all-training-sessions",
-
+        GET_DEPARTMENTS: API_HOST + "depatments"
     },
 
     ASSESSMENT_DASHBOARD: {
@@ -303,8 +303,7 @@ const GLOBELCONSTANT = {
 
     USERPROFILE: {
         GET_PROFILE_DETAILS: API_HOST_V2 + "user/get-profile-details",
-        UPLOAD_PROFILE_PIC: API_HOST_V2 + "user/upload-profile-pic",
-        UPDATE_PROFILE_DETAILS: API_HOST_V2 + "user/update-profile"
+        UPLOAD_PROFILE_PIC: API_HOST_V2 + "user/upload-profile-pic"
     },
 
 

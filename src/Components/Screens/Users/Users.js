@@ -19,15 +19,16 @@ import './../Batches/batches.css'
 
 
 const User = ({ location }) => {
-    const {  spinner, user ,ROLE} = useContext(AppContext)
-    const [showBulkUpload, setShowBulkUpload] = useState(false)
-    const Toast = useToast()
-    const [count, setCount] = useState(0)
+    const {  spinner, user ,ROLE} = useContext(AppContext);
+    const [showBulkUpload, setShowBulkUpload] = useState(false);
+    const Toast = useToast();
+    const [count, setCount] = useState(0);
     const [show, setShow] = useState(false);
-    const [participant, setParticipant] = useState([])
-    const [isEmail, setIsEmail] = useState(false)
-    const [isEdit, setIsEdit] = useState(false)
-    const [initialValue, setInitialValue] = useState({})
+    const [participant, setParticipant] = useState([]);
+    const [isEmail, setIsEmail] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
+    const [initialValue, setInitialValue] = useState({});
+    const [departmentList, setDepartmentList] = useState([]);
 
     // get all batches
     const allDepartment = useFetch({
@@ -192,7 +193,7 @@ const User = ({ location }) => {
             spinner.show();
             let val = data
             val.appuser.accessType = data.appuser.accessType.key
-            val.departmentVA.department.name = data.departmentVA.department.name
+            val.departmentVA.department.name = data.name.sid
             val.departmentVA.departmentRole = data.departmentVA.departmentRole.key
             RestService.createParticipant(data).then(resp => {
                 setShow(false)
@@ -468,11 +469,29 @@ const User = ({ location }) => {
             }
         }
 
+    // get departments 
+    const getDepartments = () => {
+        try {
+            RestService.getDepartments().then(
+                response => {
+                    setDepartmentList(response.data);
+                },
+                err => {
+                }
+            ).finally(() => {
+            });
+        } catch (err) {
+            console.error("error occur on getDepartments()", err)
+        }
+    }
+
     // initialize  component
     useEffect(() => {
-        getUserCount()
-        getUsers()
-    }, [])
+        getUserCount();
+        getUsers();
+        getDepartments();
+    }, []);
+
 
 
     return (<>
@@ -531,7 +550,7 @@ const User = ({ location }) => {
                                 </Form.Group>
                                 <Form.Group className="row">
                                     <div className="col-6">
-                                        <SelectInput label="Department" name="departmentVA.department" value={values.departmentVA.department} bindKey="name" option={allDepartment.response} />
+                                        <SelectInput label="Department" name="name" value={values.sid} bindKey="name" option={departmentList} />
                                     </div>
                                     <div className="col-6">
                                         <SelectInput label="Role" name="departmentVA.departmentRole" value={values.departmentVA.departmentRole} bindKey="name" option={GLOBELCONSTANT.DEPARTMENT_ROLE} />
