@@ -127,7 +127,9 @@ const CourseDetails = ({ location }) => {
             {
                 "title": "Delete",
                 "icon": ICN_TRASH,
-                "onClick": (data) => deleteCourseContent(data.sid, data.sectionSid)
+                "onClick": (data) => data.labId !== null ? deleteCourseContent(data.labId, data.sectionSid) 
+                : data.codingQuestionId !== null ? deleteCourseContent(data.codingQuestionId, data.sectionSid)
+                : deleteCourseContent(data.sid, data.sectionSid)
             }
         ],
         actionCustomClass: "no-chev esc-btn-dropdown", // user can pass their own custom className name to add/remove some css style on action button
