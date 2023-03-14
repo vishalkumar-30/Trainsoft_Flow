@@ -37,7 +37,7 @@ export const BsModal = ({ children, setShow, show, headerTitle, size = "md",head
 }
 
 // progress bar
-export const Progress = ({ value = 0, variant, label = "",striped , className = "" }) => <ProgressBar className={className} label={label} variant={variant} now={value} striped ={striped } />
+export const Progress = ({ value = 0, variant, label = "", className = "" }) => <ProgressBar className={className} label={label} variant={variant} now={value} />
 
 // dropdown
 export const BsDropDown = ({ children, header = "", direction = "right" }) => <Dropdown className="dropdown-menus">
