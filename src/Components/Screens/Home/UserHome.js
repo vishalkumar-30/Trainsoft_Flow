@@ -13,6 +13,7 @@ import LineGraph from '../../Common/Graph/Learner/LineGraph/AssesmentScore';
 import AverageAssesmentLearnerscore from '../../Common/Graph/Learner/LineGraph/AssesmentScore';
 import SkillsLevelGraph from '../../Common/Graph/Learner/LineGraph/Speedometer/SkillsLevelGraph';
 import NewCalender from '../../Common/Graph/Learner/LineGraph/CalenderGraph/NewCalender';
+import TrainingProgress from '../../Common/Graph/TrainingProgress/TrainingProgress';
 
 const UserHome = () => {
     const { user, spinner } = useContext(AppContext)
@@ -229,16 +230,20 @@ const UserHome = () => {
 
 
 
-
-        <div className='row'>
+        {/* <Charts ChartType="course" labelLeft="Progress" /> */}
+        {/* <div className='row'>
             <Card title="AsssmentScore Details" action={true} className="mt-3">
-                {/* <Charts ChartType="course" labelLeft="Progress" /> */}
+              
                 <AverageAssesmentLearnerscore />
             </Card>
+        </div> */}
+
+
+ <div className='row'>
+            <Card title=""  className="mt-3">
+           <TrainingProgress/>
+            </Card>
         </div>
-
-
-
 
 
 

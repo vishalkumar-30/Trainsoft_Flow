@@ -456,7 +456,7 @@ const TrainingDetails = ({ location }) => {
 
                     <DropdownItem title="Fun Activity" total="2" theme="dark">
 
-                        {console.log(username['name'])}
+                        
                         {username.name === "Wipro" ?
                             <div>
                                 <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/enterprise-administrator.html" target="_blank">Fun With Enterprise Administrator</a></div>
