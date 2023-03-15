@@ -68,7 +68,7 @@ const CodeEditor = (props) => {
         setInputTab(true);
         setLanguage(lang.value)
     }, [lang])
-console.log(submitoutput)
+console.log(props.sectionSid);
     return (<>
         <div className="editor-wrapper">
             <div className="jcb">
