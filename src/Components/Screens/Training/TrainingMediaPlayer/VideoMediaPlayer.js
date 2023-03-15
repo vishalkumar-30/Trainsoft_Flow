@@ -1,10 +1,38 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import ReactPlayer from 'react-player'
+import RestService from '../../../../Services/api.service'
+import AppContext from '../../../../Store/AppContext'
 import "./MediaPlayer.css"
 
 const VideoMediaPlayer = ({ url }) => {
 
   const [played, setPlayed] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const { spinner } = useContext(AppContext);
+
+//   const markCourseAsCompleted = (contentSid, sectionSid) => {
+//     try {
+//         let trainingSid = location.state.sid;
+//         let sidArray = [];
+//         spinner.show();
+//         RestService.markCourseAsCompleted(contentSid, sectionSid, trainingSid).then(
+//             response => {
+
+//                 if (response.status === 200) {
+//                     setMarkAsCompleted(response.data);
+
+//                 }
+//             },
+//             err => {
+//                 spinner.hide();
+//             }
+//         ).finally(() => {
+//             spinner.hide();
+//         });
+//     } catch (err) {
+//         console.error("error occur on markCourseAsCompleted()", err)
+//     }
+// }
 
   return (
     <>
@@ -18,8 +46,11 @@ const VideoMediaPlayer = ({ url }) => {
           loop={true}
           muted={true}
           controls
+          onProgress={(progress) => {
+            setPlayed(progress.playedSeconds);
+          }}
           onDuration={(duration) => {
-            setPlayed(duration);
+            setDuration(duration);
           }}
         />
       </div>

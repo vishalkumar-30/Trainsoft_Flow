@@ -18,7 +18,10 @@ tr.hide-table-padding td {
   {
     content: '+';
   }
-
+.tc{
+    background: #ffffcc;
+    border-left: 2px solid red;
+}
   
 
    

@@ -162,6 +162,7 @@
   background-color: #e9ecef;
   border-radius: 20px;
   margin-bottom: 10px;
+  animation: progress 1500ms ease-in 1;
 
 }
 
@@ -186,8 +187,13 @@
   -webkit-transition: width .6s ease;
   transition: width .6s ease;
   border-radius: 5px;
+  animation: progress 1500ms ease-in 1;
 }
-
+@keyframes progress {
+  from {
+      width: 0;
+  }
+}
 .progress-sh {
   height: 20px;
   border-bottom: 0px;

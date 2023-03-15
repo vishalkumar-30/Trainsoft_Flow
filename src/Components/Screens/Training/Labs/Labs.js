@@ -247,7 +247,7 @@ codingQuestiondesc !== false ?<ReactMarkdown>
                             <button className="btn btn-primary mt-3" style={{ color: "#fff", fontSize: "15px" }} onClick={() =>{setShowEditor(true)}}>Start Lab</button>
                             {
                                 showEditor ? 
-                                <CodeEditor trainingSid={props.location.state.trainingSid } codingQuestionId={props.location.state.codingQuestionId}/>
+                                <CodeEditor trainingSid={props.location.state.trainingSid } codingQuestionId={props.location.state.codingQuestionId} sectionSid={props.location.state.contentSid}/>
                                 : <p className="text-white">Please Click on Start Lab</p>
                             }
                            

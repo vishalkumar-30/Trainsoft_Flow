@@ -106,19 +106,19 @@ const TrainingDetails = ({ location }) => {
                     if (data.type) {
                         storeType(data.type)
                     }
-                    if (data.sid != null) {
+                    if (data.sid != null && (data.type === "DOCUMENTS" || data.type === "MS_OFFICE" )) {
                         markCourseAsCompleted(data.sid, data.sectionSid);
                     }
-                    if(data.labId != null){
-                        markCourseAsCompleted(data.labId, data.sectionSid);
-                    }
+                    // if (data.labId != null) {
+                    //     markCourseAsCompleted(data.labId, data.sectionSid);
+                    // }
                     // if(data.codingQuestionId != null){
                     //     markCourseAsCompleted(data.codingQuestionId, data.sectionSid);
                     // }
                     if (data.codingQuestionId !== null) {
                         setCodingQuestionId(data.codingQuestionId);
                         setCodingQuestiondesc(data.codingQuestionDescription);
-                        markCourseAsCompleted(data.codingQuestionId, data.sectionSid);
+                        markCourseAsCompletedLabs(data.codingQuestionId, data.sectionSid);
                     }
                     showFeedBack(data.last)
 
@@ -240,9 +240,40 @@ const TrainingDetails = ({ location }) => {
     const markCourseAsCompleted = (contentSid, sectionSid) => {
         try {
             let trainingSid = location.state.sid;
-            let sidArray = [];
+            let payload = {
+                "completedInDuration": 0,
+                "totalDuration": 0
+            }
             spinner.show();
-            RestService.markCourseAsCompleted(contentSid, sectionSid, trainingSid).then(
+            RestService.markCourseAsCompleted(contentSid, sectionSid, trainingSid, payload).then(
+                response => {
+
+                    if (response.status === 200) {
+                        setMarkAsCompleted(response.data);
+
+                    }
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on markCourseAsCompleted()", err)
+        }
+    }
+
+    //mark course as complete labs
+    const markCourseAsCompletedLabs = (contentSid, sectionSid) => {
+        try {
+            let trainingSid = location.state.sid;
+            let payload = {
+                "completedInDuration": 0,
+                "totalDuration": 0
+            }
+            spinner.show();
+            RestService.markCourseAsCompletedLabs(contentSid, sectionSid, trainingSid, payload).then(
                 response => {
 
                     if (response.status === 200) {
@@ -290,7 +321,7 @@ const TrainingDetails = ({ location }) => {
                 spinner.hide();
             });
         } catch (err) {
-            console.error("error occur on markCourseAsCompleted()", err)
+            console.error("error occur on getCompletedCourses()", err)
         }
     }
 
@@ -332,20 +363,20 @@ const TrainingDetails = ({ location }) => {
 
     }, []);
 
-    if(user.role === ROLE.LEARNER){
-        for(let i=0;i<trainingDetailsList.length;i++){
+    if (user.role === ROLE.LEARNER) {
+        for (let i = 0; i < trainingDetailsList.length; i++) {
             console.log(trainingDetailsList[i].courseContentResposeTOList.length)
-            for(let j=0; j<trainingDetailsList[i]["courseContentResposeTOList"].length;j++){
-                if(trainingDetailsList[i].courseContentResposeTOList[j]["instructorSpecific"] === true){
+            for (let j = 0; j < trainingDetailsList[i]["courseContentResposeTOList"].length; j++) {
+                if (trainingDetailsList[i].courseContentResposeTOList[j]["instructorSpecific"] === true) {
                     console.log("d");
                     trainingDetailsList[i].courseContentResposeTOList.splice(j, 1);
-                    
+
                 }
-                
+
             }
         }
     }
-   
+
 
     return (
         <>
@@ -456,7 +487,7 @@ const TrainingDetails = ({ location }) => {
 
                     <DropdownItem title="Fun Activity" total="2" theme="dark">
 
-                        
+
                         {username.name === "Wipro" ?
                             <div>
                                 <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/enterprise-administrator.html" target="_blank">Fun With Enterprise Administrator</a></div>
