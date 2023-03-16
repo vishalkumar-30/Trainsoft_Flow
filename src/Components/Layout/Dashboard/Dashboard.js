@@ -34,6 +34,7 @@ import OurNotes from "../../Screens/ClassLab/ClassNotes/AvailableNotes/OurNotes"
 import DisplayNotes from "../../Screens/ClassLab/ClassNotes/AvailableNotes/DisplayNotes";
 import UserProfileSetting from "../Userprofile/UserProfileSetting";
 import ChangePassword from "../Userprofile/ChangePassword";
+import Expert from "../../Common/Graph/Learner/ExperConnect/Expert";
 
 const Dashboard = ({ location }) => {
   return (
@@ -59,6 +60,7 @@ const Dashboard = ({ location }) => {
             <Router>
               <Home path="dashboard" />
               <UserHome path="home" />
+              <Expert path="expert-connect"/>
               <TicketDashboard path="/techsupport"/>
               <InstructorDashboard path="instdashboard"/>
               <Report path="report/*" />
