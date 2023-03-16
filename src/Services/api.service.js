@@ -51,6 +51,7 @@ const RestService = {
   bulkCreateCourseSectionAndContents: (payload, courseSid) => AxiosService.uploadMultiPart(GLOBELCONSTANT.COURSE.BULK_CREATE_COURSE_SECTION_AND_CONTENT + `?course-sid=${courseSid}`, payload),
   markCourseAsCompleted: (contentSid, sectionSid, trainingsid, payload) => AxiosService.put(GLOBELCONSTANT.COURSE.MARK_COURSE_COMPLETED + `course-content-sid=${contentSid}&section-sid=${sectionSid}&training-sid=${trainingsid}`, payload),
   markCourseAsCompletedLabs: (contentSid, sectionSid, trainingsid, payload) => AxiosService.put(GLOBELCONSTANT.COURSE.MARK_COURSE_COMPLETED + `coding-question-id=${contentSid}&section-sid=${sectionSid}&training-sid=${trainingsid}`, payload),
+  markCourseAsCompletedLabs1: (contentSid, sectionSid, trainingsid, payload) => AxiosService.put(GLOBELCONSTANT.COURSE.MARK_COURSE_COMPLETED + `lab-id=${contentSid}&section-sid=${sectionSid}&training-sid=${trainingsid}`, payload),
   getCompletedCourses: (trainingsid) => AxiosService.get(GLOBELCONSTANT.COURSE.GET_COMPLETED_COURSES + `training-sid=${trainingsid}`),
   cloneCourseAndContents: (coursesid) => AxiosService.patch(GLOBELCONSTANT.COURSE.CLONE_COURSE_AND_CONTENTS + `?course-sid=${coursesid}`),
   updateCourseContent: (payload) => AxiosService.post(GLOBELCONSTANT.COURSE.UPDATE_COURSE_CONTENT, payload),
@@ -96,6 +97,7 @@ const RestService = {
       (type === "INSTRUCTOR" ? GLOBELCONSTANT.TRAINING.GET_INSTRUCTOR_TRAINING.replace("{pageNo}", pageNo).replace("{pageSize}", pageSize)
         : GLOBELCONSTANT.TRAINING.GET_LEARNER_TRAINING)),
 
+  getTrainings: () => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_TRAINING),
   getTrainingSession: (trainingSid, courseSid) => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_TRAINING_SESSION.replace("{trainingSid}", trainingSid).replace("{courseSid}", courseSid)),
   createTraining: (payload) => AxiosService.post(GLOBELCONSTANT.TRAINING.CREATE_TRAINING, payload),
   editTraining: (payload) => AxiosService.post(GLOBELCONSTANT.TRAINING.EDIT_TRAINING, payload),

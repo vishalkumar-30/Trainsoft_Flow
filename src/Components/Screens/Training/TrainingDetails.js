@@ -5,7 +5,9 @@ import { useNavigate } from "@reach/router"
 import AppContext from "../../../Store/AppContext";
 import RestService from "../../../Services/api.service";
 import DropdownItem from "../../Common/DropdownItem/DropdownItem";
-import VideoMediaPlayer from "./TrainingMediaPlayer/VideoMediaPlayer";
+import ReactPlayer from 'react-player';
+// import "../Training/TrainingMediaPlayer/MediaPlayer.css";
+// import VideoMediaPlayer from "./TrainingMediaPlayer/VideoMediaPlayer";
 import "./TrainingMediaPlayer/MediaPlayer.css";
 import DynamicTable from "../../Common/DynamicTable/DynamicTable";
 import Feedback from "../../Common/Feedback/Feedback";
@@ -32,6 +34,7 @@ const TrainingDetails = ({ location }) => {
     const [showcoursename, setShowcoursename] = useState('');
     const [zoomInfo, setZoomInfo] = useState({});
     const [contentLength, setContentLength] = useState(0);
+    const [sid, setSid] = useState('');
     const [contentSid, setContentSid] = useState('');
     const [sectionSidArray, setSectionSidArray] = useState([]);
     const [markCompleted, setMarkAsCompleted] = useState([]);
@@ -44,9 +47,36 @@ const TrainingDetails = ({ location }) => {
     const [labDuration, setLabDuration] = useState('');
     const [codingQuestionId, setCodingQuestionId] = useState('');
     const [codingQuestiondesc, setCodingQuestiondesc] = useState('');
+    const [played, setPlayed] = useState(0);
+    const [duration, setDuration] = useState(0);
     const navigate = useNavigate();
     let trainingSid = location.state.sid;
-    let username = JSON.parse(localStorage.getItem('user'))
+    let username = JSON.parse(localStorage.getItem('user'));
+
+    const VideoMediaPlayer = (vdlink) => {
+        return (
+            <>
+                <div className='player-wrapper ' style={{ border: "1px solid #00000033", boxShadow: "#00000033 0px 0px 0px 1px, #00000033 0px 1px 1px -1px, #00000033 0px 1px 0px " }}>
+                    <ReactPlayer
+                        className='react-player '
+                        url={vdlink}
+                        width='100%'
+                        height="100%"
+                        playing={true}
+                        loop={true}
+                        muted={true}
+                        controls
+                        onProgress={(progress) => {
+                            setPlayed(progress.playedSeconds);
+                        }}
+                        onDuration={(duration) => {
+                            setDuration(duration);
+                        }}
+                    />
+                </div>
+            </>
+        )
+    }
 
     function Show(url) {
         setVdlink(url);
@@ -95,6 +125,9 @@ const TrainingDetails = ({ location }) => {
                     if (data.contentLink) {
                         Show(data.contentLink);
                     }
+                    if (data.sid !== null) {
+                        setSid(data.sid);
+                    }
                     if (data.labId !== null) {
                         storeLabId(data.labId);
                         setContentSid(data.sectionSid);
@@ -106,19 +139,22 @@ const TrainingDetails = ({ location }) => {
                     if (data.type) {
                         storeType(data.type)
                     }
-                    if (data.sid != null && (data.type === "DOCUMENTS" || data.type === "MS_OFFICE" )) {
+                    if (data.sid != null && (data.type === "DOCUMENTS" || data.type === "MS_OFFICE")) {
                         markCourseAsCompleted(data.sid, data.sectionSid);
                     }
-                    // if (data.labId != null) {
-                    //     markCourseAsCompleted(data.labId, data.sectionSid);
+                    // if (data.sid != null && (data.type === "VIDEO" || data.type === "EXTERNAL_LINK" )) {
+                    //     markCourseAsCompleted1(data.sid, data.sectionSid);
                     // }
+                    if (data.labId != null) {
+                        markCourseAsCompletedLabs1(data.labId, data.sectionSid);
+                    }
                     // if(data.codingQuestionId != null){
                     //     markCourseAsCompleted(data.codingQuestionId, data.sectionSid);
                     // }
                     if (data.codingQuestionId !== null) {
                         setCodingQuestionId(data.codingQuestionId);
                         setCodingQuestiondesc(data.codingQuestionDescription);
-                        markCourseAsCompletedLabs(data.codingQuestionId, data.sectionSid);
+                        // markCourseAsCompletedLabs(data.codingQuestionId, data.sectionSid);
                     }
                     showFeedBack(data.last)
 
@@ -264,6 +300,34 @@ const TrainingDetails = ({ location }) => {
         }
     }
 
+    //update content mark as completed
+    const markCourseAsCompleted1 = () => {
+        try {
+            let trainingSid = location.state.sid;
+            let payload = {
+                "completedInDuration": duration,
+                "totalDuration": duration
+            }
+            spinner.show();
+            RestService.markCourseAsCompleted(sid, contentSid, trainingSid, payload).then(
+                response => {
+
+                    if (response.status === 200) {
+                        setMarkAsCompleted(response.data);
+
+                    }
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on markCourseAsCompleted()", err)
+        }
+    }
+
     //mark course as complete labs
     const markCourseAsCompletedLabs = (contentSid, sectionSid) => {
         try {
@@ -274,6 +338,34 @@ const TrainingDetails = ({ location }) => {
             }
             spinner.show();
             RestService.markCourseAsCompletedLabs(contentSid, sectionSid, trainingSid, payload).then(
+                response => {
+
+                    if (response.status === 200) {
+                        setMarkAsCompleted(response.data);
+
+                    }
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on markCourseAsCompleted()", err)
+        }
+    }
+
+    //mark course as complete labs
+    const markCourseAsCompletedLabs1 = (contentSid, sectionSid) => {
+        try {
+            let trainingSid = location.state.sid;
+            let payload = {
+                "completedInDuration": 33,
+                "totalDuration": 60
+            }
+            spinner.show();
+            RestService.markCourseAsCompletedLabs1(contentSid, sectionSid, trainingSid, payload).then(
                 response => {
 
                     if (response.status === 200) {
@@ -363,6 +455,12 @@ const TrainingDetails = ({ location }) => {
 
     }, []);
 
+    useEffect(()=> {
+        if(Math.ceil(played) === Math.ceil(0.15 * duration)){
+          markCourseAsCompleted1();
+        }
+      },[played])
+
     if (user.role === ROLE.LEARNER) {
         for (let i = 0; i < trainingDetailsList.length; i++) {
             console.log(trainingDetailsList[i].courseContentResposeTOList.length)
@@ -378,6 +476,8 @@ const TrainingDetails = ({ location }) => {
     }
 
 
+    console.log("progrss ", Math.ceil(played));
+    console.log("duration ", Math.ceil(0.15 * duration));
     return (
         <>
             <div className="row" >
@@ -400,7 +500,8 @@ const TrainingDetails = ({ location }) => {
 
                 <div class="col-8  pl-3 " style={{ marginTop: "-25px" }}>
                     {/* <VideoMediaPlayer /> */}
-                    {(type === "EXTERNAL_LINK" || type === "VIDEO") ? <VideoMediaPlayer url={vdlink} />
+                    {(type === "EXTERNAL_LINK" || type === "VIDEO") ?
+                        VideoMediaPlayer(vdlink)
                         : (type === "PHOTO" || type === "DOCUMENTS") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
                             : (type === "LAB" || type === "CODING") ?
                                 <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
@@ -419,8 +520,11 @@ const TrainingDetails = ({ location }) => {
                                 :
                                 (type === "ASSESSMENT") ?
                                     <div className="assesmentimg row ml-1" >
-                                        <div style={{ width: "180px", textAlign: "center", textDecoration: "none", background: "blue", padding: "15px 20px", marginLeft: "250px", marginBottom: "10px", marginTop: "100px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                            <a href={vdlink} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", fontSize: "15px" }}>Start Assessment</a>
+                                        <div style={{ width: "180px", textAlign: "center", textDecoration: "none", background: "blue", color: "white", padding: "15px 20px", marginLeft: "250px", marginBottom: "10px", marginTop: "100px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                            <button onClick={()=> {window.open(`${vdlink}`, "_blank"); sessionStorage.setItem("trainingSid", trainingSid); sessionStorage.setItem("contentSid", contentSid);
+                                            sessionStorage.setItem("sid", sid);}
+                                        }>Start Assessment</button>
+                                            {/* <a href={vdlink} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", fontSize: "15px" }}>Start Assessment</a> */}
                                         </div>
                                     </div>
                                     :

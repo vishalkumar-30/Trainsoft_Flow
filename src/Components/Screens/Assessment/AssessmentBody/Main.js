@@ -27,17 +27,49 @@ const Main = ({ questions }) => {
     const Toast = useToast();
     
     // this method to submit your answer
-    const handleSubmitAssessment = () => {
+
+    //update content mark as completed
+    const markCourseAsCompleted =  () => {
+        try {
+            let trainingSid = "661E0409F66A499493004E8405F0F2C897C22E259D8445ADBBFCC9A54D84A6CA";
+            let contentSid = "5571F1F543C645D38BC72C4996F85C0411F3C09CAD0E4725900AE875A0F20050";
+            let sectionSid = "7C25EE2B8BC14F888BAFB25ADDBEB934A9DD38505E1349A4B01D6DB9E5BC1F51"
+            let payload = {
+                "completedInDuration": 0,
+                "totalDuration": 0
+            }
+            spinner.show();
+             RestService.markCourseAsCompleted(contentSid, sectionSid, trainingSid, payload).then(
+                response => {
+
+                    if (response.status === 200) {
+                        console.log(response.data);
+
+                    }
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on markCourseAsCompleted()", err)
+        }
+    }
+
+    const handleSubmitAssessment = async() => {
         try {
             spinner.show("Submitting assessment.. Please wait...");
             let payload = {
                 "quizSetSid": instruction.sid,
                 "virtualAccountSid": assUserInfo.sid
             }
-            RestService.submitAssessment(payload).then(
+            await RestService.submitAssessment(payload).then(
                 response => {
                     spinner.hide();
                     Toast.success({ message: `Congratulation! You have submitted your assessment successfully`, time: 3000 });
+                    
                     setFinished(true);
                 },
                 err => {
@@ -50,12 +82,14 @@ const Main = ({ questions }) => {
         } catch (err) {
             console.error("Error occur in handleSubmitAssessment--", err);
         }
+        
     }
 
     // listening when time's up to submit assessment automatically
     useEffect(() => {
         if(hasExamEnd) {
             setShow(true);
+            markCourseAsCompleted();
         }
     }, [hasExamEnd])
 
@@ -84,7 +118,7 @@ const Main = ({ questions }) => {
                                 </div>
                             </div>
                             
-                            <Submit onClick={() => handleSubmitAssessment()}>Submit Assessment</Submit>
+                            <button onClick={() => {handleSubmitAssessment()}}>Submit Assessment</button>
                         </div>
                     }
                     {
