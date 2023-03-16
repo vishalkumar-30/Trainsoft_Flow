@@ -8,6 +8,7 @@ import AppContext from '../../../../Store/AppContext';
 import Editors from './Editor';
 import './codeEditor.css'
 import OutputIcon from '@mui/icons-material/Output';
+import RestService from '../../../../Services/api.service';
 import { height } from '@mui/system';
 import { data } from 'jquery';
 
@@ -43,16 +44,17 @@ const CodeEditor = (props) => {
                 setSpinners(false);
             })
     }
-    const submitCode = () => {
+    const submitCode = async () => {
         const trainingSid = props.trainingSid;
         const codingQuestionId = props.codingQuestionId;
+        const sectionSid = props.sectionSid
         setSpinners(true)
-        
-        const payload = {
+
+        const payload1 = {
             "code": editorRef.current.getValue(),
-    
+
         }
-        axios.post(`https://trainsoft.live/insled/v1/jdoodle/evaluate?coding_question_id=${codingQuestionId}&training_sid=${trainingSid}`, payload)
+        await axios.post(`https://trainsoft.live/insled/v1/jdoodle/evaluate?coding_question_id=${codingQuestionId}&training_sid=${trainingSid}`, payload1)
             .then(({ data }) => {
                 // setOutput(data.output);
                 console.log(data)
@@ -61,6 +63,31 @@ const CodeEditor = (props) => {
                 // setResults(data.codeAnalysis);
                 setSpinners(false);
             })
+        try {
+
+            let payload = {
+                "completedInDuration": 0,
+                "totalDuration": 0
+            }
+            spinner.show();
+            await RestService.markCourseAsCompletedLabs(codingQuestionId, sectionSid, trainingSid, payload).then(
+                response => {
+
+                    if (response.status === 200) {
+                        console.log(response.data);
+
+                    }
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on markCourseAsCompleted()", err)
+        }
+
     }
     useEffect(() => {
         setOutput('');
@@ -68,7 +95,7 @@ const CodeEditor = (props) => {
         setInputTab(true);
         setLanguage(lang.value)
     }, [lang])
-console.log(props.sectionSid);
+    console.log(props.sectionSid);
     return (<>
         <div className="editor-wrapper">
             <div className="jcb">
@@ -123,26 +150,26 @@ console.log(props.sectionSid);
                         <div><textarea rows="3" placeholder="Enter input" className="form-control" onChange={(e) => setInputData(e.target.value)} type="text" /></div>
                     </div >
                     :
-                    <div className="editor-output p-3" style={{height:"100%", background: "#ffffcc"}}>
+                    <div className="editor-output p-3" style={{ height: "100%", background: "#ffffcc" }}>
                         <div>
-                         <div ><h6> Your output : </h6></div><div className='text-md'>  {output}</div>
-                      
+                            <div ><h6> Your output : </h6></div><div className='text-md'>  {output}</div>
+
                             <div className='p-2 outputList' >
-                            <p style={{ fontSize: "15px", fontWeight: "bold", color: '#00000094' }}>Code Review</p>
-                          
-                          <p className='py-2'style={{ fontSize: "13px", fontWeight: "bold", color: '#00000094' }} >{results.split('\n')[2]}</p>
-                          <p className='px-4' ><OutputIcon/> {results.split('\n')[3]}</p>
-                          <hr/>
-                          <p className='py-2'style={{ fontSize: "13px", fontWeight: "bold", color: '#00000094' }}>{results.split('\n')[5]}</p>
-                          <p className='px-4'> <OutputIcon/> {results.split('\n')[6]}</p>
+                                <p style={{ fontSize: "15px", fontWeight: "bold", color: '#00000094' }}>Code Review</p>
+
+                                <p className='py-2' style={{ fontSize: "13px", fontWeight: "bold", color: '#00000094' }} >{results.split('\n')[2]}</p>
+                                <p className='px-4' ><OutputIcon /> {results.split('\n')[3]}</p>
+                                <hr />
+                                <p className='py-2' style={{ fontSize: "13px", fontWeight: "bold", color: '#00000094' }}>{results.split('\n')[5]}</p>
+                                <p className='px-4'> <OutputIcon /> {results.split('\n')[6]}</p>
                             </div>
 
                         </div>
 
                     </div>
                 }
-             <div className='d-flex ' style={{justifyContent:"space-between"}}>   <button className="class-mode bg-primary my-3" style={{float: 'right'}}onClick={submitCode}>Submit</button>
-                <h4 className='title-lg mt-3 ' >Hidden Test Cases :- {submitoutput}</h4></div>
+                <div className='d-flex ' style={{ justifyContent: "space-between" }}>   <button className="class-mode bg-primary my-3" style={{ float: 'right' }} onClick={submitCode}>Submit</button>
+                    <h4 className='title-lg mt-3 ' >Hidden Test Cases :- {submitoutput}</h4></div>
             </div>
         </div>
     </>)
