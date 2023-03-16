@@ -12,30 +12,25 @@ export default function AverageAssesmentLearnerscore() {
   // get average training score
   const getLearnersAssessmentScore = () => {
     try {
-
+      const key = 'trainingName';
       spinner.show();
       RestService.getLearnersAssessmentScore().then(
         response => {
           if (response.status === 200) {
-            console.log(response.data)
             let resp = response.data;
-
             let modifiedArr = resp.map(function (element) {
               console.log(element)
               let newobj = {
                 trainingName: element.trainingName,
-                percentage: element.percentage.toFixed()
+                gainMarks: element.gainMarks
               }
-
               return newobj;
             });
 
-            setLearnerAverageScore(modifiedArr);
-
-
-
+            const arrayUniqueByKey = [...new Map(modifiedArr.map(item =>
+              [item[key], item])).values()];
+            setLearnerAverageScore(arrayUniqueByKey);
           }
-
         },
         err => {
           spinner.hide();
@@ -52,14 +47,11 @@ export default function AverageAssesmentLearnerscore() {
     getLearnersAssessmentScore();
   }, []);
 
-
-
   return (
     <>
       <ResponsiveContainer width="100%"
         height={500}>
         <LineChart
-
           data={learnerAverageScore}
           margin={{
             top: 20,
@@ -74,14 +66,14 @@ export default function AverageAssesmentLearnerscore() {
           </XAxis>
           <YAxis
             label={{
-              value: " %",
+              value: "Assessment Score",
               angle: -90,
               position: "insideLeft"
             }}
           />
           <Tooltip />
           <Line
-            dataKey="percentage"
+            dataKey="gainMarks"
             stroke="#8884d8"
             activeDot={{ r: 8 }}
           />

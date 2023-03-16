@@ -13,7 +13,6 @@ import StepLabel from '@material-ui/core/StepLabel';
 import GLOBELCONSTANT from "../../../Constant/GlobleConstant";
 import { getAllBatches } from "../../../Services/service";
 import {MultiSelect} from "react-multi-select-component";
-import Select from 'react-select';
 import "./Multisteptraining/Step.css";
 import * as Yup from 'yup';
 

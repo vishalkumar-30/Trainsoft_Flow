@@ -1,5 +1,5 @@
 import GLOBELCONSTANT from '../../../Constant/GlobleConstant'
-import { ICN_HOME, ICN_CALENDER,ICN_NOTES, ICN_ORG_MGT, ICN_ASSESSMENT, ICN_REPORT, ICN_PARTICIPANT, ICN_BATCHES, ICN_SUPPORT_HOME, ICN_COURSE, ICN_DASHBOARD, ICN_COMPILER, ICN_LAB_STORE, ICN_VSCODE, ICN_SETTINGS, ICN_MYASSESSMENT, ICN_CATALOG } from '../../Common/Icon'
+import { ICN_HOME, ICN_CALENDER,ICN_NOTES, ICN_ORG_MGT, ICN_ASSESSMENT, ICN_REPORT, ICN_PARTICIPANT, ICN_BATCHES, ICN_SUPPORT_HOME, ICN_COURSE, ICN_DASHBOARD, ICN_COMPILER, ICN_LAB_STORE, ICN_VSCODE, ICN_SETTINGS, ICN_MYASSESSMENT, ICN_CATALOG,EXPERT_ICON } from '../../Common/Icon'
 export const AdminConfig = [
     {
         icon: ICN_HOME,
@@ -182,6 +182,13 @@ export const AdminConfig = [
         role: [GLOBELCONSTANT.ROLE.LEARNER, GLOBELCONSTANT.ROLE.INSTRUCTOR]
     },
     {
+        icon: EXPERT_ICON,
+        title: "Expert Connect",
+        pathname: "expert-connect",
+        disabled: true,
+        role: [GLOBELCONSTANT.ROLE.LEARNER]
+    },
+    {
         icon: ICN_SUPPORT_HOME,
         title: "Support",
         pathname: "support",
@@ -196,6 +203,8 @@ export const AdminConfig = [
         disabled: true,
         role: [GLOBELCONSTANT.ROLE.ASSESS_USER]
     },
+
+   
 
     // {
     //     icon: ICN_VSCODE,

@@ -145,9 +145,9 @@ const TrainingDetails = ({ location }) => {
                     // if (data.sid != null && (data.type === "VIDEO" || data.type === "EXTERNAL_LINK" )) {
                     //     markCourseAsCompleted1(data.sid, data.sectionSid);
                     // }
-                    if (data.labId != null) {
-                        markCourseAsCompletedLabs1(data.labId, data.sectionSid);
-                    }
+                    // if (data.labId != null) {
+                    //     markCourseAsCompletedLabs1(data.labId, data.sectionSid);
+                    // }
                     // if(data.codingQuestionId != null){
                     //     markCourseAsCompleted(data.codingQuestionId, data.sectionSid);
                     // }
@@ -329,60 +329,60 @@ const TrainingDetails = ({ location }) => {
     }
 
     //mark course as complete labs
-    const markCourseAsCompletedLabs = (contentSid, sectionSid) => {
-        try {
-            let trainingSid = location.state.sid;
-            let payload = {
-                "completedInDuration": 0,
-                "totalDuration": 0
-            }
-            spinner.show();
-            RestService.markCourseAsCompletedLabs(contentSid, sectionSid, trainingSid, payload).then(
-                response => {
+    // const markCourseAsCompletedLabs = (contentSid, sectionSid) => {
+    //     try {
+    //         let trainingSid = location.state.sid;
+    //         let payload = {
+    //             "completedInDuration": 0,
+    //             "totalDuration": 0
+    //         }
+    //         spinner.show();
+    //         RestService.markCourseAsCompletedLabs(contentSid, sectionSid, trainingSid, payload).then(
+    //             response => {
 
-                    if (response.status === 200) {
-                        setMarkAsCompleted(response.data);
+    //                 if (response.status === 200) {
+    //                     setMarkAsCompleted(response.data);
 
-                    }
-                },
-                err => {
-                    spinner.hide();
-                }
-            ).finally(() => {
-                spinner.hide();
-            });
-        } catch (err) {
-            console.error("error occur on markCourseAsCompleted()", err)
-        }
-    }
+    //                 }
+    //             },
+    //             err => {
+    //                 spinner.hide();
+    //             }
+    //         ).finally(() => {
+    //             spinner.hide();
+    //         });
+    //     } catch (err) {
+    //         console.error("error occur on markCourseAsCompleted()", err)
+    //     }
+    // }
 
     //mark course as complete labs
-    const markCourseAsCompletedLabs1 = (contentSid, sectionSid) => {
-        try {
-            let trainingSid = location.state.sid;
-            let payload = {
-                "completedInDuration": 33,
-                "totalDuration": 60
-            }
-            spinner.show();
-            RestService.markCourseAsCompletedLabs1(contentSid, sectionSid, trainingSid, payload).then(
-                response => {
+    // const markCourseAsCompletedLabs1 = (contentSid, sectionSid) => {
+    //     try {
+    //         let trainingSid = location.state.sid;
+    //         let payload = {
+    //             "completedInDuration": 33,
+    //             "totalDuration": 60
+    //         }
+    //         spinner.show();
+    //         RestService.markCourseAsCompletedLabs1(contentSid, sectionSid, trainingSid, payload).then(
+    //             response => {
 
-                    if (response.status === 200) {
-                        setMarkAsCompleted(response.data);
+    //                 if (response.status === 200) {
+    //                     setMarkAsCompleted(response.data);
 
-                    }
-                },
-                err => {
-                    spinner.hide();
-                }
-            ).finally(() => {
-                spinner.hide();
-            });
-        } catch (err) {
-            console.error("error occur on markCourseAsCompleted()", err)
-        }
-    }
+    //                 }
+    //             },
+    //             err => {
+    //                 spinner.hide();
+    //             }
+    //         ).finally(() => {
+    //             spinner.hide();
+    //         });
+    //     } catch (err) {
+    //         console.error("error occur on markCourseAsCompleted()", err)
+    //     }
+    // }
 
     //get completed courses 
     const getCompletedCourses = () => {
@@ -447,16 +447,16 @@ const TrainingDetails = ({ location }) => {
         getCompletedCourses();
         getTrainingBySid();
 
-        //Disable right click ;
-        // document.addEventListener('contextmenu', (e) => {
-        //     Toast.error({ message: `Right click not allowed` });
-        //     e.preventDefault();
-        //   })
+        // Disable right click ;
+        document.addEventListener('contextmenu', (e) => {
+            Toast.error({ message: `Right click not allowed` });
+            e.preventDefault();
+          })
 
     }, []);
 
     useEffect(()=> {
-        if(Math.ceil(played) === Math.ceil(0.15 * duration)){
+        if(Math.ceil(played) === Math.ceil(0.8 * duration)){
           markCourseAsCompleted1();
         }
       },[played])
@@ -475,9 +475,6 @@ const TrainingDetails = ({ location }) => {
         }
     }
 
-
-    console.log("progrss ", Math.ceil(played));
-    console.log("duration ", Math.ceil(0.15 * duration));
     return (
         <>
             <div className="row" >
@@ -521,10 +518,10 @@ const TrainingDetails = ({ location }) => {
                                 (type === "ASSESSMENT") ?
                                     <div className="assesmentimg row ml-1" >
                                         <div style={{ width: "180px", textAlign: "center", textDecoration: "none", background: "blue", color: "white", padding: "15px 20px", marginLeft: "250px", marginBottom: "10px", marginTop: "100px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                            <button onClick={()=> {window.open(`${vdlink}`, "_blank"); sessionStorage.setItem("trainingSid", trainingSid); sessionStorage.setItem("contentSid", contentSid);
+                                            {/* <button onClick={()=> {window.open(`${vdlink}`, "_blank"); sessionStorage.setItem("trainingSid", trainingSid); sessionStorage.setItem("contentSid", contentSid);
                                             sessionStorage.setItem("sid", sid);}
-                                        }>Start Assessment</button>
-                                            {/* <a href={vdlink} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", fontSize: "15px" }}>Start Assessment</a> */}
+                                        }>Start Assessment</button> */}
+                                            <a href={vdlink} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", fontSize: "15px" }}>Start Assessment</a>
                                         </div>
                                     </div>
                                     :
@@ -601,8 +598,6 @@ const TrainingDetails = ({ location }) => {
                                 <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/cloud-native-jeopardy.html" target="_blank">Fun With Cloud Native</a></div>
                                 <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/kubernetes-jeopardy-game.html" target="_blank">Fun With Kubernetes</a></div>
                             </div>}
-
-
 
 
                     </DropdownItem>

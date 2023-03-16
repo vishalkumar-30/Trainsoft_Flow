@@ -57,6 +57,8 @@ import DownloadIcon from '@mui/icons-material/Download';
 import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+export const EXPERT_ICON =<SupervisorAccountIcon/>
 export const USERPROFILE_ICON =<ManageAccountsIcon/>
 export const LOGOUT_ICON =<LogoutIcon/>
 export const DOWNLOAD_ICON =<DownloadIcon/>
@@ -118,6 +120,7 @@ export const ICN_TEXT_FIELD = <TextFieldsIcon/>
 export const ICN_CALL_MADE = <CallMadeIcon/>
 export const ICN_DELETE = <DeleteIcon/>
 export const ICN_CLONE = <FileCopyIcon/>
+
 export const ICN_ORG_MGT = <svg xmlns="http://www.w3.org/2000/svg" width="32" height="28.8" viewBox="0 0 32 28.8"><path fill="#fff"  d="M18,9.4V3H2V31.8H34V9.4ZM14.8,28.6H5.2V25.4h9.6Zm0-6.4H5.2V19h9.6Zm0-6.4H5.2V12.6h9.6Zm0-6.4H5.2V6.2h9.6Zm16,19.2H18v-16H30.8ZM27.6,15.8H21.2V19h6.4Zm0,6.4H21.2v3.2h6.4Z" transform="translate(-2 -3)"/></svg>
 export const ICN_BOOK = <MenuBookIcon/>
 export const ICN_STORE = <StoreIcon/>

@@ -1,0 +1,11 @@
+.css-15wwp11-MuiTableHead-root {
+    display: table-header-group;
+    background: #F5F8FB !important;
+}
+.css-1gjgmky-MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped:not(:first-of-type) {
+    margin-left: -1px;
+    border-left: 1px solid transparent;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    font-weight: 700;
+}
