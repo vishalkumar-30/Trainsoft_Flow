@@ -9,7 +9,7 @@ const CountdownTimer = ({ timeLimit, callback = () => { } }) => {
     const [data, setData] = useState(
         { date: Date.now(), delay: timeLimit * 60000 } //10 seconds
     );
-    const wantedDelay = timeLimit * 60000; //10 ms
+    const wantedDelay =  timeLimit * 60000; //10 ms
 
     const renderer = ({ hours, minutes, seconds, completed }) => {
         return (
@@ -25,7 +25,11 @@ const CountdownTimer = ({ timeLimit, callback = () => { } }) => {
                             <div className="mr10">
                                 <IcnTimer {...{ color: minutes >= 4 ? "#917618" : (minutes >= 2 ? "#A86F3E" : "#ffffff") }} />
                             </div>
-                            <div className="pt2">{minutes}:{seconds}</div>
+                            {
+                                timeLimit > 60 ? <div className="pt2">{hours}:{minutes}:{seconds}</div>
+                                : <div className="pt2">{minutes}:{seconds}</div>
+                            }
+                         
                         </div>
                     }
                 </div>
@@ -60,7 +64,7 @@ const CountdownTimer = ({ timeLimit, callback = () => { } }) => {
         }
     }, [wantedDelay]);
     //[END] componentDidMount
-    console.log(time);
+    
     return (
         <div>
             <Countdown

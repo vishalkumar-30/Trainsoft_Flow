@@ -26,38 +26,37 @@ const Main = ({ questions }) => {
     const [show, setShow] = useState(false);
     const Toast = useToast();
     
-    // this method to submit your answer
-
     //update content mark as completed
-    // const markCourseAsCompleted =  () => {
-    //     try {
-    //         let trainingSid = "661E0409F66A499493004E8405F0F2C897C22E259D8445ADBBFCC9A54D84A6CA";
-    //         let contentSid = "5571F1F543C645D38BC72C4996F85C0411F3C09CAD0E4725900AE875A0F20050";
-    //         let sectionSid = "7C25EE2B8BC14F888BAFB25ADDBEB934A9DD38505E1349A4B01D6DB9E5BC1F51"
-    //         let payload = {
-    //             "completedInDuration": 0,
-    //             "totalDuration": 0
-    //         }
-    //         spinner.show();
-    //          RestService.markCourseAsCompleted(contentSid, sectionSid, trainingSid, payload).then(
-    //             response => {
+    const markCourseAsCompleted =  () => {
+        try {
+            let trainingSid = "661E0409F66A499493004E8405F0F2C897C22E259D8445ADBBFCC9A54D84A6CA";
+            let contentSid = "5571F1F543C645D38BC72C4996F85C0411F3C09CAD0E4725900AE875A0F20050";
+            let sectionSid = "7C25EE2B8BC14F888BAFB25ADDBEB934A9DD38505E1349A4B01D6DB9E5BC1F51"
+            let payload = {
+                "completedInDuration": 0,
+                "totalDuration": 0
+            }
+            spinner.show();
+             RestService.markCourseAsCompleted(contentSid, sectionSid, trainingSid, payload).then(
+                response => {
 
-    //                 if (response.status === 200) {
-    //                     console.log(response.data);
+                    if (response.status === 200) {
+                        console.log(response.data);
 
-    //                 }
-    //             },
-    //             err => {
-    //                 spinner.hide();
-    //             }
-    //         ).finally(() => {
-    //             spinner.hide();
-    //         });
-    //     } catch (err) {
-    //         console.error("error occur on markCourseAsCompleted()", err)
-    //     }
-    // }
+                    }
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on markCourseAsCompleted()", err)
+        }
+    }
 
+    // this method to submit your answer
     const handleSubmitAssessment = async() => {
         try {
             spinner.show("Submitting assessment.. Please wait...");
@@ -68,6 +67,7 @@ const Main = ({ questions }) => {
             await RestService.submitAssessment(payload).then(
                 response => {
                     spinner.hide();
+                    markCourseAsCompleted();
                     Toast.success({ message: `Congratulation! You have submitted your assessment successfully`, time: 3000 });
                     
                     setFinished(true);
@@ -89,7 +89,6 @@ const Main = ({ questions }) => {
     useEffect(() => {
         if(hasExamEnd) {
             setShow(true);
-            // markCourseAsCompleted();
         }
     }, [hasExamEnd])
 
@@ -117,7 +116,7 @@ const Main = ({ questions }) => {
                                 </div>
                             </div>
                             
-                            <button onClick={() => {handleSubmitAssessment()}}>Submit Assessment</button>
+                            <Submit onClick={() => {handleSubmitAssessment()}}>Submit Assessment</Submit>
                         </div>
                     }
                     {

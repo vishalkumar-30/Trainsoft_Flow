@@ -7,7 +7,7 @@ import "./bsUtils.css";
 
 
 // model
-export const BsModal = ({ children, setShow, show, headerTitle, size = "md",headerAction=null }) => {
+export const BsModal = ({ children, setShow, show, headerTitle, size = "md", headerAction = null }) => {
     return (
         <Modal
             size={size}
@@ -20,13 +20,13 @@ export const BsModal = ({ children, setShow, show, headerTitle, size = "md",head
                 <div className="jcb mb-3 aic">
                     <div className="title-md mb-0">{headerTitle}</div>
                     <div className="flx">
-                      <div className="mx-2">
+                        <div className="mx-2">
                             {headerAction}
                         </div>
-                    <div className="circle-md" onClick={() => setShow(false)}>
-                        {ICN_CLOSE}
-                    </div>
-                        
+                        <div className="circle-md" onClick={() => setShow(false)}>
+                            {ICN_CLOSE}
+                        </div>
+
                     </div>
                 </div>
                 {children}
@@ -69,7 +69,7 @@ export const Breadcrumbs = () => <Breadcrumb>
     <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
     <Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/Breadcrumb/">
         Library
-</Breadcrumb.Item>
+    </Breadcrumb.Item>
     <Breadcrumb.Item active>Data</Breadcrumb.Item>
 </Breadcrumb>
 

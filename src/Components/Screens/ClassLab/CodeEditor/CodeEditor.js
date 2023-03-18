@@ -9,8 +9,6 @@ import Editors from './Editor';
 import './codeEditor.css'
 import OutputIcon from '@mui/icons-material/Output';
 import RestService from '../../../../Services/api.service';
-import { height } from '@mui/system';
-import { data } from 'jquery';
 
 const CodeEditor = (props) => {
     const { spinner } = useContext(AppContext);
@@ -29,6 +27,35 @@ const CodeEditor = (props) => {
         editorRef.current = editor;
     }
 
+    //mark labs as complete
+    const markCourseAsCompletedCode = () => {
+        try {
+            const trainingSid = props.trainingSid;
+            const codingQuestionId = props.codingQuestionId;
+            const sectionSid = props.sectionSid
+            let payload = {
+                "completedInDuration": 0,
+                "totalDuration": 0
+            }
+            spinner.show();
+            RestService.markCourseAsCompletedCode(codingQuestionId, sectionSid, trainingSid, payload).then(
+                response => {
+                    if (response.status === 200) {
+                        console.log(response.data);
+                    }
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on markCourseAsCompletedCode()", err)
+        }
+    }
+
+    //execute compiler
     const runCode = () => {
         setSpinners(true)
         const payload = {
@@ -44,58 +71,31 @@ const CodeEditor = (props) => {
                 setSpinners(false);
             })
     }
+
+    //submit code for test cases
     const submitCode = async () => {
         const trainingSid = props.trainingSid;
         const codingQuestionId = props.codingQuestionId;
-        const sectionSid = props.sectionSid
         setSpinners(true)
-
-        const payload1 = {
+        const payload = {
             "code": editorRef.current.getValue(),
 
         }
-        await axios.post(`https://trainsoft.live/insled/v1/jdoodle/evaluate?coding_question_id=${codingQuestionId}&training_sid=${trainingSid}`, payload1)
+        await axios.post(`https://trainsoft.live/insled/v1/jdoodle/evaluate?coding_question_id=${codingQuestionId}&training_sid=${trainingSid}`, payload)
             .then(({ data }) => {
-                // setOutput(data.output);
-                console.log(data)
-                setSubmitoutput(data)
-
-                // setResults(data.codeAnalysis);
+                setSubmitoutput(data);
+                markCourseAsCompletedCode();
                 setSpinners(false);
             })
-        try {
-
-            let payload = {
-                "completedInDuration": 0,
-                "totalDuration": 0
-            }
-            spinner.show();
-            await RestService.markCourseAsCompletedLabs(codingQuestionId, sectionSid, trainingSid, payload).then(
-                response => {
-
-                    if (response.status === 200) {
-                        console.log(response.data);
-
-                    }
-                },
-                err => {
-                    spinner.hide();
-                }
-            ).finally(() => {
-                spinner.hide();
-            });
-        } catch (err) {
-            console.error("error occur on markCourseAsCompleted()", err)
-        }
-
     }
+
     useEffect(() => {
         setOutput('');
         setInputTab('');
         setInputTab(true);
         setLanguage(lang.value)
     }, [lang])
-  
+
     return (<>
         <div className="editor-wrapper">
             <div className="jcb">

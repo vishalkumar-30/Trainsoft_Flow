@@ -46,7 +46,7 @@ const LeaderBoardItem = ({ virtualAccountTO, index, percentage }) => {
                 {virtualAccountTO.appuser?.name}
             </div>
         </div>
-        <div style={{ font: "normal normal 600 12px/26px Montserrat" }}>{percentage ? percentage : 0}%</div>
+        <div style={{ font: "normal normal 600 12px/26px Montserrat" }}>{percentage ? percentage.toFixed(2) : 0}%</div>
     </div>;
 }
 
