@@ -306,6 +306,9 @@ const GLOBELCONSTANT = {
         UPLOAD_PROFILE_PIC: API_HOST_V2 + "user/upload-profile-pic"
     },
 
+    WEIGHTEDSCORES: {
+        GET_LEARNER_WEIGHTED_SCORES: API_HOST_V2 + "learner/get-weighted-scores"
+    },
 
     ACCESS_LEVEL: [
         { key: "ALL", name: "All" },

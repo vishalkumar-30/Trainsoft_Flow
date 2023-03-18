@@ -6,8 +6,6 @@ import AppContext from "../../../Store/AppContext";
 import RestService from "../../../Services/api.service";
 import DropdownItem from "../../Common/DropdownItem/DropdownItem";
 import ReactPlayer from 'react-player';
-// import "../Training/TrainingMediaPlayer/MediaPlayer.css";
-// import VideoMediaPlayer from "./TrainingMediaPlayer/VideoMediaPlayer";
 import "./TrainingMediaPlayer/MediaPlayer.css";
 import DynamicTable from "../../Common/DynamicTable/DynamicTable";
 import Feedback from "../../Common/Feedback/Feedback";
@@ -17,7 +15,6 @@ import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import SummarizeRoundedIcon from '@mui/icons-material/SummarizeRounded';
 import DuoIcon from '@mui/icons-material/Duo';
 import ProgressBar from "../../Common/ProgressBar/ProgressBar";
-import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import ScienceIcon from '@mui/icons-material/Science';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import CodeIcon from '@mui/icons-material/Code';
@@ -26,7 +23,6 @@ import useToast from "../../../Store/ToastHook";
 const TrainingDetails = ({ location }) => {
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
     const { user, ROLE, spinner } = useContext(AppContext);
-    // const {setTraining,training} = useContext(TrainingContext)
     const [vdlink, setVdlink] = useState("");
     const Toast = useToast();
     const [feed, setFeed] = useState(false);
@@ -142,19 +138,10 @@ const TrainingDetails = ({ location }) => {
                     if (data.sid != null && (data.type === "DOCUMENTS" || data.type === "MS_OFFICE")) {
                         markCourseAsCompleted(data.sid, data.sectionSid);
                     }
-                    // if (data.sid != null && (data.type === "VIDEO" || data.type === "EXTERNAL_LINK" )) {
-                    //     markCourseAsCompleted1(data.sid, data.sectionSid);
-                    // }
-                    // if (data.labId != null) {
-                    //     markCourseAsCompletedLabs1(data.labId, data.sectionSid);
-                    // }
-                    // if(data.codingQuestionId != null){
-                    //     markCourseAsCompleted(data.codingQuestionId, data.sectionSid);
-                    // }
+                   
                     if (data.codingQuestionId !== null) {
                         setCodingQuestionId(data.codingQuestionId);
                         setCodingQuestiondesc(data.codingQuestionDescription);
-                        // markCourseAsCompletedLabs(data.codingQuestionId, data.sectionSid);
                     }
                     showFeedBack(data.last)
 
@@ -301,7 +288,7 @@ const TrainingDetails = ({ location }) => {
     }
 
     //update content mark as completed
-    const markCourseAsCompleted1 = () => {
+    const markCourseAsCompletedVideo = () => {
         try {
             let trainingSid = location.state.sid;
             let payload = {
@@ -328,62 +315,7 @@ const TrainingDetails = ({ location }) => {
         }
     }
 
-    //mark course as complete labs
-    // const markCourseAsCompletedLabs = (contentSid, sectionSid) => {
-    //     try {
-    //         let trainingSid = location.state.sid;
-    //         let payload = {
-    //             "completedInDuration": 0,
-    //             "totalDuration": 0
-    //         }
-    //         spinner.show();
-    //         RestService.markCourseAsCompletedLabs(contentSid, sectionSid, trainingSid, payload).then(
-    //             response => {
-
-    //                 if (response.status === 200) {
-    //                     setMarkAsCompleted(response.data);
-
-    //                 }
-    //             },
-    //             err => {
-    //                 spinner.hide();
-    //             }
-    //         ).finally(() => {
-    //             spinner.hide();
-    //         });
-    //     } catch (err) {
-    //         console.error("error occur on markCourseAsCompleted()", err)
-    //     }
-    // }
-
-    //mark course as complete labs
-    // const markCourseAsCompletedLabs1 = (contentSid, sectionSid) => {
-    //     try {
-    //         let trainingSid = location.state.sid;
-    //         let payload = {
-    //             "completedInDuration": 33,
-    //             "totalDuration": 60
-    //         }
-    //         spinner.show();
-    //         RestService.markCourseAsCompletedLabs1(contentSid, sectionSid, trainingSid, payload).then(
-    //             response => {
-
-    //                 if (response.status === 200) {
-    //                     setMarkAsCompleted(response.data);
-
-    //                 }
-    //             },
-    //             err => {
-    //                 spinner.hide();
-    //             }
-    //         ).finally(() => {
-    //             spinner.hide();
-    //         });
-    //     } catch (err) {
-    //         console.error("error occur on markCourseAsCompleted()", err)
-    //     }
-    // }
-
+    
     //get completed courses 
     const getCompletedCourses = () => {
 
@@ -403,7 +335,6 @@ const TrainingDetails = ({ location }) => {
                             setSectionSidArray(...sectionSidArray, response.data.completedSection[i].completedCourseContentDetails[j].sid);
                         }
                     }
-
 
                 },
                 err => {
@@ -457,7 +388,7 @@ const TrainingDetails = ({ location }) => {
 
     useEffect(()=> {
         if(Math.ceil(played) === Math.ceil(0.8 * duration)){
-          markCourseAsCompleted1();
+            markCourseAsCompletedVideo();
         }
       },[played])
 
@@ -481,12 +412,6 @@ const TrainingDetails = ({ location }) => {
 
                 {showcoursename.length === 0 ? "" :
                     <div className=" title-sm col-6">Content Title: {showcoursename}</div>}
-                {/* {type === "LAB" ?
-                    <div className="col-2" >
-                        <button onClick={() => markCourseAsCompleted(labId, contentSid)}>Mark as Completed</button>
-                    </div>
-                    : ''
-                } */}
                 <div className="col-4" >
                     <ProgressBar progress={markCompleted.totalCourseCompletedInTraining === null ? 0 : markCompleted.totalCourseCompletedInTraining > contentLength ? contentLength : markCompleted.totalCourseCompletedInTraining} totalSection={contentLength} trainingSid={location.state.sid} />
                 </div>
@@ -496,7 +421,7 @@ const TrainingDetails = ({ location }) => {
             <div class="row">
 
                 <div class="col-8  pl-3 " style={{ marginTop: "-25px" }}>
-                    {/* <VideoMediaPlayer /> */}
+                    
                     {(type === "EXTERNAL_LINK" || type === "VIDEO") ?
                         VideoMediaPlayer(vdlink)
                         : (type === "PHOTO" || type === "DOCUMENTS") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
@@ -518,9 +443,6 @@ const TrainingDetails = ({ location }) => {
                                 (type === "ASSESSMENT") ?
                                     <div className="assesmentimg row ml-1" >
                                         <div style={{ width: "180px", textAlign: "center", textDecoration: "none", background: "blue", color: "white", padding: "15px 20px", marginLeft: "250px", marginBottom: "10px", marginTop: "100px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                            {/* <button onClick={()=> {window.open(`${vdlink}`, "_blank"); sessionStorage.setItem("trainingSid", trainingSid); sessionStorage.setItem("contentSid", contentSid);
-                                            sessionStorage.setItem("sid", sid);}
-                                        }>Start Assessment</button> */}
                                             <a href={vdlink} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", fontSize: "15px" }}>Start Assessment</a>
                                         </div>
                                     </div>
@@ -564,13 +486,11 @@ const TrainingDetails = ({ location }) => {
                 </div>
 
                 <div class="col-4 " style={{ height: "535px", overflowY: "scroll", marginLeft: "-12px", marginTop: "-25px", borderTopLeftRadius: "10px", borderTopRightRadius: "10px", background: "#F7F9FA", boxShadow: "#00000033 0px 0px 0px 1px, #00000033 0px 1px 1px -1px, #00000033 0px 1px 0px " }}>
-
                     {trainingDetailsList.length > 0 ? trainingDetailsList.map((train) => {
                         return (
                             <>
                                 <div >
                                     <DropdownItem title={train.sectionName} total={train.courseContentResposeTOList.length} theme="dark">
-
                                         <DynamicTable  {...{ configuration, sourceData: train.courseContentResposeTOList }} />
                                     </DropdownItem>
                                     {
@@ -585,10 +505,7 @@ const TrainingDetails = ({ location }) => {
                         )
                     }) : ''}
 
-
                     <DropdownItem title="Fun Activity" total="2" theme="dark">
-
-
                         {username.name === "Wipro" ?
                             <div>
                                 <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/enterprise-administrator.html" target="_blank">Fun With Enterprise Administrator</a></div>
@@ -598,8 +515,6 @@ const TrainingDetails = ({ location }) => {
                                 <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/cloud-native-jeopardy.html" target="_blank">Fun With Cloud Native</a></div>
                                 <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/kubernetes-jeopardy-game.html" target="_blank">Fun With Kubernetes</a></div>
                             </div>}
-
-
                     </DropdownItem>
                 </div>
             </div>

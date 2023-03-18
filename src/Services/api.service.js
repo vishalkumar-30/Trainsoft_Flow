@@ -50,8 +50,8 @@ const RestService = {
   uploadCourseContent: (payload, courseSectionSid) => AxiosService.uploadMultiPart(GLOBELCONSTANT.COURSE.CREATE_COURSE_CONTENT + `${courseSectionSid}/upload-content`, payload),
   bulkCreateCourseSectionAndContents: (payload, courseSid) => AxiosService.uploadMultiPart(GLOBELCONSTANT.COURSE.BULK_CREATE_COURSE_SECTION_AND_CONTENT + `?course-sid=${courseSid}`, payload),
   markCourseAsCompleted: (contentSid, sectionSid, trainingsid, payload) => AxiosService.put(GLOBELCONSTANT.COURSE.MARK_COURSE_COMPLETED + `course-content-sid=${contentSid}&section-sid=${sectionSid}&training-sid=${trainingsid}`, payload),
-  markCourseAsCompletedLabs: (contentSid, sectionSid, trainingsid, payload) => AxiosService.put(GLOBELCONSTANT.COURSE.MARK_COURSE_COMPLETED + `coding-question-id=${contentSid}&section-sid=${sectionSid}&training-sid=${trainingsid}`, payload),
-  markCourseAsCompletedLabs1: (contentSid, sectionSid, trainingsid, payload) => AxiosService.put(GLOBELCONSTANT.COURSE.MARK_COURSE_COMPLETED + `lab-id=${contentSid}&section-sid=${sectionSid}&training-sid=${trainingsid}`, payload),
+  markCourseAsCompletedCode: (contentSid, sectionSid, trainingsid, payload) => AxiosService.put(GLOBELCONSTANT.COURSE.MARK_COURSE_COMPLETED + `coding-question-id=${contentSid}&section-sid=${sectionSid}&training-sid=${trainingsid}`, payload),
+  markCourseAsCompletedLabs: (contentSid, sectionSid, trainingsid, payload) => AxiosService.put(GLOBELCONSTANT.COURSE.MARK_COURSE_COMPLETED + `lab-id=${contentSid}&section-sid=${sectionSid}&training-sid=${trainingsid}`, payload),
   getCompletedCourses: (trainingsid) => AxiosService.get(GLOBELCONSTANT.COURSE.GET_COMPLETED_COURSES + `training-sid=${trainingsid}`),
   cloneCourseAndContents: (coursesid) => AxiosService.patch(GLOBELCONSTANT.COURSE.CLONE_COURSE_AND_CONTENTS + `?course-sid=${coursesid}`),
   updateCourseContent: (payload) => AxiosService.post(GLOBELCONSTANT.COURSE.UPDATE_COURSE_CONTENT, payload),
@@ -253,7 +253,10 @@ const RestService = {
 
   //USERPROFILE
   getprofiledetails: () => AxiosService.get(GLOBELCONSTANT.USERPROFILE.GET_PROFILE_DETAILS),
-  uploadProfilePic: (payload) => AxiosService.post(GLOBELCONSTANT.USERPROFILE.UPLOAD_PROFILE_PIC, payload)
+  uploadProfilePic: (payload) => AxiosService.post(GLOBELCONSTANT.USERPROFILE.UPLOAD_PROFILE_PIC, payload),
+
+  //weighted score
+  getLearnerWeightedScores: (trainingSid) => AxiosService.get(GLOBELCONSTANT.WEIGHTEDSCORES.GET_LEARNER_WEIGHTED_SCORES + `?training-sid=${trainingSid}`)
 };
 
 

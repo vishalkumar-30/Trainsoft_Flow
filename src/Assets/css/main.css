@@ -155,11 +155,11 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  /* height: 2rem; */
+  height: 0.9rem;
   overflow: hidden;
   line-height: 0;
   font-size: 14px;
-  background-color: #e9ecef;
+  background-color: #7d8893;
   border-radius: 20px;
   margin-bottom: 10px;
   animation: progress 1500ms ease-in 1;
@@ -621,7 +621,7 @@ p {
       -ms-flex-direction: column;
           flex-direction: column;
   overflow-y: auto;
-  background-color: #f9f9f9;
+  background-color: #f5f8fb;
 }
 
 .box-shadow {
