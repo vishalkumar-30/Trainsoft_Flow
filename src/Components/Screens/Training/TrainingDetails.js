@@ -47,6 +47,8 @@ const TrainingDetails = ({ location }) => {
     const [duration, setDuration] = useState(0);
     const navigate = useNavigate();
     let trainingSid = location.state.sid;
+    localStorage.setItem("trainingSid", location.state.sid);
+
     let username = JSON.parse(localStorage.getItem('user'));
 
     const VideoMediaPlayer = (vdlink) => {
@@ -123,6 +125,8 @@ const TrainingDetails = ({ location }) => {
                     }
                     if (data.sid !== null) {
                         setSid(data.sid);
+                        localStorage.setItem("sid", data.sid);
+                        localStorage.setItem("sectionSid", data.sectionSid);
                     }
                     if (data.labId !== null) {
                         storeLabId(data.labId);
