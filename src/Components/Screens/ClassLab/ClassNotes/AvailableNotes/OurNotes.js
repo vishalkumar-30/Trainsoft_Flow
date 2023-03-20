@@ -4,7 +4,8 @@ import { navigate } from '../../../../Common/Router';
 import { BtnPrimary } from '../../../../Common/Buttons/Buttons';
 import '../../../LabStore.js/Styles.css';
 import './style.css';
-
+import { TextInput,SelectInput } from '../../../../Common/InputField/InputField';
+import {  Form , Dropdown} from 'react-bootstrap'
 const OurNotes = () => {
 
   const [notesList, getNotesList] = useState([]);
@@ -31,10 +32,42 @@ const OurNotes = () => {
 
  
 
-  return (<div className="catalog-container-notes  ">
+  return (
+  <>
+ <div className='row py-3' style={{    background: "rgb(172, 235, 253)"}}>
+                  <div className='col-3'>
+                  <label className="mb-2 label form-label ">Training</label>
+                                            <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)"}}>
+                                                <option value="ALL">ALL</option>
+                                               
+
+                                            </select>
+                    </div>  
+
+                     <div className='col-3'>
+                     <label className="mb-2 label form-label ">Content</label>
+                                            <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)"}}>
+                                                <option value="ALL">ALL</option>
+                                               
+
+                                            </select>
+                    </div> 
+
+                     <div className='col-3'>
+                     <label className="mb-2 label form-label ">Screen Shots</label>
+                  
+                  <input type="file"className='form-control' name="filefield" multiple="multiple"/>
+                    </div>  
+                    <div className='col-3 mt-4'>
+                   <button type="submit" style={{width:"100%"}} className='btn btn-primary'>submit</button>
+                    </div>           
+                            
+                              
+                            </div>
+  <hr/>
+  <div className="catalog-container-notes  ">
 
 
-    
     {notesList.map(res => <div className="catalognote border-primary">
       <div className="catalogBox-info ">
 
@@ -52,7 +85,9 @@ const OurNotes = () => {
     
    
   
-  </div>)
+  </div>
+  </>
+  )
 }
 
 export default OurNotes
