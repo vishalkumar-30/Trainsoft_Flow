@@ -29,9 +29,9 @@ const Main = ({ questions }) => {
     //update content mark as completed
     const markCourseAsCompleted =  () => {
         try {
-            let trainingSid = "661E0409F66A499493004E8405F0F2C897C22E259D8445ADBBFCC9A54D84A6CA";
-            let contentSid = "5571F1F543C645D38BC72C4996F85C0411F3C09CAD0E4725900AE875A0F20050";
-            let sectionSid = "7C25EE2B8BC14F888BAFB25ADDBEB934A9DD38505E1349A4B01D6DB9E5BC1F51"
+            let trainingSid = localStorage.getItem("trainingSid");
+            let contentSid = localStorage.getItem("sid");
+            let sectionSid = localStorage.getItem("sectionSid");
             let payload = {
                 "completedInDuration": 0,
                 "totalDuration": 0
@@ -41,7 +41,9 @@ const Main = ({ questions }) => {
                 response => {
 
                     if (response.status === 200) {
-                        console.log(response.data);
+                        localStorage.removeItem("trainingSid");
+                        localStorage.removeItem("sid");
+                        localStorage.removeItem("sectionSid");
 
                     }
                 },

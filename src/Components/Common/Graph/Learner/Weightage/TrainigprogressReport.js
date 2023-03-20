@@ -95,8 +95,13 @@ function Row(props) {
                           <TableCell align='center'>
                             {item.totalWightage}
                           </TableCell>
-                          <TableCell align='center'>{item.gainedWeightage}</TableCell>
-                          <TableCell align='center'>{item.percentage}</TableCell>
+                          <TableCell align='center'>{typeof(item.gainedWeightage) === 'number' ?
+                           Math.round(item.gainedWeightage) : '---'}
+                          
+                          </TableCell>
+                          <TableCell align='center'>{typeof(item.percentage) === 'number' ? 
+                          `${item.percentage.toFixed(2)}%` : '---'}
+                          </TableCell>
 
                         </TableRow>
                       ))}
@@ -276,9 +281,9 @@ function Row(props) {
 }
 
 const TrainigprogressReport = ({ list }) => {
-
+console.log(list);
   let rows;
-  if (list != undefined) {
+  if (list != undefined && list.length === 1) {
     rows = [
       createData(list[0].trainingName, list[0].learnerWeightedDetailsTO.courseCompletionStatus.total,
         list[0].learnerWeightedDetailsTO.courseCompletionStatus.completed,
@@ -291,6 +296,21 @@ const TrainigprogressReport = ({ list }) => {
         list[0].learnerWeightedDetailsTO.trainingSessionDetails)
 
     ];
+  }
+  else if(list != undefined && list.length > 1){
+    rows = list.map((item)=> {
+      return(
+        createData(item.trainingName,item.learnerWeightedDetailsTO.courseCompletionStatus.total,
+          item.learnerWeightedDetailsTO.courseCompletionStatus.completed,
+          item.learnerWeightedDetailsTO.courseCompletionStatus.completionPercentage.toFixed(2),
+          item.learnerWeightedDetailsTO.videoCompletion, item.learnerWeightedDetailsTO.labDetails,
+          item.learnerWeightedDetailsTO.assessmentDetails,
+          item.learnerWeightedDetailsTO.documentDetails,
+          item.learnerWeightedDetailsTO.codingQuestionDetails,
+          item.learnerWeightedDetailsTO.capstoneProjectDetails,
+          item.learnerWeightedDetailsTO.trainingSessionDetails)
+      )
+    })
   }
   else {
     rows = [];

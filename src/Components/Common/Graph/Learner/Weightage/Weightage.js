@@ -10,8 +10,10 @@ const Weightage = () => {
 
   const [alignment, setAlignment] = useState('specific');
   const [trainingList, setTrainingList] = useState([]);
-  const [weightage, setWeightage] = useState([]);
-  const [training, setTraining] = useState('');
+  const [weightageAll, setWeightageAll] = useState([]);
+  const [weightageSpecific, setWeightageSpecific] = useState([]);
+  // const [trainingAll, setTrainingAll] = useState('ALL');
+  const [trainingSpecific, setTrainingSpecific] = useState('');
   const { spinner } = useContext(AppContext);
 
   const handleChange = (e, value) => {
@@ -37,13 +39,37 @@ const Weightage = () => {
   }
 
   //get specific training weightage
-  const getLearnerWeightedScores = () => {
+  const getLearnerWeightedScoresSpecific = () => {
     try {
       spinner.show();
-      RestService.getLearnerWeightedScores(training).then(
+      RestService.getLearnerWeightedScores(trainingSpecific).then(
         response => {
-          setWeightage(response.data);
+          if (response.status === 200) {
+            setWeightageSpecific(response.data);
+            spinner.hide();
+          }
+        },
+        err => {
           spinner.hide();
+        }
+      ).finally(() => {
+        spinner.hide();
+      });
+    } catch (err) {
+      console.error("error occur on getLearnerWeightedScores()", err)
+    }
+  }
+
+  //get all training weightage
+  const getLearnerWeightedScoresAll = () => {
+    try {
+      spinner.show();
+      RestService.getLearnerWeightedScores('ALL').then(
+        response => {
+          if (response.status === 200) {
+            setWeightageAll(response.data);
+            spinner.hide();
+          }
         },
         err => {
           spinner.hide();
@@ -58,6 +84,7 @@ const Weightage = () => {
 
   useEffect(() => {
     getTrainings();
+    getLearnerWeightedScoresAll();
   }, []);
 
   return (
@@ -81,7 +108,7 @@ const Weightage = () => {
               <div className='col-6'>
                 <label className="m-3 label form-label ">Select Training</label>
                 <select className="form-control mb-3 mx-2" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
-                  setTraining(e.target.value);
+                  setTrainingSpecific(e.target.value);
 
                 }}>
                   <option hidden>Select Training</option>
@@ -104,19 +131,24 @@ const Weightage = () => {
               <div className='col-4 mt-5 mx-1'>
                 <button type="button" style={{ width: "100%" }}
                   className="btn btn-primary"
-                  disabled={training.length === 0}
-                  onClick={() => getLearnerWeightedScores()}>Filter</button>
+                  disabled={trainingSpecific.length === 3}
+                  onClick={() => getLearnerWeightedScoresSpecific()}>Filter</button>
               </div>
             </div>
 
             {
-              weightage.length > 0 ?
-                <TrainigprogressReport list={weightage} />
+              weightageSpecific.length > 0 ?
+                <TrainigprogressReport list={weightageSpecific} />
                 : ''
             }
           </div>
           :
-          <TrainigprogressReport />
+          
+            weightageAll.length > 0 ? 
+            <TrainigprogressReport list={weightageAll} /> 
+            : ''
+          
+         
       }
 
     </div>
