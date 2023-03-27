@@ -8,6 +8,7 @@ import { Button, Cancel, ButtonDelete } from "../../Common/Buttons/Buttons"
 import { TextArea, DateInput, TimeInput, TextInput, SelectInput } from "../../Common/InputField/InputField"
 import CardHeader from '../../Common/CardHeader'
 import SessionList from '../../Common/SessionList/SessionList'
+import { WithContext as ReactTags } from "react-tag-input";
 import RestService from '../../../Services/api.service'
 import useFetch from '../../../Store/useFetch'
 import GLOBELCONSTANT from '../../../Constant/GlobleConstant'
@@ -19,6 +20,7 @@ import DropdownItem from '../../Common/DropdownItem/DropdownItem';
 import { Dropdown, DropdownButton } from "react-bootstrap";
 // import '../../Common/InputField/inputField.css';
 import { string } from 'prop-types';
+import "./styles.css";
 
 const CourseDetails = ({ location }) => {
     const [showhide, setShowhide] = useState('');
@@ -51,6 +53,14 @@ const CourseDetails = ({ location }) => {
     const [codingQuestion, setCodingQuestion] = useState([]);
     const [instructorDocuments, setInstructorDocuments] = useState(false);
     const [instructorVideo, setInstructorVideo] = useState(false);
+    const [tags, setTags] = useState([]);
+    const [tags1, setTags1] = useState([]);
+    const [tags2, setTags2] = useState([]);
+    const KeyCodes = {
+        comma: 188,
+        enter: 13
+    };
+
 
     //validation
     const schema = Yup.object().shape({
@@ -127,9 +137,9 @@ const CourseDetails = ({ location }) => {
             {
                 "title": "Delete",
                 "icon": ICN_TRASH,
-                "onClick": (data) => data.labId !== null ? deleteCourseContent(data.labId, data.sectionSid) 
-                : data.codingQuestionId !== null ? deleteCourseContent(data.codingQuestionId, data.sectionSid)
-                : deleteCourseContent(data.sid, data.sectionSid)
+                "onClick": (data) => data.labId !== null ? deleteCourseContent(data.labId, data.sectionSid)
+                    : data.codingQuestionId !== null ? deleteCourseContent(data.codingQuestionId, data.sectionSid)
+                        : deleteCourseContent(data.sid, data.sectionSid)
             }
         ],
         actionCustomClass: "no-chev esc-btn-dropdown", // user can pass their own custom className name to add/remove some css style on action button
@@ -143,6 +153,29 @@ const CourseDetails = ({ location }) => {
         clearSelection: false
     });
 
+    const handleDelete = i => {
+        setTags(tags.filter((tag, index) => index !== i));
+    };
+
+    const handleAddition = tag => {
+        setTags([...tags, tag]);
+    };
+
+
+    const handleDelete1 = i => {
+        setTags1(tags1.filter((tag, index) => index !== i));
+    };
+
+    const handleAddition1 = tag => {
+        setTags1([...tags1, tag]);
+    };
+    const handleDelete2 = i => {
+        setTags2(tags2.filter((tag, index) => index !== i));
+    };
+
+    const handleAddition2 = tag => {
+        setTags2([...tags2, tag]);
+    };
     // get All section
     const getSection = async () => {
         try {
@@ -222,13 +255,13 @@ const CourseDetails = ({ location }) => {
             let formData = new FormData();
 
             formData.append("content-title", data.contentTitle);
-            if(instructorDocuments){
+            if (instructorDocuments) {
                 formData.append("instructor_specific", instructorDocuments);
             }
-            else if(instructorVideo){
+            else if (instructorVideo) {
                 formData.append("instructor_specific", instructorVideo);
             }
-            else{
+            else {
                 formData.append("instructor_specific", false);
             }
 
@@ -516,11 +549,22 @@ const CourseDetails = ({ location }) => {
         const labId = data.labName.labId
         const courseSid = location.state.sid;
         const courseSectionSid = sectionSid;
+        let tagsString;
+        if (tags.length > 0) {
+            let tagsCsv = tags.map((item) => item.text);
+            tagsString = tagsCsv.toString();
+        }
+        else{
+            tagsString = tags;
+        }
         try {
             spinner.show();
-            RestService.selectLabInCourse(labId, courseSid, courseSectionSid).then(res => {
-                setShow(false)
+            RestService.selectLabInCourse(labId, courseSid, courseSectionSid, tagsString).then(res => {
+                setShow(false);
                 getSection();
+                setTags([]);
+                setTags1([]);
+                setTags2([]);
                 Toast.success({ message: `Lab added successfully` });
                 spinner.hide();
             }, err => console.log(err)
@@ -622,11 +666,24 @@ const CourseDetails = ({ location }) => {
         const assessmentSid = data.assessmentName.assessmentSid
         const courseSid = location.state.sid;
         const courseSectionSid = sectionSid;
+        let tagsString;
+        if (tags1.length > 0) {
+            let tagsCsv = tags1.map((item) => item.text);
+            tagsString = tagsCsv.toString();
+        }
+        else{
+            tagsString = tags1;
+        }
+
+        // let tagsCsv = tags.map((item) => item.text);
         try {
             spinner.show();
-            RestService.addAssessmentToCourse(assessmentSid, courseSid, courseSectionSid).then(res => {
-                setShow(false)
+            RestService.addAssessmentToCourse(assessmentSid, courseSid, courseSectionSid, tagsString).then(res => {
+                setShow(false);
                 getSection();
+                setTags([]);
+                setTags1([]);
+                setTags2([]);
                 Toast.success({ message: `Assessment added successfully` });
                 spinner.hide();
             }, err => console.log(err)
@@ -642,18 +699,29 @@ const CourseDetails = ({ location }) => {
         const courseSid = location.state.sid;
         const courseSectionSid = sectionSid;
         const questionId = data.question.questionId;
+        let tagsString;
+        if (tags2.length > 0) {
+            let tagsCsv = tags2.map((item) => item.text);
+            tagsString = tagsCsv.toString();
+        }
+        else{
+            tagsString = tags2;
+        }
         try {
             spinner.show();
-            RestService.addCodingQuestionToSection(courseSid, courseSectionSid, questionId).then(res => {
+            RestService.addCodingQuestionToSection(courseSid, courseSectionSid, questionId, tagsString).then(res => {
                 setShow(false)
                 getSection();
+                setTags([]);
+                setTags1([]);
+                setTags2([]);
                 Toast.success({ message: `Coding question added successfully` });
                 spinner.hide();
             }, err => console.log(err)
             );
         }
         catch (err) {
-            console.error('error occur on addAssessmentToCourse', err)
+            console.error('error occur on addCodingQuestionToSection', err)
         }
 
     }
@@ -696,8 +764,9 @@ const CourseDetails = ({ location }) => {
         getAllLabCategories();
         getAllTopics();
         getAllCodingQuestions();
-    }, [])
+    }, []);
 
+   
     return (<>
         <div className="table-shadow p-3 pb-5">
             <CardHeader {...{
@@ -824,7 +893,7 @@ const CourseDetails = ({ location }) => {
                                                         </div>
                                                         <div class="form-check aic " style={{ fontSize: "15px" }} >
 
-                                                            <input type="checkbox" id="closed" name="status" value="closed" onChange={(e)=>setInstructorVideo(e.target.checked)}/>
+                                                            <input type="checkbox" id="closed" name="status" value="closed" onChange={(e) => setInstructorVideo(e.target.checked)} />
                                                             <label class="form-check-label form-label mx-3 title-sm">Instructor Specific</label>
 
                                                         </div>
@@ -848,7 +917,7 @@ const CourseDetails = ({ location }) => {
                                                     }
                                                     <div class="form-check aic " style={{ fontSize: "15px" }} >
 
-                                                        <input type="checkbox" id="closed" name="status" onvalue="closed" onChange={(e)=>setInstructorDocuments(e.target.checked)}/>
+                                                        <input type="checkbox" id="closed" name="status" onvalue="closed" onChange={(e) => setInstructorDocuments(e.target.checked)} />
                                                         <label class="form-check-label form-label mx-3 title-sm">Instructor Specific</label>
 
                                                     </div>
@@ -923,7 +992,6 @@ const CourseDetails = ({ location }) => {
                                         </Formik>
                                     </div>
                                 )}
-                            {/* <TextArea name="topicDescription" label="Description" /> */}
                             {
                                 showhide === '4' && isEdit === false && (
                                     <Formik
@@ -965,6 +1033,22 @@ const CourseDetails = ({ location }) => {
                                                             <SelectInput label="Lab-Details" bindKey="labName" payloadKey="labId" name="labName" value={values.labId} option={accountLabs} />
                                                         </div>
 
+                                                    </div>
+                                                    <div>
+                                                        <p className='label form-label'>Enter Technology Tags</p>
+                                                        <ReactTags
+                                                            tags={tags}
+                                                            placeholder="Tags..."
+                                                            minQueryLength={3}
+                                                            delimiters={tags.length < 10 ? [KeyCodes.enter] : []}
+                                                            handleDelete={handleDelete}
+                                                            handleAddition={handleAddition}
+
+                                                            inputFieldPosition="bottom"
+
+                                                        />
+
+                                                        <p>{10 - tags.length} tags remaining</p>
                                                     </div>
                                                     <div>
                                                         <Button className="btn-block py-2 mt-3" type="submit">Confirm</Button>
@@ -1022,6 +1106,22 @@ const CourseDetails = ({ location }) => {
 
                                                     </div>
                                                     <div>
+                                                        <p className='label form-label'>Enter Technology Tags</p>
+                                                        <ReactTags
+                                                            tags={tags1}
+                                                            placeholder="Tags..."
+                                                            minQueryLength={3}
+                                                            delimiters={tags1.length < 10 ? [KeyCodes.enter] : []}
+                                                            handleDelete={handleDelete1}
+                                                            handleAddition={handleAddition1}
+
+                                                            inputFieldPosition="bottom"
+
+                                                        />
+
+                                                        <p>{10 - tags1.length} tags remaining</p>
+                                                    </div>
+                                                    <div>
                                                         <Button className="btn-block py-2 mt-3" type="submit">Confirm</Button>
                                                     </div>
                                                 </form>
@@ -1052,6 +1152,27 @@ const CourseDetails = ({ location }) => {
                                                             <SelectInput className="form-control" label="Coding Question" bindKey="question" payloadKey="questionId" name="question" value={values.questionId} option={codingQuestion} />
                                                         </div>
 
+
+
+                                                    </div>
+                                                    <div>
+
+                                                        <div>
+                                                            <p className='label form-label'>Enter Technology Tags</p>
+                                                            <ReactTags
+                                                                tags={tags2}
+                                                                placeholder="Tags..."
+                                                                minQueryLength={3}
+                                                                delimiters={tags2.length < 10 ? [KeyCodes.enter] : []}
+                                                                handleDelete={handleDelete2}
+                                                                handleAddition={handleAddition2}
+
+                                                                inputFieldPosition="bottom"
+
+                                                            />
+
+                                                            <p>{10 - tags2.length} tags remaining</p>
+                                                        </div>
 
                                                     </div>
                                                     <div>

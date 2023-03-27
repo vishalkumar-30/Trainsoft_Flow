@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AssessmentContext } from "../AssesementContext";
 import Submit from "../common/SubmitButton";
 import AssessmentCard from "./AssesmentCard";
@@ -25,9 +25,9 @@ const Main = ({ questions }) => {
     const [review, setReview] = useState(true);
     const [show, setShow] = useState(false);
     const Toast = useToast();
-    
+
     //update content mark as completed
-    const markCourseAsCompleted =  () => {
+    const markCourseAsCompleted = () => {
         try {
             let trainingSid = localStorage.getItem("trainingSid");
             let contentSid = localStorage.getItem("sid");
@@ -37,7 +37,7 @@ const Main = ({ questions }) => {
                 "totalDuration": 0
             }
             spinner.show();
-             RestService.markCourseAsCompleted(contentSid, sectionSid, trainingSid, payload).then(
+            RestService.markCourseAsCompleted(contentSid, sectionSid, trainingSid, payload).then(
                 response => {
 
                     if (response.status === 200) {
@@ -59,24 +59,36 @@ const Main = ({ questions }) => {
     }
 
     // this method to submit your answer
-    const handleSubmitAssessment = async() => {
+    const handleSubmitAssessment = async () => {
         try {
             spinner.show("Submitting assessment.. Please wait...");
-            let payload = {
-                "quizSetSid": instruction.sid,
-                "virtualAccountSid": assUserInfo.sid
+            let payload;
+            let trainingSid = localStorage.getItem("trainingSid");
+            if (trainingSid !== null) {
+                payload = {
+                    "quizSetSid": instruction.sid,
+                    "trainingSid": trainingSid,
+                    "virtualAccountSid": assUserInfo.sid
+                }
             }
+            else {
+                payload = {
+                    "quizSetSid": instruction.sid,
+                    "virtualAccountSid": assUserInfo.sid
+                }
+            }
+            
             await RestService.submitAssessment(payload).then(
                 response => {
                     spinner.hide();
                     markCourseAsCompleted();
                     Toast.success({ message: `Congratulation! You have submitted your assessment successfully`, time: 3000 });
-                    
+
                     setFinished(true);
                 },
                 err => {
                     spinner.hide();
-                    if(err && err.response && err.response.status === 403) Toast.error({ message: `You have already submitted your assessment.` });
+                    if (err && err.response && err.response.status === 403) Toast.error({ message: `You have already submitted your assessment.` });
                 }
             ).finally(() => {
                 spinner.hide();
@@ -84,25 +96,25 @@ const Main = ({ questions }) => {
         } catch (err) {
             console.error("Error occur in handleSubmitAssessment--", err);
         }
-        
+
     }
 
     // listening when time's up to submit assessment automatically
     useEffect(() => {
-        if(hasExamEnd) {
+        if (hasExamEnd) {
             setShow(true);
         }
     }, [hasExamEnd])
 
     return (
         <div className={styles.main}>
-            { finished && <FinishScreen {...{ questions }} /> }
+            {finished && <FinishScreen {...{ questions }} />}
             {
-                !finished 
+                !finished
                 && AppUtils.isNotEmptyArray(questions)
                 && <>
                     {
-                        questions 
+                        questions
                         // if all questions are mandatory
                         //TO DO && Object.keys(selectedAnswers).length === questions.length 
                         && questionIndex === -1
@@ -117,30 +129,30 @@ const Main = ({ questions }) => {
                                     answers & then submit
                                 </div>
                             </div>
-                            
-                            <Submit onClick={() => {handleSubmitAssessment()}}>Submit Assessment</Submit>
+
+                            <Submit onClick={() => { handleSubmitAssessment() }}>Submit Assessment</Submit>
                         </div>
                     }
                     {
-                        questionIndex === -1 
-                        ? <>
-                            {
-                                AppUtils.isNotEmptyArray(questions)
-                                && questions.map((question, index) => <AssessmentCard {...{
-                                    question, 
-                                    index, 
-                                    review,
-                                    setReview,
-                                    questions
-                                }}/>)
-                            }
-                        </> 
-                        : <AssessmentCard {...{question: activeQuestion, questions}} />
+                        questionIndex === -1
+                            ? <>
+                                {
+                                    AppUtils.isNotEmptyArray(questions)
+                                    && questions.map((question, index) => <AssessmentCard {...{
+                                        question,
+                                        index,
+                                        review,
+                                        setReview,
+                                        questions
+                                    }} />)
+                                }
+                            </>
+                            : <AssessmentCard {...{ question: activeQuestion, questions }} />
                     }
                 </>
             }
-            {show && <TimesUpModal {...{show, setShow, callBack: () => handleSubmitAssessment()}}/>}
-         
+            {show && <TimesUpModal {...{ show, setShow, callBack: () => handleSubmitAssessment() }} />}
+
         </div>
     );
 }

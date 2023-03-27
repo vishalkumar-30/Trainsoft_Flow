@@ -114,6 +114,7 @@ const RestService = {
   saveUserNotes: (trainingSessionSid, trainingSid, payload) => AxiosService.post(GLOBELCONSTANT.TRAINING.SAVES_NOTES + `?training-session-sid=${trainingSessionSid}&training-sid=${trainingSid}`, payload),
   getUserNotes: () => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_NOTES),
   getTrainingByStatus: (pageNo, pageSize, status) => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_TRAINING_BY_STATUS + `/${pageNo}/${pageSize}?status=${status}`),
+  extractTextFromImages: (contentSid, contentType, trainingSid,payload) => AxiosService.post(GLOBELCONSTANT.TRAINING.EXTRACT_TEXT_FROM_IMAGES + `?content-sid=${contentSid}&content-type=${contentType}&training-sid=${trainingSid}`, payload),
   // getTrainingByRole: (pageNo,pageSize) => AxiosService.get(GLOBELCONSTANT.TRAINING.PARTICIPANT_BY_ROLE.replace("{pageNo}",pageNo).replace("{pageSize}",pageSize)),
 
   // assessment
@@ -147,7 +148,7 @@ const RestService = {
   changeQuestionStatus: (qId, status) => AxiosService.put(GLOBELCONSTANT.ASSESSMENT.CHANGE_QUESTION_STATUS.replace("{qId}", qId).replace("{status}", status)),
   getAllTopics: () => AxiosService.get(GLOBELCONSTANT.ASSESSMENT.GET_ALL_TOPICS),
   getAllAssessmentsInATopic: (topicSid) => AxiosService.get(GLOBELCONSTANT.ASSESSMENT.GET_ALL_ASSESSMENTS_IN_A_TOPIC + `?topic_sid=${topicSid}`),
-  addAssessmentToCourse: (assessmentSid, courseSid, sectionSid) => AxiosService.post(GLOBELCONSTANT.ASSESSMENT.ADD_ASSESSMENT_TO_COURSE + `?assessment_sid=${assessmentSid}&course_sid=${courseSid}&section_sid=${sectionSid}`),
+  addAssessmentToCourse: (assessmentSid, courseSid, sectionSid, tags) => AxiosService.post(GLOBELCONSTANT.ASSESSMENT.ADD_ASSESSMENT_TO_COURSE + `?assessment_sid=${assessmentSid}&course_sid=${courseSid}&section_sid=${sectionSid}&tags=${tags}`),
 
 
   // assessment dashboard
@@ -201,7 +202,7 @@ const RestService = {
   filterAccountLabs: (labs) => AxiosService.get(GLOBELCONSTANT.LABS.FILTER_ACCOUNT_LABS + `?filter=${labs}`),
   getAllLabs: () => AxiosService.get(GLOBELCONSTANT.LABS.GET_ALL_LABS),
   getAccountLabs: () => AxiosService.get(GLOBELCONSTANT.LABS.GET_LABS_IN_ACCOUNT),
-  selectLabInCourse: (labId, courseSid, sectionSid) => AxiosService.post(GLOBELCONSTANT.LABS.ADD_LAB_IN_COURSE + `${labId}/add-lab-in-course?course-sid=${courseSid}&section-sid=${sectionSid}`),
+  selectLabInCourse: (labId, courseSid, sectionSid, tags) => AxiosService.post(GLOBELCONSTANT.LABS.ADD_LAB_IN_COURSE + `${labId}/add-lab-in-course?course-sid=${courseSid}&section-sid=${sectionSid}&tags=${tags}`),
   addLabsToAccount: (labId) => AxiosService.post(GLOBELCONSTANT.LABS.ADD_LAB_TO_ACCOUNT + `${labId}/add-lab-to-account`),
   ec2GuacamolePOC: (labId, sectionSid, trainingSid) => AxiosService.post(GLOBELCONSTANT.LABS.EC2_GUACAMOLEPOC + `${labId}/start-lab?section-sid=${sectionSid}&training_sid=${trainingSid}`),
   stopEC2InstanceAndTerminateGuacamoleServer: (conString) => AxiosService.delete(GLOBELCONSTANT.LABS.STOP_EC2_INSTANCE_AND_TERMINATE_GUACAMOLE_SERVER + `?connection-string=${conString}`),
@@ -249,7 +250,7 @@ const RestService = {
 
   //coding questions
   getAllCodingQuestions: () => AxiosService.get(GLOBELCONSTANT.CODING.GET_ALL_CODING_QUESTIONS),
-  addCodingQuestionToSection: (courseSid, sectionSid, questionId) => AxiosService.post(GLOBELCONSTANT.CODING.ADD_CODING_QUESTIONS_TO_SECTION + `?course_sid=${courseSid}&question_id=${questionId}&section_sid=${sectionSid}`),
+  addCodingQuestionToSection: (courseSid, sectionSid, questionId, tags) => AxiosService.post(GLOBELCONSTANT.CODING.ADD_CODING_QUESTIONS_TO_SECTION + `?course_sid=${courseSid}&question_id=${questionId}&section_sid=${sectionSid}&tags=${tags}`),
 
   //USERPROFILE
   getprofiledetails: () => AxiosService.get(GLOBELCONSTANT.USERPROFILE.GET_PROFILE_DETAILS),

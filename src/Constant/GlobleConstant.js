@@ -155,7 +155,8 @@ const GLOBELCONSTANT = {
         GET_TRAINING_CONTENT_BY_SID: API_HOST_V2 + "get-training-content-by-sid?training_sid",
         SAVES_NOTES: API_HOST_V2 + "user/save-notes",
         GET_NOTES: API_HOST_V2 + "user/get-notes",
-        GET_TRAINING_BY_STATUS: API_HOST_V2 + "get-training-by-status"
+        GET_TRAINING_BY_STATUS: API_HOST_V2 + "get-training-by-status",
+        EXTRACT_TEXT_FROM_IMAGES : API_HOST_V2 + "user/extract-text-from-images",
     },
     FEEDBACK: {
         SUBMIT_FEEDBAK: API_HOST_V2 + "submit-feedback?"

@@ -168,8 +168,12 @@ const CodeEditor = (props) => {
 
                     </div>
                 }
-                <div className='d-flex ' style={{ justifyContent: "space-between" }}>   <button className="class-mode bg-primary my-3" style={{ float: 'right' }} onClick={submitCode}>Submit</button>
-                    <h4 className='title-lg mt-3 ' >Hidden Test Cases :- {submitoutput}</h4></div>
+                {
+                    props.trainingSid !==undefined ?
+                    <div className='d-flex ' style={{ justifyContent: "space-between" }}>   <button className="class-mode bg-primary my-3" style={{ float: 'right' }} onClick={submitCode}>Submit</button>
+                    <h4 className='title-md mt-3 ' >Hidden Test Cases :- {submitoutput}</h4></div>:""
+                }
+              
             </div>
         </div>
     </>)

@@ -47,9 +47,8 @@ const TrainingDetails = ({ location }) => {
     const [duration, setDuration] = useState(0);
     const navigate = useNavigate();
     let trainingSid = location.state.sid;
-    localStorage.setItem("trainingSid", location.state.sid);
-
     let username = JSON.parse(localStorage.getItem('user'));
+    localStorage.setItem("trainingSid", location.state.sid);
 
     const VideoMediaPlayer = (vdlink) => {
         return (
@@ -263,6 +262,7 @@ const TrainingDetails = ({ location }) => {
             console.error("error occur on getSession()", err)
         }
     }
+    
     //update content mark as completed
     const markCourseAsCompleted = (contentSid, sectionSid) => {
         try {
@@ -398,10 +398,8 @@ const TrainingDetails = ({ location }) => {
 
     if (user.role === ROLE.LEARNER) {
         for (let i = 0; i < trainingDetailsList.length; i++) {
-            console.log(trainingDetailsList[i].courseContentResposeTOList.length)
             for (let j = 0; j < trainingDetailsList[i]["courseContentResposeTOList"].length; j++) {
                 if (trainingDetailsList[i].courseContentResposeTOList[j]["instructorSpecific"] === true) {
-                    console.log("d");
                     trainingDetailsList[i].courseContentResposeTOList.splice(j, 1);
 
                 }
