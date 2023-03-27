@@ -31,10 +31,7 @@ const UserHome = () => {
             RestService.getLearnersAssessmentScore().then(
                 response => {
                     if (response.status === 200) {
-                        console.log('hello')
-                        setRank(response.data)
-
-
+                        setRank(response.data);
                     }
 
                 },
@@ -49,28 +46,13 @@ const UserHome = () => {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
     const getLearnerAllTrainingsProgress = async () => {
-
-
         try {
-
             spinner.show();
             RestService.getLearnerAllTrainingsProgress().then(
                 response => {
-
                     setTrainingprogrss(response.data.progressDetails);
                     setongoingTrainingCount(response.data.ongoingTrainingCount);
-
 
                 },
                 err => {
@@ -83,9 +65,6 @@ const UserHome = () => {
             console.error("error occur on getTrainings()", err)
         }
     }
-
-
-
 
     // get All topic
     const getAllCategory = async () => {
@@ -143,30 +122,30 @@ const UserHome = () => {
                </div>
                </div> */}
                     <div className="table-bless " style={{ height: "120px", overflowX: "scroll" }}>
-{rank.length == 0 ? "No assessment Taken":
-                        <Table className="table-borderless">
-                            <thead style={{
-                                fontSize: "15px",
-                                fontWeight: "600"
-                            }}>
-                                <tr>
-                                    <td>Assessment Name</td>
-                                    <td  >Rank</td>
-                                    {/* <td className="avgScore-w">Avg score</td> */}
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                {rank.map((res, i) =>
-                                    <tr key={i}>
-                                        <td>{res.assessmentName}</td>
-                                        <td>{res.rank}</td>
-                                        {/* <td className="text-right">{50}</td> */}
+                        {rank.length == 0 ? "No assessment Taken" :
+                            <Table className="table-borderless">
+                                <thead style={{
+                                    fontSize: "15px",
+                                    fontWeight: "600"
+                                }}>
+                                    <tr>
+                                        <td>Assessment Name</td>
+                                        <td  >Rank</td>
+                                        {/* <td className="avgScore-w">Avg score</td> */}
                                     </tr>
-                                )}
+                                </thead>
+                                <tbody>
 
-                            </tbody>
-                        </Table>
+                                    {rank.map((res, i) =>
+                                        <tr key={i}>
+                                            <td>{res.assessmentName}</td>
+                                            <td>{res.rank}</td>
+                                            {/* <td className="text-right">{50}</td> */}
+                                        </tr>
+                                    )}
+
+                                </tbody>
+                            </Table>
                         }
                     </div>
 
@@ -230,20 +209,20 @@ const UserHome = () => {
 
 
         <div className='row'>
-            <Card title=""  className="mt-3">
-           <Weightage/>
+            <Card title="" className="mt-3">
+                <Weightage />
             </Card>
         </div>
         {/* <Charts ChartType="course" labelLeft="Progress" /> */}
         <div className='row'>
-            <Card title="AsssmentScore Details"  className="mt-3">
-              
+            <Card title="AsssmentScore Details" className="mt-3">
+
                 <AverageAssesmentLearnerscore />
             </Card>
         </div>
 
 
- {/* <div className='row'>
+        {/* <div className='row'>
             <Card title=""  className="mt-3">
            <Weightage/>
             </Card>
