@@ -117,14 +117,23 @@ const Header = ({ location, children }) => {
 
 
         {location.state &&
-            <div className="header">
+            <div className="header" >
                 <div className="page-title">
                     <div className="title-lg mb-0">
-                        {location.state && location.state.title}
+                    {
+                            location.pathname === "/home" || 
+                            location.pathname === "/dashboard" 
+                            ?
+                            `Welcome back ${user.name} :)`  
+                        :
+                        location.state && location.state.title
+                        }
                         {children}
                     </div>
+                    
                     {/* <div class="breadcrumb-wrap"><a href="#">Summary</a><a href="#">Level1</a><a href="#">Level2</a></div> */}
                 </div>
+               
                 <div className="aic">
                     <Dropdown className="notification">
                         <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components" >

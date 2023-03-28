@@ -43,13 +43,15 @@ function Row(props) {
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
         <TableCell>
-          <IconButton
+          {row.completed !==0 ? <IconButton
             aria-label="expand row"
             size="small"
             onClick={() => setOpen(!open)}
           >
+          
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
+          :""}
         </TableCell>
         <TableCell component="th" scope="row">
           {row.trainingName}
@@ -87,7 +89,7 @@ function Row(props) {
                       {row.videoCompletion.weightedVideoProgress.map((item) => (
                         <TableRow key={item.name}>
 
-                          <TableCell component="th" scope="row">
+                          <TableCell component="th" scope="row" >
                             {item.name}
                           </TableCell>
                           <TableCell align='center'>{item.totalDuration}</TableCell>
