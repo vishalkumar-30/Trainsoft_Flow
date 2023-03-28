@@ -1,0 +1,16 @@
+.needle {
+    --final-rotation: 180deg;
+    transform-origin: 50% 100%; /* set the origin of the transformation to the bottom center of the needle */
+    animation: rotate-needle 2s ease-in-out forwards; /* set the animation properties */
+    transform: rotate(-110deg); /* set the initial rotation of the needle to 0 degrees */
+  }
+  
+  @keyframes rotate-needle {
+    0% {
+      transform: rotate(-110deg); /* start the animation at 0 degrees */
+    }
+   
+    100% {
+        transform: rotate(var(--final-rotation));  /* end the animation at 180 degrees */
+    }
+  }

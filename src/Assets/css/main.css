@@ -162,7 +162,7 @@
   background-color: #7d8893;
   border-radius: 20px;
   margin-bottom: 10px;
-  animation: progress 1500ms ease-in 1;
+  /* animation: progress 1500ms ease-in 1; */
 
 }
 
@@ -187,7 +187,7 @@
   -webkit-transition: width .6s ease;
   transition: width .6s ease;
   border-radius: 5px;
-  animation: progress 1500ms ease-in 1;
+  /* animation: progress 1500ms ease-in 1; */
 }
 @keyframes progress {
   from {

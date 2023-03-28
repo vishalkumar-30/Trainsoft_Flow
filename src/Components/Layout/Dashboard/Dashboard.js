@@ -36,6 +36,7 @@ import UserProfileSetting from "../Userprofile/UserProfileSetting";
 import ChangePassword from "../Userprofile/ChangePassword";
 import Expert from "../../Common/Graph/Learner/ExperConnect/Expert";
 import NewDashboard from "../../Screens/Home/NewDashboard";
+import DashboardLearner from "../NewDashboardLearner/DashboardLearner";
 
 const Dashboard = ({ location }) => {
   return (
@@ -60,7 +61,8 @@ const Dashboard = ({ location }) => {
           >
             <Router>
               <Home path="dashboard" />
-              <UserHome path="home" />
+              {/* <UserHome path="home" /> */}
+              <DashboardLearner path="home"/>
               {/* <NewDashboard path="home" /> */}
               <Expert path="expert-connect"/>
               <TicketDashboard path="/techsupport"/>

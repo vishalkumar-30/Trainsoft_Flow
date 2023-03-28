@@ -8,6 +8,12 @@ import { AdminConfig } from './SidebarConfig'
 const Sidebar = ({location}) => {
     const {user} =  useContext(AppContext)
     const [opensidebar, SetOpensidebar] = useState()
+
+    const [isOpen, setIsOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
     // function openNav() {
     //     document.getElementById("mySidebar").style.width = "250px";
     //     document.getElementById("main").style.marginLeft = "250px";
@@ -22,21 +28,28 @@ const Sidebar = ({location}) => {
     <button class="openbtn" onClick={openNav}>☰ Menue</button> 
     </div> */}
    
-    
-    <div className="sideBarNav" id="mySidebar" >
-    {/* <a href="javascript:void(0)" class="closebtn" onClick={closeNav}>×</a> */}
-            <div className="nav-title">TrainSoft</div>
-            {location && AdminConfig.map(res =><Fragment key={res.pathname}>
-            {res && res.role.some((e) => e === user.role) &&  <div className={`navMenu ${res.title === (location.state && location.state.title) ? 'active' :''}`} key={res.title}>
-                    <Link state={{title: res.title, subPath: res.subPath}} className={`aic`} to={res.pathname}>
-                        <div className="mr-3">{res.icon}</div>
-                        <div className="">{res.title}</div>
-                    </Link>
-                </div>
-            }
-            </Fragment>)}
-        
-    </div>
+ 
+  <button onClick={toggleSidebar} className={`toggle-button ${isOpen ? 'open' : 'toggle-button-close'}`} >☰</button>
+      <div  className={`sideBarNav ${isOpen ? 'open' : ''}`}>
+        {
+          !isOpen ? <div className="nav-title-ts" >TS</div> : <div className="nav-title">TrainSoft</div>
+        }
+        {location && AdminConfig.map(res =><Fragment key={res.pathname}>
+          {res && res.role.some((e) => e === user.role) &&  
+            <div className={`navMenu ${res.title === (location.state && location.state.title) ? 'active' :''}`} key={res.title}>
+              <Link state={{title: res.title, subPath: res.subPath}} className={`aic`} to={res.pathname}>
+                {!isOpen ? <div className="mr-3">{res.icon}</div> :
+                  <>
+                    <div className="mr-3">{res.icon}</div>
+                    <div className="">{res.title}</div>
+                  </>
+                }
+              </Link>
+            </div>
+          }
+        </Fragment>)}
+      </div>
+ 
     </>
     )
 }

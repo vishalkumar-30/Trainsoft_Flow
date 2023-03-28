@@ -1,0 +1,13 @@
+@keyframes move-vertical {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(var(--final-rotation)) ;
+    }
+  }
+  
+  .lead {
+    --final-rotation: 180deg;
+    animation: move-vertical 10s linear;
+  }
