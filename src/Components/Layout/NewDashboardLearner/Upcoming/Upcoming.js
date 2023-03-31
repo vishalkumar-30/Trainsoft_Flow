@@ -12,7 +12,7 @@ const Upcoming = () => {
                         </div>
                       
                             <div className='justify-content-between'  style={{display:"flex"}}>
-                                <div>ToDay</div>
+                                <div>Today</div>
                                 <div > 5:30</div>
                             </div>
                           
@@ -29,7 +29,7 @@ const Upcoming = () => {
                         </div>
                       
                             <div className='justify-content-between' style={{display:"flex"}}>
-                                <div>ToDay</div>
+                                <div>Today</div>
                                 <div > 5:30</div>
                             </div>
                           
@@ -49,7 +49,7 @@ const Upcoming = () => {
                         </div>
                       
                             <div  className='justify-content-between' style={{display:"flex"}}>
-                                <div>ToDay</div>
+                                <div>Today</div>
                                 <div> 5:30</div>
                             </div>
                           
@@ -66,7 +66,7 @@ const Upcoming = () => {
                         </div>
                       
                             <div className='justify-content-between' style={{display:"flex"}}>
-                                <div>ToDay</div>
+                                <div>Today</div>
                                 <div > 5:30</div>
                             </div>
                           
@@ -86,7 +86,7 @@ const Upcoming = () => {
                         </div>
                       
                             <div className='justify-content-between' style={{display:"flex"}}>
-                                <div>ToDay</div>
+                                <div>Today</div>
                                 <div > 5:30</div>
                             </div>
                           
@@ -103,7 +103,7 @@ const Upcoming = () => {
                         </div>
                       
                             <div className='justify-content-between' style={{display:"flex"}}>
-                                <div>ToDay</div>
+                                <div>Today</div>
                                 <div > 5:30</div>
                             </div>
                           
