@@ -58,11 +58,12 @@ import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import FilterListIcon from '@mui/icons-material/FilterList';
 export const EXPERT_ICON =<SupervisorAccountIcon/>
 export const USERPROFILE_ICON =<ManageAccountsIcon/>
 export const LOGOUT_ICON =<LogoutIcon/>
 export const DOWNLOAD_ICON =<DownloadIcon/>
-export const FILTER_ICON =<FilterAltIcon/>
+export const FILTER_ICON =<FilterListIcon/>
 export const ICN_BACK = <KeyboardBackspaceIcon/>
 export const ICN_TIME=<AccessTimeIcon/>
 export const ICN_EXPANDED = <AspectRatioIcon/>

@@ -18,6 +18,8 @@ import AverageTrainerFeedback from '../../Common/Graph/BarGraph/AverageTrainerFe
 import AverageTrainingFeedback from '../../Common/Graph/BarGraph/AverageTrainingFeedback';
 import AverageAssesmentscore from '../../Common/Graph/LineGraph/AverageAssesmentscore';
 import Trainingpichart from '../../Common/Graph/PiChart/Trainingpichart';
+import CircularProgress from '../../Layout/NewDashboardLearner/CircularProgress/CircularProgress';
+import InstructorLeaderboard from '../../Layout/NewDashboardLearner/Leaderboard/InstructorLeaderboard';
 
 
 
@@ -96,45 +98,24 @@ const AdminHome = () => {
     }, [])
 
     return (<div>
-        <div className="row">
-            <div className="col-md-6">
-                {/* ..........user info......... */}
-                <Card title="">
-                    <div className="user-info">
-                        <div className="title-lg">Welcome back {user.name}!</div>
-                        <div>
-                            <p className="mb-2">Since your last login on the system, there were:</p>
-                            <div>
-                                <div className="aic"><div className="red-circle"></div> <div>21 new enrollment</div></div>
-                                <div className="aic"><div className="red-circle"></div> <div>15 courses completed </div></div>
-                                <div className="aic"><div className="red-circle"></div> <div>45 new messages </div></div>
-
-                            </div>
-                        </div>
-
-
-
-
-                    </div>
-                </Card>
-                {/* ..........End user info......... */}
-
-            </div>
-            <div className="col-md-2 ">
+      
+        <Card title="Filter Training based on date">
+<div className='row'>
+    <div className='col-sm-6 col-md-6 pb-3'>
+{/* <SkillsLevelGraph/> */}
+{/* <InstructorFeedback /> */}
+{/* <NewInstructorfeedback/> */}
+<Trainingpichart/>
+    </div>
+    <div className='col-sm-6 col-md-6'>
+  <div className='row'>
+  <div className="col-sm-6 ">
                 
-                    <WeeklyLogin />
-             
-            </div>
-           
-
-            <div className="col-md-2 ">
-             
-               
-                <div className="grid-batch bg-purple">
+  <div className="grid-batch1 ">
                                 <div className="mb10">{ICN_COMING_BATCHES}</div>
                                 <div>
                                     <div className="batch-title">{course.length}</div>
-                                    <div className="batch-label">Total Course</div>
+                                    <div className="batch-label">Ongoing Trainings</div>
                                 </div>
                                 <div className="jce">
                                     <div className="grid-batch-icon">
@@ -142,18 +123,15 @@ const AdminHome = () => {
                                     </div>
                                 </div>
                             </div>
-             
-              
-            </div>
-
-            <div className="col-md-2 ">
-             
-              
-             <div className="grid-batch">
+         
+        </div>
+        <div className="col-sm-6 ">
+                
+        <div className="grid-batch2">
                              <div className="mb10">{ICN_COPY}</div>
                              <div>
                                  <div className="batch-title">{batchCount}</div>
-                                 <div className="batch-label">On-going batches</div>
+                                 <div className="batch-label">Completed Trainings</div>
                              </div>
                              <div className="jce">
                                  <div className="grid-batch-icon">
@@ -161,86 +139,145 @@ const AdminHome = () => {
                                  </div>
                              </div>
                          </div>
-          
-           
-         </div>
-
-        </div>
-     
-        <div className='row mt-3' >
-            <div className='col-6'>
-                <Card title="Average Trainer Feedback" >
-                    <AverageTrainerFeedback />
-                </Card>
-            </div>
-
-            <div className='col-6'>
-                <Card title="Average Training Feedback" >
-                    <AverageTrainingFeedback />
-                </Card>
-            </div>
-
-
-
-
-        </div>
-
-        {/* Average TrAINING aSSESMENT SCORE  */}
-
-        <div className="row mt-3 mx-1">
-            <Card title="Average Training Asssment Score" >
-                <AverageAssesmentscore />
-            </Card>
-
-        </div>
-        <div className="row mt-3">
-            <div className="col-md-6">
-           
-                <Card title="Filter Training based on date">
-                            <Trainingpichart />
-                        </Card>
-               
-
-            </div>
-            <div className="col-md-6  ">
-               
-            <Card title="Average Training Progress"  >
-            <div className="user-info">
          
-            <div className="title-sm  my-3">OngoingTrainingCount {ongoingTrainingCount}</div>
-            {/* <div className='row'>
-            <div className="aic px-2"><div className="red-circle"></div> <div>Progress is less than 50% </div></div>
-            <div className="aic px-2"><div className="blue-circle"></div> <div>Progress is Greater than 50% </div></div>
-            </div> */}
-            </div>
-                            <div className="table-bless py-2" style={{height:"420px",overflowX:"scroll"}}>
-                                
-                                <Table className="table-borderless">
-                                    <thead style={{fontSize: "15px",
-    fontWeight: "600"}}>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td style={{width:"60%"}} >Progress</td>
-                                            {/* <td className="avgScore-w">Avg score</td> */}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {trainingprogrss.map((res, i) =>
-                                            <tr key={i}>
-                                                <td>{res.trainingName}</td>
-                                                <td><Progress  striped     label={`${res.completionPercentage}%`} variant={res.completionPercentage<=50? 'danger' : '#7DFCD8'} value={res.completionPercentage}  /></td>
-                                                {/* <td className="text-right">{50}</td> */}
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </Table>
-                            </div>
-
-                        </Card>
-            </div>
-
-       
         </div>
+  </div>
+  <div className='row mt-3'>
+  <div className="col-sm-6 ">
+                
+  <div className="grid-batch3">
+                             <div className="mb10">{ICN_COPY}</div>
+                             <div>
+                                 <div className="batch-title">{batchCount}</div>
+                                 <div className="batch-label">Certificates Earned</div>
+                             </div>
+                             <div className="jce">
+                                 <div className="grid-batch-icon">
+                                     <i className="bi bi-arrows-angle-expand"></i>
+                                 </div>
+                             </div>
+                         </div>
+         
+        </div>
+        <div className="col-sm-6 ">
+                
+        <div className="grid-batch1">
+                             <div className="mb10">{ICN_COPY}</div>
+                             <div>
+                                 <div className="batch-title">{batchCount}</div>
+                                 <div className="batch-label">Hours Invested</div>
+                             </div>
+                             <div className="jce">
+                                 <div className="grid-batch-icon">
+                                     <i className="bi bi-arrows-angle-expand"></i>
+                                 </div>
+                             </div>
+                         </div>
+         
+        </div>
+  </div>
+
+    </div>
+</div>
+</Card>
+<Card title="" className='mt-2'>
+<div className='row '>
+    <div className='col-sm-2 col-md-2'>
+    <div className='title-md'>
+    Student Performance
+ </div>
+<InstructorLeaderboard/>
+
+    </div>
+    <div className='col-sm-3 col-md-3'>
+    <div className='title-md text-center'>
+    Progress 
+ </div>
+ {/* <div className='d-flex justify-content-between p-2 border ' style={{width:"100%", borderRadius:"20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)"}}>
+  <div className='title-sm'>Videos</div>
+  <div >70%</div>
+ </div> */}
+ <div className='my-2 d-flex justify-content-between p-2 border ' style={{width:"100%", borderRadius:"20px",background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)"}}>
+  <div className='title-sm'>Lab</div>
+  <div >70%</div>
+ </div>
+ <div className='my-2 d-flex justify-content-between p-2 border ' style={{width:"100%", borderRadius:"20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)"}}>
+  <div className='title-sm'>Assesment</div>
+  <div >70%</div>
+ </div>
+ <div className='my-2 d-flex justify-content-between p-2 border ' style={{width:"100%", borderRadius:"20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)"}}>
+  <div className='title-sm'>Capstone</div>
+  <div >70%</div>
+ </div>
+
+ <div className='d-flex justify-content-between p-2 border ' style={{width:"100%", borderRadius:"20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)"}}>
+  <div className='title-sm'>ILT</div>
+  <div >70%</div>
+ </div>
+  
+
+    
+    
+    
+    </div>
+    <div className='col-sm-3 col-md-3'>
+    <div className='title-md text-center'>
+    Average Assessments Score
+ </div>
+    <div className=" py-5 ml-5">
+                    <div className="flx pb-3" style={{marginTop:"-40px"}} >
+                                <div className="text-center " style={{width: 100, height: 60}}>
+                                    <CircularProgressbar
+                                  
+                                        maxValue="1000"
+                                        minValue="1" value="580"
+                                        text={`580`}
+                                        styles={buildStyles({
+                                            trailColor: "#F5FBFF",
+                                            pathColor: "#5CC9EE",
+                                            
+                                        })} />
+                                    <div className="mt-2">Project Work</div>
+                                </div>
+                                <div className="text-center assementdashboard" style={{width: 100, height: 60}}>
+                                    <CircularProgressbar
+                                        value="70"
+                                        text={`70%`}
+                                        styles={buildStyles({
+                                            trailColor: "#F5FBFF",
+                                            pathColor: "#5CC9EE",
+                                        })} />
+                                    <div className="mt-2">MCQs</div>
+                                </div>
+
+                                <div className="text-center"  style={{ width: 100, height: 60,marginTop:"80px", marginLeft:"40px" }}>
+                                    <CircularProgressbar
+                                        maxValue="1000"
+                                        minValue="1" value="789"
+                                        text={`789`}
+                                        styles={buildStyles({
+                                            trailColor: "#F5FBFF",
+                                            pathColor: "#7D00B5",
+                                        })} />
+                                    <div className="mt-2">Lab Assessments </div>
+                                </div>
+
+                            </div>
+                    </div>
+  
+
+    </div>
+    <div className='col-sm-4 col-md-4'>
+ <div className='title-md text-center'>
+ Overall Score/ Progress
+ </div>
+<div >
+<CircularProgress style={{margintop:"60px"}}/>
+    </div>
+
+    </div>
+</div>
+</Card>
     
     </div>)
 }

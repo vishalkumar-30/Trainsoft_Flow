@@ -199,9 +199,9 @@ const Trainingpichart = () => {
   }
 
   const data = [
-    { name: "Completed", value: completedTraining,fill:"#E62E7A" },
-    { name: "Ongoing", value: onGoingTraining ,fill:"#33FFD7"},
-    { name: "Upcoming", value: upComingTraining ,fill:"#FCE22A" }
+    { name: "Completed", value: completedTraining,fill:"#BFCBF7" },
+    { name: "Ongoing", value: onGoingTraining ,fill:"#C8A3DF"},
+    { name: "Upcoming", value: upComingTraining ,fill:"#D0EFFA" }
   ];
   const renderActiveShape = (props) => {
     const RADIAN = Math.PI / 180;
@@ -298,26 +298,26 @@ $(function() {
     <>
       <div className='row p-1'>
         <div className='col-5'>
-          <label for="from">From Date:</label>
+          <label for="from" className='title-sm'>From Date:</label>
           <input type="date" className='form-control'  defaultValue={lastWeekDisplay} onChange={(e) => setFromDate(e.target.value)} id="datepicker"/>
         </div>
         <div className='col-5'>
-          <label for="to">To Date:</label>
+          <label for="to" className='title-sm'>To Date:</label>
           <input type="date" className='form-control' defaultValue={today} onChange={(e) => setToDate(e.target.value)} id="datepicker"/>
         </div>
-        <div className='col-2 mt-4'>  <button className=' btn btn-sm btn-primary mt-1'  onClick={() => filterTrainingsBasedOnDateRange()}>Ok{FILTER_ICON}</button></div>
-        <div>
-          <p className='text-danger p-2'>Note : Please select Date to Filter Training Details</p>
+        <div className='col-2 mt-4'>  <button className=' btn btn-primary mt-1'  onClick={() => filterTrainingsBasedOnDateRange()}>{FILTER_ICON}</button></div>
+        <div className='title-sm m-3'>
+         Note : Please select Date to Filter Training Details
         </div>
       </div>
      
-      <PieChart width={400} height={400}>
+      <PieChart width={400} height={250}>
         <Pie
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
           data={data}
           cx={200}
-          cy={200}
+          cy={150}
           innerRadius={60}
           outerRadius={80}
           fill="#8884d8"
