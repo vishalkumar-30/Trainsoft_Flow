@@ -114,7 +114,7 @@ const RestService = {
   saveUserNotes: (trainingSessionSid, trainingSid, payload) => AxiosService.post(GLOBELCONSTANT.TRAINING.SAVES_NOTES + `?training-session-sid=${trainingSessionSid}&training-sid=${trainingSid}`, payload),
   getUserNotes: () => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_NOTES),
   getTrainingByStatus: (pageNo, pageSize, status) => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_TRAINING_BY_STATUS + `/${pageNo}/${pageSize}?status=${status}`),
-  extractTextFromImages: (contentSid, contentType, trainingSid,payload) => AxiosService.post(GLOBELCONSTANT.TRAINING.EXTRACT_TEXT_FROM_IMAGES + `?content-sid=${contentSid}&content-type=${contentType}&training-sid=${trainingSid}`, payload),
+  extractTextFromImages: (contentSid, contentType, trainingSid, payload) => AxiosService.post(GLOBELCONSTANT.TRAINING.EXTRACT_TEXT_FROM_IMAGES + `?content-sid=${contentSid}&content-type=${contentType}&training-sid=${trainingSid}`, payload),
   // getTrainingByRole: (pageNo,pageSize) => AxiosService.get(GLOBELCONSTANT.TRAINING.PARTICIPANT_BY_ROLE.replace("{pageNo}",pageNo).replace("{pageSize}",pageSize)),
 
   // assessment
@@ -189,7 +189,8 @@ const RestService = {
   quitAssessment: (questionSid, virtualAccountSid) => AxiosService.get(GLOBELCONSTANT.API.ASSESSMENT.QUIT_ASSESSMENT + questionSid + "/" + virtualAccountSid),
 
   //feedback
-  storeFeedback: (sectionsid, trainingsid, payload) => AxiosService.post(GLOBELCONSTANT.FEEDBACK.SUBMIT_FEEDBAK + `section-sid=${sectionsid}&training-sid=${trainingsid}`, payload),
+  storeFeedback: (trainingsid, payload) => AxiosService.post(GLOBELCONSTANT.FEEDBACK.SUBMIT_FEEDBAK + `training-sid=${trainingsid}`, payload),
+  retrieveUserCertificationDetails: () => AxiosService.get(GLOBELCONSTANT.FEEDBACK.RETRIEVE_USER_CERTIFICATE_DETAILS),
 
   //notification
 
@@ -224,6 +225,8 @@ const RestService = {
   getLearnerAllTrainingsProgress: () => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_LEARNER_ALL_TRAININGS_PROGRESS),
   getLearnerTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_LEARNER_TRAINING_SESSIONS),
   getallLearnerTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_ALL_TRAINING_SESSIONS),
+  getLearnerDasboardCardsDetails: () => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_LEARNER_DASHBOARD_CARD_DETAILS),
+  getLogoutTimes: (timeSpent) => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_LOGOUT_TIMES + `?time_spent=${timeSpent}`),
 
   //INSTRUCTORDASHBOARD(
   getTrainersTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_TRAINERS_TRAINING_SESSIONS),
@@ -257,7 +260,10 @@ const RestService = {
   uploadProfilePic: (payload) => AxiosService.post(GLOBELCONSTANT.USERPROFILE.UPLOAD_PROFILE_PIC, payload),
 
   //weighted score
-  getLearnerWeightedScores: (trainingSid) => AxiosService.get(GLOBELCONSTANT.WEIGHTEDSCORES.GET_LEARNER_WEIGHTED_SCORES + `?training-sid=${trainingSid}`)
+  getLearnerWeightedScores: (trainingSid) => AxiosService.get(GLOBELCONSTANT.WEIGHTEDSCORES.GET_LEARNER_WEIGHTED_SCORES + `?training-sid=${trainingSid}`),
+  getOverallLeaderboard: () => AxiosService.get(GLOBELCONSTANT.WEIGHTEDSCORES.GET_OVERALL_LEADERBOARD),
+  getUserTagScoreAnanlysis: () => AxiosService.get(GLOBELCONSTANT.WEIGHTEDSCORES.GET_USER_TAG_SCORE_ANALYSIS),
+  getUserTagWiseScoring: () => AxiosService.get(GLOBELCONSTANT.WEIGHTEDSCORES.GET_USER_TAGWISE_SCORING)
 };
 
 

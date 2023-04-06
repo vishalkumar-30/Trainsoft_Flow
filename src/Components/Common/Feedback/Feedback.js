@@ -46,7 +46,7 @@ const Feedback = ({ sectionsid, trainingsid }) => {
         "reviewComments": comments
       }
       let payload = form
-      RestService.storeFeedback(sectionsid, trainingsid, payload).then(res => {
+      RestService.storeFeedback(trainingsid, payload).then(res => {
         Toast.success({ message: `Feedback submitted successfully` });
         spinner.hide();
         setValue(0);

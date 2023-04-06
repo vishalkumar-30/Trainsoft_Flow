@@ -11,7 +11,8 @@ import { TokenService } from '../../../Services/storage.service';
 import './auth.css'
 import { ICN_TRAINSOFT, ICN_BACK,ICN_EDFORCE } from '../../Common/Icon';
 import TRAINSOFT from './../../../Assets/Images/trainsoft.png'
-import EDFORCE from './../../../Assets/Images/edforce.png'
+import EDFORCE from './../../../Assets/Images/edforce.png';
+import moment from 'moment';
 import GLOBELCONSTANT from '../../../Constant/GlobleConstant';
 import { Link } from '@reach/router';
 import AssessmentContext from '../../../Store/AssessmentContext';
@@ -56,7 +57,8 @@ const Login = (props) => {
                         let Role = data.role;
                         switch (Role) {
                             case GLOBELCONSTANT.ROLE.LEARNER:
-                                navigate('/home', { state: { title: 'Home' } })
+                                navigate('/home', { state: { title: 'Home' } });
+                                localStorage.setItem("timestamp", moment().format());
                                 break;
                             case GLOBELCONSTANT.ROLE.SUPERVISOR:
                                 navigate('/dashboard', { state: { title: 'Dashboard' } })

@@ -1,9 +1,8 @@
-import React,{useState,useEffect} from 'react'
-
+import React,{useState,useEffect} from 'react';
 import ReactSpeedometer from "react-d3-speedometer";
 import "./style.css"
 
-const SkillsLevelGraph = () => {
+const SkillsLevelGraph = ({skills}) => {
   const [finalRotation, setFinalRotation] = useState('180deg');
   // Set the Setfinal rotation value as per the below table
   // perc skill       weightage
@@ -13,9 +12,34 @@ const SkillsLevelGraph = () => {
   // -80%->Advanced    40 
   // -100%->beginner   20
 
+  const skill = () => {
+    if(skills >= 90){
+      setFinalRotation('20deg');
+    }
+    else if(skills >= 80 && skills < 90){
+      setFinalRotation('-10deg');
+    }
+    else if(skills >= 60 && skills < 80){
+      setFinalRotation('-40deg');
+    }
+    else if(skills >= 40 && skills < 60){
+      setFinalRotation('-80deg');
+    }
+    else if(skills >= 10 && skills < 40){
+      setFinalRotation('-100deg');
+    }
+  }
+
+  setTimeout(() => {
+    skill();
+  }, 2000);
+
   useEffect(()=>{
-    setFinalRotation('20deg');
-  },[])
+   
+    setFinalRotation('-120deg')
+    
+  },[]);
+
   return (
     <div >
           {/* <div>

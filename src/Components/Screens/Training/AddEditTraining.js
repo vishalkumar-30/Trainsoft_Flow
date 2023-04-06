@@ -12,7 +12,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import GLOBELCONSTANT from "../../../Constant/GlobleConstant";
 import { getAllBatches } from "../../../Services/service";
-import {MultiSelect} from "react-multi-select-component";
+import Select from 'react-select';
 import "./Multisteptraining/Step.css";
 import * as Yup from 'yup';
 
@@ -38,9 +38,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
     const initialVal = {}
 
     const [initialValue, setInitialValue] = useState(initialVal);
-    const [selectedOption, setSelectedOption] = useState([]);
-    const [selected, setSelected] = useState([]);
-
+    const [selectedOption, setSelectedOption] = useState(null);
     let batchData = [];
 
     //validation
@@ -221,39 +219,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
         }
     }
 
-    // create training
-    // const createTraining = (data) => {
-    //     try {
-    //         spinner.show()
-    //         let batcheId = data.trainingBatchs.map(resp => {
-    //             return ({ batchSid: resp.sid })
-    //         })
-    //         let payload = data
-    //         payload.courseSid = data.courseSid.sid
-    //         payload.instructor = { "sid": data.instructor.vSid }
-    //         payload.trainingBatchs = batcheId
-    //         payload.instructorName = data.instructor.name
-    //         payload.status = "ENABLED"
-    //         RestService.createTraining(payload).then(res => {
-    //             Toast.success({ message: `Training is Successfully Created` });
-    //             getTrainings()
-    //             spinner.hide()
-    //             setShow(false)
-    //         }, err => {
-    //             spinner.hide()
-    //             console.error(err)
-    //         }
-    //         );
-    //     }
-    //     catch (err) {
-    //         spinner.hide()
-    //         console.error('error occur on createTraining', err)
-    //         Toast.error({ message: `Something wrong!!` });
-    //     }
-    // }
-
     //create training
-
     const createTraining = () => {
         try {
             spinner.show()
@@ -267,7 +233,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                 "courseSid": courseName,
                 "startDate": startDateTimestamp,
                 "endDate": endDateTimestamp,
-                "trainingBatchs": selected.map((i) => {
+                "trainingBatchs": selectedOption.map((i) => {
                     return (
                         {
                             "batchSid": i.value
@@ -292,7 +258,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                 setTrainingoverview('')
                 setStartDate('');
                 setEndDate('');
-                setSelected([]);
+                setSelectedOption([]);
             }, err => {
                 spinner.hide()
                 console.error(err)
@@ -424,7 +390,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                             {
 
                                 <div className="form-container">
-                                 
+
                                     <div className="table-shadow " style={{ padding: "10px 40px 10px 40px" }}>
                                         {(activeStep === 0 || activeStep === 1 || activeStep === 2 ||
                                             activeStep === 3) && <>
@@ -490,14 +456,15 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
 
                                                                         <div className="col">
                                                                             <label className="label form-label">Select Existing Batch:</label>
-                                                                            <MultiSelect
+                                                                            <Select
+                                                                                defaultValue={selectedOption}
+                                                                                onChange={setSelectedOption}
                                                                                 options={batchData}
-                                                                                value={selected}
-                                                                                onChange={setSelected}
-                                                                                labelledBy={"Select"}
-                                                                                
+                                                                                isMulti
+                                                                                className="basic-multi-select"
+                                                                                classNamePrefix="select"
                                                                             />
-                                                                            
+
                                                                         </div>
                                                                         {
                                                                             showBatch ?
