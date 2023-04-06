@@ -2,6 +2,7 @@ import React, { useState,useReducer } from 'react';
 import GLOBELCONSTANT from '../Constant/GlobleConstant';
 import { TokenService } from '../Services/storage.service';
 import useSpinner from './SpinnerHook';
+
 const AppContext = React.createContext({});
 export default AppContext;
 export const AppConsumer = AppContext.Consumer;
@@ -25,11 +26,8 @@ export const authReducer = (state, action) => {
                 user: {...action.value}
             };
         case "LOGOUT":
-            localStorage.removeItem('user');
-            localStorage.removeItem("trainingSid");
-            localStorage.removeItem("sid");
-            localStorage.removeItem("sectionSid");
-            
+            localStorage.clear();
+            sessionStorage.clear(); 
             return {
                 ...state,
                 user: {}

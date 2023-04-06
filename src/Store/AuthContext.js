@@ -20,10 +20,8 @@ export const authReducer = (state, action) => {
                 user: {...action.value}
             };
         case "LOGOUT":
-            localStorage.removeItem('user', JSON.stringify(action.payload));
-            localStorage.removeItem("trainingSid");
-            localStorage.removeItem("sid");
-            localStorage.removeItem("sectionSid");
+            localStorage.clear();
+            sessionStorage.clear();
             return {
                 ...state,
                 user: ''

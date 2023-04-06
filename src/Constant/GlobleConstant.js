@@ -159,7 +159,8 @@ const GLOBELCONSTANT = {
         EXTRACT_TEXT_FROM_IMAGES : API_HOST_V2 + "user/extract-text-from-images",
     },
     FEEDBACK: {
-        SUBMIT_FEEDBAK: API_HOST_V2 + "submit-feedback?"
+        SUBMIT_FEEDBAK: API_HOST_V2 + "submit-feedback?",
+        RETRIEVE_USER_CERTIFICATE_DETAILS: API_HOST_V2 + "get-user-certificate-details"
     },
     NOTIFICATION: {
         GET_NOTIFICATION: API_HOST_V2 + "get-notification",
@@ -265,6 +266,8 @@ const GLOBELCONSTANT = {
         GET_LEARNER_ALL_TRAININGS_PROGRESS:API_HOST_V2 + 'learner/ongoing-training-progress',
         GET_LEARNER_TRAINING_SESSIONS:API_HOST_V2 + 'learner/get-training-sessions',
         GET_ALL_TRAINING_SESSIONS :API_HOST_V2 + 'learner/get-all-training-sessions',
+        GET_LEARNER_DASHBOARD_CARD_DETAILS: API_HOST_V2 + "learner/get-dashboard-card-details",
+        GET_LOGOUT_TIMES: API_HOST + "logout-times"
     },
     INSTRUCTOR_DASHBOARD : {
         GET_TRAINERS_TRAINING_SESSIONS: API_HOST_V2 + "instructor/get-daily-training-sessions",
@@ -308,7 +311,10 @@ const GLOBELCONSTANT = {
     },
 
     WEIGHTEDSCORES: {
-        GET_LEARNER_WEIGHTED_SCORES: API_HOST_V2 + "learner/get-weighted-scores"
+        GET_LEARNER_WEIGHTED_SCORES: API_HOST_V2 + "learner/get-weighted-scores",
+        GET_OVERALL_LEADERBOARD: API_HOST_V2 + "user/overall-leaderboard",
+        GET_USER_TAG_SCORE_ANALYSIS: API_HOST_V2 + "user/score-analysis",
+        GET_USER_TAGWISE_SCORING: API_HOST_V2 + "user/tag-wise-scoring"
     },
 
     ACCESS_LEVEL: [

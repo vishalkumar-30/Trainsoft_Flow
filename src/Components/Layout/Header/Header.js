@@ -5,16 +5,14 @@ import { CustomToggle } from '../../../Services/MethodFactory';
 import { ProfileImg } from '../../Common/BsUtils';
 import { navigate } from '../../Common/Router';
 import AppContext from '../../../Store/AppContext';
-import './header.css'
+import moment from 'moment';
+import './header.css';
 import { TokenService } from '../../../Services/storage.service';
 import RestService from '../../../Services/api.service';
 
 
-
-
 const Header = ({ location, children }) => {
-    const { spinner } = useContext(AppContext);
-    const { user, setUserValue } = useContext(AppContext);
+    const { user, setUserValue, spinner, ROLE } = useContext(AppContext);
     const [shownotification, setShownotification] = useState([])
     const [viewmore, setViewmore] = useState('');
     const [userDetails, setUserDetails] = useState('');
@@ -74,6 +72,9 @@ const Header = ({ location, children }) => {
 
     const LogOut = () => {
         try {
+            if(user.role === ROLE.LEARNER){
+                getLogoutTimes();
+            }
             TokenService.removeToken()
             setUserValue("LOGOUT")
             navigate('/login')
@@ -104,6 +105,26 @@ const Header = ({ location, children }) => {
         }
     }
 
+    //calculate timespend in portal
+    const getLogoutTimes = () => {
+        try {
+            const dateNow = moment().format();
+            const dateLarger = moment(dateNow);
+            const dateStored = localStorage.getItem("timestamp");
+            let timeSpent = dateLarger.diff(dateStored);
+            spinner.show();
+            RestService.getLogoutTimes(timeSpent).then(res => {
+                spinner.hide();
+            }, err => { spinner.hide(); }
+            )
+        }
+        catch (err) {
+            spinner.hide();
+            console.error('error occur on getLogoutTimes()', err)
+            // Toast.error({ message: `Something wrong!!` });
+        }
+    }
+
     useEffect(() => {
         getNotification();
         getprofiledetails();
@@ -120,20 +141,20 @@ const Header = ({ location, children }) => {
             <div className="header" >
                 <div className="page-title">
                     <div className="title-lg mb-0">
-                    {
-                            location.pathname === "/home" || 
-                            location.pathname === "/dashboard" 
-                            ?
-                            `Welcome back ${user.name} :)`  
-                        :
-                        location.state && location.state.title
+                        {
+                            location.pathname === "/home" ||
+                                location.pathname === "/dashboard"
+                                ?
+                                `Welcome back ${user.name} :)`
+                                :
+                                location.state && location.state.title
                         }
                         {children}
                     </div>
-                    
+
                     {/* <div class="breadcrumb-wrap"><a href="#">Summary</a><a href="#">Level1</a><a href="#">Level2</a></div> */}
                 </div>
-               
+
                 <div className="aic">
                     <Dropdown className="notification">
                         <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components" >

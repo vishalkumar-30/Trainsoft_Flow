@@ -18,6 +18,7 @@ import { AssessmentProvider } from "./Store/AssessmentContext";
 import PrivateRoute from "./Components/Common/PrivateRoute/PrivateRoute";
 import { Redirect } from '@reach/router';
 import Labs from "./Components/Screens/Training/Labs/Labs";
+import IdealLogout from "./Components/Common/IdealLogout/IdealLogout";
 
 function App() {
    const {spinner} = useContext(AppContext);
@@ -51,6 +52,11 @@ function App() {
          </Router>
       </TrainingProvider>
       </AssessmentProvider>
+      {
+         localStorage.getItem('REACTAPP.TOKEN') ? 
+         <IdealLogout /> : ''
+      }
+      
  </> );
 }
 

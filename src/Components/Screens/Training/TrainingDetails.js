@@ -18,6 +18,7 @@ import ProgressBar from "../../Common/ProgressBar/ProgressBar";
 import ScienceIcon from '@mui/icons-material/Science';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import CodeIcon from '@mui/icons-material/Code';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 import useToast from "../../../Store/ToastHook";
 
 const TrainingDetails = ({ location }) => {
@@ -45,6 +46,7 @@ const TrainingDetails = ({ location }) => {
     const [codingQuestiondesc, setCodingQuestiondesc] = useState('');
     const [played, setPlayed] = useState(0);
     const [duration, setDuration] = useState(0);
+    const [call, setCall] = useState(false);
     const navigate = useNavigate();
     let trainingSid = location.state.sid;
     let username = JSON.parse(localStorage.getItem('user'));
@@ -64,7 +66,9 @@ const TrainingDetails = ({ location }) => {
                         muted={true}
                         controls
                         onProgress={(progress) => {
-                            setPlayed(progress.playedSeconds);
+                            if (Math.ceil(progress.playedSeconds) >= Math.ceil(0.8 * duration)) {
+                                setPlayed(progress.playedSeconds);
+                            }
                         }}
                         onDuration={(duration) => {
                             setDuration(duration);
@@ -77,7 +81,7 @@ const TrainingDetails = ({ location }) => {
 
     function Show(url) {
         setVdlink(url);
-
+        setCall(true);
     }
     function showFeedBack(val) {
         setFeed(val);
@@ -91,6 +95,8 @@ const TrainingDetails = ({ location }) => {
     function storeType(val) {
         setType(val)
     }
+    
+
     const Modal = ({ handleClose, show, children }) => {
         const showHideClassName = show ? "modal d-block" : "modal d-none";
 
@@ -117,68 +123,55 @@ const TrainingDetails = ({ location }) => {
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
-                render: (data) => <Link onClick={() => {
+                render: (data) =>
+                    <Link onClick={() => {
 
-                    if (data.contentLink) {
-                        Show(data.contentLink);
-                    }
-                    if (data.sid !== null) {
-                        setSid(data.sid);
-                        localStorage.setItem("sid", data.sid);
-                        localStorage.setItem("sectionSid", data.sectionSid);
-                    }
-                    if (data.labId !== null) {
-                        storeLabId(data.labId);
-                        setContentSid(data.sectionSid);
-                        setLabDescription(data.labContent.labDescription);
-                        setLabOverview(data.labContent.labOverview);
-                        setLabSolution(data.labContent.labSolution);
-                        setLabDuration(Number(data.durationInMinutes.split('.')[0]));
-                    }
-                    if (data.type) {
-                        storeType(data.type)
-                    }
-                    if (data.sid != null && (data.type === "DOCUMENTS" || data.type === "MS_OFFICE")) {
-                        markCourseAsCompleted(data.sid, data.sectionSid);
-                    }
-                   
-                    if (data.codingQuestionId !== null) {
-                        setCodingQuestionId(data.codingQuestionId);
-                        setCodingQuestiondesc(data.codingQuestionDescription);
-                    }
-                    showFeedBack(data.last)
-
-                    modalF(data.last);
-
-                    setShowcoursename(data.contentName);
-                    setZoomInfo(zoomInfo => ({
-                        ...zoomInfo,
-                        ...{
-                            "meetingId": data.meetingId,
-                            "password": data.meetingPwd,
-                            "trainingSid": location.state.sid,
-                            "trainingSessionSid": data.sid
+                        if (data.contentLink) {
+                            Show(data.contentLink);
                         }
-                    }))
+                        if (data.sid !== null) {
+                            setSid(data.sid);
+                            localStorage.setItem("sid", data.sid);
+                            localStorage.setItem("sectionSid", data.sectionSid);
+                        }
+                        if (data.labId !== null) {
+                            storeLabId(data.labId);
+                            setContentSid(data.sectionSid);
+                            setLabDescription(data.labContent.labDescription);
+                            setLabOverview(data.labContent.labOverview);
+                            setLabSolution(data.labContent.labSolution);
+                            setLabDuration(Number(data.durationInMinutes.split('.')[0]));
+                        }
+                        if (data.type) {
+                            storeType(data.type)
+                        }
+                        if (data.sid != null && (data.type === "DOCUMENTS" || data.type === "MS_OFFICE")) {
+                            markCourseAsCompleted(data.sid, data.sectionSid);
+                        }
 
-                }} style={{ cursor: "pointer" }} > {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB") ? <ScienceIcon />
-                    : (data.type === "ASSESSMENT") ? <AssessmentIcon /> : (data.type === "CODING") ? <CodeIcon /> : <SummarizeRoundedIcon />}
-                    {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
+                        if (data.codingQuestionId !== null) {
+                            setCodingQuestionId(data.codingQuestionId);
+                            setCodingQuestiondesc(data.codingQuestionDescription);
+                        }
+                        showFeedBack(data.last)
 
-                    {/* <button style={{
-                        backgroundColor: "transparent",
-                        border: "1px solid #1c1d1f",
-                        borderRadius: "4px",
-                        color: "black",
-                        marginRight: "10px",
-                        padding: "0px 10px 0px 10px  ",
-                        textAlign: "center",
-                        textDecoration: "none",
+                        modalF(data.last);
 
+                        setShowcoursename(data.contentName);
+                        setZoomInfo(zoomInfo => ({
+                            ...zoomInfo,
+                            ...{
+                                "meetingId": data.meetingId,
+                                "password": data.meetingPwd,
+                                "trainingSid": location.state.sid,
+                                "trainingSessionSid": data.sid
+                            }
+                        }))
 
-                        float: "right"
-                    }}>Resources </button> */}
-                </Link>
+                    }} style={{ cursor: "pointer" }} > {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB") ? <ScienceIcon />
+                        : (data.type === "ASSESSMENT") ? <AssessmentIcon /> : (data.type === "CODING") ? <CodeIcon /> : <SummarizeRoundedIcon />}
+                        {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
+                    </Link >
             }
         },
         headerTextColor: '#454E50', // user can change table header text color
@@ -259,10 +252,10 @@ const TrainingDetails = ({ location }) => {
                 spinner.hide();
             });
         } catch (err) {
-            console.error("error occur on getSession()", err)
+            console.error("error occur on getTrainingContentsByTrainingSid()", err)
         }
     }
-    
+
     //update content mark as completed
     const markCourseAsCompleted = (contentSid, sectionSid) => {
         try {
@@ -293,33 +286,37 @@ const TrainingDetails = ({ location }) => {
 
     //update content mark as completed
     const markCourseAsCompletedVideo = () => {
-        try {
-            let trainingSid = location.state.sid;
-            let payload = {
-                "completedInDuration": duration,
-                "totalDuration": duration
-            }
-            spinner.show();
-            RestService.markCourseAsCompleted(sid, contentSid, trainingSid, payload).then(
-                response => {
-
-                    if (response.status === 200) {
-                        setMarkAsCompleted(response.data);
-
-                    }
-                },
-                err => {
-                    spinner.hide();
+        if (call) {
+            try {
+                let trainingSid = location.state.sid;
+                let payload = {
+                    "completedInDuration": duration,
+                    "totalDuration": duration
                 }
-            ).finally(() => {
-                spinner.hide();
-            });
-        } catch (err) {
-            console.error("error occur on markCourseAsCompleted()", err)
+                spinner.show();
+                RestService.markCourseAsCompleted(sid, contentSid, trainingSid, payload).then(
+                    response => {
+
+                        if (response.status === 200) {
+                            setMarkAsCompleted(response.data);
+                            setCall(false);
+                            setDuration(0);
+                        }
+                    },
+                    err => {
+                        spinner.hide();
+                    }
+                ).finally(() => {
+                    spinner.hide();
+                });
+            } catch (err) {
+                console.error("error occur on markCourseAsCompleted()", err)
+            }
         }
+
     }
 
-    
+
     //get completed courses 
     const getCompletedCourses = () => {
 
@@ -333,12 +330,18 @@ const TrainingDetails = ({ location }) => {
                         setMarkAsCompleted(response.data);
 
                     }
-                    for (let i = 0; i < response.data.completedSection.length; i++) {
-                        for (let j = 0; j < response.data.completedSection[i].completedCourseContentDetails.length;
-                            j++) {
-                            setSectionSidArray(...sectionSidArray, response.data.completedSection[i].completedCourseContentDetails[j].sid);
-                        }
-                    }
+                    // for (let i = 0; i < response.data.completedSection.length; i++) {
+                    //     for (let j = 0; j < response.data.completedSection[i].completedCourseContentDetails.length;
+                    //         j++) {
+                    //         let sid = response.data.completedSection[i].completedCourseContentDetails[j].sid
+                    //         setSectionSidArray(sectionArray => {
+                    //             return[
+                    //                 ...sectionArray, sid
+                    //             ]
+                                
+                    //         });
+                    //     }
+                    // }
 
                 },
                 err => {
@@ -390,11 +393,12 @@ const TrainingDetails = ({ location }) => {
 
     }, []);
 
-    useEffect(()=> {
-        if(Math.ceil(played) === Math.ceil(0.8 * duration)){
+    useEffect(() => {
+        if (Math.ceil(played) > Math.ceil(0.8 * duration)) {
             markCourseAsCompletedVideo();
+
         }
-      },[played])
+    }, [played]);
 
     if (user.role === ROLE.LEARNER) {
         for (let i = 0; i < trainingDetailsList.length; i++) {
@@ -408,6 +412,7 @@ const TrainingDetails = ({ location }) => {
         }
     }
 
+    
     return (
         <>
             <div className="row" >
@@ -423,7 +428,7 @@ const TrainingDetails = ({ location }) => {
             <div class="row">
 
                 <div class="col-8  pl-3 " style={{ marginTop: "-25px" }}>
-                    
+
                     {(type === "EXTERNAL_LINK" || type === "VIDEO") ?
                         VideoMediaPlayer(vdlink)
                         : (type === "PHOTO" || type === "DOCUMENTS") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />

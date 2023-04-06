@@ -1429,3 +1429,7 @@ export const NotifUtils = (() => {
 	document.addEventListener("visibilitychange", handleVisibilityChange);
 	return notifObj;
 })();
+
+export const goToTopOfWindow = () => {
+	window.scrollTo(0, 0);
+  }
