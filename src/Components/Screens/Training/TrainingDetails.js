@@ -391,6 +391,20 @@ const TrainingDetails = ({ location }) => {
             e.preventDefault();
           })
 
+          //disable ctrl shift i 
+          const disableConsole = (event) => {
+            if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
+              event.preventDefault();
+            }
+            else if (event.metaKey && event.altKey && event.keyCode === 73) {
+                event.preventDefault();
+              }
+          };
+          window.addEventListener('keydown', disableConsole);
+          return () => {
+            window.removeEventListener('keydown', disableConsole);
+          };
+
     }, []);
 
     useEffect(() => {

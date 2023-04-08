@@ -119,7 +119,7 @@ const InstructorDashboard = () => {
                             <div className="grid-batch3">
                                 <div className="mb10">{ICN_COPY}</div>
                                 <div>
-                                    <div className="batch-title">{batchCount}</div>
+                                    <div className="batch-title">10</div>
                                     <div className="batch-label">Certificates Earned</div>
                                 </div>
                                 <div className="jce">
@@ -135,7 +135,7 @@ const InstructorDashboard = () => {
                             <div className="grid-batch1">
                                 <div className="mb10">{ICN_COPY}</div>
                                 <div>
-                                    <div className="batch-title">{batchCount}</div>
+                                    <div className="batch-title">02 h :45 min</div>
                                     <div className="batch-label">Hours Invested</div>
                                 </div>
                                 <div className="jce">
@@ -243,9 +243,11 @@ const InstructorDashboard = () => {
                             <div className="text-center " style={{ width: 100, height: 60 }}>
                                 <CircularProgressbar
 
-                                    maxValue="1000"
-                                    minValue="1" value="580"
-                                    text={`580`}
+                                    // maxValue="1000"
+                                    // minValue="1" value="580"
+                                    // text={`580`}
+                                    value="40"
+                                    text={`40%`}
                                     styles={buildStyles({
                                         trailColor: "#F5FBFF",
                                         pathColor: "#5CC9EE",
@@ -266,9 +268,11 @@ const InstructorDashboard = () => {
 
                             <div className="text-center" style={{ width: 100, height: 60, marginTop: "80px", marginLeft: "40px" }}>
                                 <CircularProgressbar
-                                    maxValue="1000"
-                                    minValue="1" value="789"
-                                    text={`789`}
+                                    // maxValue="1000"
+                                    // minValue="1" value="789"
+                                    // text={`789`}
+                                    value="65"
+                                    text={`65%`}
                                     styles={buildStyles({
                                         trailColor: "#F5FBFF",
                                         pathColor: "#7D00B5",
@@ -329,9 +333,9 @@ const InstructorDashboard = () => {
                 </Card>
             </div>
             <div className='col-sm-8 col-md-8'>
-                <Card>
-                    {/* <Strength/> */}
-                </Card>
+                {/* <Card>
+                    <Strength/>
+                </Card> */}
             </div>
         </div>
     </div>)

@@ -358,7 +358,7 @@ const DashboardLearner = () => {
             <Card title="" className='mt-2'>
 
 
-                <label className="m-3 label form-label ">Select Training</label>
+                <label className="m-3 label form-label title-md ">Select Training</label>
                 <select className="form-control mb-3 mx-2" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
                     getLearnerWeightedScoresSpecific(e.target.value);
 
@@ -396,7 +396,11 @@ const DashboardLearner = () => {
                                 <div className='d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
                                     <div className='title-sm'>Videos</div>
                                     <div>
-                                        {trainingDetails[0].learnerWeightedDetailsTO.videoCompletion.overalllAverageWeightage * 100}%
+                                        {isNaN(trainingDetails[0].learnerWeightedDetailsTO.videoCompletion.overalllAverageWeightage) ?
+                                            "0%"
+                                            :
+                                            `${trainingDetails[0].learnerWeightedDetailsTO.videoCompletion.overalllAverageWeightage * 100}%`
+                                        }
                                     </div>
                                 </div>
                                 : ''
@@ -407,7 +411,11 @@ const DashboardLearner = () => {
                                 <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
                                     <div className='title-sm'>Lab</div>
                                     <div>
-                                        {(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage * 100).toFixed(2)}%
+                                        {isNaN(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage) ?
+                                            "0%"
+                                            :
+                                            `${(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage * 100).toFixed(2)}%`
+                                        }
                                     </div>
                                 </div>
                                 : ''
@@ -416,7 +424,11 @@ const DashboardLearner = () => {
                             <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
                                 <div className='title-sm'>Assesment</div>
                                 <div>
-                                    {(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage * 100).toFixed(2)}%
+                                    {isNaN(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage) ?
+                                        "0%"
+                                        :
+                                        `${(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage * 100).toFixed(2)}%`
+                                    }
                                 </div>
                             </div>
                             : ''
@@ -427,10 +439,14 @@ const DashboardLearner = () => {
                         </div>
                         {
                             trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.documentDetails !== null ?
-                                <div className='d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
+                                <div className=' my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
                                     <div className='title-sm'>Document</div>
                                     <div>
-                                        {trainingDetails[0].learnerWeightedDetailsTO.documentDetails.overalllAverageWeightage * 100}%
+                                        {isNaN(trainingDetails[0].learnerWeightedDetailsTO.documentDetails.overalllAverageWeightage) ?
+                                            "0%"
+                                            :
+                                            `${trainingDetails[0].learnerWeightedDetailsTO.documentDetails.overalllAverageWeightage * 100}%`
+                                        }
                                     </div>
                                 </div>
                                 : ''
@@ -441,7 +457,11 @@ const DashboardLearner = () => {
                                 <div className='d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
                                     <div className='title-sm'>Coding Questions</div>
                                     <div>
-                                        {trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails.overalllAverageWeightage * 100}%
+                                        {isNaN(trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails.overalllAverageWeightage) ?
+                                            "0%"
+                                            :
+                                            `${trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails.overalllAverageWeightage * 100}%`
+                                        }
                                     </div>
                                 </div>
                                 : ''
@@ -457,9 +477,11 @@ const DashboardLearner = () => {
                                 <div className="text-center " style={{ width: 100, height: 60 }}>
                                     <CircularProgressbar
 
-                                        maxValue="1000"
-                                        minValue="1" value="580"
-                                        text={`580`}
+                                        // maxValue="1000"
+                                        // minValue="1" value="580"
+                                        // text={`580`}
+                                        value="30"
+                                        text={`30%`}
                                         styles={buildStyles({
                                             trailColor: "#F5FBFF",
                                             pathColor: "#5CC9EE",
@@ -480,9 +502,11 @@ const DashboardLearner = () => {
 
                                 <div className="text-center" style={{ width: 100, height: 60, marginTop: "80px", marginLeft: "40px" }}>
                                     <CircularProgressbar
-                                        maxValue="1000"
-                                        minValue="1" value="789"
-                                        text={`789`}
+                                        // maxValue="1000"
+                                        // minValue="1" value="789"
+                                        // text={`789`}
+                                        value="40"
+                                        text={`40%`}
                                         styles={buildStyles({
                                             trailColor: "#F5FBFF",
                                             pathColor: "#7D00B5",
@@ -531,7 +555,7 @@ const DashboardLearner = () => {
                                             return (
                                                 <>
                                                     <tr >
-                                                        <td style={{ fontWeight: "500", fontSize: "20px", color: "#7214AE" }}><ul><li>{skill.tags}</li></ul></td>
+                                                        <td className='title-sm'><ul><li>{skill.tags}</li></ul></td>
                                                         <td>{skill.totalTagPercentage}</td>
 
                                                     </tr>

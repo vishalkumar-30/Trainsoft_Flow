@@ -85,14 +85,14 @@ const LinearProgressBar = () => {
                     <div class="d-flex flex-row align-items-center">
                        
                         <div class="ms-2 c-details">
-                            <div class="mb-0">Kubernetes for cloud native</div> 
+                            <div class="mb-0">Git labs</div> 
                         </div>
                       
                     </div>
                     <div className='days'> <span>30 mins</span></div>
                 </div>
               
-                    <div class="c-details1">Assignment 4</div>
+                    <div class="c-details1">Assignment 1</div>
                     <div class="mt-2">
                       
                             <Box sx={{ width: '100%' }}>
@@ -111,14 +111,14 @@ const LinearProgressBar = () => {
                     <div class="d-flex flex-row align-items-center">
                        
                         <div class="ms-2 c-details">
-                            <div class="mb-0">Kubernetes for cloud native</div> 
+                            <div class="mb-0">Docker labs</div> 
                         </div>
                       
                     </div>
                     <div className='days'> <span>30 mins</span></div>
                 </div>
               
-                    <div class="c-details1">Assignment 4</div>
+                    <div class="c-details1">Assignment 3</div>
                     <div class="mt-2">
                       
                             <Box sx={{ width: '100%' }}>
@@ -137,14 +137,14 @@ const LinearProgressBar = () => {
                     <div class="d-flex flex-row align-items-center">
                        
                         <div class="ms-2 c-details">
-                            <div class="mb-0">Kubernetes for cloud native</div> 
+                            <div class="mb-0">Devops Assignment</div> 
                         </div>
                       
                     </div>
                     <div className='days'> <span>30 mins</span></div>
                 </div>
               
-                    <div class="c-details1">Assignment 4</div>
+                    <div class="c-details1">Assignment 5</div>
                     <div class="mt-2">
                       
                             <Box sx={{ width: '100%' }}>

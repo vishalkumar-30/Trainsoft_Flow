@@ -101,10 +101,10 @@
 }
 .bor{
     border-color: #7214AE;
-    opacity: 0.5;
+    opacity: 0.9;
 border-radius: 15px;
 /* transform: matrix(1, 0, 0, -1, 0, 0); */
-border-top-color: rgb(227, 208, 239);
+/* border-top-color: rgb(227, 208, 239); */
 }
 
 /* leaderboardTimeline */
@@ -249,3 +249,14 @@ border-top-color: rgb(227, 208, 239);
   .single-blog-list-inner .details .blog-meta li:last-child {
     margin-right: 0;
   }
+
+  .Strength-modal-container {
+   position: absolute;
+   background: #D0EFFA;
+   left: 25%;
+   top: 20%;
+   padding: 20px;
+   right: 25%;
+   border-radius: 20px;
+   border-left: 2px solid #C8A3DF;
+}
