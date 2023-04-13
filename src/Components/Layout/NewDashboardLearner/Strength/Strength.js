@@ -118,7 +118,7 @@ const Strength = ({ recommendations, strength, weakness }) => {
                 <div class="col-md-4 ">
                     <div class="card bor mx-sm-1 p-3 h-100">
                         <div class="card   p-2 my-card" ><span ><CrisisAlertIcon /></span></div>
-                        <div class="text-center mt-3 title-md">Reccomendations</div>
+                        <div class="text-center mt-3 title-md">Recommendations</div>
                         <div class=" mt-2" >
                             {/* <ul>
                             {

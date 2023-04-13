@@ -207,9 +207,10 @@ const AdminHome = () => {
                             <div className="text-center " style={{ width: 100, height: 60 }}>
                                 <CircularProgressbar
 
-                                    maxValue="1000"
-                                    minValue="1" value="580"
-                                    text={`580`}
+                                    // maxValue="1000"
+                                    // minValue="1" value="580"
+                                    value="80"
+                                    text={`80%`}
                                     styles={buildStyles({
                                         trailColor: "#F5FBFF",
                                         pathColor: "#5CC9EE",
@@ -230,9 +231,10 @@ const AdminHome = () => {
 
                             <div className="text-center" style={{ width: 100, height: 60, marginTop: "80px", marginLeft: "40px" }}>
                                 <CircularProgressbar
-                                    maxValue="1000"
-                                    minValue="1" value="789"
-                                    text={`789`}
+                                    // maxValue="1000"
+                                    // minValue="1" value="789"
+                                    value="75"
+                                    text={`75%`}
                                     styles={buildStyles({
                                         trailColor: "#F5FBFF",
                                         pathColor: "#7D00B5",

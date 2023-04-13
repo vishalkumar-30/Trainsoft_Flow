@@ -28,6 +28,9 @@ const SkillsLevelGraph = ({skills}) => {
     else if(skills >= 10 && skills < 40){
       setFinalRotation('-100deg');
     }
+    else{
+      setFinalRotation('-50deg');
+    }
   }
 
   setTimeout(() => {
