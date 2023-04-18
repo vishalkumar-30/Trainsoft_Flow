@@ -30,7 +30,7 @@ const VsCode = ()=>{
             //      spinner.hide()
             //     // window.open(createPortal(data))
             // })
-            setLink("https://ip_172_31_14_32-apurv-1998.cdr.co/?folder=%2Fhome%2Fcoder/sample")
+            setLink("https://box.trainsoft.live/")
             spinner.hide()
             
         }catch(err){
@@ -46,7 +46,7 @@ const VsCode = ()=>{
                    {/* { link &&  <object type="text/html" data={link} style={{ width: "100%", height: "100%" }}>
                                 <p className="px-4">Loading... VsCode</p>
                             </object> } */}
-       { link && <iframe  src="https://ip_172_31_14_32-apurv-1998.cdr.co/?folder=%2Fhome%2Fcoder/sample" height="100%" width="100%" title="Iframe Example"> </iframe> }
+       { link && <iframe  src="https://box.trainsoft.live/" height="100%" width="100%" title="Iframe Example"> </iframe> }
     </>)
 }
 
