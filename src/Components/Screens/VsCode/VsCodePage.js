@@ -8,7 +8,7 @@ const VsCodePage = ()=>{
   
 
     const onOpen =()=>{
-        window.open('https://ip_172_31_14_32-apurv-1998.cdr.co/?folder=%2Fhome%2Fcoder/sample')
+        window.open('https://box.trainsoft.live/')
     }
 
     return(<>
