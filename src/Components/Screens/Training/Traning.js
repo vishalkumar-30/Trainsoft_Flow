@@ -36,7 +36,7 @@ const Trainings = ({ location }) => {
     const [initialValues, setInitialValue] = useState(initialVal);
     const [count, setCount] = useState(0);
     const [status, setStatus] = useState('ENABLED');
-    const newStatus = user.role === ROLE.SUPERVISOR ? 'status' : '';
+    const newStatus = user.role === ROLE.SUPERVISOR ? 'Status' : '';
 
     // get all batches
     const allBatches = useFetch({

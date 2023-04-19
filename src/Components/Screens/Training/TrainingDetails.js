@@ -20,7 +20,7 @@ import AssessmentIcon from '@mui/icons-material/Assessment';
 import CodeIcon from '@mui/icons-material/Code';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import useToast from "../../../Store/ToastHook";
-
+import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 const TrainingDetails = ({ location }) => {
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
     const { user, ROLE, spinner } = useContext(AppContext);
@@ -425,7 +425,7 @@ const TrainingDetails = ({ location }) => {
             }
         }
     }
-
+console.log(trainingBySid)
     
     return (
         <>
@@ -491,7 +491,7 @@ const TrainingDetails = ({ location }) => {
 
                                 {
                                     trainingBySid.trainingOverview != null ?
-                                        <p className="title-lg text-capitalize">{trainingBySid.trainingOverview}</p>
+                                        <p className="title-md ">{trainingBySid.trainingOverview}</p>
                                         : 'Overview not Provided'
                                 }
 
@@ -537,6 +537,35 @@ const TrainingDetails = ({ location }) => {
                                 <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/kubernetes-jeopardy-game.html" target="_blank">Fun With Kubernetes</a></div>
                             </div>}
                     </DropdownItem>
+
+                    {trainingBySid.name === "Cloud Computing, Docker And Kubernetes Journey" ?
+                       <>
+                        <DropdownItem title="Development Labs" total="5" theme="dark">
+
+
+<div>
+    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_01_Install_and_Configure_k3s_cluster" target="_blank">Install and Configure K3s Cluster</a></div>
+    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_02_Install_and_configure_k9s" target="_blank">Install and Configure K9s</a></div>
+    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_03_Imperative_Commands_in_Kubernetes" target="_blank">Imperative Commands in Kubernetes</a></div>
+
+    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_04_Kubernetes_Deployment" target="_blank">Kubernetes Deployment</a></div>
+    
+    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_05_Asssign_memory_request_and_a_memory_limit_to_a_Container" target="_blank">Asssign Memory Request</a></div>
+  
+</div>
+</DropdownItem>
+<DropdownItem title="Workshops" total="1" theme="dark">
+
+
+<div>
+    <div className="py-3"> <HomeRepairServiceIcon /><a href="https://do.trainsoft.live/?folder=/home/Workshops" target="_blank">Namespaces</a></div>
+  
+</div>
+</DropdownItem>
+                       </>
+                        : ''
+                    }
+
                 </div>
             </div>
         </>
