@@ -161,11 +161,6 @@ const OurNotes = () => {
     getTrainings();
   }, []);
 
-  console.log(contentList);
-  console.log(options);
-  console.log(trainingSid);
-  console.log(contentSid);
-  console.log(contentName);
 
   return (
     <>
@@ -224,7 +219,7 @@ const OurNotes = () => {
               <div className='col-3 border'>
                 <label className="mb-2 label form-label ">Screen Shots</label>
                 <input id='fileUpload' type='file' multiple
-                  accept='application/pdf, image/png'
+                  accept=".heic, image/*"
                   onChange={handleFileEvent}
                   disabled={limit}
                 />
