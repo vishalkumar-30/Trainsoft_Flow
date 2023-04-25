@@ -21,6 +21,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import useToast from "../../../Store/ToastHook";
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
+import LoadingSpinner from "./LoadingSpinner";
 const TrainingDetails = ({ location }) => {
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
     const { user, ROLE, spinner } = useContext(AppContext);
@@ -47,6 +48,7 @@ const TrainingDetails = ({ location }) => {
     const [played, setPlayed] = useState(0);
     const [duration, setDuration] = useState(0);
     const [call, setCall] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     let trainingSid = location.state.sid;
     let username = JSON.parse(localStorage.getItem('user'));
@@ -250,6 +252,7 @@ const TrainingDetails = ({ location }) => {
                 }
             ).finally(() => {
                 spinner.hide();
+                setIsLoading(false)
             });
         } catch (err) {
             console.error("error occur on getTrainingContentsByTrainingSid()", err)
@@ -438,136 +441,136 @@ console.log(trainingBySid)
                 </div>
             </div>
             <hr />
+           
+            {isLoading ? <LoadingSpinner /> :   <div class="row">
 
-            <div class="row">
+<div class="col-8  pl-3 " style={{ marginTop: "-25px" }}>
 
-                <div class="col-8  pl-3 " style={{ marginTop: "-25px" }}>
+    {(type === "EXTERNAL_LINK" || type === "VIDEO") ?
+        VideoMediaPlayer(vdlink)
+        : (type === "PHOTO" || type === "DOCUMENTS") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
+            : (type === "LAB" || type === "CODING") ?
+                <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
+                    <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
 
-                    {(type === "EXTERNAL_LINK" || type === "VIDEO") ?
-                        VideoMediaPlayer(vdlink)
-                        : (type === "PHOTO" || type === "DOCUMENTS") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
-                            : (type === "LAB" || type === "CODING") ?
-                                <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
-                                    <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
-
-                                        {
-                                            <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/labs", {
-                                                state: {
-                                                    labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename, type, codingQuestionId, codingQuestiondesc
-                                                }
-                                            })
-                                            }>Open Sandbox</button>}
-                                    </div>
-
-                                </div>
-                                :
-                                (type === "ASSESSMENT") ?
-                                    <div className="assesmentimg row ml-1" >
-                                        <div style={{ width: "180px", textAlign: "center", textDecoration: "none", background: "blue", color: "white", padding: "15px 20px", marginLeft: "250px", marginBottom: "10px", marginTop: "100px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                            <a href={vdlink} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", fontSize: "15px" }}>Start Assessment</a>
-                                        </div>
-                                    </div>
-                                    :
-                                    (type === "TRAINING_SESSION") ?
-                                        <div className="zoommeeting row ml-1">
-                                            <div style={{ width: "120px", textAlign: "center", textDecoration: "none", color: "white", background: "blue", padding: "10px 10px", marginLeft: "20px", marginBottom: "80px", marginTop: "85px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                                <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
-                                            </div>
-                                        </div>
-                                        : ''
-
-                    }
-
-                    <div class="tabset">
-
-                        <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked />
-                        <label for="tab1">Overview</label>
-
-                        <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier" />
-                        <label for="tab2">Q&A</label>
-
-                        <div class="tab-panels">
-                            <section id="marzen" class="tab-panel">
-
-                                {
-                                    trainingBySid.trainingOverview != null ?
-                                        <p className="title-md ">{trainingBySid.trainingOverview}</p>
-                                        : 'Overview not Provided'
+                        {
+                            <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/labs", {
+                                state: {
+                                    labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename, type, codingQuestionId, codingQuestiondesc
                                 }
-
-                            </section>
-                            <section id="rauchbier" class="tab-panel">
-                                <Qa />
-                            </section>
-
-                        </div>
-
+                            })
+                            }>Open Sandbox</button>}
                     </div>
 
                 </div>
+                :
+                (type === "ASSESSMENT") ?
+                    <div className="assesmentimg row ml-1" >
+                        <div style={{ width: "180px", textAlign: "center", textDecoration: "none", background: "blue", color: "white", padding: "15px 20px", marginLeft: "250px", marginBottom: "10px", marginTop: "100px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                            <a href={vdlink} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", fontSize: "15px" }}>Start Assessment</a>
+                        </div>
+                    </div>
+                    :
+                    (type === "TRAINING_SESSION") ?
+                        <div className="zoommeeting row ml-1">
+                            <div style={{ width: "120px", textAlign: "center", textDecoration: "none", color: "white", background: "blue", padding: "10px 10px", marginLeft: "20px", marginBottom: "80px", marginTop: "85px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
+                            </div>
+                        </div>
+                        : ''
 
-                <div class="col-4 " style={{ height: "535px", overflowY: "scroll", marginLeft: "-12px", marginTop: "-25px", borderTopLeftRadius: "10px", borderTopRightRadius: "10px", background: "#F7F9FA", boxShadow: "#00000033 0px 0px 0px 1px, #00000033 0px 1px 1px -1px, #00000033 0px 1px 0px " }}>
-                    {trainingDetailsList.length > 0 ? trainingDetailsList.map((train) => {
-                        return (
-                            <>
-                                <div >
-                                    <DropdownItem title={train.sectionName} total={train.courseContentResposeTOList.length} theme="dark">
-                                        <DynamicTable  {...{ configuration, sourceData: train.courseContentResposeTOList }} />
-                                    </DropdownItem>
-                                    {
-                                        feed ? <Modal show={modal} handleClose={() => setModal(false)}>
+    }
 
-                                            <Feedback sectionsid={train.sid} trainingsid={location.state.sid} />
+    <div class="tabset">
 
-                                        </Modal> : ''
-                                    }
-                                </div>
-                            </>
-                        )
-                    }) : ''}
+        <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked />
+        <label for="tab1">Overview</label>
 
-                    <DropdownItem title="Fun Activity" total="2" theme="dark">
-                        {username.name === "Wipro" ?
-                            <div>
-                                <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/enterprise-administrator.html" target="_blank">Fun With Enterprise Administrator</a></div>
-                                <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/ms-training.html" target="_blank">Fun With MS Training</a></div>
-                            </div> :
-                            <div>
-                                <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/cloud-native-jeopardy.html" target="_blank">Fun With Cloud Native</a></div>
-                                <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/kubernetes-jeopardy-game.html" target="_blank">Fun With Kubernetes</a></div>
-                            </div>}
+        <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier" />
+        <label for="tab2">Q&A</label>
+
+        <div class="tab-panels">
+            <section id="marzen" class="tab-panel">
+
+                {
+                    trainingBySid.trainingOverview != null ?
+                        <p className="title-md ">{trainingBySid.trainingOverview}</p>
+                        : 'Overview not Provided'
+                }
+
+            </section>
+            <section id="rauchbier" class="tab-panel">
+                <Qa />
+            </section>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="col-4 " style={{ height: "535px", overflowY: "scroll", marginLeft: "-12px", marginTop: "-25px", borderTopLeftRadius: "10px", borderTopRightRadius: "10px", background: "#F7F9FA", boxShadow: "#00000033 0px 0px 0px 1px, #00000033 0px 1px 1px -1px, #00000033 0px 1px 0px " }}>
+    {trainingDetailsList.length > 0 ? trainingDetailsList.map((train) => {
+        return (
+            <>
+                <div >
+                    <DropdownItem title={train.sectionName} total={train.courseContentResposeTOList.length} theme="dark">
+                        <DynamicTable  {...{ configuration, sourceData: train.courseContentResposeTOList }} />
                     </DropdownItem>
+                    {
+                        feed ? <Modal show={modal} handleClose={() => setModal(false)}>
 
-                    {trainingBySid.name === "Cloud Computing, Docker And Kubernetes Journey" ?
-                       <>
-                        <DropdownItem title="Development Labs" total="5" theme="dark">
+                            <Feedback sectionsid={train.sid} trainingsid={location.state.sid} />
+
+                        </Modal> : ''
+                    }
+                </div>
+            </>
+        )
+    }) : ''}
+
+    <DropdownItem title="Fun Activity" total="2" theme="dark">
+        {username.name === "Wipro" ?
+            <div>
+                <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/enterprise-administrator.html" target="_blank">Fun With Enterprise Administrator</a></div>
+                <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/ms-training.html" target="_blank">Fun With MS Training</a></div>
+            </div> :
+            <div>
+                <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/cloud-native-jeopardy.html" target="_blank">Fun With Cloud Native</a></div>
+                <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/kubernetes-jeopardy-game.html" target="_blank">Fun With Kubernetes</a></div>
+            </div>}
+    </DropdownItem>
+
+    {trainingBySid.name === "Cloud Computing, Docker And Kubernetes Journey" ?
+       <>
+        <DropdownItem title="Development Labs" total="5" theme="dark">
 
 
 <div>
-    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_01_Install_and_Configure_k3s_cluster" target="_blank">Install and Configure K3s Cluster</a></div>
-    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_02_Install_and_configure_k9s" target="_blank">Install and Configure K9s</a></div>
-    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_03_Imperative_Commands_in_Kubernetes" target="_blank">Imperative Commands in Kubernetes</a></div>
+<div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_01_Install_and_Configure_k3s_cluster" target="_blank">Install and Configure K3s Cluster</a></div>
+<div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_02_Install_and_configure_k9s" target="_blank">Install and Configure K9s</a></div>
+<div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_03_Imperative_Commands_in_Kubernetes" target="_blank">Imperative Commands in Kubernetes</a></div>
 
-    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_04_Kubernetes_Deployment" target="_blank">Kubernetes Deployment</a></div>
-    
-    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_05_Asssign_memory_request_and_a_memory_limit_to_a_Container" target="_blank">Asssign Memory Request</a></div>
-  
+<div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_04_Kubernetes_Deployment" target="_blank">Kubernetes Deployment</a></div>
+
+<div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_05_Asssign_memory_request_and_a_memory_limit_to_a_Container" target="_blank">Asssign Memory Request</a></div>
+
 </div>
 </DropdownItem>
 <DropdownItem title="Workshops" total="1" theme="dark">
 
 
 <div>
-    <div className="py-3"> <HomeRepairServiceIcon /><a href="https://do.trainsoft.live/?folder=/home/Workshops" target="_blank">Namespaces</a></div>
-  
+<div className="py-3"> <HomeRepairServiceIcon /><a href="https://do.trainsoft.live/?folder=/home/Workshops" target="_blank">Namespaces</a></div>
+
 </div>
 </DropdownItem>
-                       </>
-                        : ''
-                    }
+       </>
+        : ''
+    }
 
-                </div>
-            </div>
+</div>
+</div>}
         </>
     )
 }

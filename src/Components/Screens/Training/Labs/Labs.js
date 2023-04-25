@@ -1,12 +1,13 @@
 import { useContext, useState, useEffect } from "react";
 import ReactMarkdown from 'react-markdown';
-import { useNavigate } from "@reach/router";
+import { Link, useNavigate } from "@reach/router";
 import useToast from "../../../../Store/ToastHook";
 import AppContext from "../../../../Store/AppContext";
 import RestService from "../../../../Services/api.service";
 import CountdownTimer from "../../../Common/CountdownTimer/CountdownTimer";
 import CodeEditor from "../../ClassLab/CodeEditor/CodeEditor";
 import "./labs.css";
+import { ICN_BACK } from "../../../Common/Icon";
 
 function Labs(props) {
     const [labDescription, setLabDescription] = useState(props.location.state.labDescription);
@@ -25,6 +26,26 @@ function Labs(props) {
     const [labName, setLabName] = useState(props.location.state.showcoursename);
     const Toast = useToast();
     const navigate = useNavigate();
+
+// strechable layout start
+    const [leftWidth, setLeftWidth] = useState(40);
+
+    const handleMouseMove = (e) => {
+      setLeftWidth(e.clientX / window.innerWidth * 100);
+    };
+  
+    const handleMouseUp = () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  
+    const handleMouseDown = () => {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    };
+
+// strechable layout end
+
 
     //start lab 
     const ec2GuacamolePOC = async () => {
@@ -225,11 +246,14 @@ function Labs(props) {
 
     }, []);
 
-
+  
     return (
         <div >
-            <div className="labbody vh-100 " >
-                <div className="col-3 jumbotron pl-5 lab" >
+            <div style={{ display: 'flex', height: '100vh',background:"#e9ecef" }} >
+            {/* <p className='text-center'><Link to="/training/training-details"  >{ICN_BACK}Go Back </Link></p> */}
+          
+                <div className="jumbotron pl-5 lab" style={{ width: `${leftWidth}%`, height: '100%', overflow: 'auto' }} >
+                <button onClick={() => navigate(-1)}>{ICN_BACK}Go back</button>
                     <h3 className="text-center " style={{ fontSize: "18px", fontWeight: "bold" }} >{labName}</h3>
                     <hr />
                     <br />
@@ -265,7 +289,10 @@ function Labs(props) {
                             }
                         </div>
                         :
-                        <div className="col-9 mainbody" style={{ background: "black" }}>
+                        
+                       <>
+                           <div style={{ width: '10px', background: '#ddd', cursor: 'col-resize' }} onMouseDown={handleMouseDown}></div>
+                        <div className=" mainbody ml-2" style={{ flex: '1', height: '100%', overflow: 'auto',background:"black" }}>
                             {/* labbacimg */}
                             <div className=" row ml-1"  >
                                 <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "18px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
@@ -307,6 +334,7 @@ function Labs(props) {
                             </div>
 
                         </div>
+                       </>
                 }
             </div>
         </div>

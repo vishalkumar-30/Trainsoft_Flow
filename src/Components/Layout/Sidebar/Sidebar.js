@@ -32,7 +32,7 @@ const Sidebar = ({location}) => {
   <button onClick={toggleSidebar} className={`toggle-button ${isOpen ? 'open' : 'toggle-button-close'}`} >☰</button>
       <div  className={`sideBarNav ${isOpen ? 'open' : ''}`}>
         {
-          !isOpen ? <div className="nav-title-ts" >TS</div> : <div className="nav-title">TrainSoft</div>
+          !isOpen ? <div className="nav-title-ts" >GL</div> : <div className="nav-title">Gnosis Lab</div>
         }
         {location && AdminConfig.map(res =><Fragment key={res.pathname}>
           {res && res.role.some((e) => e === user.role) &&  

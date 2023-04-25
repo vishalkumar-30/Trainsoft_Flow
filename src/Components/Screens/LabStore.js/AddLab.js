@@ -59,7 +59,7 @@ const AddLab = ({ labId }) => {
           <div className="">Developed by</div>
         </div>
         <div className="col-3">
-          <div className="">TrainSoft</div>
+          <div className="">Gnosis Lab</div>
         </div>
         <div className="col-3">
           <div className="">Number of users required</div>
