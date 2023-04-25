@@ -1019,7 +1019,7 @@ const CourseDetails = ({ location }) => {
                                                                         categorieList.map((item) => {
                                                                             return (
                                                                                 <>
-                                                                                    <option value={item}>{item}</option>
+                                                                                    <option value={item.categoryName}>{item.categoryName}</option>
                                                                                 </>
                                                                             )
                                                                         })
