@@ -61,15 +61,15 @@ const LabStore = ({ location }) => {
             {categorieList.map(res => <div className="catalogBox">
                 <div className="catalogBox-info">
                     
-                <div ><img src="https://cdn.hackr.io/uploads/posts/large/1570190199BHjChzs3MR.jpg" width="100%" height="230px" alt="Lab" title={res} style={{borderTopLeftRadius:"15px",borderTopRightRadius:"15px"}}/></div>
+                <div ><img src={res.thumbnail} width="100%" height="230px" alt="Lab" title={res.categoryName} style={{borderTopLeftRadius:"15px",borderTopRightRadius:"15px"}}/></div>
                 <div className="catalog-content" >
-                        <div className="cat-title-md">{res}</div>
+                        <div className="cat-title-md">{res.categoryName}</div>
                         {/* <div className="cat-title-sm">{res.desc}</div> */}
                   
                     <div className="text-right">
                         <BtnPrimary onClick={() => {
                             navigate('labstore/lab-list', { state: { title: 'LAB STORE', subTitle: "Catalog", subPath: "labstore"} });
-                            filterLabs(res);
+                            filterLabs(res.categoryName);
                             }} className="labbutton">Show All Lab(s)</BtnPrimary>
                     </div>
                     </div>

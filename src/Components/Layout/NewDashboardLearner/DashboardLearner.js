@@ -252,7 +252,6 @@ const DashboardLearner = () => {
         getLearnerDasboardCardsDetails();
     }, []);
 
-
     return (
         <>
 
@@ -378,159 +377,226 @@ const DashboardLearner = () => {
                         })
                     }
                 </select>
-
-                <div className='row '>
-                    <div className='col-sm-2 col-md-2'>
-                        <div className='title-md'>
-                            Leaderboard
-                        </div>
-                        <LeaderboardTimeline ranking={ranking} />
-
-                    </div>
-                    <div className='col-sm-3 col-md-3'>
-                        <div className='title-md text-center'>
-                            Progress
-                        </div>
-                        {
-                            trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.videoCompletion !== null ?
-                                <div className='d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
-                                    <div className='title-sm'>Videos</div>
-                                    <div>
-                                        {isNaN(trainingDetails[0].learnerWeightedDetailsTO.videoCompletion.overalllAverageWeightage) ?
-                                            "0%"
-                                            :
-                                            `${trainingDetails[0].learnerWeightedDetailsTO.videoCompletion.overalllAverageWeightage * 100}%`
-                                        }
+                {
+                    //show training specific details when selecting only
+                    trainingDetails.length > 0 ?
+                        <>
+                            <div className='row '>
+                                <div className='col-sm-2 col-md-2'>
+                                    <div className='title-md'>
+                                        Leaderboard
                                     </div>
-                                </div>
-                                : ''
-                        }
-                        {
-                            trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.labDetails !== null ?
+                                    <LeaderboardTimeline ranking={ranking} />
 
-                                <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
-                                    <div className='title-sm'>Lab</div>
-                                    <div>
-                                        {isNaN(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage) ?
-                                            "0%"
-                                            :
-                                            `${(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage * 100).toFixed(2)}%`
-                                        }
-                                    </div>
                                 </div>
-                                : ''
-                        }
-                        {trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails !== null ?
-                            <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
-                                <div className='title-sm'>Assesment</div>
-                                <div>
-                                    {isNaN(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage) ?
-                                        "0%"
-                                        :
-                                        `${(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage * 100).toFixed(2)}%`
+                                <div className='col-sm-3 col-md-3'>
+                                    <div className='title-md text-center'>
+                                        Progress
+                                    </div>
+                                    {
+                                        trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.videoCompletion !== null ?
+                                            <div className='d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
+                                                <div className='title-sm'>Videos</div>
+                                                <div>
+                                                    {isNaN(trainingDetails[0].learnerWeightedDetailsTO.videoCompletion.overalllAverageWeightage) ?
+                                                        "0%"
+                                                        :
+                                                        `${trainingDetails[0].learnerWeightedDetailsTO.videoCompletion.overalllAverageWeightage * 100}%`
+                                                    }
+                                                </div>
+                                            </div>
+                                            : ''
                                     }
-                                </div>
-                            </div>
-                            : ''
-                        }
-                        <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
-                            <div className='title-sm'>Capstone</div>
-                            <div >70%</div>
-                        </div>
-                        {
-                            trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.documentDetails !== null ?
-                                <div className=' my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
-                                    <div className='title-sm'>Document</div>
-                                    <div>
-                                        {isNaN(trainingDetails[0].learnerWeightedDetailsTO.documentDetails.overalllAverageWeightage) ?
-                                            "0%"
-                                            :
-                                            `${trainingDetails[0].learnerWeightedDetailsTO.documentDetails.overalllAverageWeightage * 100}%`
-                                        }
+                                    {
+                                        trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.labDetails !== null ?
+
+                                            <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
+                                                <div className='title-sm'>Lab</div>
+                                                <div>
+                                                    {isNaN(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage) ?
+                                                        "0%"
+                                                        :
+                                                        `${(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage * 100).toFixed(2)}%`
+                                                    }
+                                                </div>
+                                            </div>
+                                            : ''
+                                    }
+                                    {trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails !== null ?
+                                        <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
+                                            <div className='title-sm'>Assesment</div>
+                                            <div>
+                                                {isNaN(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage) ?
+                                                    "0%"
+                                                    :
+                                                    `${(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage * 100).toFixed(2)}%`
+                                                }
+                                            </div>
+                                        </div>
+                                        : ''
+                                    }
+                                    <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
+                                        <div className='title-sm'>Capstone</div>
+                                        <div >70%</div>
                                     </div>
-                                </div>
-                                : ''
-                        }
+                                    {
+                                        trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.documentDetails !== null ?
+                                            <div className=' my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
+                                                <div className='title-sm'>Document</div>
+                                                <div>
+                                                    {isNaN(trainingDetails[0].learnerWeightedDetailsTO.documentDetails.overalllAverageWeightage) ?
+                                                        "0%"
+                                                        :
+                                                        `${trainingDetails[0].learnerWeightedDetailsTO.documentDetails.overalllAverageWeightage * 100}%`
+                                                    }
+                                                </div>
+                                            </div>
+                                            : ''
+                                    }
 
-                        {
-                            trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails !== null ?
-                                <div className='d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
-                                    <div className='title-sm'>Coding Questions</div>
-                                    <div>
-                                        {isNaN(trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails.overalllAverageWeightage) ?
-                                            "0%"
-                                            :
-                                            `${trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails.overalllAverageWeightage * 100}%`
-                                        }
+                                    {
+                                        trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails !== null ?
+                                            <div className='d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
+                                                <div className='title-sm'>Coding Questions</div>
+                                                <div>
+                                                    {isNaN(trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails.overalllAverageWeightage) ?
+                                                        "0%"
+                                                        :
+                                                        `${trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails.overalllAverageWeightage * 100}%`
+                                                    }
+                                                </div>
+                                            </div>
+                                            : ''
+                                    }
+
+                                </div>
+                                <div className='col-sm-3 col-md-3'>
+                                    <div className='title-md text-center'>
+                                        Assessments
                                     </div>
-                                </div>
-                                : ''
-                        }
+                                    <div className=" py-5 ml-5">
+                                        <div className="flx pb-3" style={{ marginTop: "-40px" }} >
+                                            <div className="text-center " style={{ width: 100, height: 60 }}>
+                                                <CircularProgressbar
 
-                    </div>
-                    <div className='col-sm-3 col-md-3'>
-                        <div className='title-md text-center'>
-                            Assessments
-                        </div>
-                        <div className=" py-5 ml-5">
-                            <div className="flx pb-3" style={{ marginTop: "-40px" }} >
-                                <div className="text-center " style={{ width: 100, height: 60 }}>
-                                    <CircularProgressbar
+                                                    // maxValue="1000"
+                                                    // minValue="1" value="580"
+                                                    // text={`580`}
+                                                    value="30"
+                                                    text={`30%`}
+                                                    styles={buildStyles({
+                                                        trailColor: "#F5FBFF",
+                                                        pathColor: "#5CC9EE",
 
-                                        // maxValue="1000"
-                                        // minValue="1" value="580"
-                                        // text={`580`}
-                                        value="30"
-                                        text={`30%`}
-                                        styles={buildStyles({
-                                            trailColor: "#F5FBFF",
-                                            pathColor: "#5CC9EE",
+                                                    })} />
+                                                <div className="mt-2">Project Work</div>
+                                            </div>
 
-                                        })} />
-                                    <div className="mt-2">Project Work</div>
-                                </div>
-                                <div className="text-center assementdashboard" style={{ width: 100, height: 60 }}>
-                                    <CircularProgressbar
+
+
+                                            <div className="text-center assementdashboard" style={{ width: 100, height: 60 }}>
+                                                {trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails !== null ?
+                                                    isNaN(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage) ?
+                                                        <CircularProgressbar
+                                                            value="50"
+                                                            text={`50%`}
+                                                            styles={buildStyles({
+                                                                trailColor: "#F5FBFF",
+                                                                pathColor: "#5CC9EE",
+                                                            })} />
+                                                        :
+                                                        <CircularProgressbar
+                                                            value={Math.round(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage * 100)}
+                                                            text={`${Math.round(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage * 100)}%`}
+                                                            styles={buildStyles({
+                                                                trailColor: "#F5FBFF",
+                                                                pathColor: "#5CC9EE",
+                                                            })} />
+
+
+                                                    :
+
+
+                                                    <CircularProgressbar
+                                                        value="0"
+                                                        text={`0%`}
+                                                        styles={buildStyles({
+                                                            trailColor: "#F5FBFF",
+                                                            pathColor: "#5CC9EE",
+                                                        })} />
+                                                }
+                                                {/* <CircularProgressbar
                                         value="70"
                                         text={`70%`}
                                         styles={buildStyles({
                                             trailColor: "#F5FBFF",
                                             pathColor: "#5CC9EE",
-                                        })} />
-                                    <div className="mt-2">MCQs</div>
-                                </div>
+                                        })} /> */}
+                                                <div className="mt-2">MCQs</div>
+                                            </div>
 
-                                <div className="text-center" style={{ width: 100, height: 60, marginTop: "80px", marginLeft: "40px" }}>
-                                    <CircularProgressbar
-                                        // maxValue="1000"
-                                        // minValue="1" value="789"
-                                        // text={`789`}
-                                        value="40"
-                                        text={`40%`}
-                                        styles={buildStyles({
-                                            trailColor: "#F5FBFF",
-                                            pathColor: "#7D00B5",
-                                        })} />
-                                    <div className="mt-2">Lab Assessments </div>
+
+                                            <div className="text-center" style={{ width: 100, height: 60, marginTop: "80px", marginLeft: "40px" }}>
+                                                {
+                                                    trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.labDetails !== null ?
+                                                        isNaN(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage) ?
+                                                            <CircularProgressbar
+                                                                value="50"
+                                                                text={`50%`}
+                                                                styles={buildStyles({
+                                                                    trailColor: "#F5FBFF",
+                                                                    pathColor: "#5CC9EE",
+                                                                })} />
+                                                            :
+                                                            <CircularProgressbar
+                                                                // maxValue="1000"
+                                                                // minValue="1" value="789"
+                                                                // text={`789`}
+                                                                value={Math.round(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage * 100)}
+                                                                text={`${Math.round(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage * 100)}%`}
+                                                                styles={buildStyles({
+                                                                    trailColor: "#F5FBFF",
+                                                                    pathColor: "#7D00B5",
+                                                                })} />
+                                                        :
+                                                        <CircularProgressbar
+                                                            // maxValue="1000"
+                                                            // minValue="1" value="789"
+                                                            // text={`789`}
+                                                            value="0"
+                                                            text={`0%`}
+                                                            styles={buildStyles({
+                                                                trailColor: "#F5FBFF",
+                                                                pathColor: "#7D00B5",
+                                                            })} />
+                                                }
+                                                <div className="mt-2">Lab Assessments </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='col-sm-4 col-md-4'>
+                                    <div className='title-md text-center'>
+                                        Overall Score/ Progress
+                                    </div>
+                                    <div >
+                                        <CircularProgress progress={trainingDetails.length > 0 ? (
+                                            trainingDetails[0].learnerWeightedDetailsTO.courseCompletionStatus.completionPercentage > 100 ?
+                                                100 : trainingDetails[0].learnerWeightedDetailsTO.courseCompletionStatus.completionPercentage.toFixed(1))
+                                            : 50}
+                                            style={{ margintop: "60px" }} />
+
+                                    </div>
+
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className='col-sm-4 col-md-4'>
-                        <div className='title-md text-center'>
-                            Overall Score/ Progress
-                        </div>
-                        <div >
-                            <CircularProgress progress={trainingDetails.length > 0 ? (
-                                trainingDetails[0].learnerWeightedDetailsTO.courseCompletionStatus.completionPercentage > 100 ?
-                                    100 : trainingDetails[0].learnerWeightedDetailsTO.courseCompletionStatus.completionPercentage.toFixed(1))
-                                : 50}
-                                style={{ margintop: "60px" }} />
 
-                        </div>
+                        </>
+                        :
+                        ''
 
-                    </div>
-                </div>
+                }
+
             </Card>
             <div className='row mt-2'>
                 <div className='col-sm-4 col-md-4' >
@@ -541,7 +607,7 @@ const DashboardLearner = () => {
                                 :
 
                                 <div >
-                                    <CircularProgress progress={sum / strength.length}
+                                    <CircularProgress progress={Math.round(sum / strength.length)}
                                     />
                                 </div>
                         }
@@ -556,7 +622,7 @@ const DashboardLearner = () => {
                                                 <>
                                                     <tr >
                                                         <td className='title-sm'><ul><li>{skill.tags}</li></ul></td>
-                                                        <td>{skill.totalTagPercentage}</td>
+                                                        <td>{Math.round(skill.totalTagPercentage)}</td>
 
                                                     </tr>
                                                 </>

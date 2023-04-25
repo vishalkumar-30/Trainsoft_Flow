@@ -36,7 +36,8 @@ const Trainings = ({ location }) => {
     const [initialValues, setInitialValue] = useState(initialVal);
     const [count, setCount] = useState(0);
     const [status, setStatus] = useState('ENABLED');
-    const newStatus = user.role === ROLE.SUPERVISOR ? 'Status' : '';
+    const newStatus = user.role === ROLE.SUPERVISOR ? 'Status' : ''; 
+    const newBatches = user.role === ROLE.SUPERVISOR ? 'No of Batches' : '';
 
     // get all batches
     const allBatches = useFetch({
@@ -56,10 +57,12 @@ const Trainings = ({ location }) => {
 
             },
             "noOfBatches": {
-                "title": "No of Batches",
+                "title": newBatches,
                 "sortDirection": null,
                 "sortEnabled": true,
-                isSearchEnabled: false
+                isSearchEnabled: false,
+                render: (data) => user.role === ROLE.SUPERVISOR ? data.noOfBatches
+                    : <p style={{ display: "none" }}></p>
             },
             "course": {
                 "title": "Course",

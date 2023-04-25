@@ -196,7 +196,7 @@ const OurNotes = () => {
                 <label className="mb-2 label form-label ">Content</label>
                 <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}
                   onChange={(e) => { setContentName(e.target.value); }}>
-                  <option value=''> Selcet Content</option>
+                  <option value=''> Select Content</option>
                   <option value="EXTERNAL_LINK">Video</option>
                   <option value="DOCUMENTS">Document</option>
                 </select>
