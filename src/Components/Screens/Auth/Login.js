@@ -154,7 +154,7 @@ const Login = (props) => {
                             <form onSubmit={handleSubmit} className="login-form  my-2">
                                 <div className="text-center mb-3">
                                     
-                                {props.location.pathname == '/login'?<img src={TRAINSOFT}/>:<img src={EDFORCE}/>}
+                                {props.location.pathname == '/login'?<img src={TRAINSOFT} height="150px"/>:<img src={EDFORCE}/>}
                                
 
                                 </div>

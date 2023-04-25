@@ -68,7 +68,7 @@ const LandingHome = () => {
                         One Stop <br /> Online Learning Solution
                     </div>
                     <div className="pg-desc">
-                        TrainSoft provides the complete online learning solutions for ever
+                        Gnosis Lab provides the complete online learning solutions for ever
                         changing training demands for Corporate companies, Schools, Universities and Individual learners.
                     </div>
                     <div className="mt-3">
@@ -154,9 +154,9 @@ const LandingHome = () => {
         <div className="section-dk section" id="about">
             <div className="row jcc text-center my-4">
                 <div className="col-md-6">
-                    <div className="pg-title2 mb-2"> About TrainSoft </div>
+                    <div className="pg-title2 mb-2"> About  Gnosis Lab </div>
                     <div className="pg-desc1">
-                        Trainsoft empowers instructors, education service providers and corporates to deliver and manage live and self-paced learning with easy-to-use, scalable and cost-effective technology.
+                    Gnosis Lab empowers instructors, education service providers and corporates to deliver and manage live and self-paced learning with easy-to-use, scalable and cost-effective technology.
                     </div>
                 </div>
 
@@ -171,7 +171,7 @@ const LandingHome = () => {
                             <div className="page-card-title" onClick={() => navigate('/login')}>e-Training</div>
                             <div className="page-card-subTitle">Online Training Management</div>
                             <div className="page-card-body">
-                            Deploy Trainsoft to take your tutoring operations online and expand into new markets with minimum investment. Create branded learning portal with Trainsoft to train your customers on new software via online tutorials or live classes
+                            Deploy  Gnosis Lab to take your tutoring operations online and expand into new markets with minimum investment. Create branded learning portal with  Gnosis Lab to train your customers on new software via online tutorials or live classes
                             </div>
                         </div>
                         <div className="card-footer-action">
@@ -191,7 +191,7 @@ const LandingHome = () => {
                             <div className="page-card-title" onClick={() => navigate('/login',{state:{user:GLOBELCONSTANT.ROLE.ASSESS_USER}})}>e-Assessment</div>
                             <div className="page-card-subTitle">Online Assessment / Screening</div>
                             <div className="page-card-body">
-                                Trainsoft lets you create an online test to assess the progress of your class. With our online test generator tool, educators and corporate trainers can create, publish and conduct online tests<br />
+                            Gnosis Lab lets you create an online test to assess the progress of your class. With our online test generator tool, educators and corporate trainers can create, publish and conduct online tests<br />
 
                             </div>
                         </div>
@@ -252,7 +252,7 @@ const LandingHome = () => {
                             <div className="page-card-title">e-Curator</div>
                             <div className="page-card-subTitle">Online Content Curation</div>
                             <div className="page-card-body">
-                                Our content curation tool organizes information relevant to a particular topic. Curating is often done manually, but Trainsoft e-content curation makes it possible to do it automatically via recommendation engines, semantic analysis or social rating
+                                Our content curation tool organizes information relevant to a particular topic. Curating is often done manually, but  Gnosis Lab e-content curation makes it possible to do it automatically via recommendation engines, semantic analysis or social rating
                     </div>
                         </div>
                         <div className="card-footer-action">
@@ -283,13 +283,13 @@ const LandingHome = () => {
                         We envision the world where,<br /> The Knowledge is Power
                     </div>
                     <div className="pg-desc">
-                        Trainsoft is an easy way to teach and train online. It’s a cloud-based learning delivery platform with a suite of integrated features – including virtual classroom, course management, content authoring, video streaming, tests and assessments, insights and analytics and mobile learning.
+                    Gnosis Lab is an easy way to teach and train online. It’s a cloud-based learning delivery platform with a suite of integrated features – including virtual classroom, course management, content authoring, video streaming, tests and assessments, insights and analytics and mobile learning.
                         <br />
                         <br />
-                        Trainsoft empowers instructors, education service providers and corporates to deliver and manage live and self-paced learning with easy-to-use, scalable and cost-effective technology.
+                        Gnosis Lab empowers instructors, education service providers and corporates to deliver and manage live and self-paced learning with easy-to-use, scalable and cost-effective technology.
                         <br />
                         <br />
-                        Trainsoft started with a small group of people who wanted to bring about change. Ever since its launch in 2021, the company has grown leaps & bounds with hundreds of thousands of downloads, a huge following and representatives around the world. As we grow each day, we help our community be better every day
+                        Gnosis Lab started with a small group of people who wanted to bring about change. Ever since its launch in 2021, the company has grown leaps & bounds with hundreds of thousands of downloads, a huge following and representatives around the world. As we grow each day, we help our community be better every day
                     </div>
                 </div>
             </div>
@@ -311,7 +311,7 @@ const LandingHome = () => {
                         <div className="mr-2">{ICN_EMAIL}</div>
                         <div>
                             <div>Email</div>
-                            <div className="pg-title3">info@trainsoft.io</div>
+                            <div className="pg-title3">info@gnosislab</div>
                         </div>
                     </div>
 
@@ -364,7 +364,7 @@ const LandingHome = () => {
                 Terms & Conditions Privacy Policy
             </div>
             <div>
-                © All Rights Reserved. TrainSoft 2021.
+                © All Rights Reserved.  Gnosis Lab 2023.
             </div>
         </div>
 

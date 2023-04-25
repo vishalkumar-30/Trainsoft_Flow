@@ -2,13 +2,13 @@
 let HOSTNAME = window.location.origin; // Storing  a  Host  Name in global variable
 if (HOSTNAME !== null && ((HOSTNAME.indexOf('localhost') !== -1) || (HOSTNAME.indexOf('127.0.0.1') !== -1)))
     // HOSTNAME = "https://www.eservecloud.com"; 
-    HOSTNAME = "https://trainsoft.live"; // Local development sever will be used from now onwards.
+    HOSTNAME = "https://gnosislabs.live/"; // Local development sever will be used from now onwards.
 export const API_PATH = HOSTNAME;
 
 let API_HOST = HOSTNAME + "/insled/v1/"
-let API_ASSES = "https://trainsoft.live/assessnet/v1/"
+let API_ASSES = "https://gnosislabs.live/assessnet/v1/"
 let API_HOST_V2 = HOSTNAME + "/insled/v2/"
-const ASSESSMENT_V1 = "https://trainsoft.live/assessnet/v1/"
+const ASSESSMENT_V1 = "https://gnosislabs.live/assessnet/v1/"
 
 const GLOBELCONSTANT = {
     BASE_URL: API_HOST,

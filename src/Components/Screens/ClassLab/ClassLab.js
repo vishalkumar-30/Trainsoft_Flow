@@ -48,7 +48,7 @@ const ClassLab = (props) => {
         <div className="p-4 full-w full-h">
             <div className="row full-w full-h ">
                 <div className={`full-w  column ${isFull ? "d-none" : "col-sm-6"}`}>
-                    <div className="title-lg pointer" onClick={() => navigate('/dashboard')}>TrainSoft - {!isTrainer ? 'Learner' : 'Instructor'}</div>
+                    <div className="title-lg pointer" onClick={() => navigate('/dashboard')}>Gnosis Lab - {!isTrainer ? 'Learner' : 'Instructor'}</div>
                     <button className='btn btn-primary mb-2' onClick={refreshPage}>{ICN_BACK}Goback</button>
                     <div className="flx">
                         {tab.length !== 0 ?

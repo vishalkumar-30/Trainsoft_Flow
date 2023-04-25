@@ -23,7 +23,7 @@ function Zoom({zoomInfo}) {
   var sdkKey = 'UBo0tyPxYuNove8nZhzrXDvwHV4InH8ryl3G'
   var meetingNumber = zoomInfo.meetingId
   var role  = ROLE.INSTRUCTOR ? 1 : 0
-  var leaveUrl = 'https://trainsoft.live/dashboard'
+  var leaveUrl = 'https://gnosislabs.live/dashboard'
   var userName =  user.appuser.name;
   var userEmail =  user.appuser.emailId;
   var passWord = zoomInfo.password;
