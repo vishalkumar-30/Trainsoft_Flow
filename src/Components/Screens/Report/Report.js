@@ -9,9 +9,10 @@ import ReportChart from '../../Charts/ReportChart';
 import ReportDownload from './ReportDownload';
 import AppContext from '../../../Store/AppContext';
 import './report.css'
-
+import { Carousel } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 const Report = ({ location }) => {
-    const {user} = useContext(AppContext)
+    const {user ,ROLE} = useContext(AppContext)
     return (
         <div className="table-shadow p-3">
             {/* <CardHeader {...{ location }} /> */}
@@ -30,6 +31,189 @@ const Report = ({ location }) => {
                 <Participants path="participants" /> */}
                 <ReportDownload path="/" />
             </Router>
+
+
+
+
+
+
+            <div className='table-responsive'>
+
+            <div className='row py-1' style={{ background: "#49167E" }}>
+        <div className='col-3'>
+          <label className="mb-2 label form-label text-white ">Training</label>
+          <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}
+          
+          >
+            <option hidden>Select Training</option>
+         <option>Kubernetes Engineer Track Training</option>
+         <option>testing duration 3</option>
+
+         <option>Stochastic Learning</option>
+         <option>Kubernetes for Cloud Native</option>
+
+         <option>Cloud Computing, Docker And Kubernetes Journey</option>
+         <option>Windows Server</option>
+         <option>Microservices with Spring and Spring Cloud</option>
+        
+          </select>
+        </div>
+        {
+            user.role === ROLE.LEARNER ? "":
+
+        <div className='col-3'>
+          <label className="mb-2 label form-label text-white">Learner</label>
+          <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}
+          
+          >
+            <option hidden>Select Learner</option>
+         <option>Hrithik</option>
+         <option>Learner</option>
+          </select>
+        </div>
+                }
+</div>
+
+<div>
+  <Carousel >
+    <Carousel.Item>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Day 1</th>
+            <th>Day 2</th>
+            <th>Day 3</th>
+            <th>Day 4</th>
+            <th>Day 5</th>
+            <th>Day 6</th>
+            <th>Day 7</th>
+            <th>Day 8</th>
+            <th>Day 9</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Documents</td>
+            <td>1/3</td>
+            <td>2/4</td>
+            <td>3/4</td>
+            <td>4/6</td>
+            <td>5/7</td>
+            <td>6/7</td>
+            <td>7/8</td>
+            <td>8/10</td>
+            <td>9/10</td>
+          </tr>
+          <tr>
+            <td>Videos</td>
+            <td>2/5</td>
+            <td>2/7</td>
+            <td>3/6</td>
+            <td>4/8</td>
+            <td>5/10</td>
+            <td>6/12</td>
+            <td>7/8</td>
+            <td>8/10</td>
+            <td>9/14</td>
+          </tr>
+          <tr>
+            <td>Assesments</td>
+            <td>1/3</td>
+            <td>2/4</td>
+            <td>3/4</td>
+            <td>4/6</td>
+            <td>5/7</td>
+            <td>6/7</td>
+            <td>7/8</td>
+            <td>8/10</td>
+            <td>9/10</td>
+          </tr>
+          <tr>
+            <td>Labs</td>
+            <td>2/5</td>
+            <td>2/7</td>
+            <td>3/6</td>
+            <td>6/7</td>
+            <td>7/8</td>
+            <td>8/10</td>
+            <td>9/10</td>
+            <td>7/8</td>
+            <td>6/7</td>
+          </tr>
+          <tr>
+            <td>Coding Questions</td>
+            <td>3/6</td>
+            <td>6/7</td>
+            <td>7/8</td>
+            <td>8/10</td>
+            <td>9/10</td>
+            <td>6/12</td>
+            <td>7/8</td>
+            <td>8/10</td>
+            <td>9/14</td>
+          </tr>
+        </tbody>
+      </table>
+    </Carousel.Item>
+    <Carousel.Item>
+      <table>
+        <thead>
+          <tr>
+            <th>Day 10</th>
+            <th>Day 11</th>
+            <th>Day 13</th>
+           
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          <td>6/12</td>
+            <td>7/8</td>
+            <td>8/10</td>
+           
+            
+          </tr>
+          <tr>
+          <td>3/6</td>
+            <td>6/7</td>
+            <td>7/8</td>
+          
+          </tr>
+          <tr>
+          <td>1/6</td>
+            <td>6/7</td>
+            <td>5/8</td>
+           
+          </tr>
+          <tr>
+          <td>3/6</td>
+            <td>6/7</td>
+            <td>7/8</td>
+         
+          </tr>
+          <tr>
+            <td></td>
+            <td>3/6</td>
+            <td>6/7</td>
+            
+          </tr>
+        </tbody>
+      </table>
+    </Carousel.Item>
+  </Carousel>
+</div>
+
+   
+
+</div>
+
+
+
+
+
+
         </div>)
 }
 export default Report

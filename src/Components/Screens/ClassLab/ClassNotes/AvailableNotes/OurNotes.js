@@ -222,6 +222,8 @@ const OurNotes = () => {
                   accept=".heic, image/*"
                   onChange={handleFileEvent}
                   disabled={limit}
+                  className="form-control"
+                  style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}
                 />
                 <label htmlFor='fileUpload' className="mb-2 label form-label ">
                   <a className={`btn  ${maxCount > uploadedFiles.length ? '' : 'disabled'} `}>Upload Files</a>
