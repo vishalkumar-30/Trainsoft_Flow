@@ -41,11 +41,8 @@ table {
 
    
   }
-  .css-fnnlp4-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
-    color: #fff;
-    background-color: #F1844D !important;
-  }
-  td, th {
+ 
+  .c td, th {
     border: 1px solid #70707030;
     text-align: center;
     /* color: #F1844D; */
@@ -53,7 +50,7 @@ table {
     font-size: 16px;
     font-family: Georgia, Bold;
   }
-  tr {
+  .c tr {
       background-color: white;
       font-size: 16px;
       font-family: Georgia, Bold;
