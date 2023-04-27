@@ -1,5 +1,6 @@
+import React, { useState,useEffect } from 'react'
 import { Formik } from 'formik'
-import React, { useState } from 'react'
+
 import { Form } from 'react-bootstrap'
 import { BtnWarning, Cancel,BtnInfo } from '../../Common/Buttons/Buttons'
 import { TextArea, TextInput } from '../../Common/InputField/InputField'
@@ -21,6 +22,7 @@ import * as Yup from 'yup';
 import GLOBELCONSTANT from '../../../Constant/GlobleConstant'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import LoadingSpinner from '../../Screens/Training/LoadingSpinner'
 // import labvideo from "../../../Assets/Video/Lab.mov";
 // import etraining from "../../../Assets/Video/Training_Session.mov";
 // import assesment from  "../../../Assets/Video/Assessment.mov";
@@ -33,6 +35,18 @@ const LandingHome = () => {
     const[Screeningmodal,setScreeningmodal] = useState(false);
     const[Lab,setLab] = useState(false);
     const[SelfPaced,setSelfPaced] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+      // Simulate a delay for the landing page to finish loading
+      setTimeout(() => {
+        setIsLoaded(true);
+      }, 2000);
+    }, []);
+  
+    if (!isLoaded) {
+      return <LoadingSpinner />;
+    }
     // field validation
     const schema = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required("Required!"),
@@ -63,7 +77,7 @@ const LandingHome = () => {
     </div >
     <div className="row aic">
                 <div className="col-sm-5">
-                    <div className="pg-title-sm">We Provided</div>
+                    <div className="pg-title-sm">We Provide</div>
                     <div className="pg-title" style={{borderBottom: "dashed white"}}>
                         One Stop <br /> Online Learning Solution
                     </div>

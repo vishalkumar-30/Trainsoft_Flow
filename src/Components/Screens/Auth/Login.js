@@ -20,6 +20,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import hidePwdImg from "./hide-password.svg"
 import showPwdImg from "./show-password.svg"
+import LoadingSpinner from '../Training/LoadingSpinner';
 const Login = (props) => {
     const { setUserValue, spinner } = useContext(AppContext)
     const [isRevealPwd, setIsRevealPwd] = useState(false);
@@ -36,6 +37,19 @@ const Login = (props) => {
             setIsCapsLockOn(false);
         }
     };
+
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+      // Simulate a delay for the loging page to finish loading
+      setTimeout(() => {
+        setIsLoaded(true);
+      }, 2000);
+    }, []);
+  
+    if (!isLoaded) {
+      return <LoadingSpinner />;
+    }
    
     // on login the user
     const onLogin = (value) => {

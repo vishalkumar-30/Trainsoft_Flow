@@ -151,7 +151,7 @@ export const AdminConfig = [
         title: "Report",
         pathname: "report",
         disabled: true,
-        role: [GLOBELCONSTANT.ROLE.SUPERVISOR]
+        role: [GLOBELCONSTANT.ROLE.SUPERVISOR,GLOBELCONSTANT.ROLE.LEARNER]
     },
     {
         icon: ICN_CALENDER,
