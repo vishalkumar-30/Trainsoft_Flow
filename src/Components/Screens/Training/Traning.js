@@ -133,7 +133,7 @@ const Trainings = ({ location }) => {
         // this search is working for search enable fields(column) eg. isSearchEnabled: true, in tale column configuration
         searchQuery: "",
         tableCustomClass: "ng-table sort-enabled", // table custom class
-        showCheckbox: true,
+        showCheckbox: false,
         clearSelection: false,
     });
 
@@ -346,8 +346,10 @@ const Trainings = ({ location }) => {
                             <>
 
                                 <DynamicTable {...{
-                                    count, configuration, sourceData: trainingList,
-                                    onPageChange: (e) => getTrainings(e)
+                                    count, configuration, sourceData: trainingList.filter(item => item.status === 'ENABLED' 
+                                    || item.status === 'ARCHIVED'),
+                                    onPageChange: () => trainingList
+                                    
                                 }} />
                             </>
 
