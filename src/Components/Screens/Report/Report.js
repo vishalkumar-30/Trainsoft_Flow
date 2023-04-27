@@ -94,7 +94,7 @@ const Report = ({ location }) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr className='c'>
             <td>Documents</td>
             <td>1/3</td>
             <td>2/4</td>
@@ -106,7 +106,7 @@ const Report = ({ location }) => {
             <td>8/10</td>
             <td>9/10</td>
           </tr>
-          <tr>
+          <tr className='c'>
             <td>Videos</td>
             <td>2/5</td>
             <td>2/7</td>
@@ -118,7 +118,7 @@ const Report = ({ location }) => {
             <td>8/10</td>
             <td>9/14</td>
           </tr>
-          <tr>
+          <tr className='c'>
             <td>Assesments</td>
             <td>1/3</td>
             <td>2/4</td>
@@ -130,7 +130,7 @@ const Report = ({ location }) => {
             <td>8/10</td>
             <td>9/10</td>
           </tr>
-          <tr>
+          <tr className='c'>
             <td>Labs</td>
             <td>2/5</td>
             <td>2/7</td>
@@ -142,7 +142,7 @@ const Report = ({ location }) => {
             <td>7/8</td>
             <td>6/7</td>
           </tr>
-          <tr>
+          <tr className='c'>
             <td>Coding Questions</td>
             <td>3/6</td>
             <td>6/7</td>
@@ -168,32 +168,32 @@ const Report = ({ location }) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr className='c'>
           <td>6/12</td>
             <td>7/8</td>
             <td>8/10</td>
            
             
           </tr>
-          <tr>
+          <tr className='c'>
           <td>3/6</td>
             <td>6/7</td>
             <td>7/8</td>
           
           </tr>
-          <tr>
+          <tr className='c'>
           <td>1/6</td>
             <td>6/7</td>
             <td>5/8</td>
            
           </tr>
-          <tr>
+          <tr className='c'>
           <td>3/6</td>
             <td>6/7</td>
             <td>7/8</td>
          
           </tr>
-          <tr>
+          <tr className='c'>
             <td></td>
             <td>3/6</td>
             <td>6/7</td>
