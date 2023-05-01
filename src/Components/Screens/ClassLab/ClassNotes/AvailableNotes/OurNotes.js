@@ -9,6 +9,7 @@ import useToast from '../../../../../Store/ToastHook';
 import { TextInput, SelectInput } from '../../../../Common/InputField/InputField';
 import { Form, Dropdown } from 'react-bootstrap';
 import Select from 'react-select';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 const OurNotes = () => {
 
   const [notesList, getNotesList] = useState([]);
@@ -164,7 +165,7 @@ const OurNotes = () => {
 
   return (
     <>
-      <div className='row py-3' style={{ background: "rgb(172, 235, 253)" }}>
+      <div className='row py-3' >
         <div className='col-3'>
           <label className="mb-2 label form-label ">Training</label>
           <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}
@@ -216,8 +217,9 @@ const OurNotes = () => {
               </div>
 
 
-              <div className='col-3 border'>
+              <div className='col-3 '>
                 <label className="mb-2 label form-label ">Screen Shots</label>
+                <br/>
                 <input id='fileUpload' type='file' multiple
                   accept=".heic, image/*"
                   onChange={handleFileEvent}
@@ -225,10 +227,13 @@ const OurNotes = () => {
                   className="form-control"
                   style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}
                 />
-                <label htmlFor='fileUpload' className="mb-2 label form-label ">
-                  <a className={`btn  ${maxCount > uploadedFiles.length ? '' : 'disabled'} `}>Upload Files</a>
+                <label htmlFor='fileUpload' className="mb-2 label form-label " style={{marginLeft: "-12px",
+    borderRadius: "15px",
+    border: "1px solid gray",
+    margintop: "-2px"}}>
+                  <a className={`btn  ${maxCount > uploadedFiles.length ? '' : 'disabled'} `}>Upload Files <FileUploadIcon/></a>
                 </label>
-                <div className="uploaded-files-list">
+                <div className="uploaded-files-list" style={{display:"flex"}}>
                   {uploadedFiles.map((file) => {
                     return (
                       <>
@@ -244,7 +249,7 @@ const OurNotes = () => {
 
                 </div>
               </div>
-              <div className='col-3 mt-4'>
+              <div className='col-2 mt-4'>
                 <button type="submit" onClick={() => extractTextFromImages()} style={{ width: "100%" }} className='btn btn-primary'>submit</button>
               </div>
             </>

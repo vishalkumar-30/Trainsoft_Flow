@@ -76,9 +76,9 @@
     background-color: transparent;
     display: none;
 }
-.more-button{
+/* .more-button{
     display: none !important;
-}
+} */
 .sharer-controlbar-container__caption {
     display: inline-block;
     margin: 0;

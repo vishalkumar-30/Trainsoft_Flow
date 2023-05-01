@@ -47,7 +47,7 @@ const ClassLab = (props) => {
 
         <div className="p-4 full-w full-h">
             <div className="row full-w full-h ">
-                <div className={`full-w  column ${isFull ? "d-none" : "col-sm-6"}`}>
+                {/* <div className={`full-w  column ${isFull ? "d-none" : "col-sm-6"}`}>
                     <div className="title-lg pointer" onClick={() => navigate('/dashboard')}>Gnosis Lab - {!isTrainer ? 'Learner' : 'Instructor'}</div>
                     <button className='btn btn-primary mb-2' onClick={refreshPage}>{ICN_BACK}Goback</button>
                     <div className="flx">
@@ -81,10 +81,10 @@ const ClassLab = (props) => {
                             <div>Start sharing now!</div>
                         </div>}
                     </div>
-                </div>
-
+                </div> */}
+          <Zoom zoomInfo={zoomInfo2} />
                 {/* right panel */}
-                <div className={`${isFull ? "col-md-12" : "col-sm-6"} column `} >
+                <div className="col-md-12"  >
                     <div className="flx jce">
                         {/* <BtnSquare className="mr-3 expZoom" onClick={()=>setIsFull(!isFull)}>{ICN_EXPANDED}</BtnSquare> */}
                         {/* <BtnSquare className="mr-3">{ICN_RECORD}</BtnSquare>
@@ -97,7 +97,7 @@ const ClassLab = (props) => {
                         <BtnSquare className="mr-3">{ICN_ASSESSMENT}</BtnSquare>
                         <BtnSquare className="mr-3">{ICN_EXIT}</BtnSquare> */}
                     </div>
-
+          
 
                     <div className="video-container " >
                         {/* <div className="video-action">
@@ -112,7 +112,7 @@ const ClassLab = (props) => {
                                 <p>backup content</p>
                             </object>  */}
 
-                        <Zoom zoomInfo={zoomInfo2} />
+                        {/* <Zoom zoomInfo={zoomInfo2} /> */}
                         {/* <Zoom zoomInfo={zoomInfo}   /> */}
 
 

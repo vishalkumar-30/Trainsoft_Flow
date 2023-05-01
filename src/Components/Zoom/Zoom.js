@@ -51,7 +51,7 @@ function Zoom({zoomInfo}) {
  
   function startMeeting(signature) {
     document.getElementById('zmmtg-root').style.display = 'block';
-    document.getElementById('zmmtg-root').style.marginLeft = '790px';
+    // document.getElementById('zmmtg-root').style.marginLeft = '790px';
    
     // document.getElementById('zmmtg-root').style.justifyContent='left'
  
