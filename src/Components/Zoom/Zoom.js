@@ -42,6 +42,7 @@ function Zoom({zoomInfo}) {
       })
     }).then(res => res.json())
     .then(response => {
+      console.log("mera token")
       console.log("token:"+response.signature)
       startMeeting(response.signature)
     }).catch(error => {

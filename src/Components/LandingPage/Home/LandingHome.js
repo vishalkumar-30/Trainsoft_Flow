@@ -274,7 +274,7 @@ const LandingHome = () => {
                                <Cancel className=""><span>{ICN_PLAY_CIRCLE}</span>SEE HOW</Cancel>
                             </div>
                             <div className="">
-                                <BtnWarning onClick={()=>setOpen(true)}>CONTACT US</BtnWarning>
+                                <BtnWarning onClick={()=> window.open("https://content.gnosislabs.live/admin")}>Login</BtnWarning>
                             </div>
                         </div>
                     </div>

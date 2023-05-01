@@ -38,7 +38,7 @@
 .expZoom{
     position: absolute;
     z-index: 2;
-    top: 26px;
+    /* top: 26px; */
 }
 
 .video-container img{
