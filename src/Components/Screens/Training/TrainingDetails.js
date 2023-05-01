@@ -22,6 +22,9 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import useToast from "../../../Store/ToastHook";
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import LoadingSpinner from "./LoadingSpinner";
+import WhiteBoard from "../ClassLab/WhiteBoard/WhiteBoard";
+import { BsModal } from "../../Common/BsUtils";
+import ClassNotes from "../ClassLab/ClassNotes/ClassNotes";
 const TrainingDetails = ({ location }) => {
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
     const { user, ROLE, spinner } = useContext(AppContext);
@@ -53,11 +56,11 @@ const TrainingDetails = ({ location }) => {
     let trainingSid = location.state.sid;
     let username = JSON.parse(localStorage.getItem('user'));
     localStorage.setItem("trainingSid", location.state.sid);
-
+    const [show, setShow] = useState(false);
     const VideoMediaPlayer = (vdlink) => {
         return (
             <>
-                <div className='player-wrapper ' style={{ border: "1px solid #00000033", boxShadow: "#00000033 0px 0px 0px 1px, #00000033 0px 1px 1px -1px, #00000033 0px 1px 0px " }}>
+                <div className='player-wrapper ' >
                     <ReactPlayer
                         className='react-player '
                         url={vdlink}
@@ -104,9 +107,9 @@ const TrainingDetails = ({ location }) => {
 
         return (
 
-            <div className={showHideClassName}>
+            <div className={showHideClassName} >
 
-                <div className="modal-container">
+                <div className="modal-container modal-xl">
                     <div style={{ marginLeft: "95%", marginTop: "-15px" }}> <a href="javascript:;" className="modal-close" onClick={handleClose}>
                         X
                     </a></div>
@@ -389,24 +392,24 @@ const TrainingDetails = ({ location }) => {
         getTrainingBySid();
 
         // Disable right click ;
-        document.addEventListener('contextmenu', (e) => {
-            Toast.error({ message: `Right click not allowed` });
-            e.preventDefault();
-          })
+        // document.addEventListener('contextmenu', (e) => {
+        //     Toast.error({ message: `Right click not allowed` });
+        //     e.preventDefault();
+        //   })
 
           //disable ctrl shift i 
-          const disableConsole = (event) => {
-            if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
-              event.preventDefault();
-            }
-            else if (event.metaKey && event.altKey && event.keyCode === 73) {
-                event.preventDefault();
-              }
-          };
-          window.addEventListener('keydown', disableConsole);
-          return () => {
-            window.removeEventListener('keydown', disableConsole);
-          };
+        //   const disableConsole = (event) => {
+        //     if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
+        //       event.preventDefault();
+        //     }
+        //     else if (event.metaKey && event.altKey && event.keyCode === 73) {
+        //         event.preventDefault();
+        //       }
+        //   };
+        //   window.addEventListener('keydown', disableConsole);
+        //   return () => {
+        //     window.removeEventListener('keydown', disableConsole);
+        //   };
 
     }, []);
 
@@ -432,6 +435,11 @@ console.log(trainingBySid)
     
     return (
         <>
+         {<Modal show={show} handleClose={() => setShow(false)}  >
+            {/* {show && <WhiteBoard  /> } */}
+
+            {user.role === ROLE.INSTRUCTOR ? <WhiteBoard  />:user.role === ROLE.LEARNER?<ClassNotes/>:""}
+        </Modal>}
             <div className="row" >
 
                 {showcoursename.length === 0 ? "" :
@@ -439,12 +447,20 @@ console.log(trainingBySid)
                 <div className="col-4" >
                     <ProgressBar progress={markCompleted.totalCourseCompletedInTraining === null ? 0 : markCompleted.totalCourseCompletedInTraining > contentLength ? contentLength : markCompleted.totalCourseCompletedInTraining} totalSection={contentLength} trainingSid={location.state.sid} />
                 </div>
+                {
+                    user.role === ROLE.INSTRUCTOR ?<div className="col-1 class-mode mb-4  " onClick={() => {setShow(true)}} style={{background: "#49167E",borderRadius:"10px"}}>Whiteboard</div>:""
+                }
+                  {
+                    user.role === ROLE.LEARNER ?<div className="col-1 class-mode mb-4 " onClick={() => {setShow(true)}} style={{background: "#49167E",borderRadius:"10px"}}>Make Notes</div>:""
+                }
+               
+                
             </div>
-            <hr />
            
-            {isLoading ? <LoadingSpinner /> :   <div class="row">
+           
+            {isLoading ? <LoadingSpinner /> :   <div class="row mt-2">
 
-<div class="col-8  pl-3 " style={{ marginTop: "-25px" }}>
+<div class="col-8  pl-3 " >
 
     {(type === "EXTERNAL_LINK" || type === "VIDEO") ?
         VideoMediaPlayer(vdlink)
@@ -509,7 +525,7 @@ console.log(trainingBySid)
 
 </div>
 
-<div class="col-4 " style={{ height: "535px", overflowY: "scroll", marginLeft: "-12px", marginTop: "-25px", borderTopLeftRadius: "10px", borderTopRightRadius: "10px", background: "#F7F9FA", boxShadow: "#00000033 0px 0px 0px 1px, #00000033 0px 1px 1px -1px, #00000033 0px 1px 0px " }}>
+<div class="col-4 training-content" >
     {trainingDetailsList.length > 0 ? trainingDetailsList.map((train) => {
         return (
             <>

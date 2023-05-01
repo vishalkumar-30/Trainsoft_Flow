@@ -33,7 +33,7 @@
 }
 
 table {
-    font-family: Georgia, Bold;
+    /* font-family: Georgia, Bold; */
     border-collapse: collapse;
     width: 100%;
     border: 1px solid #70707030;
@@ -48,12 +48,12 @@ table {
     /* color: #F1844D; */
     padding: 8px;
     font-size: 16px;
-    font-family: Georgia, Bold;
+    /* font-family: Georgia, Bold; */
   }
   .c tr {
       background-color: white;
       font-size: 16px;
-      font-family: Georgia, Bold;
+      /* font-family: Georgia, Bold; */
       /* border: 1px solid #707070; */
   }
   .table-responsive {

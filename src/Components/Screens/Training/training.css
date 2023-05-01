@@ -79,6 +79,21 @@
 /*
  CSS for the main interaction
 */
+.training-content{
+  height: 100vh; 
+  margin-left: -32px;  
+  overflow: hidden;
+   background: "#F7F9FA"
+}
+.training-content:hover{
+  overflow: scroll;
+}
+.training-content::-webkit-scrollbar{
+  width: 5px;
+}
+
+
+
 .tabset > input[type="radio"] {
     position: absolute;
     left: -200vw;
@@ -131,22 +146,22 @@
     background: #06c;
   }
   
-  .tabset > input:checked + label {
+  /* .tabset > input:checked + label {
     border-color: #ccc;
     border-bottom: 1px solid #fff;
    
-  }
+  } */
   
   .tab-panel {
-    padding: 30px 0;
+    padding: 10px 0;
     border-top: 1px solid #ccc;
   }
   
  
   
-  .tabset {
+  /* .tabset {
     max-width: 65em;
-  }
+  } */
 
   .modal {
     background: rgba(0, 0, 0, 0.6);
@@ -155,9 +170,10 @@
     position: absolute;
    
     background: #ffffff;
-    left: 25%;
+    left: 10%;
     top: 10%;
     padding: 20px;
+    width: 80%;
   }
   iframe{
     margin: 0;

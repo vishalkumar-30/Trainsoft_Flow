@@ -35,7 +35,7 @@ function Example(props) {
   return (
     <div>
       <div style={{ display: "flex" }}>
-        <div style={{ width: "10%", paddingRight: 4 }}>
+        <div style={{ width: "10%", paddingRight: 4 ,marginTop:"-10px"}}>
           {props.children}
         </div>
         {modal ? <Modal show={modal} handleClose={() => setModal(false)}>
@@ -46,7 +46,7 @@ function Example(props) {
 
           : ''}
 
-        <div class="product" style={{ display: "flex", paddingTop: 6 }}>
+        <div class="product" style={{ display: "flex" }}>
           <h6 style={{ color: "#3f51b5", fontSize: "14px" }}> {props.progress === props.totalSection ? <button onClick={() => {
             setModal(true);
           }}>Get Certificate</button> : props.label}
