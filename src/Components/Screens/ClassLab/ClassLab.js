@@ -34,7 +34,7 @@ const ClassLab = (props) => {
     const [tab, setTab] = useState(isTrainer ? [] : ['Notes'])
     const [selectedTab, setSelectedTab] = useState(isTrainer ? "" : "Notes")
     const [isFull, setIsFull] = useState(false)
-
+   
     function refreshPage() {
         navigate('training')
         setTimeout(() => {
@@ -43,13 +43,15 @@ const ClassLab = (props) => {
         console.log('page to reload')
     }
 
-    return (<>
 
+  
+    return (<>
+ 
         <div className="p-4 full-w full-h">
             <div className="row full-w full-h ">
                 {/* <div className={`full-w  column ${isFull ? "d-none" : "col-sm-6"}`}>
                     <div className="title-lg pointer" onClick={() => navigate('/dashboard')}>Gnosis Lab - {!isTrainer ? 'Learner' : 'Instructor'}</div>
-                    <button className='btn btn-primary mb-2' onClick={refreshPage}>{ICN_BACK}Goback</button>
+                  
                     <div className="flx">
                         {tab.length !== 0 ?
                             tab.map((res, i) => <div key={i} className={`class-mode ${selectedTab === res && 'active-tab-class'}`}>
@@ -82,11 +84,12 @@ const ClassLab = (props) => {
                         </div>}
                     </div>
                 </div> */}
-          <Zoom zoomInfo={zoomInfo2} />
+                
+    
                 {/* right panel */}
-                <div className="col-md-12"  >
-                    <div className="flx jce">
-                        {/* <BtnSquare className="mr-3 expZoom" onClick={()=>setIsFull(!isFull)}>{ICN_EXPANDED}</BtnSquare> */}
+                <div className={`${isFull ? "col-md-12" : "col-sm-6"} column `} >
+                    <div className="flx ">
+                        <BtnSquare className="mr-3 expZoom" onClick={refreshPage}>{ICN_BACK}Goback</BtnSquare>
                         {/* <BtnSquare className="mr-3">{ICN_RECORD}</BtnSquare>
                         <BtnSquare className="mr-3"> {ICN_PEOPLE}</BtnSquare>
                         <BsDropDown
@@ -96,59 +99,14 @@ const ClassLab = (props) => {
                         </BsDropDown>
                         <BtnSquare className="mr-3">{ICN_ASSESSMENT}</BtnSquare>
                         <BtnSquare className="mr-3">{ICN_EXIT}</BtnSquare> */}
-                    </div>
-          
-
-                    <div className="video-container " >
-                        {/* <div className="video-action">
-                                    <img src={vid}/>
-                                <div></div>
-                            </div>
-                            <div className="footer-video-action">
-                                <BtnRound className="mr-3">{ICN_VIDEO}</BtnRound>
-                                <BtnRound>{ICN_MIC}</BtnRound>
-                            </div> */}
-                        {/* <object type="text/html" data={GLOBELCONSTANT.ZOOM_PATH + '/'+ zoomInfo.meetingId} style={{ width: "100%", height: "100%" }}>
-                                <p>backup content</p>
-                            </object>  */}
-
-                        {/* <Zoom zoomInfo={zoomInfo2} /> */}
-                        {/* <Zoom zoomInfo={zoomInfo}   /> */}
-
-
+                         {/* <button className='btn btn-primary mb-2' onClick={refreshPage}>{ICN_BACK}Goback</button> */}
+                     {/* <BtnSquare className="mr-3"  onClick={refreshPage}>{ICN_BACK}Goback</BtnSquare> */}
                     </div>
 
+                    <Zoom zoomInfo={zoomInfo2} />
+              
 
-                    {/* <div className="flx mt-3 ">
-                        <div className="tab-btn">Class conversation</div>
-                        <div className="tab-btn secondary-color">Private message</div>
-                    </div>
-                    <div className="chat-container">
-                        <div className="chat-body">
-                            <div className="inbound-chat">
-                                <div className="user-img">
-                                    US
-                                </div>
-                                <div className="chat-bubble">
-                                    <div>You</div>
-                                    <div> You did a really great work! Can you please make me one more report until tomorrow EOB?</div>
 
-                                </div>
-                            </div>
-                            <div className="outbound-chat">
-                                <div className="chat-bubble">
-                                    <div>You</div>
-                                    <div>Tnx Monica, sure! Tell me what you need.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="jcb">
-                            <div className="chat-send">
-                                <div><input type="text" className="form-control" placeholder="Type your message..." /></div>
-                                <div className="primary-cir text-white">{ICN_SEND}</div>
-                            </div>
-                        </div>
-                    </div> */}
                 </div>
                 {/* end right panel */}
             </div>
