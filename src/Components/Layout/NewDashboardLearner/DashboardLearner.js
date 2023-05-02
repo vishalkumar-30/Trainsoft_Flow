@@ -23,6 +23,12 @@ const DashboardLearner = () => {
     const [trainingList, setTrainingList] = useState([]);
     const [overallAnalysis, setOverallAnalysis] = useState('');
     const [trainingDetails, setTrainingDetails] = useState([]);
+    const [progressAll, setProgressAll] = useState(null);
+    const [trainingProgressDoc, setTrainingProgressDoc] = useState({});
+    const [trainingProgressVideo, setTrainingProgressVideo] = useState({});
+    const [trainingProgressAssessment, setTrainingProgressAssessment] = useState({});
+    const [trainingProgressLab, setTrainingProgressLab] = useState({});
+    const [trainingProgressCoding, setTrainingProgressCoding] = useState({});
     const [trainingDetailsAll, setTrainingDetailsAll] = useState([]);
     const [tagsScore, setTagsScore] = useState({});
     const [overallLeaderboard, setOverallLeaderboard] = useState([]);
@@ -53,6 +59,48 @@ const DashboardLearner = () => {
             });
         } catch (err) {
             console.error("error occur on getTrainings()", err)
+        }
+    }
+
+    //get specific training progress
+    const getLearnerTrainingProgress = (value) => {
+        try {
+            spinner.show();
+            RestService.getLearnerTrainingProgress(value).then(
+                response => {
+                    if (response.status === 200) {
+                        setProgressAll(response.data);
+                        setTrainingProgressDoc(response.data.DOCUMENTS);
+                        setTrainingProgressVideo(response.data.VIDEO);
+                        setTrainingProgressAssessment(response.data.ASSESSMENT);
+                        setTrainingProgressLab(response.data.LAB);
+                        setTrainingProgressCoding(response.data.CODING);
+                        // for (let i = 0; i < overallLeaderboard.length; i++) {
+                        //     if (response.data.length > 0) {
+                        //         for (let j = 0; j < overallLeaderboard[i].rankingDetails.length; j++) {
+                        //             if (overallLeaderboard[i].trainingSid === response.data[0].trainingSid &&
+                        //                 overallLeaderboard[i].rankingDetails[j].isLoggedIn) {
+
+                        //                 console.log(overallLeaderboard[i].rankingDetails[j].rank);
+                        //                 setRanking(overallLeaderboard[i].rankingDetails[j].rank);
+                        //                 break;
+                        //             }
+                        //         }
+                        //     }
+
+                        // }
+                        spinner.hide();
+
+                    }
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on getLearnerWeightedScores()", err)
         }
     }
 
@@ -252,6 +300,7 @@ const DashboardLearner = () => {
         getLearnerDasboardCardsDetails();
     }, []);
 
+    console.log(trainingDetails);
     return (
         <>
 
@@ -359,8 +408,8 @@ const DashboardLearner = () => {
 
                 <label className="m-3 label form-label title-md ">Select Training</label>
                 <select className="form-control mb-3 mx-2" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
+                    getLearnerTrainingProgress(e.target.value);
                     getLearnerWeightedScoresSpecific(e.target.value);
-
                 }}>
                     <option hidden>Select Training</option>
                     {
@@ -379,7 +428,7 @@ const DashboardLearner = () => {
                 </select>
                 {
                     //show training specific details when selecting only
-                    trainingDetails.length > 0 ?
+                    progressAll !== null ?
                         <>
                             <div className='row '>
                                 <div className='col-sm-2 col-md-2'>
@@ -394,76 +443,88 @@ const DashboardLearner = () => {
                                         Progress
                                     </div>
                                     {
-                                        trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.videoCompletion !== null ?
+                                        progressAll.VIDEO.total !== 0 ?
                                             <div className='d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
                                                 <div className='title-sm'>Videos</div>
                                                 <div>
-                                                    {isNaN(trainingDetails[0].learnerWeightedDetailsTO.videoCompletion.overalllAverageWeightage) ?
+                                                    {/* {isNaN(trainingDetails[0].learnerWeightedDetailsTO.videoCompletion.overalllAverageWeightage) ?
                                                         "0%"
                                                         :
                                                         `${trainingDetails[0].learnerWeightedDetailsTO.videoCompletion.overalllAverageWeightage * 100}%`
-                                                    }
+                                                    } */}
+                                                    {/* {Number.isInteger(trainingProgressVideo.percentage)? trainingProgressVideo.percentage : (trainingProgressVideo.percentage).toFixed(2)} */}
+                                                    {Number.isInteger(progressAll.VIDEO.percentage)? `${progressAll.VIDEO.percentage}%` : `${progressAll.VIDEO.percentage.toFixed(2)}%` }
                                                 </div>
                                             </div>
                                             : ''
                                     }
                                     {
-                                        trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.labDetails !== null ?
+                                        progressAll.LAB.total !== 0 ?
 
                                             <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
                                                 <div className='title-sm'>Lab</div>
                                                 <div>
-                                                    {isNaN(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage) ?
+                                                    {/* {isNaN(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage) ?
                                                         "0%"
                                                         :
                                                         `${(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage * 100).toFixed(2)}%`
-                                                    }
+                                                    } */}
+                                                    {Number.isInteger(progressAll.LAB.percentage)? `${progressAll.LAB.percentage}%` : `${progressAll.LAB.percentage.toFixed(2)}%` }
+                                                    {/* {Number.isInteger(trainingProgressLab.percentage) ? trainingProgressLab.percentage : (trainingProgressLab.percentage).toFixed(2)} */}
                                                 </div>
                                             </div>
                                             : ''
                                     }
-                                    {trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails !== null ?
+                                    {progressAll.ASSESSMENT.total !== 0 ?
                                         <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
                                             <div className='title-sm'>Assesment</div>
                                             <div>
-                                                {isNaN(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage) ?
+                                                {/* {isNaN(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage) ?
                                                     "0%"
                                                     :
                                                     `${(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage * 100).toFixed(2)}%`
-                                                }
+                                                } */}
+                                              {Number.isInteger(progressAll.ASSESSMENT.percentage)? `${progressAll.ASSESSMENT.percentage}%` : `${progressAll.ASSESSMENT.percentage.toFixed(2)}%` }
+                                                {/* {Number.isInteger(trainingProgressAssessment.percentage) ? trainingProgressAssessment.percentage : (trainingProgressAssessment.percentage).toFixed(2)} */}
                                             </div>
                                         </div>
                                         : ''
                                     }
-                                    <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
+                                    {/* <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
                                         <div className='title-sm'>Capstone</div>
                                         <div >70%</div>
-                                    </div>
+                                    </div> */}
                                     {
-                                        trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.documentDetails !== null ?
+                                        progressAll.DOCUMENTS.total !== 0  ?
                                             <div className=' my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
-                                                <div className='title-sm'>Document</div>
+                                                <div className='title-sm'>Study Material</div>
                                                 <div>
-                                                    {isNaN(trainingDetails[0].learnerWeightedDetailsTO.documentDetails.overalllAverageWeightage) ?
+                                                    {/* {isNaN(trainingDetails[0].learnerWeightedDetailsTO.documentDetails.overalllAverageWeightage) ?
                                                         "0%"
                                                         :
                                                         `${trainingDetails[0].learnerWeightedDetailsTO.documentDetails.overalllAverageWeightage * 100}%`
-                                                    }
+                                                    } */}
+                                                    {Number.isInteger(progressAll.DOCUMENTS.percentage)? `${progressAll.DOCUMENTS.percentage}%` : `${progressAll.DOCUMENTS.percentage.toFixed(2)}%` }
+                                                    {/* {Number.isInteger(trainingProgressDoc.percentage) ? trainingProgressDoc.percentage : (trainingProgressDoc.percentage).toFixed(2)} */}
                                                 </div>
                                             </div>
                                             : ''
                                     }
 
                                     {
-                                        trainingDetails.length && trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails !== null ?
+                                        progressAll.CODING.total !== 0  ?
                                             <div className='d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
-                                                <div className='title-sm'>Coding Questions</div>
+                                                <div className='title-sm'>Challenges</div>
                                                 <div>
-                                                    {isNaN(trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails.overalllAverageWeightage) ?
+                                                    {/* {isNaN(trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails.overalllAverageWeightage) ?
                                                         "0%"
                                                         :
                                                         `${trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails.overalllAverageWeightage * 100}%`
-                                                    }
+                                                    } */}
+                                                    {/* {
+                                                      Number.isInteger(trainingProgressCoding.percentage) ? trainingProgressCoding.percentage : (trainingProgressCoding.percentage).toFixed(2)
+                                                    } */}
+                                                    {Number.isInteger(progressAll.CODING.percentage)? `${progressAll.CODING.percentage}%` : `${progressAll.CODING.percentage.toFixed(2)}%` }
                                                 </div>
                                             </div>
                                             : ''
@@ -592,8 +653,8 @@ const DashboardLearner = () => {
                             </div>
 
                         </>
-                        :
-                        ''
+                    : 
+                    ''
 
                 }
 

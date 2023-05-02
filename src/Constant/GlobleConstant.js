@@ -257,8 +257,8 @@ const GLOBELCONSTANT = {
         GET_TRAININGS_AVERAGE_SCORE: API_HOST_V2 + 'training-average-assessment-score',
         FILTER_TRAININGS_BASED_ON_DATE_RANGE: API_HOST_V2 + 'filter-trainings-date-range',
         GET_ONGOING_TRAINING_PROGRESS:API_HOST_V2 + 'get-ongoing-training-progress',
-   
         GET_ALL_TRAINING_SESSIONS:API_HOST_V2 + 'get-all-trainings',
+        GET_SUPERVISOR_REPORT_TRAINING_DETAILS: API_HOST_V2 + "supervisor/report/training-details"
     },
 
     LEARNER_DASHBOARD: {
@@ -267,14 +267,16 @@ const GLOBELCONSTANT = {
         GET_LEARNER_TRAINING_SESSIONS:API_HOST_V2 + 'learner/get-training-sessions',
         GET_ALL_TRAINING_SESSIONS :API_HOST_V2 + 'learner/get-all-training-sessions',
         GET_LEARNER_DASHBOARD_CARD_DETAILS: API_HOST_V2 + "learner/get-dashboard-card-details",
-        GET_LOGOUT_TIMES: API_HOST + "logout-times"
+        GET_LOGOUT_TIMES: API_HOST + "logout-times",
+        GET_LEARNER_TRAINING_PROGRESS: API_HOST_V2 + "learner/training-progress"
     },
     INSTRUCTOR_DASHBOARD : {
         GET_TRAINERS_TRAINING_SESSIONS: API_HOST_V2 + "instructor/get-daily-training-sessions",
         GET_INSTRUCTOR_FEEDBACK_DETAILS: API_HOST_V2 + "instructor/get-feedback-details",
         GET_TRAINERS_WEEKLY_SESSIONs: API_HOST_V2 + "instructor/get-weekly-sessions",
         GET_ALL_TRAINING_SESSIONS: API_HOST_V2 + "instructor/all-training-sessions",
-        GET_DEPARTMENTS: API_HOST + "depatments"
+        GET_DEPARTMENTS: API_HOST + "depatments",
+        INSERT_INSTRUCTOR_COURSE_TIME_SPENT: API_HOST_V2 + "instructor/content-time-spent"
     },
 
     ASSESSMENT_DASHBOARD: {

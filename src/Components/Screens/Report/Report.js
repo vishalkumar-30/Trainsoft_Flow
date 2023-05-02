@@ -1,4 +1,4 @@
-import React, { useState,useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { BtnPrimary, TabBtn } from "../../Common/Buttons/Buttons";
 import SearchBox from "../../Common/SearchBox/SearchBox"
 import { ICN_TRASH, ICN_EDIT, ICN_BOOK, ICN_LIBRARY, ICN_PROGRESS, ICN_STORE } from "../../Common/Icon";
@@ -11,210 +11,362 @@ import AppContext from '../../../Store/AppContext';
 import './report.css'
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import RestService from '../../../Services/api.service';
 const Report = ({ location }) => {
-    const {user ,ROLE} = useContext(AppContext)
-    return (
-        <div className="table-shadow p-3">
-            {/* <CardHeader {...{ location }} /> */}
-            <p style={{fontSize: "16px", color: "#49167E", fontWeight: "600"}}>Download Report</p>
-            <div className="flx tab-btn-group mb-3">
-                {/* <TabBtn active={location.state.subPath === "batch"} onClick={() => navigate("/report", { state: { title: 'Report', subTitle: "Batch", subPath: "batch" } })}>Batch</TabBtn> */}
-                {/* <TabBtn active={location.state.subPath === "download"} onClick={() => navigate("/report", { state: { title: 'Report', subTitle: "Download", subPath: "download" } })}>Download</TabBtn> */}
-                {/* <TabBtn active={location.state.subPath === "course"} onClick={() => navigate("/report/course", { state: { title: 'Report', subTitle: "Course", subPath: "course" } })}>Course</TabBtn>
-               {user.role !== "user" &&  <TabBtn active={location.state.subPath === "participants"} onClick={() => navigate("/report/participants", { state: { title: 'Report', subTitle: "Participants", subPath: "participants" } })}>Participants</TabBtn>} */}
-               {/* {user.role !== "user" &&  <TabBtn active={location.state.subPath === "download"} onClick={() => navigate("/report/download", { state: { title: 'Report', subTitle: "Download", subPath: "download" } })}>Download</TabBtn>} */}
+  const { user, ROLE, spinner } = useContext(AppContext);
+  const [trainingList, setTrainingList] = useState([]);
+  const [showReport, setShowReport] = useState(null);
+  const [showReportDoc, setShowReportDoc] = useState([]);
+  const [showReportVideo, setShowReportVideo] = useState([]);
+  const [showReportAssessment, setShowReportAssessment] = useState([]);
+  const [showReportLab, setShowReportLab] = useState([]);
+  const [showReportCoding, setShowReportCoding] = useState([]);
+  const learner = JSON.parse(localStorage.getItem('user'))
+  const learnerSid = learner.sid;
+  const [scrollLeftInterval, setScrollLeftInterval] = useState(null);
+  const [scrollRightInterval, setScrollRightInterval] = useState(null);
 
-            </div>
-            <Router>
-                {/* <Batch path="/" />
+  function scrollLeft() {
+    const tableWrapper = document.querySelector(".table-wrapper");
+    if (scrollRightInterval > 0) {
+      tableWrapper.scrollLeft -= 50;
+    }
+
+
+    const table = document.querySelector(".table-wrapper table");
+    table.querySelectorAll("tr").forEach((row) => {
+      row.insertBefore(row.lastElementChild, row.firstElementChild);
+    });
+  }
+
+  function scrollRight() {
+    const tableWrapper = document.querySelector(".table-wrapper");
+    tableWrapper.scrollLeft += 50;
+
+    const table = document.querySelector(".table-wrapper table");
+    table.querySelectorAll("tr").forEach((row) => {
+      row.appendChild(row.firstElementChild);
+    });
+  }
+
+  function handleLeftMouseDown() {
+    scrollLeft();
+    setScrollLeftInterval(setInterval(scrollLeft, 500));
+  }
+
+  function handleRightMouseDown() {
+    scrollRight();
+    setScrollRightInterval(setInterval(scrollRight, 500));
+  }
+
+  function handleMouseUp() {
+    clearInterval(scrollLeftInterval);
+    clearInterval(scrollRightInterval);
+  }
+  // get learner trainings
+  const getLearnerTrainings = () => {
+    try {
+      RestService.getAllTrainingByPage().then(
+        response => {
+          setTrainingList(response.data.filter(item => item.status === 'ENABLED'
+            || item.status === 'ARCHIVED'));
+        },
+        err => {
+          spinner.hide();
+        }
+      ).finally(() => {
+        spinner.hide();
+      });
+    } catch (err) {
+      console.error("error occur on getTrainings()", err)
+    }
+  }
+
+  //show reports
+  const getSupervisorReportTrainingDetails = (value) => {
+    try {
+      spinner.show();
+      RestService.getSupervisorReportTrainingDetails(learnerSid, value).then(
+        response => {
+          if (response.status === 200) {
+            setShowReport(response.data.sectionDetails);
+            // setShowReportDoc(response.data.sectionDetails.DOCUMENTS);
+            // setShowReportVideo(response.data.sectionDetails.VIDEO);
+            // setShowReportAssessment(response.data.sectionDetails.ASSESSMENT);
+            // setShowReportLab(response.data.sectionDetails.LAB);
+            // setShowReportCoding(response.data.sectionDetails.CODING);
+          }
+        },
+        err => {
+          spinner.hide();
+        }
+      ).finally(() => {
+        spinner.hide();
+      });
+    } catch (err) {
+      console.error("error occur on getTrainings()", err)
+    }
+  }
+
+  useEffect(() => {
+    getLearnerTrainings();
+  }, []);
+
+
+  // console.log(showReportDoc);
+  // console.log(showReportVideo);
+  // console.log(showReportAssessment);
+  // console.log(showReportLab);
+  // console.log(showReportCoding);
+
+  return (
+    <div className="table-shadow p-3">
+      {/* <CardHeader {...{ location }} /> */}
+      <p style={{ fontSize: "16px", color: "#49167E", fontWeight: "600" }}>Download Report</p>
+      <div className="flx tab-btn-group mb-3">
+        {/* <TabBtn active={location.state.subPath === "batch"} onClick={() => navigate("/report", { state: { title: 'Report', subTitle: "Batch", subPath: "batch" } })}>Batch</TabBtn> */}
+        {/* <TabBtn active={location.state.subPath === "download"} onClick={() => navigate("/report", { state: { title: 'Report', subTitle: "Download", subPath: "download" } })}>Download</TabBtn> */}
+        {/* <TabBtn active={location.state.subPath === "course"} onClick={() => navigate("/report/course", { state: { title: 'Report', subTitle: "Course", subPath: "course" } })}>Course</TabBtn>
+               {user.role !== "user" &&  <TabBtn active={location.state.subPath === "participants"} onClick={() => navigate("/report/participants", { state: { title: 'Report', subTitle: "Participants", subPath: "participants" } })}>Participants</TabBtn>} */}
+        {/* {user.role !== "user" &&  <TabBtn active={location.state.subPath === "download"} onClick={() => navigate("/report/download", { state: { title: 'Report', subTitle: "Download", subPath: "download" } })}>Download</TabBtn>} */}
+
+      </div>
+      <Router>
+        {/* <Batch path="/" />
                 <Course path="course" />
                 <Participants path="participants" /> */}
-                <ReportDownload path="/" />
-            </Router>
+        <ReportDownload path="/" />
+      </Router>
 
 
 
+      <div className='table-responsive'>
 
+        <div className='row py-1' style={{ background: "#49167E" }}>
+          <div className='col-3'>
+            <label className="mb-2 label form-label text-white ">Training</label>
+            <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}
+              onChange={(e) => getSupervisorReportTrainingDetails(e.target.value)}
+            >
+              <option hidden>Select Training</option>
+              {
+                trainingList.map((item) => {
+                  return (
+                    <>
+                      <option value={item.sid}>
 
+                        {item.name}
 
-            <div className='table-responsive'>
+                      </option>
+                    </>
+                  )
+                })
+              }
 
-            <div className='row py-1' style={{ background: "#49167E" }}>
-        <div className='col-3'>
-          <label className="mb-2 label form-label text-white ">Training</label>
-          <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}
-          
-          >
-            <option hidden>Select Training</option>
-         <option>Kubernetes Engineer Track Training</option>
-         <option>testing duration 3</option>
+            </select>
+          </div>
+          {
+            user.role === ROLE.LEARNER ? "" :
 
-         <option>Stochastic Learning</option>
-         <option>Kubernetes for Cloud Native</option>
+              <div className='col-3'>
+                <label className="mb-2 label form-label text-white">Learner</label>
+                <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}
 
-         <option>Cloud Computing, Docker And Kubernetes Journey</option>
-         <option>Windows Server</option>
-         <option>Microservices with Spring and Spring Cloud</option>
-        
-          </select>
+                >
+                  <option hidden>Select Learner</option>
+                  <option>Hrithik</option>
+                  <option>Learner</option>
+                </select>
+              </div>
+          }
         </div>
-        {
-            user.role === ROLE.LEARNER ? "":
 
-        <div className='col-3'>
-          <label className="mb-2 label form-label text-white">Learner</label>
-          <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}
+        <div>
+          {
+            showReport !== null ?
+            <>
+            <table>
+              <div class="row">
+                <div class="column1">
+                  <table>
+                    <tr>
+                      <th>Section</th>
+                    </tr>
+                    <tr>
+                      <td>Study Material</td>
+                    </tr>
+                    <tr>
+                      <td>Videos</td>
+
+                    </tr>
+                    <tr>
+                      <td>Assessments</td>
+
+                    </tr>
+                    <tr>
+                      <td>Labs</td>
+
+                    </tr>
+                    <tr>
+                      <td>Challenges</td>
+
+                    </tr>
+                  </table>
+                </div>
+                <div class="column table-wrapper">
+                  <table>
+                    <tr>
+                      {
+                        showReport.DOCUMENTS.map((item) => {
+                          return (
+                            <th>{item.sectionName}</th>
+                          )
+                        })
+
+                      }
+
+
+
+                      {/* <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Points</th>
+                      <th>Points1</th>
+                      <th>Points2</th>
+                      <th>Points3</th>
+                      <th>Points4</th>
+                      <th>Points5</th> */}
+                    </tr>
+                    <tr>
+                      {
+                        showReport.DOCUMENTS.map((item) => {
+                          return (
+                            <td>{item.documentCompletion}</td>
+                          )
+                        })
+
+                      }
+
+                      {/* <td>Jill</td>
+                      <td>Smith</td>
+                      <td>50</td>
+                      <td>50</td>
+                      <td>50</td>
+                      <td>50</td>
+                      <td>50</td>
+                      <td>50</td> */}
+                    </tr>
+                    <tr>
+                      {
+                        showReport.VIDEO.map((item) => {
+                          return (
+                            <td>{item.videoCompletion}</td>
+                          )
+                        })
+
+                      }
+                      {/* <td>Eve</td>
+                      <td>Jackson</td>
+                      <td>94</td>
+                      <td>94</td>
+                      <td>94</td>
+                      <td>94</td>
+                      <td>94</td>
+                      <td>94</td> */}
+                    </tr>
+                    <tr>
+                      {
+                        showReport.ASSESSMENT.map((item) => {
+                          return (
+                            <td>{item.assessmentCompletion}</td>
+                          )
+                        })
+
+                      }
+                      {/* <td>Adam</td>
+                      <td>Johnson</td>
+                      <td>67</td>
+                      <td>94</td>
+                      <td>94</td>
+                      <td>94</td>
+                      <td>94</td>
+                      <td>94</td> */}
+                    </tr>
+                    <tr>
+                      {
+                        showReport.LAB.map((item) => {
+                          return (
+                            <td>{item.labCompletion}</td>
+                          )
+                        })
+
+                      }
+                      {/* <td>Jill</td>
+                      <td>Smith</td>
+                      <td>50</td>
+                      <td>94</td>
+                      <td>94</td>
+                      <td>94</td>
+                      <td>94</td>
+                      <td>94</td> */}
+                    </tr>
+                    <tr>
+                    {
+                            showReport.CODING.map((item) => {
+                              return (
+                                <td>{item.codingCompletion}</td>
+                              )
+                            })
+
+                          }
+                      {/* <td>Jill</td>
+                      <td>Smith</td>
+                      <td>50</td>
+                      <td>94</td>
+                      <td>94</td>
+                      <td>94</td>
+                      <td>94</td>
+                      <td>94</td> */}
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </table>
+
+
+          </>
+          : ''
+          }
           
-          >
-            <option hidden>Select Learner</option>
-         <option>Hrithik</option>
-         <option>Learner</option>
-          </select>
+
         </div>
-                }
-</div>
 
-<div>
-  <Carousel >
-    <Carousel.Item>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Day 1</th>
-            <th>Day 2</th>
-            <th>Day 3</th>
-            <th>Day 4</th>
-            <th>Day 5</th>
-            <th>Day 6</th>
-            <th>Day 7</th>
-            <th>Day 8</th>
-            <th>Day 9</th>
-            
-          </tr>
-        </thead>
-        <tbody>
-          <tr className='c'>
-            <td>Documents</td>
-            <td>1/3</td>
-            <td>2/4</td>
-            <td>3/4</td>
-            <td>4/6</td>
-            <td>5/7</td>
-            <td>6/7</td>
-            <td>7/8</td>
-            <td>8/10</td>
-            <td>9/10</td>
-          </tr>
-          <tr className='c'>
-            <td>Videos</td>
-            <td>2/5</td>
-            <td>2/7</td>
-            <td>3/6</td>
-            <td>4/8</td>
-            <td>5/10</td>
-            <td>6/12</td>
-            <td>7/8</td>
-            <td>8/10</td>
-            <td>9/14</td>
-          </tr>
-          <tr className='c'>
-            <td>Assesments</td>
-            <td>1/3</td>
-            <td>2/4</td>
-            <td>3/4</td>
-            <td>4/6</td>
-            <td>5/7</td>
-            <td>6/7</td>
-            <td>7/8</td>
-            <td>8/10</td>
-            <td>9/10</td>
-          </tr>
-          <tr className='c'>
-            <td>Labs</td>
-            <td>2/5</td>
-            <td>2/7</td>
-            <td>3/6</td>
-            <td>6/7</td>
-            <td>7/8</td>
-            <td>8/10</td>
-            <td>9/10</td>
-            <td>7/8</td>
-            <td>6/7</td>
-          </tr>
-          <tr className='c'>
-            <td>Coding Questions</td>
-            <td>3/6</td>
-            <td>6/7</td>
-            <td>7/8</td>
-            <td>8/10</td>
-            <td>9/10</td>
-            <td>6/12</td>
-            <td>7/8</td>
-            <td>8/10</td>
-            <td>9/14</td>
-          </tr>
-        </tbody>
-      </table>
-    </Carousel.Item>
-    <Carousel.Item>
-      <table>
-        <thead>
-          <tr>
-            <th>Day 10</th>
-            <th>Day 11</th>
-            <th>Day 13</th>
-           
-          </tr>
-        </thead>
-        <tbody>
-          <tr className='c'>
-          <td>6/12</td>
-            <td>7/8</td>
-            <td>8/10</td>
-           
-            
-          </tr>
-          <tr className='c'>
-          <td>3/6</td>
-            <td>6/7</td>
-            <td>7/8</td>
-          
-          </tr>
-          <tr className='c'>
-          <td>1/6</td>
-            <td>6/7</td>
-            <td>5/8</td>
-           
-          </tr>
-          <tr className='c'>
-          <td>3/6</td>
-            <td>6/7</td>
-            <td>7/8</td>
-         
-          </tr>
-          <tr className='c'>
-            <td></td>
-            <td>3/6</td>
-            <td>6/7</td>
-            
-          </tr>
-        </tbody>
-      </table>
-    </Carousel.Item>
-  </Carousel>
-</div>
 
-   
 
-</div>
+      </div>
+      <div>
+        <button
+
+          onMouseDown={handleLeftMouseDown}
+          onMouseUp={handleMouseUp}
+        >
+          Previous
+        </button>
+        <button
+
+          onMouseDown={handleRightMouseDown}
+          onMouseUp={handleMouseUp}
+        >
+          Next
+        </button>
+
+      </div>
 
 
 
 
 
 
-        </div>)
+    </div>)
 }
 export default Report
 

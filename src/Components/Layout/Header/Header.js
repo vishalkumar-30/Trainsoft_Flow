@@ -112,7 +112,7 @@ const Header = ({ location, children }) => {
             const dateLarger = moment(dateNow);
             const dateStored = localStorage.getItem("timestamp");
             let timeSpent = dateLarger.diff(dateStored);
-            spinner.show();
+            
             RestService.getLogoutTimes(timeSpent).then(res => {
                 spinner.hide();
             }, err => { spinner.hide(); }

@@ -105,7 +105,7 @@ const Courses = ({ location }) => {
         // this search is working for search enable fields(column) eg. isSearchEnabled: true, in tale column configuration
         searchQuery: "",
         tableCustomClass: "ng-table sort-enabled", // table custom class
-        showCheckbox: true,
+        showCheckbox: false,
         clearSelection: false
     });
 

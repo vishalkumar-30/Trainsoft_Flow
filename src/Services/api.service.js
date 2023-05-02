@@ -216,8 +216,8 @@ const RestService = {
   getTrainingsAverageScore: () => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.GET_TRAININGS_AVERAGE_SCORE),
   filterTrainingsBasedOnDateRange: (fromDate, toDate) => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.FILTER_TRAININGS_BASED_ON_DATE_RANGE + `?from=${fromDate}&to=${toDate}`),
   getOngoingTrainingProgress: () => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.GET_ONGOING_TRAINING_PROGRESS),
-
   getAllTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.GET_ALL_TRAINING_SESSIONS),
+  getSupervisorReportTrainingDetails: (learnerSid,trainingSid) => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.GET_SUPERVISOR_REPORT_TRAINING_DETAILS + `?learner-sid=${learnerSid}&training-sid=${trainingSid}`),
 
 
   // LEARNERDASHBOARD
@@ -227,12 +227,14 @@ const RestService = {
   getallLearnerTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_ALL_TRAINING_SESSIONS),
   getLearnerDasboardCardsDetails: () => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_LEARNER_DASHBOARD_CARD_DETAILS),
   getLogoutTimes: (timeSpent) => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_LOGOUT_TIMES + `?time_spent=${timeSpent}`),
+  getLearnerTrainingProgress: (trainingSid) => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_LEARNER_TRAINING_PROGRESS + `?training-sid=${trainingSid}`),
 
   //INSTRUCTORDASHBOARD(
   getTrainersTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_TRAINERS_TRAINING_SESSIONS),
   getInstructorFeedbackDetails: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_INSTRUCTOR_FEEDBACK_DETAILS),
   getTrainersWeeklySessions: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_TRAINERS_WEEKLY_SESSIONs),
   getTrainerTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_ALL_TRAINING_SESSIONS),
+  insertInstructorCourseTimeSpent: (payload) => AxiosService.post(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.INSERT_INSTRUCTOR_COURSE_TIME_SPENT, payload),
 
   //Report
   generateReport: (assessmentSid, instructor, labId, passPercentage, reportName, trainingSid) => AxiosService.patch(GLOBELCONSTANT.REPORT.GENERATE_REPORT + `?assessment=${assessmentSid}&instructor=${instructor}&lab=${labId}&pass-percentage=${passPercentage}&report-type=${reportName}&training=${trainingSid}`),
