@@ -73,7 +73,7 @@ const TrainingDetails = ({ location }) => {
                         </h3>
 
                         <span class="card-subtitle mb-2 text-muted text-center">
-                            Page Could Not Be Found
+                            Something went wrong
                         </span>
 
                         <div class="card-body mx-auto">
@@ -220,11 +220,12 @@ const TrainingDetails = ({ location }) => {
                             }
                         }))
 
-                    }} style={{ cursor: "pointer" }} >
-                        <input type="checkbox" checked={"checked" ? data.completed : ''} disabled></input>
+                    }}  style={{ cursor: "pointer" ,alignContent:"center", textAlign:"center", alignItems:"center"}} >
+                        <input type="checkbox"  checked={"checked" ? data.completed : ''} disabled ></input>
                         {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB") ? <ScienceIcon />
                             : (data.type === "ASSESSMENT") ? <AssessmentIcon /> : (data.type === "CODING") ? <CodeIcon /> : <SummarizeRoundedIcon />}
                         {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
+
                     </Link >
             }
         },
@@ -535,24 +536,24 @@ const TrainingDetails = ({ location }) => {
         getTrainingBySid();
 
         // Disable right click ;
-        document.addEventListener('contextmenu', (e) => {
-            Toast.error({ message: `Right click not allowed` });
-            e.preventDefault();
-          })
+        // document.addEventListener('contextmenu', (e) => {
+        //     Toast.error({ message: `Right click not allowed` });
+        //     e.preventDefault();
+        //   })
 
         //disable ctrl shift i 
-          const disableConsole = (event) => {
-            if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
-              event.preventDefault();
-            }
-            else if (event.metaKey && event.altKey && event.keyCode === 73) {
-                event.preventDefault();
-              }
-          };
-          window.addEventListener('keydown', disableConsole);
-          return () => {
-            window.removeEventListener('keydown', disableConsole);
-          };
+        //   const disableConsole = (event) => {
+        //     if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
+        //       event.preventDefault();
+        //     }
+        //     else if (event.metaKey && event.altKey && event.keyCode === 73) {
+        //         event.preventDefault();
+        //       }
+        //   };
+        //   window.addEventListener('keydown', disableConsole);
+        //   return () => {
+        //     window.removeEventListener('keydown', disableConsole);
+        //   };
 
     }, []);
 

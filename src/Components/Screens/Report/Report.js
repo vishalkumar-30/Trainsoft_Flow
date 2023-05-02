@@ -12,6 +12,8 @@ import './report.css'
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import RestService from '../../../Services/api.service';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 const Report = ({ location }) => {
   const { user, ROLE, spinner } = useContext(AppContext);
   const [trainingList, setTrainingList] = useState([]);
@@ -140,12 +142,13 @@ const Report = ({ location }) => {
 
 
 
-      <div className='table-responsive'>
+      <div style={{marginBottom:"120px"}}>
 
-        <div className='row py-1' style={{ background: "#49167E" }}>
-          <div className='col-3'>
-            <label className="mb-2 label form-label text-white ">Training</label>
-            <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}
+        <div className='row py-2 ' style={{ background: "#49167E",margin:"0",borderTopLeftRadius:"10px",borderTopRightRadius:"10px" }}>
+          <div className='col-6 d-flex ' style={{alignContent:"center", alignItems:"center"}}>
+            <label className="col-3 mt-2 label form-label text-white ">Training Name</label>
+          
+           <select className="form-control col-6" style={{ borderRadius: "10px", backgroundColor: "rgb(248, 250, 251)" }}
               onChange={(e) => getSupervisorReportTrainingDetails(e.target.value)}
             >
               <option hidden>Select Training</option>
@@ -164,13 +167,14 @@ const Report = ({ location }) => {
               }
 
             </select>
+         
           </div>
           {
             user.role === ROLE.LEARNER ? "" :
 
-              <div className='col-3'>
-                <label className="mb-2 label form-label text-white">Learner</label>
-                <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}
+              <div className='col-6 d-flex '>
+                <label className="mt-2 col-3 label form-label text-white">Learner</label>
+                <select className="form-control col-6" style={{ borderRadius: "10px", backgroundColor: "rgb(248, 250, 251)" }}
 
                 >
                   <option hidden>Select Learner</option>
@@ -187,11 +191,12 @@ const Report = ({ location }) => {
             <>
             <table>
               <div class="row">
-                <div class="column1">
-                  <table>
+                <div class="col-2">
+                  <table className='c'>
                     <tr>
                       <th>Section</th>
                     </tr>
+                   
                     <tr>
                       <td>Study Material</td>
                     </tr>
@@ -213,13 +218,13 @@ const Report = ({ location }) => {
                     </tr>
                   </table>
                 </div>
-                <div class="column table-wrapper">
-                  <table>
+                <div class="col-10 table-wrapper">
+                  <table className='c'>
                     <tr>
                       {
                         showReport.DOCUMENTS.map((item) => {
                           return (
-                            <th>{item.sectionName}</th>
+                            <th>{item.sectionName.split("",8)}</th>
                           )
                         })
 
@@ -227,14 +232,7 @@ const Report = ({ location }) => {
 
 
 
-                      {/* <th>First Name</th>
-                      <th>Last Name</th>
-                      <th>Points</th>
-                      <th>Points1</th>
-                      <th>Points2</th>
-                      <th>Points3</th>
-                      <th>Points4</th>
-                      <th>Points5</th> */}
+                     
                     </tr>
                     <tr>
                       {
@@ -246,14 +244,6 @@ const Report = ({ location }) => {
 
                       }
 
-                      {/* <td>Jill</td>
-                      <td>Smith</td>
-                      <td>50</td>
-                      <td>50</td>
-                      <td>50</td>
-                      <td>50</td>
-                      <td>50</td>
-                      <td>50</td> */}
                     </tr>
                     <tr>
                       {
@@ -264,14 +254,7 @@ const Report = ({ location }) => {
                         })
 
                       }
-                      {/* <td>Eve</td>
-                      <td>Jackson</td>
-                      <td>94</td>
-                      <td>94</td>
-                      <td>94</td>
-                      <td>94</td>
-                      <td>94</td>
-                      <td>94</td> */}
+                     
                     </tr>
                     <tr>
                       {
@@ -282,14 +265,7 @@ const Report = ({ location }) => {
                         })
 
                       }
-                      {/* <td>Adam</td>
-                      <td>Johnson</td>
-                      <td>67</td>
-                      <td>94</td>
-                      <td>94</td>
-                      <td>94</td>
-                      <td>94</td>
-                      <td>94</td> */}
+                    
                     </tr>
                     <tr>
                       {
@@ -300,14 +276,7 @@ const Report = ({ location }) => {
                         })
 
                       }
-                      {/* <td>Jill</td>
-                      <td>Smith</td>
-                      <td>50</td>
-                      <td>94</td>
-                      <td>94</td>
-                      <td>94</td>
-                      <td>94</td>
-                      <td>94</td> */}
+                   
                     </tr>
                     <tr>
                     {
@@ -318,19 +287,31 @@ const Report = ({ location }) => {
                             })
 
                           }
-                      {/* <td>Jill</td>
-                      <td>Smith</td>
-                      <td>50</td>
-                      <td>94</td>
-                      <td>94</td>
-                      <td>94</td>
-                      <td>94</td>
-                      <td>94</td> */}
+                   
                     </tr>
                   </table>
                 </div>
               </div>
             </table>
+            <div style={{marginTop:"-135px", position:"relative"}}>
+        <button
+
+          onMouseDown={handleLeftMouseDown}
+          onMouseUp={handleMouseUp}
+          style={{marginLeft:"230px"}}
+        >
+          <ArrowBackIosIcon/>
+        </button>
+        <button 
+style={{ float:"right",marginRight:"-20px"}}
+          onMouseDown={handleRightMouseDown}
+          onMouseUp={handleMouseUp}
+        >
+        
+          <ArrowForwardIosIcon/>
+        </button>
+
+      </div>
 
 
           </>
@@ -343,24 +324,7 @@ const Report = ({ location }) => {
 
 
       </div>
-      <div>
-        <button
-
-          onMouseDown={handleLeftMouseDown}
-          onMouseUp={handleMouseUp}
-        >
-          Previous
-        </button>
-        <button
-
-          onMouseDown={handleRightMouseDown}
-          onMouseUp={handleMouseUp}
-        >
-          Next
-        </button>
-
-      </div>
-
+    
 
 
 
