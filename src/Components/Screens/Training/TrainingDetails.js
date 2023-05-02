@@ -1,7 +1,7 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import '../Batches/batches.css'
 import './training.css'
-import { useNavigate } from "@reach/router"
+import { useNavigate } from "@reach/router";
 import AppContext from "../../../Store/AppContext";
 import RestService from "../../../Services/api.service";
 import DropdownItem from "../../Common/DropdownItem/DropdownItem";
@@ -37,7 +37,6 @@ const TrainingDetails = ({ location }) => {
     const [contentLength, setContentLength] = useState(0);
     const [sid, setSid] = useState('');
     const [contentSid, setContentSid] = useState('');
-    const [sectionSidArray, setSectionSidArray] = useState([]);
     const [markCompleted, setMarkAsCompleted] = useState([]);
     const [trainingBySid, setTrainingBySid] = useState({});
     const [labId, setLabId] = useState('');
@@ -52,11 +51,44 @@ const TrainingDetails = ({ location }) => {
     const [duration, setDuration] = useState(0);
     const [call, setCall] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [completeContent, setCompleteContent] = useState();
+    // const intervalRef = useRef(null);
+    // const [seconds, setSeconds] = useState(0);
+    // const [previousSid, setPreviousSid] = useState('');
     const navigate = useNavigate();
     let trainingSid = location.state.sid;
     let username = JSON.parse(localStorage.getItem('user'));
     localStorage.setItem("trainingSid", location.state.sid);
+    // const userSid = JSON.parse(localStorage.getItem('user'))
     const [show, setShow] = useState(false);
+
+    //error component
+    const ErrorComponent = () => {
+        return (
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-sm-12">
+                    <div class="card shadow-lg border-0 rounded-lg mt-5 mx-auto" style={{ width: "30rem" }}>
+                        <h3 class="card-header display-1 text-muted text-center">
+                            404
+                        </h3>
+
+                        <span class="card-subtitle mb-2 text-muted text-center">
+                            Page Could Not Be Found
+                        </span>
+
+                        <div class="card-body mx-auto">
+                            <button class="btn btn-sm btn-info text-white" onClick={() => navigate("/training", { state: { title: "Training" } })}>
+                                Back To Training
+                            </button>
+                            {/* <a type="button" href="#"
+                                class="btn btn-sm btn-info text-white"> Back To Training </a> */}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     const VideoMediaPlayer = (vdlink) => {
         return (
             <>
@@ -66,8 +98,15 @@ const TrainingDetails = ({ location }) => {
                         url={vdlink}
                         width='100%'
                         height="100%"
+                        config={{
+                            file: {
+                                attributes: {
+                                    controlsList: 'nodownload'  //<- this is the important bit
+                                }
+                            }
+                        }}
                         playing={true}
-                        loop={true}
+                        // loop={true}
                         muted={true}
                         controls
                         onProgress={(progress) => {
@@ -100,7 +139,7 @@ const TrainingDetails = ({ location }) => {
     function storeType(val) {
         setType(val)
     }
-    
+
 
     const Modal = ({ handleClose, show, children }) => {
         const showHideClassName = show ? "modal d-block" : "modal d-none";
@@ -128,7 +167,7 @@ const TrainingDetails = ({ location }) => {
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
-                render: (data) =>
+                render: (data, i, j) =>
                     <Link onClick={() => {
 
                         if (data.contentLink) {
@@ -139,9 +178,15 @@ const TrainingDetails = ({ location }) => {
                             localStorage.setItem("sid", data.sid);
                             localStorage.setItem("sectionSid", data.sectionSid);
                         }
+                        // if (data.instructorSpecific) {
+                        //     startTimer();
+                        //     setPreviousSid(data.sid);
+
+                        // }
+
                         if (data.labId !== null) {
                             storeLabId(data.labId);
-                            setContentSid(data.sectionSid);
+                            // setContentSid(data.sectionSid);
                             setLabDescription(data.labContent.labDescription);
                             setLabOverview(data.labContent.labOverview);
                             setLabSolution(data.labContent.labSolution);
@@ -150,7 +195,8 @@ const TrainingDetails = ({ location }) => {
                         if (data.type) {
                             storeType(data.type)
                         }
-                        if (data.sid != null && (data.type === "DOCUMENTS" || data.type === "MS_OFFICE")) {
+                        if ((data.sid != null && (data.type === "DOCUMENTS" || data.type === "MS_OFFICE"))
+                            && data.completed === false) {
                             markCourseAsCompleted(data.sid, data.sectionSid);
                         }
 
@@ -159,9 +205,10 @@ const TrainingDetails = ({ location }) => {
                             setCodingQuestiondesc(data.codingQuestionDescription);
                         }
                         showFeedBack(data.last)
-
+                        setContentSid(data.sectionSid);
+                        setCompleteContent(data.completed);
                         modalF(data.last);
-
+                        // setStart(data.instructorSpecific);
                         setShowcoursename(data.contentName);
                         setZoomInfo(zoomInfo => ({
                             ...zoomInfo,
@@ -173,8 +220,10 @@ const TrainingDetails = ({ location }) => {
                             }
                         }))
 
-                    }} style={{ cursor: "pointer" }} > {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB") ? <ScienceIcon />
-                        : (data.type === "ASSESSMENT") ? <AssessmentIcon /> : (data.type === "CODING") ? <CodeIcon /> : <SummarizeRoundedIcon />}
+                    }} style={{ cursor: "pointer" }} >
+                        <input type="checkbox" checked={"checked" ? data.completed : ''} disabled></input>
+                        {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB") ? <ScienceIcon />
+                            : (data.type === "ASSESSMENT") ? <AssessmentIcon /> : (data.type === "CODING") ? <CodeIcon /> : <SummarizeRoundedIcon />}
                         {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
                     </Link >
             }
@@ -217,32 +266,42 @@ const TrainingDetails = ({ location }) => {
         try {
             let sum = 0;
             let trainingSid = location.state.sid;
-            spinner.show();
+            // spinner.show();
             RestService.getTrainingContentsByTrainingSid(trainingSid).then(
                 response => {
 
                     if (response.status === 200) {
-                        setTrainingDetailsList(response.data.courseSectionResponseTO);
-                        setType(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].type);
-                        setVdlink(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentLink !== null ?
-                            response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentLink : '');
-                        setLabId(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labId !== null ?
-                            response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labId : '');
-                        setContentSid(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].sectionSid);
-                        setLabDescription(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
-                            !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labDescription
-                            : '');
-                        setLabOverview(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
-                            !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labOverview
-                            : '');
+                        if (typeof (response.data) === "string") {
+                            setTrainingDetailsList([]);
+                        }
+                        else {
+                            setTrainingDetailsList(response.data.courseSectionResponseTO);
+                            setSid(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].sid);
+                            setType(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].type);
+                            setVdlink(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentLink !== null ?
+                                response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentLink : '');
+                            setLabId(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labId !== null ?
+                                response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labId : '');
+                            setContentSid(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].sectionSid);
+                            setLabDescription(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
+                                !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labDescription
+                                : '');
+                            setLabOverview(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
+                                !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labOverview
+                                : '');
 
-                        setLabSolution(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
-                            !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labSolution : '');
-                        setLabDuration(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].durationInMinutes !== null ?
-                            response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].durationInMinutes : '');
+                            setLabSolution(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
+                                !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labSolution : '');
+                            setLabDuration(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].durationInMinutes !== null ?
+                                response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].durationInMinutes : '');
 
-                        setShowcoursename(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentName);
+                            setShowcoursename(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentName);
+                        }
 
+
+                    }
+                    else {
+                        setTrainingDetailsList([]);
                     }
 
                     response.data.courseSectionResponseTO.map((i) => {
@@ -251,11 +310,48 @@ const TrainingDetails = ({ location }) => {
                     })
                 },
                 err => {
-                    spinner.hide();
+                    console.log(err);
+                    setTrainingDetailsList([]);
+                    // spinner.hide();
                 }
             ).finally(() => {
-                spinner.hide();
+                // spinner.hide();
                 setIsLoading(false)
+            });
+        } catch (err) {
+            console.error("error occur on getTrainingContentsByTrainingSid()", err)
+        }
+    }
+
+    //get all section and content when markascompleted triggers
+    const getTrainingContentsByTrainingSidUpdated = async () => {
+        try {
+            let sum = 0;
+            let trainingSid = location.state.sid;
+            // spinner.show();
+            RestService.getTrainingContentsByTrainingSid(trainingSid).then(
+                response => {
+
+                    if (response.status === 200) {
+                        setTrainingDetailsList(response.data.courseSectionResponseTO);
+
+                    } else {
+                        setTrainingDetailsList([]);
+                    }
+
+                    response.data.courseSectionResponseTO.map((i) => {
+                        sum += i.courseContentResposeTOList.length;
+                        setContentLength(sum);
+                    })
+                },
+                err => {
+                    console.log(err);
+                    // spinner.hide();
+                }
+            ).finally(() => {
+
+                spinner.hide();
+                // setIsLoading(false)
             });
         } catch (err) {
             console.error("error occur on getTrainingContentsByTrainingSid()", err)
@@ -276,6 +372,7 @@ const TrainingDetails = ({ location }) => {
 
                     if (response.status === 200) {
                         setMarkAsCompleted(response.data);
+                        getTrainingContentsByTrainingSidUpdated();
 
                     }
                 },
@@ -305,6 +402,7 @@ const TrainingDetails = ({ location }) => {
 
                         if (response.status === 200) {
                             setMarkAsCompleted(response.data);
+                            getTrainingContentsByTrainingSidUpdated();
                             setCall(false);
                             setDuration(0);
                         }
@@ -328,7 +426,7 @@ const TrainingDetails = ({ location }) => {
 
         try {
             let trainingSid = location.state.sid;
-            spinner.show();
+            // spinner.show();
             RestService.getCompletedCourses(trainingSid).then(
                 response => {
 
@@ -344,14 +442,15 @@ const TrainingDetails = ({ location }) => {
                     //             return[
                     //                 ...sectionArray, sid
                     //             ]
-                                
+
                     //         });
                     //     }
                     // }
 
                 },
                 err => {
-                    spinner.hide();
+                    console.log(err);
+                    // spinner.hide();
                 }
             ).finally(() => {
                 spinner.hide();
@@ -366,7 +465,7 @@ const TrainingDetails = ({ location }) => {
 
         try {
             let trainingSid = location.state.sid;
-            spinner.show();
+            // spinner.show();
             RestService.getTrainingBySid(trainingSid).then(
                 response => {
                     if (response.status === 200) {
@@ -375,7 +474,8 @@ const TrainingDetails = ({ location }) => {
                     }
                 },
                 err => {
-                    spinner.hide();
+                    // spinner.hide();
+                    console.log(err);
                 }
             ).finally(() => {
                 spinner.hide();
@@ -385,6 +485,49 @@ const TrainingDetails = ({ location }) => {
         }
     }
 
+    // const insertInstructorCourseTimeSpent = () => {
+
+    //     try {
+    //         let trainingSid = location.state.sid;
+    //         let payload = {
+    //             "contentSid": sid,
+    //             "instructorSid": userSid.sid,
+    //             "sectionSid": contentSid,
+    //             "timeSpent": seconds,
+    //             "trainingSid": trainingSid
+    //         }
+
+    //         spinner.show();
+    //         RestService.insertInstructorCourseTimeSpent(payload).then(
+    //             response => {
+
+    //                 if (response.status === 200) {
+    //                     console.log("success");
+    //                 }
+    //             },
+    //             err => {
+    //                 spinner.hide();
+    //             }
+    //         ).finally(() => {
+    //             spinner.hide();
+    //         });
+    //     } catch (err) {
+    //         console.error("error occur on markCourseAsCompleted()", err)
+    //     }
+
+    // }
+
+    //start timer
+
+    // const startTimer = () => {
+    //     intervalRef.current = setInterval(() => {
+    //         setSeconds(prevSeconds => prevSeconds + 1);
+    //     }, 1000);
+    // }
+
+    // const stopTimer = () => {
+    //     clearInterval(intervalRef.current);
+    // }
     //initialize component
     useEffect(() => {
         getTrainingContentsByTrainingSid();
@@ -392,35 +535,37 @@ const TrainingDetails = ({ location }) => {
         getTrainingBySid();
 
         // Disable right click ;
-        // document.addEventListener('contextmenu', (e) => {
-        //     Toast.error({ message: `Right click not allowed` });
-        //     e.preventDefault();
-        //   })
+        document.addEventListener('contextmenu', (e) => {
+            Toast.error({ message: `Right click not allowed` });
+            e.preventDefault();
+          })
 
-          //disable ctrl shift i 
-        //   const disableConsole = (event) => {
-        //     if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
-        //       event.preventDefault();
-        //     }
-        //     else if (event.metaKey && event.altKey && event.keyCode === 73) {
-        //         event.preventDefault();
-        //       }
-        //   };
-        //   window.addEventListener('keydown', disableConsole);
-        //   return () => {
-        //     window.removeEventListener('keydown', disableConsole);
-        //   };
+        //disable ctrl shift i 
+          const disableConsole = (event) => {
+            if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
+              event.preventDefault();
+            }
+            else if (event.metaKey && event.altKey && event.keyCode === 73) {
+                event.preventDefault();
+              }
+          };
+          window.addEventListener('keydown', disableConsole);
+          return () => {
+            window.removeEventListener('keydown', disableConsole);
+          };
 
     }, []);
 
     useEffect(() => {
-        if (Math.ceil(played) > Math.ceil(0.8 * duration)) {
+        if ((Math.ceil(played) > Math.ceil(0.8 * duration)) && completeContent === false) {
             markCourseAsCompletedVideo();
 
         }
     }, [played]);
 
-    if (user.role === ROLE.LEARNER) {
+
+
+    if (user.role === ROLE.LEARNER && trainingDetailsList > 0) {
         for (let i = 0; i < trainingDetailsList.length; i++) {
             for (let j = 0; j < trainingDetailsList[i]["courseContentResposeTOList"].length; j++) {
                 if (trainingDetailsList[i].courseContentResposeTOList[j]["instructorSpecific"] === true) {
@@ -431,162 +576,176 @@ const TrainingDetails = ({ location }) => {
             }
         }
     }
-console.log(trainingBySid)
-    
+
     return (
         <>
-         {<Modal show={show} handleClose={() => setShow(false)}  >
-            {/* {show && <WhiteBoard  /> } */}
-
-            {user.role === ROLE.INSTRUCTOR ? <WhiteBoard  />:user.role === ROLE.LEARNER?<ClassNotes/>:""}
-        </Modal>}
-            <div className="row" >
-
-                {showcoursename.length === 0 ? "" :
-                    <div className=" title-sm col-6">Content Title: {showcoursename}</div>}
-                <div className="col-4" >
-                    <ProgressBar progress={markCompleted.totalCourseCompletedInTraining === null ? 0 : markCompleted.totalCourseCompletedInTraining > contentLength ? contentLength : markCompleted.totalCourseCompletedInTraining} totalSection={contentLength} trainingSid={location.state.sid} />
-                </div>
-                {
-                    user.role === ROLE.INSTRUCTOR ?<div className="col-1 class-mode mb-4  " onClick={() => {setShow(true)}} style={{background: "#49167E",borderRadius:"10px"}}>Whiteboard</div>:""
-                }
-                  {
-                    user.role === ROLE.LEARNER ?<div className="col-1 class-mode mb-4 " onClick={() => {setShow(true)}} style={{background: "#49167E",borderRadius:"10px"}}>Make Notes</div>:""
-                }
-               
-                
-            </div>
-           
-           
-            {isLoading ? <LoadingSpinner /> :   <div class="row mt-2">
-
-<div class="col-8  pl-3 " >
-
-    {(type === "EXTERNAL_LINK" || type === "VIDEO") ?
-        VideoMediaPlayer(vdlink)
-        : (type === "PHOTO" || type === "DOCUMENTS") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
-            : (type === "LAB" || type === "CODING") ?
-                <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
-                    <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
-
-                        {
-                            <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/labs", {
-                                state: {
-                                    labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename, type, codingQuestionId, codingQuestiondesc
-                                }
-                            })
-                            }>Open Sandbox</button>}
-                    </div>
-
-                </div>
-                :
-                (type === "ASSESSMENT") ?
-                    <div className="assesmentimg row ml-1" >
-                        <div style={{ width: "180px", textAlign: "center", textDecoration: "none", background: "blue", color: "white", padding: "15px 20px", marginLeft: "250px", marginBottom: "10px", marginTop: "100px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                            <a href={vdlink} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", fontSize: "15px" }}>Start Assessment</a>
-                        </div>
-                    </div>
+            {
+                isLoading ?
+                    <LoadingSpinner />
                     :
-                    (type === "TRAINING_SESSION") ?
-                        <div className="zoommeeting row ml-1">
-                            <div style={{ width: "120px", textAlign: "center", textDecoration: "none", color: "white", background: "blue", padding: "10px 10px", marginLeft: "20px", marginBottom: "80px", marginTop: "85px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
+                    trainingDetailsList.length === 0 ?
+                        <ErrorComponent />
+
+                        :
+                        <>
+                            <Modal show={show} handleClose={() => setShow(false)}  >
+                                {/* {show && <WhiteBoard  /> } */}
+
+                                {user.role === ROLE.INSTRUCTOR ? <WhiteBoard />
+                                    :
+
+                                    user.role === ROLE.LEARNER ? <ClassNotes trainingSid={trainingSid} trainingSessionSid={sid} /> : ""}
+                            </Modal>
+                            <div className="row" >
+
+                                {showcoursename.length === 0 ? "" :
+                                    <div className=" title-sm col-6">Content Title: {showcoursename}</div>}
+                                <div className="col-4" >
+                                    <ProgressBar progress={markCompleted.totalCourseCompletedInTraining === null ? 0 : markCompleted.totalCourseCompletedInTraining > contentLength ? contentLength : markCompleted.totalCourseCompletedInTraining} totalSection={contentLength} trainingSid={location.state.sid} />
+                                </div>
+                                {
+                                    user.role === ROLE.INSTRUCTOR ? <div className="col-1 class-mode mb-4  " onClick={() => { setShow(true) }} style={{ background: "#49167E", borderRadius: "10px" }}>Whiteboard</div> : ""
+                                }
+                                {
+                                    user.role === ROLE.LEARNER ? <div className="col-1 class-mode mb-4 " onClick={() => { setShow(true) }} style={{ background: "#49167E", borderRadius: "10px" }}>Make Notes</div> : ""
+                                }
+
+
                             </div>
-                        </div>
-                        : ''
+                            <div class="row mt-2">
 
-    }
+                                <div class="col-8  pl-3 " >
 
-    <div class="tabset">
+                                    {(type === "EXTERNAL_LINK" || type === "VIDEO") ?
+                                        VideoMediaPlayer(vdlink)
+                                        : (type === "PHOTO" || type === "DOCUMENTS") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
+                                            : (type === "LAB" || type === "CODING") ?
+                                                <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
+                                                    <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
 
-        <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked />
-        <label for="tab1">Overview</label>
+                                                        {
+                                                            <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/labs", {
+                                                                state: {
+                                                                    labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename, type, codingQuestionId, codingQuestiondesc
+                                                                }
+                                                            })
+                                                            }>Open Sandbox</button>}
+                                                    </div>
 
-        <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier" />
-        <label for="tab2">Q&A</label>
+                                                </div>
+                                                :
+                                                (type === "ASSESSMENT") ?
+                                                    <div className="assesmentimg row ml-1" >
+                                                        <div style={{ width: "180px", textAlign: "center", textDecoration: "none", background: "blue", color: "white", padding: "15px 20px", marginLeft: "250px", marginBottom: "10px", marginTop: "100px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                                            <a href={vdlink} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", fontSize: "15px" }}>Start Assessment</a>
+                                                        </div>
+                                                    </div>
+                                                    :
+                                                    (type === "TRAINING_SESSION") ?
+                                                        <div className="zoommeeting row ml-1">
+                                                            <div style={{ width: "120px", textAlign: "center", textDecoration: "none", color: "white", background: "blue", padding: "10px 10px", marginLeft: "20px", marginBottom: "80px", marginTop: "85px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                                                <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
+                                                            </div>
+                                                        </div>
+                                                        : ''
 
-        <div class="tab-panels">
-            <section id="marzen" class="tab-panel">
+                                    }
 
-                {
-                    trainingBySid.trainingOverview != null ?
-                        <p className="title-md ">{trainingBySid.trainingOverview}</p>
-                        : 'Overview not Provided'
-                }
+                                    <div class="tabset">
 
-            </section>
-            <section id="rauchbier" class="tab-panel">
-                <Qa />
-            </section>
+                                        <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked />
+                                        <label for="tab1">Overview</label>
 
-        </div>
+                                        <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier" />
+                                        <label for="tab2">Q&A</label>
 
-    </div>
+                                        <div class="tab-panels">
+                                            <section id="marzen" class="tab-panel">
 
-</div>
+                                                {
+                                                    trainingBySid.trainingOverview != null ?
+                                                        <p className="title-md ">{trainingBySid.trainingOverview}</p>
+                                                        : 'Overview not Provided'
+                                                }
 
-<div class="col-4 training-content" >
-    {trainingDetailsList.length > 0 ? trainingDetailsList.map((train) => {
-        return (
-            <>
-                <div >
-                    <DropdownItem title={train.sectionName} total={train.courseContentResposeTOList.length} theme="dark">
-                        <DynamicTable  {...{ configuration, sourceData: train.courseContentResposeTOList }} />
-                    </DropdownItem>
-                    {
-                        feed ? <Modal show={modal} handleClose={() => setModal(false)}>
+                                            </section>
+                                            <section id="rauchbier" class="tab-panel">
+                                                <Qa />
+                                            </section>
 
-                            <Feedback sectionsid={train.sid} trainingsid={location.state.sid} />
+                                        </div>
 
-                        </Modal> : ''
-                    }
-                </div>
-            </>
-        )
-    }) : ''}
+                                    </div>
 
-    <DropdownItem title="Fun Activity" total="2" theme="dark">
-        {username.name === "Wipro" ?
-            <div>
-                <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/enterprise-administrator.html" target="_blank">Fun With Enterprise Administrator</a></div>
-                <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/ms-training.html" target="_blank">Fun With MS Training</a></div>
-            </div> :
-            <div>
-                <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/cloud-native-jeopardy.html" target="_blank">Fun With Cloud Native</a></div>
-                <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/kubernetes-jeopardy-game.html" target="_blank">Fun With Kubernetes</a></div>
-            </div>}
-    </DropdownItem>
+                                </div>
 
-    {trainingBySid.name === "Cloud Computing, Docker And Kubernetes Journey" ?
-       <>
-        <DropdownItem title="Development Labs" total="5" theme="dark">
+                                <div class="col-4 training-content" >
+                                    {trainingDetailsList.length > 0 ? trainingDetailsList.map((train) => {
+                                        return (
+                                            <>
+                                                <div >
+                                                    <DropdownItem title={train.sectionName} total={train.courseContentResposeTOList.length} theme="dark">
+                                                        <DynamicTable  {...{ configuration, sourceData: train.courseContentResposeTOList }} />
+                                                    </DropdownItem>
+                                                    {
+                                                        feed ? <Modal show={modal} handleClose={() => setModal(false)}>
 
+                                                            <Feedback sectionsid={train.sid} trainingsid={location.state.sid} />
 
-<div>
-<div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_01_Install_and_Configure_k3s_cluster" target="_blank">Install and Configure K3s Cluster</a></div>
-<div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_02_Install_and_configure_k9s" target="_blank">Install and Configure K9s</a></div>
-<div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_03_Imperative_Commands_in_Kubernetes" target="_blank">Imperative Commands in Kubernetes</a></div>
+                                                        </Modal> : ''
+                                                    }
+                                                </div>
+                                            </>
+                                        )
+                                    }) : ''}
 
-<div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_04_Kubernetes_Deployment" target="_blank">Kubernetes Deployment</a></div>
+                                    <DropdownItem title="Fun Activity" total="2" theme="dark">
+                                        {username.name === "Wipro" ?
+                                            <div>
+                                                <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/enterprise-administrator.html" target="_blank">Fun With Enterprise Administrator</a></div>
+                                                <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/ms-training.html" target="_blank">Fun With MS Training</a></div>
+                                            </div> :
+                                            <div>
+                                                <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/cloud-native-jeopardy.html" target="_blank">Fun With Cloud Native</a></div>
+                                                <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/kubernetes-jeopardy-game.html" target="_blank">Fun With Kubernetes</a></div>
+                                            </div>}
+                                    </DropdownItem>
 
-<div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_05_Asssign_memory_request_and_a_memory_limit_to_a_Container" target="_blank">Asssign Memory Request</a></div>
-
-</div>
-</DropdownItem>
-<DropdownItem title="Workshops" total="1" theme="dark">
+                                    {trainingBySid.name === "Cloud Computing, Docker And Kubernetes Journey" ?
+                                        <>
+                                            <DropdownItem title="Development Labs" total="5" theme="dark">
 
 
-<div>
-<div className="py-3"> <HomeRepairServiceIcon /><a href="https://do.trainsoft.live/?folder=/home/Workshops" target="_blank">Namespaces</a></div>
+                                                <div>
+                                                    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_01_Install_and_Configure_k3s_cluster" target="_blank">Install and Configure K3s Cluster</a></div>
+                                                    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_02_Install_and_configure_k9s" target="_blank">Install and Configure K9s</a></div>
+                                                    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_03_Imperative_Commands_in_Kubernetes" target="_blank">Imperative Commands in Kubernetes</a></div>
 
-</div>
-</DropdownItem>
-       </>
-        : ''
-    }
+                                                    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_04_Kubernetes_Deployment" target="_blank">Kubernetes Deployment</a></div>
 
-</div>
-</div>}
+                                                    <div className="py-3"> <ScienceIcon /><a href="https://do.trainsoft.live/?folder=/home/Labs/Lab_05_Asssign_memory_request_and_a_memory_limit_to_a_Container" target="_blank">Asssign Memory Request</a></div>
+
+                                                </div>
+                                            </DropdownItem>
+                                            <DropdownItem title="Workshops" total="1" theme="dark">
+
+
+                                                <div>
+                                                    <div className="py-3"> <HomeRepairServiceIcon /><a href="https://do.trainsoft.live/?folder=/home/Workshops" target="_blank">Namespaces</a></div>
+
+                                                </div>
+                                            </DropdownItem>
+                                        </>
+                                        : ''
+                                    }
+
+                                </div>
+                            </div>
+                        </>
+
+            }
+
+
         </>
     )
 }

@@ -29,6 +29,7 @@ const InstructorDashboard = () => {
     const [trainingList, setTrainingList] = useState([]);
     const [trainingCompleted, setTrainingListCompleted] = useState([]);
     const [trainingOngoing, setTrainingListOngoing] = useState([]);
+    const [showTraining, setShowTraining] = useState('');
 
     // get instructor trainings 
     //.filter(item => item.status === 'ENABLED' || item.status === 'ARCHIVED')
@@ -38,8 +39,8 @@ const InstructorDashboard = () => {
             let pageSize = 20;
             RestService.getAllTrainingByPage(user.role, pagination, pageSize).then(
                 response => {
-                    setTrainingList(response.data.filter(item => item.status === 'ENABLED' 
-                    || item.status === 'ARCHIVED'));
+                    setTrainingList(response.data.filter(item => item.status === 'ENABLED'
+                        || item.status === 'ARCHIVED'));
                     setTrainingListCompleted(response.data.filter(item => item.status === 'ARCHIVED'));
                     setTrainingListOngoing(response.data.filter(item => item.status === 'ENABLED'));
                 },
@@ -173,128 +174,134 @@ const InstructorDashboard = () => {
 
 
         <Card title="" className='mt-2'>
-        <label className="m-3 label form-label ">Select Training</label>
-                <select className="form-control mb-3 mx-2" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} 
-                // onChange={(e) => {
-                //     getLearnerWeightedScoresSpecific(e.target.value);
+            <label className="m-3 label form-label ">Select Training</label>
+            <select className="form-control mb-3 mx-2" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }}
+                onChange={(e) => {
+                    setShowTraining(e.target.value);
+                    // getLearnerWeightedScoresSpecific(e.target.value);
 
-                // }}
-                >
-                    <option hidden>Select Training</option>
-                    {
-                        trainingList.map((item) => {
-                            return (
-                                <>
-                                    <option value={item.sid}>
+                }}
+            >
+                <option hidden>Select Training</option>
+                {
+                    trainingList.map((item) => {
+                        return (
+                            <>
+                                <option value={item.sid}>
 
-                                        {item.name}
+                                    {item.name}
 
-                                    </option>
-                                </>
-                            )
-                        })
-                    }
-                </select>
-            <div className='row '>
-                <div className='col-sm-2 col-md-2'>
-                    <div className='title-md'>
-                        Student Performance
-                    </div>
-                    <InstructorLeaderboard />
+                                </option>
+                            </>
+                        )
+                    })
+                }
+            </select>
+            {
+                showTraining.length > 0 ?
+                    <div className='row '>
+                        <div className='col-sm-2 col-md-2'>
+                            <div className='title-md'>
+                                Student Performance
+                            </div>
+                            <InstructorLeaderboard />
 
-                </div>
-                <div className='col-sm-3 col-md-3'>
-                    <div className='title-md text-center'>
-                        Progress
-                    </div>
-                    {/* <div className='d-flex justify-content-between p-2 border ' style={{width:"100%", borderRadius:"20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)"}}>
+                        </div>
+                        <div className='col-sm-3 col-md-3'>
+                            <div className='title-md text-center'>
+                                Progress
+                            </div>
+                            {/* <div className='d-flex justify-content-between p-2 border ' style={{width:"100%", borderRadius:"20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)"}}>
   <div className='title-sm'>Videos</div>
   <div >70%</div>
  </div> */}
-                    <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
-                        <div className='title-sm'>Lab</div>
-                        <div >70%</div>
-                    </div>
-                    <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
-                        <div className='title-sm'>Assesment</div>
-                        <div >70%</div>
-                    </div>
-                    <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
-                        <div className='title-sm'>Capstone</div>
-                        <div >70%</div>
-                    </div>
-
-                    <div className='d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
-                        <div className='title-sm'>ILT</div>
-                        <div >70%</div>
-                    </div>
-
-
-
-
-
-                </div>
-                <div className='col-sm-3 col-md-3'>
-                    <div className='title-md text-center'>
-                        Average Assessments Score
-                    </div>
-                    <div className=" py-5 ml-5">
-                        <div className="flx pb-3" style={{ marginTop: "-40px" }} >
-                            <div className="text-center " style={{ width: 100, height: 60 }}>
-                                <CircularProgressbar
-
-                                    // maxValue="1000"
-                                    // minValue="1" value="580"
-                                    // text={`580`}
-                                    value="40"
-                                    text={`40%`}
-                                    styles={buildStyles({
-                                        trailColor: "#F5FBFF",
-                                        pathColor: "#5CC9EE",
-
-                                    })} />
-                                <div className="mt-2">Project Work</div>
+                            <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
+                                <div className='title-sm'>Lab</div>
+                                <div >70%</div>
                             </div>
-                            <div className="text-center assementdashboard" style={{ width: 100, height: 60 }}>
-                                <CircularProgressbar
-                                    value="70"
-                                    text={`70%`}
-                                    styles={buildStyles({
-                                        trailColor: "#F5FBFF",
-                                        pathColor: "#5CC9EE",
-                                    })} />
-                                <div className="mt-2">MCQs</div>
+                            <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
+                                <div className='title-sm'>Assesment</div>
+                                <div >70%</div>
+                            </div>
+                            <div className='my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
+                                <div className='title-sm'>Capstone</div>
+                                <div >70%</div>
                             </div>
 
-                            <div className="text-center" style={{ width: 100, height: 60, marginTop: "80px", marginLeft: "40px" }}>
-                                <CircularProgressbar
-                                    // maxValue="1000"
-                                    // minValue="1" value="789"
-                                    // text={`789`}
-                                    value="65"
-                                    text={`65%`}
-                                    styles={buildStyles({
-                                        trailColor: "#F5FBFF",
-                                        pathColor: "#7D00B5",
-                                    })} />
-                                <div className="mt-2">Lab Assessments </div>
+                            <div className='d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
+                                <div className='title-sm'>ILT</div>
+                                <div >70%</div>
+                            </div>
+
+
+
+
+
+                        </div>
+                        <div className='col-sm-3 col-md-3'>
+                            <div className='title-md text-center'>
+                                Average Assessments Score
+                            </div>
+                            <div className=" py-5 ml-5">
+                                <div className="flx pb-3" style={{ marginTop: "-40px" }} >
+                                    <div className="text-center " style={{ width: 100, height: 60 }}>
+                                        <CircularProgressbar
+
+                                            // maxValue="1000"
+                                            // minValue="1" value="580"
+                                            // text={`580`}
+                                            value="40"
+                                            text={`40%`}
+                                            styles={buildStyles({
+                                                trailColor: "#F5FBFF",
+                                                pathColor: "#5CC9EE",
+
+                                            })} />
+                                        <div className="mt-2">Project Work</div>
+                                    </div>
+                                    <div className="text-center assementdashboard" style={{ width: 100, height: 60 }}>
+                                        <CircularProgressbar
+                                            value="70"
+                                            text={`70%`}
+                                            styles={buildStyles({
+                                                trailColor: "#F5FBFF",
+                                                pathColor: "#5CC9EE",
+                                            })} />
+                                        <div className="mt-2">MCQs</div>
+                                    </div>
+
+                                    <div className="text-center" style={{ width: 100, height: 60, marginTop: "80px", marginLeft: "40px" }}>
+                                        <CircularProgressbar
+                                            // maxValue="1000"
+                                            // minValue="1" value="789"
+                                            // text={`789`}
+                                            value="65"
+                                            text={`65%`}
+                                            styles={buildStyles({
+                                                trailColor: "#F5FBFF",
+                                                pathColor: "#7D00B5",
+                                            })} />
+                                        <div className="mt-2">Lab Assessments </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div className='col-sm-4 col-md-4'>
+                            <div className='title-md text-center'>
+                                Overall Score/ Progress
+                            </div>
+                            <div >
+                                <CircularProgress progress={50} style={{ margintop: "60px" }} />
                             </div>
 
                         </div>
                     </div>
-
-
-                </div>
-                <div className='col-sm-4 col-md-4'>
-                    <div className='title-md text-center'>
-                        Overall Score/ Progress
-                    </div>
-                    <div >
-                        <CircularProgress progress={50}style={{ margintop: "60px" }} />
-                    </div>
-
-                </div>
-            </div>
+                    :
+                    ''
+            }
         </Card>
         {/* Strengthy */}
 
@@ -303,7 +310,7 @@ const InstructorDashboard = () => {
             <div className='col-sm-4 col-md-4' >
                 <Card title="Your Top Skills">
                     <div >
-                        <CircularProgress progress={50}/>
+                        <CircularProgress progress={50} />
                     </div>
                     <div className="table-bless " style={{ marginTop: "-50px" }}>
 

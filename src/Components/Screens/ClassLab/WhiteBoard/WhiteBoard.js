@@ -57,7 +57,6 @@ const WhiteBoard = ({className}) => {
         imgDown.dispatchEvent(event);
       };
 
-            console.log(sketch)
     return (
         <div className={` whiteboard ${className}`}>
             <div className="aic">

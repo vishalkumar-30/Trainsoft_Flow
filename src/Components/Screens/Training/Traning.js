@@ -343,6 +343,12 @@ const Trainings = ({ location }) => {
                                 }} />
                             </>
                             :
+                            user.role === ROLE.LEARNER ?
+                            <DynamicTable {...{
+                                count, configuration, sourceData: trainingList.filter(item => item.status === 'ENABLED' 
+                                || item.status === 'ARCHIVED')
+                            }} />
+                            :
                             <>
 
                                 <DynamicTable {...{
