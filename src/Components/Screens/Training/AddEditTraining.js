@@ -34,6 +34,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
     const Toast = useToast();
     const { course, batches, spinner, user, setBatches, ROLE } = useContext(AppContext);
     const [isBatch, setIsBatch] = useState(false);
+   
 
     const initialVal = {}
 
@@ -262,6 +263,8 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
             }, err => {
                 spinner.hide()
                 console.error(err)
+                Toast.error({ message: `Something wrong!!` });
+                setShow(false);
             }
             );
         }
@@ -269,6 +272,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
             spinner.hide();
             console.error('error occur on createTraining', err);
             Toast.error({ message: `Something wrong!!` });
+            setShow(false);
         }
     }
 
@@ -387,11 +391,12 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                                     ))}
                                 </Stepper>
                             </div>
+                            <hr/>
                             {
 
                                 <div className="form-container">
 
-                                    <div className="table-shadow " style={{ padding: "10px 40px 10px 40px" }}>
+                                    <div  style={{ padding: "10px 40px 10px 40px" }}>
                                         {(activeStep === 0 || activeStep === 1 || activeStep === 2 ||
                                             activeStep === 3) && <>
                                                 <div className="form-container ">
@@ -454,7 +459,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                                                                 <div className="table-shadow1">
                                                                     <div className="row form-group">
 
-                                                                        <div className="col">
+                                                                        {showBatch ? '':<div className="col">
                                                                             <label className="label form-label">Select Existing Batch:</label>
                                                                             <Select
                                                                                 defaultValue={selectedOption}
@@ -466,6 +471,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                                                                             />
 
                                                                         </div>
+                                                                        }
                                                                         {
                                                                             showBatch ?
                                                                                 <div className="form-container">
@@ -488,27 +494,36 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                                                                                                         <SelectInput label="Training Type" value={values.trainingType} option={['INSTRUCTOR_LED', 'SELF_PACED', 'LAB_ONLY']} name="trainingType" />
                                                                                                     </div>
                                                                                                 </Form.Group>
-                                                                                                <div>
-                                                                                                    <div className="mb-4">
-                                                                                                        <div><span className="title-sm">Upload participants</span></div> <div><input multiple placeholder="Browse File" onChange={(e) => { setFieldValue("file", e.target.files) }} type="file" /></div>
-                                                                                                    </div>
-
                                                                                                 </div>
-                                                                                            </div>
+                                                                                                <div className="row">
+                                                                                                    <div className="col-6 mb-4">
+                                                                                                        <div><span className="title-sm">Upload participants</span></div> <div><input multiple placeholder="Browse File" onChange={(e) => { setFieldValue("file", e.target.files) }} type="file" /></div>
+                                                                                                   
+
+                                                                                              
+                                                                                         
                                                                                             <footer className="jcb">
                                                                                                 <div> <a href={GLOBELCONSTANT.SAMPLE_TEMPLATE}>Sample template</a> </div>
-                                                                                                <div>
-                                                                                                    <Button type="submit" > Create Batch</Button>
-                                                                                                </div>
+                                                                                                
                                                                                             </footer>
+                                                                                            </div>
+                                                                                            <div className="col-6 mt-3 " >
+                                                                                                    <Button type="submit " > Create Batch</Button>
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </form>
                                                                                         }
                                                                                     </Formik>
                                                                                 </div>
                                                                                 :
-                                                                                <div style={{ padding: "10px", marginTop: "15px" }}>
-                                                                                    <Button onClick={() => setShowBatch(true)}>Create New Batch</Button>
+                                                                              <>
+                                                                             
+                                                                              
+                                                                                <div style={{ padding: "10px", marginTop: "20px" }}>
+                                                                                <label className="label form-label">Or</label>
+                                                                                    <Button onClick={() => setShowBatch(true)} className="ml-4">Create New Batch</Button>
                                                                                 </div>
+                                                                              </>
 
 
                                                                         }
