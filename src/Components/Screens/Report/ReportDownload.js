@@ -17,7 +17,7 @@ const ReportDownload = () => {
     const [trainingSid, setTrainingSid] = useState('ALL');
     const [assessmentSid, setAssessmentSid] = useState('ALL');
     const [passPercentage, setPassPercentage] = useState('50');
-    const { user, spinner } = useContext(AppContext);
+    const { user, spinner, ROLE } = useContext(AppContext);
     const [trainingList, setTrainingList] = useState([]);
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
     const [labList, setLabList] = useState([]);
@@ -220,7 +220,7 @@ const ReportDownload = () => {
         })
     }
 
-    for(let i=0; i<report.length; i++){
+    for (let i = 0; i < report.length; i++) {
         reportTypeWithSid.push({
             "typeNSid": `${report[i].reportType},${report[i].sid}`
         })
@@ -236,28 +236,35 @@ const ReportDownload = () => {
     }, []);
 
     return (<>
-        <div className='col-6'>
-            <label className="mb-2 label form-label ">Report Type</label>
-            <div className="input-wrapper">
+        {
+            user.role === ROLE.SUPERVISOR ?
+                <div className='col-6'>
+                    <label className="mb-2 label form-label ">Report Type</label>
+                    <div className="input-wrapper">
 
-                <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
-                    setReportName(e.target.value.split(',')[0]);
-                    setReportSid(e.target.value.split(',')[1])}}>
-                    <option value="" disabled selected hidden>Select Report Type</option>
-                    {
-                        reportTypeWithSid.map((item) => {
-                            return (
-                                <>
-                                    <option value={item.typeNSid}>{item.typeNSid.split(',')[0]}</option>
-                                </>
-                            )
-                        })
-                    }
+                        <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
+                            setReportName(e.target.value.split(',')[0]);
+                            setReportSid(e.target.value.split(',')[1])
+                        }}>
+                            <option value="" disabled selected hidden>Select Report Type</option>
+                            {
+                                reportTypeWithSid.map((item) => {
+                                    return (
+                                        <>
+                                            <option value={item.typeNSid}>{item.typeNSid.split(',')[0]}</option>
+                                        </>
+                                    )
+                                })
+                            }
 
-                </select>
+                        </select>
 
-            </div>
-        </div>
+                    </div>
+                </div>
+                :
+                ''
+        }
+
         {
             reportName === "Assessment" ?
                 <Formik
@@ -288,41 +295,41 @@ const ReportDownload = () => {
 
                                         </select>
                                     </div>
-                                      
-                                            <div className='row'>
-                                                <div className='col-6'>
-                                                    <label className="mb-2 label form-label ">Assessment</label>
-                                                    <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
-                                                        setAssessmentSid(e.target.value);
 
-                                                    }}>
-                                                        <option value="ALL">ALL</option>
-                                                        {
-                                                            assessment.map((item) => {
-                                                                return (
-                                                                    <>
-                                                                        <option value={item.sid}>{item.contentName}</option>
-                                                                    </>
-                                                                )
-                                                            })
-                                                        }
+                                        <div className='row'>
+                                            <div className='col-6'>
+                                                <label className="mb-2 label form-label ">Assessment</label>
+                                                <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
+                                                    setAssessmentSid(e.target.value);
 
-                                                    </select>
-                                                </div>
-                                                <div className='col-6'>
-                                                    <label for="fname">Pass Percentage:</label>
-                                                    <input type="text" value={passPercentage} onChange={e => setPassPercentage(e.target.value)} className="form-control" style={{borderRadius:"20px", background:"#F8FAFB"}} />
-                                                </div>
-                                               
+                                                }}>
+                                                    <option value="ALL">ALL</option>
+                                                    {
+                                                        assessment.map((item) => {
+                                                            return (
+                                                                <>
+                                                                    <option value={item.sid}>{item.contentName}</option>
+                                                                </>
+                                                            )
+                                                        })
+                                                    }
+
+                                                </select>
                                             </div>
-                                       
+                                            <div className='col-6'>
+                                                <label for="fname">Pass Percentage:</label>
+                                                <input type="text" value={passPercentage} onChange={e => setPassPercentage(e.target.value)} className="form-control" style={{ borderRadius: "20px", background: "#F8FAFB" }} />
+                                            </div>
+
+                                        </div>
+
                                     </>
 
                                 </div>
                             </div>
                             <div className=" mt-5 ml-4">
-                                                    <Button type="submit" className="  px-4">Generate Report {DOWNLOAD_ICON} </Button>
-                                                </div>
+                                <Button type="submit" className="  px-4">Generate Report {DOWNLOAD_ICON} </Button>
+                            </div>
                         </form>
                     </>)}
                 </Formik>
@@ -384,7 +391,7 @@ const ReportDownload = () => {
                                                     })
                                                 }
                                             </select>
-                                           
+
 
                                         </div>
                                     </>
@@ -393,8 +400,8 @@ const ReportDownload = () => {
 
                             </div>
                             <div className=" mt-5 ml-4">
-                                                <Button type="submit" className=" px-4">Generate Report {DOWNLOAD_ICON} </Button>
-                                            </div>
+                                <Button type="submit" className=" px-4">Generate Report {DOWNLOAD_ICON} </Button>
+                            </div>
                         </form>
                     </>)}
                 </Formik>
@@ -461,11 +468,11 @@ const ReportDownload = () => {
                                 </div>
 
                             </div>
-                           
-                                <div className=" mt-5 ml-4">
-                                    <Button type="submit" className="px-4">Generate Report {DOWNLOAD_ICON} </Button>
-                                </div>
-                          
+
+                            <div className=" mt-5 ml-4">
+                                <Button type="submit" className="px-4">Generate Report {DOWNLOAD_ICON} </Button>
+                            </div>
+
 
 
                         </form>
@@ -478,7 +485,7 @@ const ReportDownload = () => {
                 || reportName === "Login History"
                 || reportName === "Lab Test Report"
                 || reportName === "Coding Test Report" ?
-                
+
                 <Formik
                     initialValues={{
                         "download": ''

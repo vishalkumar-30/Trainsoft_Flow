@@ -75,7 +75,7 @@ const OurNotes = () => {
   // get all training
   const getTrainings = () => {
     try {
-      RestService.getTrainings().then(
+      RestService.getAllTrainingByPage().then(
         response => {
           setTrainingList(response.data.filter(item => item.status === 'ENABLED'));
           setContentName('');
@@ -270,7 +270,7 @@ const OurNotes = () => {
               {/* <div className="cat-title-sm">{res.desc}</div> */}
 
               <div className="text-right">
-                <BtnPrimary onClick={() => navigate("/notes/mynotes", { state: [res.trainingSessionNotes, 'My Notes'] })}>Show Notes</BtnPrimary>
+                <BtnPrimary onClick={() => navigate("/notes/mynotes", { state: [res.trainingSessionNotes, res.trainingName] })}>Show Notes</BtnPrimary>
               </div>
             </div>
           </div>

@@ -12,9 +12,9 @@ const ClassNotes = (props) => {
     const [fieldValue, setFieldValue] = useState('');
     const { spinner } = useContext(AppContext);
     const Toast = useToast();
-
-    const trainingSessionSid = props.trainingSessionSid;
     const trainingSid = props.trainingSid;
+    const sectionSid = props.sectionSid;
+    const contentSid = props.contentSid;
     const user = JSON.parse(localStorage.getItem('user'));
     const role = user.role;
 
@@ -27,12 +27,22 @@ const ClassNotes = (props) => {
                     "formattedNotes": fieldValue,
                 }
                 spinner.show();
-                RestService.saveUserNotes(trainingSessionSid, trainingSid, payload).then(res => {
-                    Toast.success({ message: `Notes Saved Successfully to Notes Section` });
-                    spinner.hide();
 
-                }, err => console.log(err)
+                RestService.saveUserNotesWithSection(contentSid, sectionSid, trainingSid, payload).then(res => {
+                    if (res.status === 200) {
+                        Toast.success({ message: `Notes Saved Successfully to Notes Section` });
+                        spinner.hide();
+                    }
+
+
+                }, err => {
+                    console.log(err);
+                    Toast.error({ message: `Something went Wrong` });
+                    spinner.hide();
+                }
                 );
+
+
             }
             catch (err) {
                 console.error('error occur on saveUserNotes', err)

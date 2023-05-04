@@ -9,21 +9,26 @@ import ReportChart from '../../Charts/ReportChart';
 import ReportDownload from './ReportDownload';
 import AppContext from '../../../Store/AppContext';
 import './report.css'
-import { Carousel } from 'react-bootstrap';
+import { Button, Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import RestService from '../../../Services/api.service';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import InstructorReports from './InstructorReports';
 const Report = ({ location }) => {
   const { user, ROLE, spinner } = useContext(AppContext);
   const [trainingList, setTrainingList] = useState([]);
   const [showReport, setShowReport] = useState(null);
+  const [studentSid, setStudentSid] = useState('');
   const [showReportDoc, setShowReportDoc] = useState([]);
   const [showReportVideo, setShowReportVideo] = useState([]);
   const [showReportAssessment, setShowReportAssessment] = useState([]);
   const [showReportLab, setShowReportLab] = useState([]);
   const [showReportCoding, setShowReportCoding] = useState([]);
-  const learner = JSON.parse(localStorage.getItem('user'))
+  const learner = JSON.parse(localStorage.getItem('user'));
+  const [trainingSid, setTrainingSid] = useState('');
+  const hrithikSid = "354F373847414839374238383836433941374144483839384334335532433331363735364B3545364B413444343438394E453233373831324C33413431434233";
+  const newLearnSid = "401D2043EAF8446E83E6B89D23332414F99CE8AC02D148F0B9F2D22CAA45B28E";
   const learnerSid = learner.sid;
   const [scrollLeftInterval, setScrollLeftInterval] = useState(null);
   const [scrollRightInterval, setScrollRightInterval] = useState(null);
@@ -70,8 +75,7 @@ const Report = ({ location }) => {
     try {
       RestService.getAllTrainingByPage().then(
         response => {
-          setTrainingList(response.data.filter(item => item.status === 'ENABLED'
-            || item.status === 'ARCHIVED'));
+          setTrainingList(response.data.filter(item => item.status === 'ENABLED'));
         },
         err => {
           spinner.hide();
@@ -84,7 +88,26 @@ const Report = ({ location }) => {
     }
   }
 
-  //show reports
+  // get supervisor training
+  const getTrainings = async (pagination = "1") => {
+    try {
+      let pageSize = 30;
+      spinner.show();
+      RestService.getAllTrainingByPage(user.role, pagination, pageSize).then(
+        response => {
+          setTrainingList(response.data.filter(item => item.status === 'ENABLED'));
+        },
+        err => {
+          spinner.hide();
+        }
+      ).finally(() => {
+        spinner.hide();
+      });
+    } catch (err) {
+      console.error("error occur on getTrainings()", err)
+    }
+  }
+  //show reports for learner only
   const getSupervisorReportTrainingDetails = (value) => {
     try {
       spinner.show();
@@ -92,11 +115,31 @@ const Report = ({ location }) => {
         response => {
           if (response.status === 200) {
             setShowReport(response.data.sectionDetails);
-            // setShowReportDoc(response.data.sectionDetails.DOCUMENTS);
-            // setShowReportVideo(response.data.sectionDetails.VIDEO);
-            // setShowReportAssessment(response.data.sectionDetails.ASSESSMENT);
-            // setShowReportLab(response.data.sectionDetails.LAB);
-            // setShowReportCoding(response.data.sectionDetails.CODING);
+
+          }
+        },
+        err => {
+          spinner.hide();
+        }
+      ).finally(() => {
+        spinner.hide();
+      });
+    } catch (err) {
+      console.error("error occur on getTrainings()", err)
+    }
+  }
+
+  //show reports for supervisor only
+  const getSupervisorReportTrainingDetailsSupervisor = () => {
+    try {
+      spinner.show();
+      RestService.getSupervisorReportTrainingDetails(studentSid, trainingSid).then(
+        response => {
+          if (response.status === 200) {
+            setShowReport(response.data.sectionDetails);
+            setTrainingSid('');
+            setStudentSid('');
+
           }
         },
         err => {
@@ -111,7 +154,13 @@ const Report = ({ location }) => {
   }
 
   useEffect(() => {
-    getLearnerTrainings();
+    if (user.role === ROLE.SUPERVISOR) {
+      getTrainings();
+    }
+    else {
+      getLearnerTrainings();
+    }
+
   }, []);
 
 
@@ -124,7 +173,15 @@ const Report = ({ location }) => {
   return (
     <div className="table-shadow p-3">
       {/* <CardHeader {...{ location }} /> */}
-      <p style={{ fontSize: "16px", color: "#49167E", fontWeight: "600" }}>Download Report</p>
+      <p style={{ fontSize: "16px", color: "#49167E", fontWeight: "600" }}>
+        {
+          user.role === ROLE.SUPERVISOR ?
+            "Download Report"
+            :
+            "Show Reports"
+        }
+
+      </p>
       <div className="flx tab-btn-group mb-3">
         {/* <TabBtn active={location.state.subPath === "batch"} onClick={() => navigate("/report", { state: { title: 'Report', subTitle: "Batch", subPath: "batch" } })}>Batch</TabBtn> */}
         {/* <TabBtn active={location.state.subPath === "download"} onClick={() => navigate("/report", { state: { title: 'Report', subTitle: "Download", subPath: "download" } })}>Download</TabBtn> */}
@@ -141,194 +198,367 @@ const Report = ({ location }) => {
       </Router>
 
 
-
-      <div style={{marginBottom:"120px"}}>
-
-        <div className='row py-2 ' style={{ background: "#49167E",margin:"0",borderTopLeftRadius:"10px",borderTopRightRadius:"10px" }}>
-          <div className='col-6 d-flex ' style={{alignContent:"center", alignItems:"center"}}>
-            <label className="col-3 mt-2 label form-label text-white ">Training Name</label>
-          
-           <select className="form-control col-6" style={{ borderRadius: "10px", backgroundColor: "rgb(248, 250, 251)" }}
-              onChange={(e) => getSupervisorReportTrainingDetails(e.target.value)}
-            >
-              <option hidden>Select Training</option>
-              {
-                trainingList.map((item) => {
-                  return (
-                    <>
-                      <option value={item.sid}>
-
-                        {item.name}
-
-                      </option>
-                    </>
-                  )
-                })
-              }
-
-            </select>
-         
-          </div>
-          {
-            user.role === ROLE.LEARNER ? "" :
-
-              <div className='col-6 d-flex '>
-                <label className="mt-2 col-3 label form-label text-white">Learner</label>
-                <select className="form-control col-6" style={{ borderRadius: "10px", backgroundColor: "rgb(248, 250, 251)" }}
-
-                >
-                  <option hidden>Select Learner</option>
-                  <option>Hrithik</option>
-                  <option>Learner</option>
-                </select>
-              </div>
-          }
-        </div>
-
-        <div>
-          {
-            showReport !== null ?
-            <>
-            <table>
-              <div class="row">
-                <div class="col-2">
-                  <table className='c'>
-                    <tr>
-                      <th>Section</th>
-                    </tr>
-                   
-                    <tr>
-                      <td>Study Material</td>
-                    </tr>
-                    <tr>
-                      <td>Videos</td>
-
-                    </tr>
-                    <tr>
-                      <td>Assessments</td>
-
-                    </tr>
-                    <tr>
-                      <td>Labs</td>
-
-                    </tr>
-                    <tr>
-                      <td>Challenges</td>
-
-                    </tr>
-                  </table>
-                </div>
-                <div class="col-10 table-wrapper">
-                  <table className='c'>
-                    <tr>
-                      {
-                        showReport.DOCUMENTS.map((item) => {
-                          return (
-                            <th>{item.sectionName.split("",8)}</th>
-                          )
-                        })
-
-                      }
+      {
+        user.role === ROLE.INSTRUCTOR ?
+          <InstructorReports />
+          :
+          user.role === ROLE.LEARNER ?
 
 
+            <div style={{ marginBottom: "120px" }}>
 
-                     
-                    </tr>
-                    <tr>
-                      {
-                        showReport.DOCUMENTS.map((item) => {
-                          return (
-                            <td>{item.documentCompletion}</td>
-                          )
-                        })
+              <div className='row py-2 ' style={{ background: "#49167E", margin: "0", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>
+                <div className='col-6 d-flex ' style={{ alignContent: "center", alignItems: "center" }}>
+                  <label className="col-3 mt-2 label form-label text-white ">Training Name</label>
 
-                      }
-
-                    </tr>
-                    <tr>
-                      {
-                        showReport.VIDEO.map((item) => {
-                          return (
-                            <td>{item.videoCompletion}</td>
-                          )
-                        })
-
-                      }
-                     
-                    </tr>
-                    <tr>
-                      {
-                        showReport.ASSESSMENT.map((item) => {
-                          return (
-                            <td>{item.assessmentCompletion}</td>
-                          )
-                        })
-
-                      }
-                    
-                    </tr>
-                    <tr>
-                      {
-                        showReport.LAB.map((item) => {
-                          return (
-                            <td>{item.labCompletion}</td>
-                          )
-                        })
-
-                      }
-                   
-                    </tr>
-                    <tr>
+                  <select className="form-control col-6" style={{ borderRadius: "10px", backgroundColor: "rgb(248, 250, 251)" }}
+                    onChange={(e) => {
+                      getSupervisorReportTrainingDetails(e.target.value);
+                    }}
+                  >
+                    <option hidden>Select Training</option>
                     {
-                            showReport.CODING.map((item) => {
-                              return (
-                                <td>{item.codingCompletion}</td>
-                              )
-                            })
+                      trainingList.map((item) => {
+                        return (
+                          <>
+                            <option value={item.sid}>
 
-                          }
-                   
-                    </tr>
-                  </table>
+                              {item.name}
+
+                            </option>
+                          </>
+                        )
+                      })
+                    }
+
+                  </select>
+
                 </div>
               </div>
-            </table>
-            <div style={{marginTop:"-135px", position:"relative"}}>
-        <button
 
-          onMouseDown={handleLeftMouseDown}
-          onMouseUp={handleMouseUp}
-          style={{marginLeft:"230px"}}
-        >
-          <ArrowBackIosIcon/>
-        </button>
-        <button 
-style={{ float:"right",marginRight:"-20px"}}
-          onMouseDown={handleRightMouseDown}
-          onMouseUp={handleMouseUp}
-        >
-        
-          <ArrowForwardIosIcon/>
-        </button>
+              <div>
+                {
+                  showReport !== null ?
+                    <>
+                      <table>
+                        <div class="row">
+                          <div class="col-2">
+                            <table className='c'>
+                              <tr>
+                                <th>Section</th>
+                              </tr>
 
-      </div>
+                              <tr>
+                                <td>Study Material</td>
+                              </tr>
+                              <tr>
+                                <td>Videos</td>
+
+                              </tr>
+                              <tr>
+                                <td>Assessments</td>
+
+                              </tr>
+                              <tr>
+                                <td>Labs</td>
+
+                              </tr>
+                              <tr>
+                                <td>Challenges</td>
+
+                              </tr>
+                            </table>
+                          </div>
+                          <div class="col-10 table-wrapper">
+                            <table className='c'>
+                              <tr>
+                                {
+                                  showReport.DOCUMENTS.map((item) => {
+                                    return (
+                                      <th>{item.sectionName.split("", 8)}</th>
+                                    )
+                                  })
+
+                                }
 
 
-          </>
-          : ''
-          }
-          
-
-        </div>
 
 
+                              </tr>
+                              <tr>
+                                {
+                                  showReport.DOCUMENTS.map((item) => {
+                                    return (
+                                      <td>{item.documentCompletion}</td>
+                                    )
+                                  })
 
-      </div>
-    
+                                }
+
+                              </tr>
+                              <tr>
+                                {
+                                  showReport.VIDEO.map((item) => {
+                                    return (
+                                      <td>{item.videoCompletion}</td>
+                                    )
+                                  })
+
+                                }
+
+                              </tr>
+                              <tr>
+                                {
+                                  showReport.ASSESSMENT.map((item) => {
+                                    return (
+                                      <td>{item.assessmentCompletion}</td>
+                                    )
+                                  })
+
+                                }
+
+                              </tr>
+                              <tr>
+                                {
+                                  showReport.LAB.map((item) => {
+                                    return (
+                                      <td>{item.labCompletion}</td>
+                                    )
+                                  })
+
+                                }
+
+                              </tr>
+                              <tr>
+                                {
+                                  showReport.CODING.map((item) => {
+                                    return (
+                                      <td>{item.codingCompletion}</td>
+                                    )
+                                  })
+
+                                }
+
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </table>
+                      <div style={{ marginTop: "-135px", position: "relative" }}>
+                        <button
+
+                          onMouseDown={handleLeftMouseDown}
+                          onMouseUp={handleMouseUp}
+                          style={{ marginLeft: "230px" }}
+                        >
+                          <ArrowBackIosIcon />
+                        </button>
+                        <button
+                          style={{ float: "right", marginRight: "-20px" }}
+                          onMouseDown={handleRightMouseDown}
+                          onMouseUp={handleMouseUp}
+                        >
+
+                          <ArrowForwardIosIcon />
+                        </button>
+
+                      </div>
+
+
+                    </>
+                    : ""
+                }
+
+              </div>
+
+            </div>
+            :
+            <div style={{ marginBottom: "120px" }}>
+
+              <div className='row py-2 ' style={{ background: "#49167E", margin: "0", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>
+                <div className='col-6 d-flex ' style={{ alignContent: "center", alignItems: "center" }}>
+                  <label className="col-3 mt-2 label form-label text-white ">Training Name</label>
+
+                  <select className="form-control col-6" style={{ borderRadius: "10px", backgroundColor: "rgb(248, 250, 251)" }}
+                    onChange={(e) => {
+                      setTrainingSid(e.target.value);
+                    }}
+                  >
+                    <option hidden>Select Training</option>
+                    {
+                      trainingList.map((item) => {
+                        return (
+                          <>
+                            <option value={item.sid}>
+
+                              {item.name}
+
+                            </option>
+                          </>
+                        )
+                      })
+                    }
+
+                  </select>
+
+                </div>
+
+                {
+                  trainingSid.length > 0 ?
+
+                    <div className='col-6 d-flex '>
+                      <label className="mt-2 col-3 label form-label text-white">Learner</label>
+                      <select className="form-control col-6" style={{ borderRadius: "10px", backgroundColor: "rgb(248, 250, 251)" }}
+                        onChange={(e) => setStudentSid(e.target.value)}
+                      >
+                        <option hidden>Select Learner</option>
+                        <option value={hrithikSid}>Hrithik</option>
+                        <option value={newLearnSid}>Learner</option>
+                      </select>
+                      <button className='p-2 mt-2' style={{ marginLeft: "10px", borderRadius: "10px", height: "30px",backgroundColor: "rgb(248, 250, 251)", width: "75px" }} disabled={trainingSid.length === 0 || studentSid.length === 0} onClick={() => getSupervisorReportTrainingDetailsSupervisor()}>Submit</button>
+                    </div>
+                    :
+                    ''
+                }
+              </div>
+
+              <div>
+                {
+                  showReport !== null ?
+                    <>
+                      <table>
+                        <div class="row">
+                          <div class="col-2">
+                            <table className='c'>
+                              <tr>
+                                <th>Section</th>
+                              </tr>
+
+                              <tr>
+                                <td>Study Material</td>
+                              </tr>
+                              <tr>
+                                <td>Videos</td>
+
+                              </tr>
+                              <tr>
+                                <td>Assessments</td>
+
+                              </tr>
+                              <tr>
+                                <td>Labs</td>
+
+                              </tr>
+                              <tr>
+                                <td>Challenges</td>
+
+                              </tr>
+                            </table>
+                          </div>
+                          <div class="col-10 table-wrapper">
+                            <table className='c'>
+                              <tr>
+                                {
+                                  showReport.DOCUMENTS.map((item) => {
+                                    return (
+                                      <th>{item.sectionName.split("", 8)}</th>
+                                    )
+                                  })
+
+                                }
 
 
 
 
+                              </tr>
+                              <tr>
+                                {
+                                  showReport.DOCUMENTS.map((item) => {
+                                    return (
+                                      <td>{item.documentCompletion}</td>
+                                    )
+                                  })
+
+                                }
+
+                              </tr>
+                              <tr>
+                                {
+                                  showReport.VIDEO.map((item) => {
+                                    return (
+                                      <td>{item.videoCompletion}</td>
+                                    )
+                                  })
+
+                                }
+
+                              </tr>
+                              <tr>
+                                {
+                                  showReport.ASSESSMENT.map((item) => {
+                                    return (
+                                      <td>{item.assessmentCompletion}</td>
+                                    )
+                                  })
+
+                                }
+
+                              </tr>
+                              <tr>
+                                {
+                                  showReport.LAB.map((item) => {
+                                    return (
+                                      <td>{item.labCompletion}</td>
+                                    )
+                                  })
+
+                                }
+
+                              </tr>
+                              <tr>
+                                {
+                                  showReport.CODING.map((item) => {
+                                    return (
+                                      <td>{item.codingCompletion}</td>
+                                    )
+                                  })
+
+                                }
+
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </table>
+                      <div style={{ marginTop: "-135px", position: "relative" }}>
+                        <button
+
+                          onMouseDown={handleLeftMouseDown}
+                          onMouseUp={handleMouseUp}
+                          style={{ marginLeft: "230px" }}
+                        >
+                          <ArrowBackIosIcon />
+                        </button>
+                        <button
+                          style={{ float: "right", marginRight: "-20px" }}
+                          onMouseDown={handleRightMouseDown}
+                          onMouseUp={handleMouseUp}
+                        >
+
+                          <ArrowForwardIosIcon />
+                        </button>
+
+                      </div>
+
+
+                    </>
+                    : ""
+                }
+
+              </div>
+
+            </div>
+      }
 
     </div>)
 }

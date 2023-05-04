@@ -1,12 +1,11 @@
 import { useContext } from "react";
-import { ICN_TRAINSOFT } from "../../../Common/Icon";
 import { navigate } from "../../../Common/Router";
 import { AssessmentContext } from "../AssesementContext";
 import styles from "./Sidebar.module.css";
 import QuestionItem from "./QuestionItem";
 import LeaderBoard from "./LeaderBoard";
 import AppUtils from "../../../../Services/Utils";
-
+import TRAINSOFT from '../../../../Assets/Images/trainsoft.png'
 const Sidebar = () => {
   const {
     setQuestion,
@@ -39,15 +38,16 @@ const Sidebar = () => {
         padding: "35px 25px",
       }}
     >
-      <div
-        className={`${styles.container} pointer`}
+      <div 
+        className={`${styles.container} pointer `}
         onClick={() => {
           navigate("/");
         }}
       >
-        {ICN_TRAINSOFT}
+        <img src={TRAINSOFT} height="150px"/>
+       
       </div>
-
+    
       {
         !finished ? <>
             {

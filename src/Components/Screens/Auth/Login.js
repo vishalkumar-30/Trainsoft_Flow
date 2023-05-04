@@ -215,7 +215,7 @@ const Login = (props) => {
                         {({ handleSubmit }) => (<>
                             <form onSubmit={handleSubmit} className="login-form">
                                 <div className="text-center mb-3">
-                                    {ICN_TRAINSOFT}
+                                <img src={TRAINSOFT} height="150px"/>
 
                                 </div>
                                 <div className="text-center mb-3">Forgot Password</div>

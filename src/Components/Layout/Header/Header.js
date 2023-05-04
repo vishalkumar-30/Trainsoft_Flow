@@ -22,7 +22,10 @@ const Header = ({ location, children }) => {
         try {
             RestService.getprofiledetails().then(
                 response => {
-                    setUserDetails(response.data.profilePicLocation);
+                    if(response.status === 200){
+                        setUserDetails(response.data.profilePicLocation);
+                    }
+                    
                 },
                 err => {
                 }
@@ -199,7 +202,7 @@ const Header = ({ location, children }) => {
                         <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                             <div>
                                 {
-                                    userDetails.length > 0 ?
+                                    userDetails ?
                                         <ProfileImg url={userDetails} size="md" />
                                         :
                                         <ProfileImg name={getUserName(user.name)} size="md" />

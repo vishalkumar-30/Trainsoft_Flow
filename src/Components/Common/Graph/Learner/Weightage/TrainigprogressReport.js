@@ -38,7 +38,7 @@ function createData(trainingName, total, completed, completionPercentage,
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
-  
+
 
   return (
     <React.Fragment>
@@ -195,17 +195,17 @@ function Row(props) {
                     <Typography variant="h6" gutterBottom component="div" >
                       Reading Efficiency
                     </Typography>
-                    {/* <div style={{ display: "flex", float:"right" ,background:"#fff", marginTop:"-40px", marginLeft:"20px"}}>
-                   <Typography variant="p" gutterBottom component="div" style={{ marginLeft: "5px" }}>
-                      Total Weightage: {row.documentDetails.totalWeightage}
-                    </Typography>
-                    <Typography variant="p"  gutterBottom component="div" style={{ marginLeft: "5px" }}>
-                      Total Weightage Gained : {row.documentDetails.totalWeightageGained}
-                    </Typography>
-                    <Typography variant="p" gutterBottom component="div" style={{ marginLeft: "5px" }}>
-                      Overall Average Weightage : {row.documentDetails.overalllAverageWeightage}
-                    </Typography>
-                   </div> */}
+                    <div style={{ display: "flex", float: "right", background: "#fff", marginTop: "-40px", marginLeft: "20px" }}>
+                      <Typography variant="p" gutterBottom component="div" style={{ marginLeft: "5px" }}>
+                        Total Weightage: {row.documentDetails.totalWeightage}
+                      </Typography>
+                      <Typography variant="p" gutterBottom component="div" style={{ marginLeft: "5px" }}>
+                        Total Weightage Gained : {row.documentDetails.totalWeightageGained}
+                      </Typography>
+                      <Typography variant="p" gutterBottom component="div" style={{ marginLeft: "5px" }}>
+                        Overall Average Weightage : {row.documentDetails.overalllAverageWeightage}
+                      </Typography>
+                    </div>
                   </div>
                   <Table size="small" aria-label="purchases">
                     <TableHead>
@@ -286,32 +286,7 @@ function Row(props) {
 const TrainigprogressReport = ({ list }) => {
   console.log(list);
   let rows;
-  // const timeSpentOnContent = [{
-  //   "timeSpent": 10000,
-  //   "contentTaughtOn": "2023-05-01T07:47:40.277+00:00",
-  //   "contentName": "sample instructor1",
-  //   "sectionName": "Day 1 - Cloud Computing",
-  //   "trainingName": "demo kubernetes training",
-  //   "contentSid": "E0A7E4966CA84982936A2B7E4D6FF7CF6578389DC3B04A3B8FE55398F749EDA6",
-  //   "sectionSid": "CB7A2338BB8344E491E4F68FA3B43D6390272FA71B744B0E97DF06855CF6D380",
-  //   "trainingSid": "666689E211BD408BA5223D7D4A50ADDEC913B8FE0EF64A8FAE8FA79AD182ADF6"
-  // },
-  // {
-  //   "timeSpent": 20000,
-  //   "contentTaughtOn": "2023-05-01T17:28:54.661+00:00",
-  //   "contentName": "sample instructor2",
-  //   "sectionName": "Day 2 - Docker Basics",
-  //   "trainingName": "demo kubernetes training",
-  //   "contentSid": "705479494C084157B58805DCB0ED8A4D6633EA3C89C44DA0859A5D7EEB641A15",
-  //   "sectionSid": "8AC3F4464E244DFC8D33EB45F66C2867983817B6438F45B79177D43ABB0D4522",
-  //   "trainingSid": "666689E211BD408BA5223D7D4A50ADDEC913B8FE0EF64A8FAE8FA79AD182ADF6"
-  // }];
-  // rows = timeSpentOnContent.map((item)=>
-  // {
-  //   return(
-  //     createData(item.sectionName)
-  //   )
-  // })
+
   if (list != undefined && list.length === 1) {
     rows = [
       createData(list[0].trainingName, list[0].learnerWeightedDetailsTO.courseCompletionStatus.total,
@@ -349,24 +324,6 @@ const TrainigprogressReport = ({ list }) => {
     <div>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
-          {/* <TableHead>
-            <TableRow> 
-               <TableCell />
-              <TableCell>Training </TableCell>
-              <TableCell align="center">Total Section</TableCell>
-              <TableCell align="center">Completed Section</TableCell>
-              <TableCell align="center">Progress</TableCell>
-            </TableRow>
-          </TableHead> */}
-          <TableBody>
-            {rows.length > 0 && rows.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {/* <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
               <TableCell />
@@ -382,7 +339,7 @@ const TrainigprogressReport = ({ list }) => {
             ))}
           </TableBody>
         </Table>
-      </TableContainer> */}
+      </TableContainer>
     </div>
   )
 }
