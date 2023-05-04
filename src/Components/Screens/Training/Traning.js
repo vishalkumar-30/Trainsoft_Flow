@@ -345,17 +345,14 @@ const Trainings = ({ location }) => {
                             :
                             user.role === ROLE.LEARNER ?
                             <DynamicTable {...{
-                                count, configuration, sourceData: trainingList.filter(item => item.status === 'ENABLED' 
-                                || item.status === 'ARCHIVED')
+                                count, configuration, sourceData: trainingList.filter(item => item.status === 'ENABLED')
                             }} />
                             :
                             <>
 
                                 <DynamicTable {...{
                                     count, configuration, sourceData: trainingList.filter(item => item.status === 'ENABLED' 
-                                    || item.status === 'ARCHIVED'),
-                                    onPageChange: () => trainingList
-                                    
+                                    || item.status === 'ARCHIVED')                    
                                 }} />
                             </>
 

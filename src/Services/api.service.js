@@ -112,6 +112,7 @@ const RestService = {
   zoomParticipant: () => AxiosService.get('https://api.zoom.us/v2/users/kumarkanhiya21@gmail.com/meetings?page_size=30&type=live', zoomAuth),
   getTrainingContentsByTrainingSid: (trainingSid) => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_TRAINING_CONTENT_BY_SID + `=${trainingSid}`),
   saveUserNotes: (trainingSessionSid, trainingSid, payload) => AxiosService.post(GLOBELCONSTANT.TRAINING.SAVES_NOTES + `?training-session-sid=${trainingSessionSid}&training-sid=${trainingSid}`, payload),
+  saveUserNotesWithSection: (contentSid,sectionSid, trainingSid, payload) => AxiosService.post(GLOBELCONSTANT.TRAINING.SAVES_NOTES + `?content_sid=${contentSid}&section-sid=${sectionSid}&training-sid=${trainingSid}`, payload),
   getUserNotes: () => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_NOTES),
   getTrainingByStatus: (pageNo, pageSize, status) => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_TRAINING_BY_STATUS + `/${pageNo}/${pageSize}?status=${status}`),
   extractTextFromImages: (contentSid, contentType, trainingSid, payload) => AxiosService.post(GLOBELCONSTANT.TRAINING.EXTRACT_TEXT_FROM_IMAGES + `?content-sid=${contentSid}&content-type=${contentType}&training-sid=${trainingSid}`, payload),

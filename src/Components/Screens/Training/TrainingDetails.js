@@ -25,6 +25,7 @@ import LoadingSpinner from "./LoadingSpinner";
 import WhiteBoard from "../ClassLab/WhiteBoard/WhiteBoard";
 import { BsModal } from "../../Common/BsUtils";
 import ClassNotes from "../ClassLab/ClassNotes/ClassNotes";
+
 const TrainingDetails = ({ location }) => {
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
     const { user, ROLE, spinner } = useContext(AppContext);
@@ -127,9 +128,9 @@ const TrainingDetails = ({ location }) => {
         setVdlink(url);
         setCall(true);
     }
-    function showFeedBack(val) {
-        setFeed(val);
-    }
+    // function showFeedBack(val) {
+    //     setFeed(val);
+    // }
     function modalF(val) {
         setModal(val)
     }
@@ -178,11 +179,6 @@ const TrainingDetails = ({ location }) => {
                             localStorage.setItem("sid", data.sid);
                             localStorage.setItem("sectionSid", data.sectionSid);
                         }
-                        // if (data.instructorSpecific) {
-                        //     startTimer();
-                        //     setPreviousSid(data.sid);
-
-                        // }
 
                         if (data.labId !== null) {
                             storeLabId(data.labId);
@@ -204,7 +200,7 @@ const TrainingDetails = ({ location }) => {
                             setCodingQuestionId(data.codingQuestionId);
                             setCodingQuestiondesc(data.codingQuestionDescription);
                         }
-                        showFeedBack(data.last)
+                        // showFeedBack(data.last);
                         setContentSid(data.sectionSid);
                         setCompleteContent(data.completed);
                         modalF(data.last);
@@ -485,50 +481,6 @@ const TrainingDetails = ({ location }) => {
             console.error("error occur on getTrainingBySid()", err)
         }
     }
-
-    // const insertInstructorCourseTimeSpent = () => {
-
-    //     try {
-    //         let trainingSid = location.state.sid;
-    //         let payload = {
-    //             "contentSid": sid,
-    //             "instructorSid": userSid.sid,
-    //             "sectionSid": contentSid,
-    //             "timeSpent": seconds,
-    //             "trainingSid": trainingSid
-    //         }
-
-    //         spinner.show();
-    //         RestService.insertInstructorCourseTimeSpent(payload).then(
-    //             response => {
-
-    //                 if (response.status === 200) {
-    //                     console.log("success");
-    //                 }
-    //             },
-    //             err => {
-    //                 spinner.hide();
-    //             }
-    //         ).finally(() => {
-    //             spinner.hide();
-    //         });
-    //     } catch (err) {
-    //         console.error("error occur on markCourseAsCompleted()", err)
-    //     }
-
-    // }
-
-    //start timer
-
-    // const startTimer = () => {
-    //     intervalRef.current = setInterval(() => {
-    //         setSeconds(prevSeconds => prevSeconds + 1);
-    //     }, 1000);
-    // }
-
-    // const stopTimer = () => {
-    //     clearInterval(intervalRef.current);
-    // }
     //initialize component
     useEffect(() => {
         getTrainingContentsByTrainingSid();
@@ -536,24 +488,24 @@ const TrainingDetails = ({ location }) => {
         getTrainingBySid();
 
         // Disable right click ;
-        // document.addEventListener('contextmenu', (e) => {
-        //     Toast.error({ message: `Right click not allowed` });
-        //     e.preventDefault();
-        //   })
+        document.addEventListener('contextmenu', (e) => {
+            Toast.error({ message: `Right click not allowed` });
+            e.preventDefault();
+          })
 
         //disable ctrl shift i 
-        //   const disableConsole = (event) => {
-        //     if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
-        //       event.preventDefault();
-        //     }
-        //     else if (event.metaKey && event.altKey && event.keyCode === 73) {
-        //         event.preventDefault();
-        //       }
-        //   };
-        //   window.addEventListener('keydown', disableConsole);
-        //   return () => {
-        //     window.removeEventListener('keydown', disableConsole);
-        //   };
+          const disableConsole = (event) => {
+            if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
+              event.preventDefault();
+            }
+            else if (event.metaKey && event.altKey && event.keyCode === 73) {
+                event.preventDefault();
+              }
+          };
+          window.addEventListener('keydown', disableConsole);
+          return () => {
+            window.removeEventListener('keydown', disableConsole);
+          };
 
     }, []);
 
@@ -566,7 +518,7 @@ const TrainingDetails = ({ location }) => {
 
 
 
-    if (user.role === ROLE.LEARNER && trainingDetailsList > 0) {
+    if (user.role === ROLE.LEARNER) {
         for (let i = 0; i < trainingDetailsList.length; i++) {
             for (let j = 0; j < trainingDetailsList[i]["courseContentResposeTOList"].length; j++) {
                 if (trainingDetailsList[i].courseContentResposeTOList[j]["instructorSpecific"] === true) {
@@ -577,7 +529,7 @@ const TrainingDetails = ({ location }) => {
             }
         }
     }
-
+   
     return (
         <>
             {
@@ -595,7 +547,7 @@ const TrainingDetails = ({ location }) => {
                                 {user.role === ROLE.INSTRUCTOR ? <WhiteBoard />
                                     :
 
-                                    user.role === ROLE.LEARNER ? <ClassNotes trainingSid={trainingSid} trainingSessionSid={sid} /> : ""}
+                                    user.role === ROLE.LEARNER ? <ClassNotes trainingSid={trainingSid} contentSid={sid} sectionSid={contentSid} /> : ""}
                             </Modal>
                             <div className="row" >
 
@@ -619,7 +571,9 @@ const TrainingDetails = ({ location }) => {
 
                                     {(type === "EXTERNAL_LINK" || type === "VIDEO") ?
                                         VideoMediaPlayer(vdlink)
-                                        : (type === "PHOTO" || type === "DOCUMENTS") ? <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
+                                        : (type === "PHOTO" || type === "DOCUMENTS") ? 
+                                     
+                                        <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
                                             : (type === "LAB" || type === "CODING") ?
                                                 <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
                                                     <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
@@ -688,18 +642,20 @@ const TrainingDetails = ({ location }) => {
                                                     <DropdownItem title={train.sectionName} total={train.courseContentResposeTOList.length} theme="dark">
                                                         <DynamicTable  {...{ configuration, sourceData: train.courseContentResposeTOList }} />
                                                     </DropdownItem>
-                                                    {
+                                                    {/* {
                                                         feed ? <Modal show={modal} handleClose={() => setModal(false)}>
 
                                                             <Feedback sectionsid={train.sid} trainingsid={location.state.sid} />
 
                                                         </Modal> : ''
-                                                    }
+                                                    } */}
                                                 </div>
                                             </>
                                         )
                                     }) : ''}
-
+                                    {
+                                        user.role === ROLE.INSTRUCTOR ?
+                                    
                                     <DropdownItem title="Fun Activity" total="2" theme="dark">
                                         {username.name === "Wipro" ?
                                             <div>
@@ -711,6 +667,7 @@ const TrainingDetails = ({ location }) => {
                                                 <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/kubernetes-jeopardy-game.html" target="_blank">Fun With Kubernetes</a></div>
                                             </div>}
                                     </DropdownItem>
+                                    : ''}
 
                                     {trainingBySid.name === "Cloud Computing, Docker And Kubernetes Journey" ?
                                         <>

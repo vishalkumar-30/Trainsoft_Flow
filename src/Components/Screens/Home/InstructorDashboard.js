@@ -32,7 +32,6 @@ const InstructorDashboard = () => {
     const [showTraining, setShowTraining] = useState('');
 
     // get instructor trainings 
-    //.filter(item => item.status === 'ENABLED' || item.status === 'ARCHIVED')
     const getInstructorTrainings = () => {
         try {
             const pagination = "1";
@@ -319,8 +318,8 @@ const InstructorDashboard = () => {
                             <tbody>
 
                                 <tr >
-                                    <td style={{ fontWeight: "500", fontSize: "20px", color: "#7214AE" }}><ul><li>Java</li></ul></td>
-                                    <td>40%</td>
+                                    <td style={{ fontWeight: "500", fontSize: "20px", color: "#7214AE" }}><ul><li>React</li></ul></td>
+                                    <td>60%</td>
 
                                 </tr>
                                 <tr >
@@ -329,7 +328,7 @@ const InstructorDashboard = () => {
 
                                 </tr>
                                 <tr >
-                                    <td><ul><li>Java</li></ul></td>
+                                    <td><ul><li>NodeJs</li></ul></td>
                                     <td>40%</td>
 
                                 </tr>
