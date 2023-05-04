@@ -16,7 +16,8 @@ import AppContext from "../../../Store/AppContext";
 import useToast from "../../../Store/ToastHook";
 import './style.css'
 import './../Batches/batches.css'
-
+import hidePwdImg from "../../Screens/Auth/hide-password.svg"
+import showPwdImg from "../../Screens/Auth/show-password.svg"
 
 const User = ({ location }) => {
     const {  spinner, user ,ROLE} = useContext(AppContext);
@@ -29,7 +30,7 @@ const User = ({ location }) => {
     const [isEdit, setIsEdit] = useState(false);
     const [initialValue, setInitialValue] = useState({});
     const [departmentList, setDepartmentList] = useState([]);
-
+    const [isRevealPwd, setIsRevealPwd] = useState(false);
     // get all batches
     const allDepartment = useFetch({
         method: "get",
@@ -558,8 +559,14 @@ const User = ({ location }) => {
                                     </div>
                                 </Form.Group>
                                 <Form.Group className="row">
-                                    <div className="col-6">
-                                        <TextInput label="Password" name="appuser.password" />
+                                    <div className="col-6 pwd-containernew">
+                                    <TextInput label="Password" name="appuser.password" />
+                                        {/* <TextInput label="Password" name="appuser.password" type={isRevealPwd ? "text"  : "password"} />
+                                        <img
+          title={isRevealPwd ? "Hide password" : "Show password"}
+          src={isRevealPwd ? hidePwdImg : showPwdImg}
+          onClick={() => setIsRevealPwd(prevState => !prevState)}
+        /> */}
                                     </div>
                                     <div className="col-6">
                                         <SelectInput label="Privilege/Access Level" value={values.appuser.accessType} name="appuser.accessType" bindKey="name" option={GLOBELCONSTANT.ACCESS_LEVEL} />
