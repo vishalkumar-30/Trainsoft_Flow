@@ -15,10 +15,9 @@ import { getAllBatches } from "../../../Services/service";
 import Select from 'react-select';
 import "./Multisteptraining/Step.css";
 import * as Yup from 'yup';
+import '../Batches/batches.css';
 
-import '../Batches/batches.css'
-
-const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit }) => {
+const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit, status }) => {
 
     const [training, setTraining] = useState('');
     const [trainingoverview, setTrainingoverview] = useState('');
@@ -34,7 +33,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
     const Toast = useToast();
     const { course, batches, spinner, user, setBatches, ROLE } = useContext(AppContext);
     const [isBatch, setIsBatch] = useState(false);
-   
+
 
     const initialVal = {}
 
@@ -107,7 +106,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
             payload.instructorName = data.instructor.name
             payload.status = "ENABLED"
             RestService.editTraining(payload).then(res => {
-                getTrainings();
+                getTrainings(status);
                 spinner.hide();
                 setShow(false);
                 Toast.success({ message: `Training update successfully` });
@@ -249,10 +248,11 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
 
             RestService.createTraining(payload).then(res => {
                 Toast.success({ message: `Training is Successfully Created` });
-                getTrainings();
+                getTrainings(status);
                 spinner.hide();
-                setShow(false);
-                setActiveStep(0);
+                // setShow(false);
+                // setActiveStep(0);
+                setActiveStep(4);
                 setInstructorName('');
                 setCourseName('');
                 setTraining('');
@@ -263,21 +263,21 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
             }, err => {
                 spinner.hide()
                 console.error(err)
-                Toast.error({ message: `Something wrong!!` });
-                setShow(false);
+                Toast.error({ message: `Something went wrong!!` });
+                // setShow(false);
             }
             );
         }
         catch (err) {
             spinner.hide();
             console.error('error occur on createTraining', err);
-            Toast.error({ message: `Something wrong!!` });
-            setShow(false);
+            Toast.error({ message: `Something went wrong!!` });
+            // setShow(false);
         }
     }
 
     function getSteps() {
-        return ['Training Info', 'Batch Info', 'Course Info', "Instructor"];
+        return ['Training Info', 'Batch Info', 'Course Info', "Instructor", "Finish"];
     }
 
     for (let i = 0; i < batches.length; i++) {
@@ -391,14 +391,14 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                                     ))}
                                 </Stepper>
                             </div>
-                            <hr/>
+                            <hr />
                             {
 
                                 <div className="form-container">
 
-                                    <div  style={{ padding: "10px 40px 10px 40px" }}>
+                                    <div style={{ padding: "10px 40px 10px 40px" }}>
                                         {(activeStep === 0 || activeStep === 1 || activeStep === 2 ||
-                                            activeStep === 3) && <>
+                                            activeStep === 3 || activeStep === 4) && <>
                                                 <div className="form-container ">
                                                     <div >
                                                         {
@@ -459,7 +459,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                                                                 <div className="table-shadow1">
                                                                     <div className="row form-group">
 
-                                                                        {showBatch ? '':<div className="col">
+                                                                        {showBatch ? '' : <div className="col">
                                                                             <label className="label form-label">Select Existing Batch:</label>
                                                                             <Select
                                                                                 defaultValue={selectedOption}
@@ -494,20 +494,20 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                                                                                                         <SelectInput label="Training Type" value={values.trainingType} option={['INSTRUCTOR_LED', 'SELF_PACED', 'LAB_ONLY']} name="trainingType" />
                                                                                                     </div>
                                                                                                 </Form.Group>
-                                                                                                </div>
-                                                                                                <div className="row">
-                                                                                                    <div className="col-6 mb-4">
-                                                                                                        <div><span className="title-sm">Upload participants</span></div> <div><input multiple placeholder="Browse File" onChange={(e) => { setFieldValue("file", e.target.files) }} type="file" /></div>
-                                                                                                   
-
-                                                                                              
-                                                                                         
-                                                                                            <footer className="jcb">
-                                                                                                <div> <a href={GLOBELCONSTANT.SAMPLE_TEMPLATE}>Sample template</a> </div>
-                                                                                                
-                                                                                            </footer>
                                                                                             </div>
-                                                                                            <div className="col-6 mt-3 " >
+                                                                                            <div className="row">
+                                                                                                <div className="col-6 mb-4">
+                                                                                                    <div><span className="title-sm">Upload participants</span></div> <div><input multiple placeholder="Browse File" onChange={(e) => { setFieldValue("file", e.target.files) }} type="file" /></div>
+
+
+
+
+                                                                                                    <footer className="jcb">
+                                                                                                        <div> <a href={GLOBELCONSTANT.SAMPLE_TEMPLATE}>Sample template</a> </div>
+
+                                                                                                    </footer>
+                                                                                                </div>
+                                                                                                <div className="col-6 mt-3 " >
                                                                                                     <Button type="submit " > Create Batch</Button>
                                                                                                 </div>
                                                                                             </div>
@@ -516,14 +516,14 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                                                                                     </Formik>
                                                                                 </div>
                                                                                 :
-                                                                              <>
-                                                                             
-                                                                              
-                                                                                <div style={{ padding: "10px", marginTop: "20px" }}>
-                                                                                <label className="label form-label">Or</label>
-                                                                                    <Button onClick={() => setShowBatch(true)} className="ml-4">Create New Batch</Button>
-                                                                                </div>
-                                                                              </>
+                                                                                <>
+
+
+                                                                                    <div style={{ padding: "10px", marginTop: "20px" }}>
+                                                                                        <label className="label form-label">Or</label>
+                                                                                        <Button onClick={() => setShowBatch(true)} className="ml-4">Create New Batch</Button>
+                                                                                    </div>
+                                                                                </>
 
 
                                                                         }
@@ -599,13 +599,31 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                                                                 : ''
 
                                                         }
+                                                        {
+                                                            activeStep === 4 ?
+                                                                <>
+                                                                    <div className="row form-group">
+
+                                                                        <div className="col mb-3 ">
+                                                                            <div className="title-sm text-center">Training created successfully! <br /> You can now schedule <span className="title-md mx-2 "><bold>instructor session</bold></span> in the course
+
+
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </>
+                                                                : ''
+
+                                                        }
 
 
                                                     </div>
                                                     <div style={{ float: "right" }}>
                                                         <div >
                                                             {
-                                                                activeStep !== 0 ?
+                                                                activeStep !== 0 && activeStep !== 4 ?
 
                                                                     <Button className="mx-3" style={{ background: "#0000003E", color: "black", marginRight: "10px", }} onClick={handleBack}>
                                                                         Back
@@ -614,19 +632,41 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit })
                                                                     ''}
 
                                                             {
-                                                                activeStep !== 3 ?
+                                                                activeStep !== 3 && activeStep !== 4 ?
 
                                                                     <Button onClick={handleNext}>Next</Button>
                                                                     :
+
+                                                                    ''
+                                                            }
+                                                            {
+                                                                activeStep === 3 ?
+
+
+
                                                                     <Button className="mx-3" style={{ background: "#0000003E", color: "black", marginRight: "10px", }} type="submit" onClick={() => createTraining()}>Create</Button>
+                                                                    : ''
+                                                            }
+                                                            {
+                                                                activeStep === 4 ?
+
+
+
+                                                                    <Button className="mx-3" style={{ background: "#0000003E", color: "black", marginRight: "10px", }} onClick={() => setShow(false)}>Finish</Button>
+                                                                    : ''
                                                             }
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <Button className="mx-3" style={{ background: "#0000003E", color: "black", marginRight: "10px" }}
-                                                            onClick={() => { setShow(false); setShowBatch(false); setActiveStep(0); }}>
-                                                            Cancel
-                                                        </Button>
+                                                        {
+                                                            activeStep !== 4 ?
+                                                                <Button className="mx-3" style={{ background: "#0000003E", color: "black", marginRight: "10px" }}
+                                                                    onClick={() => { setShow(false); setShowBatch(false); setActiveStep(0); }}>
+                                                                    Cancel
+                                                                </Button>
+                                                                : ''
+                                                        }
+
                                                     </div>
                                                 </div>
 

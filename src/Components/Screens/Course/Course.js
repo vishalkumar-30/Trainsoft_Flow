@@ -197,29 +197,11 @@ const Courses = ({ location }) => {
 
     
     // get all course
-    const getCourse = async () => {
-        try {
-            
-            spinner.show()
-            RestService.getAllCourse().then(
-                response => {
-                    setCourseList(response.data);
-                },
-                err => {
-                    spinner.hide();
-                }
-            ).finally(() => {
-                spinner.hide();
-            });
-        } catch (err) {
-            console.error("error occur on getAllCourse()", err)
-        }
-    }
-    // const getCourse = async (pagination = 1) => {
+    // const getCourse = async () => {
     //     try {
-    //         let pageNo= 10
+            
     //         spinner.show()
-    //         RestService.getCourseByPage(pageNo , pagination).then(
+    //         RestService.getAllCourse().then(
     //             response => {
     //                 setCourseList(response.data);
     //             },
@@ -230,9 +212,27 @@ const Courses = ({ location }) => {
     //             spinner.hide();
     //         });
     //     } catch (err) {
-    //         console.error("error occur on getAllBatch()", err)
+    //         console.error("error occur on getAllCourse()", err)
     //     }
     // }
+    const getCourse = async (pagination = 1) => {
+        try {
+            let pageNo= 10
+            spinner.show()
+            RestService.getCourseByPage(pageNo , pagination).then(
+                response => {
+                    setCourseList(response.data);
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on getAllBatch()", err)
+        }
+    }
        // search searchCourse
        const searchCourse = (name)=> {
         try{

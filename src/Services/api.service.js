@@ -92,10 +92,12 @@ const RestService = {
   changeDepartmentRole: (role, departmentVASid) => AxiosService.put(GLOBELCONSTANT.PARTICIPANT.UPDATE_DEPARTMENT_ROLE.replace("{role}", role).replace("{departmentVASid}", departmentVASid)),
 
   // training
-  getAllTrainingByPage: (type, pageNo, pageSize) => AxiosService
-    .get(type === "SUPERVISOR" ? GLOBELCONSTANT.TRAINING.GET_TRAINING + "/" + pageNo + "/" + pageSize :
+  getAllTrainingByPage: (type, pageNo, pageSize,status) => AxiosService
+    .get(type === "SUPERVISOR" ? GLOBELCONSTANT.TRAINING.GET_TRAINING + "/" + pageNo + "/" + pageSize + `?status=${status}` :
       (type === "INSTRUCTOR" ? GLOBELCONSTANT.TRAINING.GET_INSTRUCTOR_TRAINING.replace("{pageNo}", pageNo).replace("{pageSize}", pageSize)
         : GLOBELCONSTANT.TRAINING.GET_LEARNER_TRAINING)),
+  // get training supervisor with pagination and status
+  getTrainingWithPaginationAndStatusSuperVisor: (pageNo, pageSize, status)=> AxiosService.get(GLOBELCONSTANT.TRAINING.GET_TRAINING + `/${pageNo}/${pageSize}?status=${status}`),
 
   getTrainings: () => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_TRAINING),
   getTrainingSession: (trainingSid, courseSid) => AxiosService.get(GLOBELCONSTANT.TRAINING.GET_TRAINING_SESSION.replace("{trainingSid}", trainingSid).replace("{courseSid}", courseSid)),

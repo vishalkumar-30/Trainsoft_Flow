@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import DynamicTable from "../../Common/DynamicTable/DynamicTable";
-import {  Form , Dropdown} from 'react-bootstrap'
-import {  Formik, yupToFormErrors } from 'formik';
+import { Form, Dropdown } from 'react-bootstrap'
+import { Formik, yupToFormErrors } from 'formik';
 import { ICN_TRASH, ICN_EDIT } from "../../Common/Icon";
 import { Button } from "../../Common/Buttons/Buttons";
 import { TextInput, SelectInput } from "../../Common/InputField/InputField";
-import {  Router } from "../../Common/Router";
+import { Router } from "../../Common/Router";
 import { BsModal, Toggle } from "../../Common/BsUtils";
 import CardHeader from "../../Common/CardHeader";
 import RestService from "../../../Services/api.service";
@@ -20,7 +20,7 @@ import hidePwdImg from "../../Screens/Auth/hide-password.svg"
 import showPwdImg from "../../Screens/Auth/show-password.svg"
 
 const User = ({ location }) => {
-    const {  spinner, user ,ROLE} = useContext(AppContext);
+    const { spinner, user, ROLE } = useContext(AppContext);
     const [showBulkUpload, setShowBulkUpload] = useState(false);
     const Toast = useToast();
     const [count, setCount] = useState(0);
@@ -41,23 +41,23 @@ const User = ({ location }) => {
 
     //validation
     const schema = Yup.object().shape({
-       appuser: Yup.object().shape({
+        appuser: Yup.object().shape({
             name: Yup.string()
-             .min(2, 'Too Short!')
-             .required("Required!"),
+                .min(2, 'Too Short!')
+                .required("Required!"),
             emailId: Yup.string()
-              .email("Email is not valid")
-              .required("Required!"),
+                .email("Email is not valid")
+                .required("Required!"),
             phoneNumber: Yup.string()
-              .matches(phoneRegExp, 'Phone number is not valid')
-              .max(10, "Phone number is not valid")
-              .required("Required!"),
+                .matches(phoneRegExp, 'Phone number is not valid')
+                .max(10, "Phone number is not valid")
+                .required("Required!"),
             accessType: Yup.object().required('Required!'),
             password: Yup.string().required('Required!')
-            }),
-            departmentVA: Yup.object().shape({
-             department: Yup.object().required('Required!') ,
-             departmentRole: Yup.object().required('Required!')
+        }),
+        departmentVA: Yup.object().shape({
+            department: Yup.object().required('Required!'),
+            departmentRole: Yup.object().required('Required!')
         })
     });
 
@@ -75,7 +75,7 @@ const User = ({ location }) => {
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
-                render: (data) => data.employeeId !== null?data.employeeId.substring(0, 3): "NA"
+                render: (data) => data.employeeId !== null ? data.employeeId.substring(0, 3) : "NA"
 
             },
             "emailId": {
@@ -96,44 +96,44 @@ const User = ({ location }) => {
                 "sortEnabled": true,
                 isSearchEnabled: false
             },
-           "vaRole": {
-            "title": "Role",
-            "sortDirection": null,
-            "sortEnabled": true,
-            isSearchEnabled: false,
-            render: (data) =><>{user.vaRole === "ADMIN" ? <Dropdown>
-            <Dropdown.Toggle id="set-project-role" as="div">
-                {data.vaRole}
-            </Dropdown.Toggle>
-            <Dropdown.Menu size="sm">
-                <Dropdown.Item href="#" onClick={() => {changeVARole('ADMIN',data.vSid) }}>
-                   ADMIN
-                </Dropdown.Item>
-                <Dropdown.Item href="#" onClick={() => {changeDepartmentRole("USER",data.vSid) }}>
-                   USER
-                </Dropdown.Item>
-            </Dropdown.Menu>
-        </Dropdown>: data.vaRole}
-        </>
-        },
+            "vaRole": {
+                "title": "Role",
+                "sortDirection": null,
+                "sortEnabled": true,
+                isSearchEnabled: false,
+                render: (data) => <>{user.vaRole === "ADMIN" ? <Dropdown>
+                    <Dropdown.Toggle id="set-project-role" as="div">
+                        {data.vaRole}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu size="sm">
+                        <Dropdown.Item href="#" onClick={() => { changeVARole('ADMIN', data.vSid) }}>
+                            ADMIN
+                        </Dropdown.Item>
+                        <Dropdown.Item href="#" onClick={() => { changeDepartmentRole("USER", data.vSid) }}>
+                            USER
+                        </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown> : data.vaRole}
+                </>
+            },
             "role": {
                 "title": "Department Role",
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
-                render: (data) =><>{user.vaRole === "ADMIN" ? <Dropdown>
-                <Dropdown.Toggle id="set-project-role" as="div">
-                    {data.role}
-                </Dropdown.Toggle>
-                <Dropdown.Menu size="sm">
-                    {
-                         GLOBELCONSTANT.DEPARTMENT_ROLE.map((r, idx) => <Dropdown.Item href="#" key={idx} onClick={() => {changeDepartmentRole(r.key,data.departmentVA.sid) }}>
-                            {r.name}
-                        </Dropdown.Item>)
-                    }
-                </Dropdown.Menu>
-            </Dropdown>: data.role}
-            </>
+                render: (data) => <>{user.vaRole === "ADMIN" ? <Dropdown>
+                    <Dropdown.Toggle id="set-project-role" as="div">
+                        {data.role}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu size="sm">
+                        {
+                            GLOBELCONSTANT.DEPARTMENT_ROLE.map((r, idx) => <Dropdown.Item href="#" key={idx} onClick={() => { changeDepartmentRole(r.key, data.departmentVA.sid) }}>
+                                {r.name}
+                            </Dropdown.Item>)
+                        }
+                    </Dropdown.Menu>
+                </Dropdown> : data.role}
+                </>
             },
             "status": {
                 "title": "Status",
@@ -156,7 +156,7 @@ const User = ({ location }) => {
             {
                 "title": "Edit",
                 "icon": ICN_EDIT,
-                "onClick": (data, i) => {getUsersDetails(data.vSid, true);setIsEdit(true)}
+                "onClick": (data, i) => { getUsersDetails(data.vSid, true); setIsEdit(true) }
             },
             {
                 "title": "Delete",
@@ -202,7 +202,7 @@ const User = ({ location }) => {
                 spinner.hide();
                 getUsers()
                 Toast.success({ message: `User is Successfully Created` });
-            }, err => {console.log(err);spinner.hide();}
+            }, err => { console.log(err); spinner.hide(); }
             );
         }
         catch (err) {
@@ -218,8 +218,8 @@ const User = ({ location }) => {
                 response => {
                     if (edit) {
                         let inValue = response.data
-                        inValue.appuser.accessType = GLOBELCONSTANT.ACCESS_LEVEL.find(res=> res.key === response.data.appuser.accessType)
-                        inValue.departmentVA.departmentRole = response.data.departmentVA &&  GLOBELCONSTANT.DEPARTMENT_ROLE.find(res=> res.key ===  response.data.departmentVA.departmentRole)
+                        inValue.appuser.accessType = GLOBELCONSTANT.ACCESS_LEVEL.find(res => res.key === response.data.appuser.accessType)
+                        inValue.departmentVA.departmentRole = response.data.departmentVA && GLOBELCONSTANT.DEPARTMENT_ROLE.find(res => res.key === response.data.departmentVA.departmentRole)
                         setInitialValue(inValue)
                         setShow(true)
                     }
@@ -252,8 +252,8 @@ const User = ({ location }) => {
                 setShow(false)
                 getUsers()
                 Toast.success({ message: `User is Successfully Updated` });
-            spinner.hide()
-        }, err => {console.log(err);spinner.hide()}
+                spinner.hide()
+            }, err => { console.log(err); spinner.hide() }
             );
         }
         catch (err) {
@@ -429,47 +429,47 @@ const User = ({ location }) => {
         }
     }
 
-          // change department role
-          const changeDepartmentRole = async (role,departmentVa) => {
-            try {
-                   spinner.hide();
-                    RestService.changeDepartmentRole(role,departmentVa).then(
-                        response => {
-                         getUsers()
-                         Toast.success({ message: `Department role change successfully ` });
-                        },
-                        err => {
-                            spinner.hide();
-                        }
-                    ).finally(() => {
-                        spinner.hide();
-                    });
-    
-            } catch (err) {
-                console.error("error occur on validateEmailId()", err)
-            }
+    // change department role
+    const changeDepartmentRole = async (role, departmentVa) => {
+        try {
+            spinner.hide();
+            RestService.changeDepartmentRole(role, departmentVa).then(
+                response => {
+                    getUsers()
+                    Toast.success({ message: `Department role change successfully ` });
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+
+        } catch (err) {
+            console.error("error occur on validateEmailId()", err)
         }
-    
-          // change user role
-          const changeVARole = async (role,vSid) => {
-            try {
-                   spinner.hide();
-                    RestService.changeUserRole(role,vSid).then(
-                        response => {
-                         getUsers()
-                         Toast.success({ message: `Role changed successfully` });
-                        },
-                        err => {
-                            spinner.hide();
-                        }
-                    ).finally(() => {
-                        spinner.hide();
-                    });
-    
-            } catch (err) {
-                console.error("error occur on validateEmailId()", err)
-            }
+    }
+
+    // change user role
+    const changeVARole = async (role, vSid) => {
+        try {
+            spinner.hide();
+            RestService.changeUserRole(role, vSid).then(
+                response => {
+                    getUsers()
+                    Toast.success({ message: `Role changed successfully` });
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+
+        } catch (err) {
+            console.error("error occur on validateEmailId()", err)
         }
+    }
 
     // get departments 
     const getDepartments = () => {
@@ -530,9 +530,9 @@ const User = ({ location }) => {
                             },
                             "role": "USER"
                         } : initialValue}
-                    validationSchema={schema}
+                        validationSchema={schema}
                     >
-                        {({ handleSubmit, isSubmitting, dirty, setFieldValue,values }) => <form onSubmit={handleSubmit} className="create-batch" >
+                        {({ handleSubmit, isSubmitting, dirty, setFieldValue, values }) => <form onSubmit={handleSubmit} className="create-batch" >
                             <div>
                                 <Form.Group className="row">
                                     <div className="col-6">
@@ -560,13 +560,13 @@ const User = ({ location }) => {
                                 </Form.Group>
                                 <Form.Group className="row">
                                     <div className="col-6 pwd-containernew">
-                                    <TextInput label="Password" name="appuser.password" />
-                                        {/* <TextInput label="Password" name="appuser.password" type={isRevealPwd ? "text"  : "password"} />
+                                        {/* <TextInput label="Password" name="appuser.password" /> */}
+                                        <TextInput label="Password" name="appuser.password" type={isRevealPwd ? "text" : "password"} />
                                         <img
-          title={isRevealPwd ? "Hide password" : "Show password"}
-          src={isRevealPwd ? hidePwdImg : showPwdImg}
-          onClick={() => setIsRevealPwd(prevState => !prevState)}
-        /> */}
+                                            title={isRevealPwd ? "Hide password" : "Show password"}
+                                            src={isRevealPwd ? hidePwdImg : showPwdImg}
+                                            onClick={() => setIsRevealPwd(prevState => !prevState)}
+                                        />
                                     </div>
                                     <div className="col-6">
                                         <SelectInput label="Privilege/Access Level" value={values.appuser.accessType} name="appuser.accessType" bindKey="name" option={GLOBELCONSTANT.ACCESS_LEVEL} />
