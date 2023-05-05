@@ -32,9 +32,10 @@ const ReportDownload = () => {
     // get all training
     const getTrainings = async (pagination = "1") => {
         try {
-            let pageSize = 10;
+            let pageSize = 30;
             spinner.show();
-            RestService.getAllTrainingByPage(user.role, pagination, pageSize).then(
+            const status = "ENABLED";
+            RestService.getAllTrainingByPage(user.role, pagination, pageSize, status).then(
                 response => {
                     setTrainingList(response.data);
                 },

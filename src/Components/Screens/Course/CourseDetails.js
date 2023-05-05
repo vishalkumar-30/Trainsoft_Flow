@@ -149,7 +149,7 @@ const CourseDetails = ({ location }) => {
         // this search is working for search enable fields(column) eg. isSearchEnabled: true, in tale column configuration
         searchQuery: "",
         tableCustomClass: "ng-table sort-enabled", // table custom class
-        showCheckbox: true,
+        showCheckbox: false,
         clearSelection: false
     });
 
@@ -448,9 +448,10 @@ const CourseDetails = ({ location }) => {
     // get all training
     const getTrainings = async (pagination = "1") => {
         try {
-            let pageSize = 10;
+            let pageSize = 30;
             spinner.show();
-            RestService.getAllTrainingByPage(user.role, pagination, pageSize).then(
+            let status = "ENABLED";
+            RestService.getAllTrainingByPage(user.role, pagination, pageSize, status).then(
                 response => {
                     setTrainingList(response.data);
                 },

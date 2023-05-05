@@ -93,9 +93,10 @@ const Report = ({ location }) => {
     try {
       let pageSize = 30;
       spinner.show();
-      RestService.getAllTrainingByPage(user.role, pagination, pageSize).then(
+      const status = 'ENABLED'
+      RestService.getTrainingWithPaginationAndStatusSuperVisor(pagination, pageSize, status).then(
         response => {
-          setTrainingList(response.data.filter(item => item.status === 'ENABLED'));
+          setTrainingList(response.data);
         },
         err => {
           spinner.hide();
@@ -137,8 +138,8 @@ const Report = ({ location }) => {
         response => {
           if (response.status === 200) {
             setShowReport(response.data.sectionDetails);
-            setTrainingSid('');
-            setStudentSid('');
+            // setTrainingSid('');
+            // setStudentSid('');
 
           }
         },
