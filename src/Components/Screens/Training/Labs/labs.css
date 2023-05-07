@@ -22,4 +22,9 @@
 height: 100vh;
 } */
 
+::selection{
+  background-color: #8666AB;
+  color :#ffffff;
+  
+}
 

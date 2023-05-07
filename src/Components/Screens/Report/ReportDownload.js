@@ -8,6 +8,7 @@ import RestService from '../../../Services/api.service';
 import AppContext from '../../../Store/AppContext';
 import useToast from '../../../Store/ToastHook';
 import { DOWNLOAD_ICON } from '../../Common/Icon';
+import ReportBarchart from './ReportBarchart';
 
 const ReportDownload = () => {
 
@@ -236,7 +237,8 @@ const ReportDownload = () => {
 
     }, []);
 
-    return (<>
+    return (
+    <>
         {
             user.role === ROLE.SUPERVISOR ?
                 <div className='col-6'>
@@ -268,13 +270,14 @@ const ReportDownload = () => {
 
         {
             reportName === "Assessment" ?
+            <>
                 <Formik
                     initialValues={{
                         "download": ''
                     }}
                     onSubmit={(values) => generateReport()}>
                     {({ handleSubmit }) => (<>
-                        <form onSubmit={handleSubmit} className="my-3">
+                        <form onSubmit={handleSubmit} className="my-2">
                             <div className='row ml-2'>
                                 <div className="jcc">
                                     <><div className='col'>
@@ -328,12 +331,16 @@ const ReportDownload = () => {
 
                                 </div>
                             </div>
-                            <div className=" mt-5 ml-4">
+ 
+<div className='mt-2'><ReportBarchart/></div>
+                            {/* <div className=" mt-5 ml-4">
                                 <Button type="submit" className="  px-4">Generate Report {DOWNLOAD_ICON} </Button>
-                            </div>
+                            </div> */}
                         </form>
                     </>)}
                 </Formik>
+               
+                </>
                 : ''}
         {
             reportName === "Attendance" ?
@@ -351,7 +358,7 @@ const ReportDownload = () => {
                     }}
                     onSubmit={(values) => generateLabReport()}>
                     {({ handleSubmit, values }) => (<>
-                        <form onSubmit={handleSubmit} className="my-3">
+                        <form onSubmit={handleSubmit} >
                             <div className='row ml-2'>
                                 <div className="jcc">
                                     <>
@@ -400,7 +407,7 @@ const ReportDownload = () => {
                                 </div>
 
                             </div>
-                            <div className=" mt-5 ml-4">
+                            <div className=" mt-5 mb-2 ml-4">
                                 <Button type="submit" className=" px-4">Generate Report {DOWNLOAD_ICON} </Button>
                             </div>
                         </form>
