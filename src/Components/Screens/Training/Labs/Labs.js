@@ -17,7 +17,8 @@ function Labs(props) {
     const { spinner } = useContext(AppContext)
     const [contentSid, setContentSid] = useState(props.location.state.contentSid);
     const [labId, setLabId] = useState(props.location.state.labId);
-    const [labConnection, setLabConnection] = useState('');
+    const [startLabConnection, setStartLabConnection] = useState('');
+    // const [labConnection, setLabConnection] = useState('');
     const [stopConnection, setStopConnection] = useState('');
     const [stopServer, setStopServer] = useState('');
     const [showButton, setShowButton] = useState(false);
@@ -27,24 +28,24 @@ function Labs(props) {
     const Toast = useToast();
     const navigate = useNavigate();
 
-// strechable layout start
+    // strechable layout start
     const [leftWidth, setLeftWidth] = useState(40);
 
     const handleMouseMove = (e) => {
-      setLeftWidth(e.clientX / window.innerWidth * 100);
-    };
-  
-    const handleMouseUp = () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  
-    const handleMouseDown = () => {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+        setLeftWidth(e.clientX / window.innerWidth * 100);
     };
 
-// strechable layout end
+    const handleMouseUp = () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    const handleMouseDown = () => {
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+    };
+
+    // strechable layout end
 
 
     //start lab 
@@ -57,15 +58,15 @@ function Labs(props) {
                 response => {
                     if (response.status === 200) {
                         Toast.success({ message: 'Lab Started Successfully', time: 3000 });
-                        setLabConnection(response.data.split('#')[1]);
+                        setStartLabConnection(response.data);
                         setStopConnection(response.data.split('#')[1]);
                         localStorage.setItem('connectionString', response.data.split('#')[1]);
-
                         setStopServer('');
                         setTimeout(function () {
                             setShowButton(true);
                             localStorage.setItem('appearButton', true);
                         }, 18000);
+                        // setLabConnection(response.data.split('#')[1]);
                     }
                 },
                 err => {
@@ -84,12 +85,13 @@ function Labs(props) {
     const stopEC2InstanceAndTerminateGuacamoleServer = async () => {
         try {
             spinner.show();
-            if (labConnection.length > 0) {
-                RestService.stopEC2InstanceAndTerminateGuacamoleServer(labConnection).then(
+            if (startLabConnection.length > 0) {
+                RestService.stopEC2InstanceAndTerminateGuacamoleServer(startLabConnection.split('#')[1]).then(
                     response => {
                         Toast.success({ message: 'Lab paused successfully', time: 3000 });
-                        setLabConnection('');
+                        setStartLabConnection('');
                         setStopServer(response.data);
+                        // setLabConnection('');
                         // localStorage.removeItem('appearButton');
                         // localStorage.removeItem('connectionString');
                     },
@@ -145,17 +147,18 @@ function Labs(props) {
     const terminateEC2InstanceAndTerminateGuacamoleServer = async () => {
         try {
             spinner.show();
-            if (labConnection.length > 0) {
-                RestService.terminateEC2InstanceAndTerminateGuacamoleServer(labConnection).then(
+            if (startLabConnection.length > 0) {
+                RestService.terminateEC2InstanceAndTerminateGuacamoleServer(startLabConnection.split('#')[1]).then(
                     response => {
                         Toast.success({ message: 'Lab completed successfully', time: 3000 });
-                        setLabConnection('');
+                        setStartLabConnection('');
                         setStopConnection('');
                         setShowButton(false);
                         markCourseAsCompletedLabs();
                         localStorage.removeItem('appearButton');
                         localStorage.removeItem('connectionString');
                         localStorage.removeItem("end_date");
+                        // setLabConnection('');
                     },
                     err => {
                         spinner.hide();
@@ -246,14 +249,13 @@ function Labs(props) {
 
     }, []);
 
-  
     return (
         <div >
-            <div style={{ display: 'flex', height: '100vh',background:"#e9ecef" }} >
-            {/* <p className='text-center'><Link to="/training/training-details"  >{ICN_BACK}Go Back </Link></p> */}
-          
+            <div style={{ display: 'flex', height: '100vh', background: "#e9ecef" }} >
+                {/* <p className='text-center'><Link to="/training/training-details"  >{ICN_BACK}Go Back </Link></p> */}
+
                 <div className="jumbotron pl-5 lab" style={{ width: `${leftWidth}%`, height: '100%', overflow: 'auto' }} >
-                <button onClick={() => navigate(-1)}>{ICN_BACK}Go back</button>
+                    <button onClick={() => navigate(-1)}>{ICN_BACK}Go back</button>
                     <h3 className="text-center " style={{ fontSize: "18px", fontWeight: "bold" }} >{labName}</h3>
                     <hr />
                     <br />
@@ -289,52 +291,53 @@ function Labs(props) {
                             }
                         </div>
                         :
-                        
-                       <>
-                           <div style={{ width: '10px', background: '#ddd', cursor: 'col-resize' }} onMouseDown={handleMouseDown}></div>
-                        <div className=" mainbody ml-2" style={{ flex: '1', height: '100%', overflow: 'auto',background:"black" }}>
-                            {/* labbacimg */}
-                            <div className=" row ml-1"  >
-                                <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "18px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
 
-                                    {(labConnection.length > 0 && stopConnection.length > 0) && localStorage.getItem('connectionString') ?
-                                        <div>
-                                            <p className="text-white">Started</p>
-                                        </div>
-                                        :
-                                        <button style={{ color: "#fff", fontSize: "15px" }} onClick={() =>
-                                            ec2GuacamolePOC()
-                                        }>Start Lab</button>}
-                                </div>
-                                {
-                                    showButton || localStorage.getItem('appearButton') ?
-                                        <>
-                                            <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
-                                                <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>{stopServer.length === 0 ? "Pause Lab" : "Paused"}</button>
-                                            </div>
-                                            <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "#471579", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
-                                                <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Complete Lab</button>
-                                            </div>
-                                        </>
-                                        : ''}
-                                <div style={{ marginLeft: "80px", marginBottom: "50px", marginTop: "50px" }}>
+                        <>
+                            <div style={{ width: '10px', background: '#ddd', cursor: 'col-resize' }} onMouseDown={handleMouseDown}></div>
+                            <div className=" mainbody ml-2" style={{ flex: '1', height: '100%', overflow: 'auto', background: "black" }}>
+                                {/* labbacimg */}
+                                <div className=" row ml-1"  >
+                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "18px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+
+                                        {
+                                            (startLabConnection.length > 0 && stopConnection.length > 0) && localStorage.getItem('connectionString') ?
+                                                <div>
+                                                    <p className="text-white">Started</p>
+                                                </div>
+                                                :
+                                            <button style={{ color: "#fff", fontSize: "15px" }} onClick={() =>
+                                                ec2GuacamolePOC()
+                                            }>Start Lab</button>}
+                                    </div>
                                     {
-                                        labConnection.length > 0 || localStorage.getItem('connectionString') ?
-                                            <CountdownTimer {...{ timeLimit: labDuration, callback: (time) => { } }} />
-                                            : ''
-                                    }
+                                        showButton || localStorage.getItem('appearButton') ?
+                                            <>
+                                                <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+                                                    <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>{stopServer.length === 0 ? "Pause Lab" : "Paused"}</button>
+                                                </div>
+                                                <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "#471579", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+                                                    <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Complete Lab</button>
+                                                </div>
+                                            </>
+                                            : ''}
+                                    <div style={{ marginLeft: "80px", marginBottom: "50px", marginTop: "50px" }}>
+                                        {
+                                            startLabConnection.length > 0 || localStorage.getItem('connectionString') ?
+                                                <CountdownTimer {...{ timeLimit: labDuration, callback: (time) => { } }} />
+                                                : ''
+                                        }
+                                    </div>
                                 </div>
+
+                                <div className="py-2 " style={{ marginTop: "-10px" }}>{
+                                    (startLabConnection.length > 0 && stopConnection.length > 0) || localStorage.getItem('connectionString') ?
+                                        // <iframe src={`https://lab.trainsoft.live/#${labConnection}`} width="100%" height="600px" />
+                                        <iframe src={startLabConnection} width="100%" height="600px" />
+                                        : <p className="text-white">Please Click on Start Lab</p>}
+                                </div>
+
                             </div>
-
-                            <div className="py-2 " style={{ marginTop: "-10px" }}>{
-                                (labConnection.length > 0 && stopConnection.length > 0) || localStorage.getItem('connectionString') ?
-
-                                    <iframe src={`https://lab.trainsoft.live/#${labConnection}`} width="100%" height="600px" />
-                                    : <p className="text-white">Please Click on Start Lab</p>}
-                            </div>
-
-                        </div>
-                       </>
+                        </>
                 }
             </div>
         </div>

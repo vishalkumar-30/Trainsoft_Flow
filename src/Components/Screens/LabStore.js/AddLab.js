@@ -9,10 +9,9 @@ import useToast from '../../../Store/ToastHook';
 import AppContext from '../../../Store/AppContext';
 const dummyData = { label: 'Google Cloud Essentials', icon: ICN_ON_GOING, link: '', desc: 'In this introductory-level Quest, you will get hands-on practice with the Google Cloud’s fundamental tools and services. Google Cloud Essentials is the recommended first Quest for the Google... more details' }
 
-const AddLab = ({ labId }) => {
+const AddLab = ({ labId, labName, labDescription }) => {
   const { spinner } = useContext(AppContext);
   const Toast = useToast();
-  console.log(labId);
 
   // add labs to account
   const addLabsToAccount = () => {
@@ -33,7 +32,7 @@ const AddLab = ({ labId }) => {
 
   return (
     <div>
-      <div className="title-sm">Google Cloud Essentials</div>
+      {/* <div className="title-sm">Google Cloud Essentials</div>
       <div className="text-justify">
         In this introductory-level Quest, you will get hands-on practice with the Google Cloud’s
         fundamental tools and services. Google Cloud Essentials is the recommended first Quest for the
@@ -41,7 +40,9 @@ const AddLab = ({ labId }) => {
         practical experience that you can apply to your first Google Cloud project. From writing Cloud Shell
         commands and deploying your first virtual machine, to running applications on Kubernetes Engine or with
         load balancing, Google Cloud Essentials is a prime introduction to the platform’s basic features.
-      </div>
+      </div> */}
+      <div className="title-sm">{labName}</div>
+      <div className="text-justify">{labDescription}</div>
       <div className="row pt-2 pb-4">
         <div className="col-3">
           <div className="title-sm">Duration: 4 hours</div>
