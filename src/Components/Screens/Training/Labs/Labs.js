@@ -297,7 +297,7 @@ function Labs(props) {
                             <div className=" mainbody ml-2" style={{ flex: '1', height: '100%', overflow: 'auto', background: "black" }}>
                                 {/* labbacimg */}
                                 <div className=" row ml-1"  >
-                                    <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "18px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+                                    <div className="col-2" style={{ textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "18px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
 
                                         {
                                             (startLabConnection.length > 0 && stopConnection.length > 0) && localStorage.getItem('connectionString') ?
@@ -312,15 +312,18 @@ function Labs(props) {
                                     {
                                         showButton || localStorage.getItem('appearButton') ?
                                             <>
-                                                <div style={{ width: "130px", textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+                                                <div className="col-2" style={{  textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "25px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
                                                     <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>{stopServer.length === 0 ? "Pause Lab" : "Paused"}</button>
                                                 </div>
-                                                <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "#471579", padding: "15px 20px", marginLeft: "80px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+                                                <div className="col-2"  style={{  textAlign: "center", textDecoration: "none", background: "#471579", padding: "15px 20px", marginLeft: "25px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
                                                     <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Complete Lab</button>
+                                                </div>
+                                                <div className="col-2" style={{ textAlign: "center", textDecoration: "none", background: "#471579", padding: "15px 20px", marginLeft: "25px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+                                                    <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Start Recording</button>
                                                 </div>
                                             </>
                                             : ''}
-                                    <div style={{ marginLeft: "80px", marginBottom: "50px", marginTop: "50px" }}>
+                                    <div className="col-2" style={{ marginLeft: "25px", marginBottom: "50px", marginTop: "50px" }}>
                                         {
                                             startLabConnection.length > 0 || localStorage.getItem('connectionString') ?
                                                 <CountdownTimer {...{ timeLimit: labDuration, callback: (time) => { } }} />

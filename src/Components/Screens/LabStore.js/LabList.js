@@ -36,7 +36,7 @@ const LabList = ({ list = [], myLab = false }) => {
                     <div className="text-md">
                         <div className="flx f12">
                             <div className="mr-3" >
-                                2 hours
+                                45 mins
                             </div>
                             <div className="mr-3">
                                 Intermediate

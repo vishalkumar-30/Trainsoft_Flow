@@ -654,18 +654,18 @@ const TrainingDetails = ({ location }) => {
                                         )
                                     }) : ''}
                                     {
-                                        user.role === ROLE.INSTRUCTOR ?
+                                        user.role === ROLE.INSTRUCTOR || user.role === ROLE.SUPERVISOR?
                                     
                                     <DropdownItem title="Fun Activity" total="2" theme="dark">
-                                        {username.name === "Wipro" ?
+                                        
                                             <div>
-                                                <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/enterprise-administrator.html" target="_blank">Fun With Enterprise Administrator</a></div>
-                                                <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/ms-training.html" target="_blank">Fun With MS Training</a></div>
-                                            </div> :
-                                            <div>
+                                                <div className="py-3"> <AssessmentIcon /><a href="https://learnlytica.s3.ap-south-1.amazonaws.com/server-virtualization.html" target="_blank">Fun with Server-Virtualization</a></div>
+                                                <div className="py-2"> <AssessmentIcon /><a href="https://learnlytica.s3.ap-south-1.amazonaws.com/windows-server11.html" target="_blank">Fun with Windows-Server</a></div>
+                                            </div> 
+                                            {/* <div>
                                                 <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/cloud-native-jeopardy.html" target="_blank">Fun With Cloud Native</a></div>
                                                 <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/kubernetes-jeopardy-game.html" target="_blank">Fun With Kubernetes</a></div>
-                                            </div>}
+                                            </div> */}
                                     </DropdownItem>
                                     : ''}
 
