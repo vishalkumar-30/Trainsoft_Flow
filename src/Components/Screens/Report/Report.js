@@ -242,11 +242,11 @@ const Report = ({ location }) => {
                   showReport !== null ?
                     <>
                       <table>
-                        <div class="row">
+                        <div class="row h-100">
                           <div class="col-2">
-                            <table className='c'>
+                            <table className='c h-100'>
                               <tr>
-                                <th>Section</th>
+                                <th className='h-100'>Section</th>
                               </tr>
 
                               <tr>
@@ -276,7 +276,7 @@ const Report = ({ location }) => {
                                 {
                                   showReport.DOCUMENTS.map((item) => {
                                     return (
-                                      <th>{item.sectionName.split("", 8)}</th>
+                                      <th>{item.sectionName.split("", 15)}...</th>
                                     )
                                   })
 

@@ -45,7 +45,7 @@ const AddLab = ({ labId, labName, labDescription }) => {
       <div className="text-justify">{labDescription}</div>
       <div className="row pt-2 pb-4">
         <div className="col-3">
-          <div className="title-sm">Duration: 4 hours</div>
+          <div className="title-sm">Duration: 45 mins</div>
         </div>
         <div className="col-3">
           <div className="title-sm">Difficulty level: Introductory</div>
