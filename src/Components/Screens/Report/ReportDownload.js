@@ -9,6 +9,9 @@ import AppContext from '../../../Store/AppContext';
 import useToast from '../../../Store/ToastHook';
 import { DOWNLOAD_ICON } from '../../Common/Icon';
 import ReportBarchart from './ReportBarchart';
+import ReportDonutChar from './ReportDonutChar';
+import ReportHeatmapChart from './ReportHeatmapChart';
+import ReportHorizontalBarChart from './ReportHorizontalBarChart';
 
 const ReportDownload = () => {
 
@@ -350,9 +353,9 @@ const ReportDownload = () => {
         }
 
         {
-            reportName === "Labs" ?
-
-                <Formik
+            reportName === "Lab Usage" ?
+<>
+                {/* <Formik
                     initialValues={{
                         "download": '',
                     }}
@@ -407,111 +410,118 @@ const ReportDownload = () => {
                                 </div>
 
                             </div>
-                            <div className=" mt-5 mb-2 ml-4">
+                           
+                        </form>
+                      
+                    </>)}
+                </Formik> */}
+               
+                <ReportDonutChar/>
+                <div className=" mt-5 mb-2 ml-4">
                                 <Button type="submit" className=" px-4">Generate Report {DOWNLOAD_ICON} </Button>
                             </div>
-                        </form>
-                    </>)}
-                </Formik>
+                </>
                 : ""}
 
         {
-            reportName === "Trainer Feedback" ?
+            reportName === "Trainer Feedback"  || reportName === "Training Feedback" ?
 
-                <Formik
-                    initialValues={{
-                        "download": '',
-                    }}
-                    onSubmit={(values) => generateLabReport()}>
-                    {({ handleSubmit, values }) => (<>
-                        <form onSubmit={handleSubmit} className="my-3">
-                            <div className='row ml-2'>
-                                <div className="jcc">
-                                    <>
-                                        <div className='col'>
-                                            <label className="mb-2 label form-label ">Training</label>
-                                            <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
-                                                setTrainingSid(e.target.value);
+                // <Formik
+                //     initialValues={{
+                //         "download": '',
+                //     }}
+                //     onSubmit={(values) => generateLabReport()}>
+                //     {({ handleSubmit, values }) => (<>
+                //         <form onSubmit={handleSubmit} className="my-3">
+                //             <div className='row ml-2'>
+                //                 <div className="jcc">
+                //                     <>
+                //                         <div className='col'>
+                //                             <label className="mb-2 label form-label ">Training</label>
+                //                             <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
+                //                                 setTrainingSid(e.target.value);
 
-                                            }}>
-                                                <option value="ALL">ALL</option>
+                //                             }}>
+                //                                 <option value="ALL">ALL</option>
 
-                                                {
-                                                    instructorSid === "ALL" && trainingList.map((item) => {
-                                                        return (
-                                                            <>
-                                                                <option value={item.sid}>{item.name}</option>
-                                                            </>
-                                                        )
-                                                    })
-                                                }
-                                            </select>
-                                        </div>
-                                        <div className='col'>
-                                            <label className="mb-2 label form-label ">Instructor</label>
-                                            <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
-                                                setInstructorSid(e.target.value);
+                //                                 {
+                //                                     instructorSid === "ALL" && trainingList.map((item) => {
+                //                                         return (
+                //                                             <>
+                //                                                 <option value={item.sid}>{item.name}</option>
+                //                                             </>
+                //                                         )
+                //                                     })
+                //                                 }
+                //                             </select>
+                //                         </div>
+                //                         <div className='col'>
+                //                             <label className="mb-2 label form-label ">Instructor</label>
+                //                             <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
+                //                                 setInstructorSid(e.target.value);
 
-                                            }}>
-                                                <option value="ALL">ALL</option>
-                                                {
-                                                    trainingSid === "ALL" && instructor.map((item) => {
-                                                        return (
-                                                            <>
-                                                                <option value={item.sid}>
-                                                                    {item.name.length > 22 ? item.name.substring(0, 22) + "..." : item.name}
-                                                                </option>
-                                                            </>
-                                                        )
-                                                    })
-                                                }
+                //                             }}>
+                //                                 <option value="ALL">ALL</option>
+                //                                 {
+                //                                     trainingSid === "ALL" && instructor.map((item) => {
+                //                                         return (
+                //                                             <>
+                //                                                 <option value={item.sid}>
+                //                                                     {item.name.length > 22 ? item.name.substring(0, 22) + "..." : item.name}
+                //                                                 </option>
+                //                                             </>
+                //                                         )
+                //                                     })
+                //                                 }
 
-                                            </select>
-
-
-                                        </div>
-
-                                    </>
-
-                                </div>
-
-                            </div>
-
-                            <div className=" mt-5 ml-4">
-                                <Button type="submit" className="px-4">Generate Report {DOWNLOAD_ICON} </Button>
-                            </div>
+                //                             </select>
 
 
+                //                         </div>
 
-                        </form>
-                    </>)}
-                </Formik>
+                //                     </>
+
+                //                 </div>
+
+                //             </div>
+
+                //             <div className=" mt-5 ml-4">
+                //                 <Button type="submit" className="px-4">Generate Report {DOWNLOAD_ICON} </Button>
+                //             </div>
+
+
+
+                //         </form>
+                //     </>)}
+                // </Formik>
+<ReportHorizontalBarChart/>
                 : ""}
 
         {
-            reportName === "Training Feedback"
-                || reportName === "Login History"
-                || reportName === "Lab Test Report"
-                || reportName === "Coding Test Report" ?
+            
+                reportName === "Login History" ?
+                // || reportName === "Lab Test Report"
+                // || reportName === "Coding Test Report" 
 
-                <Formik
-                    initialValues={{
-                        "download": ''
-                    }}
-                    onSubmit={(values) => generateThreeReport()}>
-                    {({ handleSubmit, values }) => (<>
-                        <form onSubmit={handleSubmit} className="my-3">
+                // <Formik
+                //     initialValues={{
+                //         "download": ''
+                //     }}
+                //     onSubmit={(values) => generateThreeReport()}>
+                //     {({ handleSubmit, values }) => (<>
+                //         <form onSubmit={handleSubmit} className="my-3">
 
-                            <div className='row'>
-                                <div className="jcc">
-                                    <div className=" m-4">
-                                        <Button type="submit" className=" mr-2 px-4">Generate Report {DOWNLOAD_ICON} </Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </>)}
-                </Formik>
+                //             <div className='row'>
+                //                 <div className="jcc">
+                //                     <div className=" m-4">
+                //                         <Button type="submit" className=" mr-2 px-4">Generate Report {DOWNLOAD_ICON} </Button>
+                //                     </div>
+                //                 </div>
+                //             </div>
+                //         </form>
+                //     </>)}
+                // </Formik>
+                <ReportHeatmapChart/>
                 : ""}
 
     </>)
