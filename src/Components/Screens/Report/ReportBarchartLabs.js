@@ -54,9 +54,18 @@ const ReportBarchartLabs = ({ trainingLabsList }) => {
     }];
 
 
-    console.log(trainingLabsList);
+    
     return (
-        <div style={{ background: "#F5F8FB", borderRadius: "15px" }} className='p-2'> <Chart options={options} series={series} type="bar" height={450} /></div>
+        <>
+        {
+            series[0].data !== null && series[0].data.length > 0 ?
+            <div style={{ background: "#F5F8FB", borderRadius: "15px" }} className='p-2'>
+                <Chart options={options} series={series} type="bar" height={450} />
+            </div>
+            : <div className="title-lg text-center" style={{ background: "#F5F8FB", borderRadius: "15px" ,height:"450px"}} >No Data Found</div>
+        }
+        </>
+        
     )
 }
 

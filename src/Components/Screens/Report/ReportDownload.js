@@ -15,6 +15,8 @@ import ReportHorizontalBarChart from './ReportHorizontalBarChart';
 import ReportBarchartLabs from './ReportBarchartLabs';
 import ReportBarchartLabs2 from './ReportBarchartLabs2';
 import ReportBarchart2 from './ReportBarchart2';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const ReportDownload = () => {
 
@@ -27,7 +29,7 @@ const ReportDownload = () => {
     const { user, spinner, ROLE } = useContext(AppContext);
     const [trainingList, setTrainingList] = useState([]);
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
-    const [labList, setLabList] = useState([]);
+    // const [labList, setLabList] = useState([]);
     const [labId, setLabId] = useState('ALL');
     const [instructorList, setInstructorList] = useState([]);
     const [instructorSid, setInstructorSid] = useState('ALL');
@@ -39,16 +41,61 @@ const ReportDownload = () => {
     const [trainingAssessmentList, setTrainingAssessmentList] = useState(null);
     const [trainingLabsList1, setTrainingLabsList1] = useState(null);
     const [loginDetails, setLoginDetails] = useState([]);
+    const [showReport, setShowReport] = useState(null);
+    const [studentSid, setStudentSid] = useState('');
+    const [scrollLeftInterval, setScrollLeftInterval] = useState(null);
+    const [scrollRightInterval, setScrollRightInterval] = useState(null);
+    // const hrithikSid = "354F373847414839374238383836433941374144483839384334335532433331363735364B3545364B413444343438394E453233373831324C33413431434233";
+    // const newLearnSid = "401D2043EAF8446E83E6B89D23332414F99CE8AC02D148F0B9F2D22CAA45B28E";
 
     // const [trainingLabsList2, setTrainingLabsList2] = useState(null);
     // const [trainingLabsList3, setTrainingLabsList3] = useState(null);
 
     let assessment = [];
+    let labList = [];
     let instructor = [];
     let reportTypeWithSid = [];
     let data = [];
 
     const Toast = useToast();
+
+    function scrollLeft() {
+        const tableWrapper = document.querySelector(".table-wrapper");
+        if (scrollRightInterval > 0) {
+            tableWrapper.scrollLeft -= 50;
+        }
+
+
+        const table = document.querySelector(".table-wrapper table");
+        table.querySelectorAll("tr").forEach((row) => {
+            row.insertBefore(row.lastElementChild, row.firstElementChild);
+        });
+    }
+
+    function scrollRight() {
+        const tableWrapper = document.querySelector(".table-wrapper");
+        tableWrapper.scrollLeft += 50;
+
+        const table = document.querySelector(".table-wrapper table");
+        table.querySelectorAll("tr").forEach((row) => {
+            row.appendChild(row.firstElementChild);
+        });
+    }
+
+    function handleLeftMouseDown() {
+        scrollLeft();
+        setScrollLeftInterval(setInterval(scrollLeft, 500));
+    }
+
+    function handleRightMouseDown() {
+        scrollRight();
+        setScrollRightInterval(setInterval(scrollRight, 500));
+    }
+
+    function handleMouseUp() {
+        clearInterval(scrollLeftInterval);
+        clearInterval(scrollRightInterval);
+    }
     // get all training
     const getTrainings = async (pagination = "1") => {
         try {
@@ -96,28 +143,28 @@ const ReportDownload = () => {
     }
 
     // get all labs
-    const getAllLabs = () => {
-        try {
-            spinner.show();
-            RestService.getAllLabs().then(
-                response => {
+    // const getAllLabs = () => {
+    //     try {
+    //         spinner.show();
+    //         RestService.getAllLabs().then(
+    //             response => {
 
-                    if (response.status === 200) {
-                        setLabList(response.data.labDetails);
+    //                 if (response.status === 200) {
+    //                     setLabList(response.data.labDetails);
 
-                    }
-                },
-                err => {
-                    spinner.hide();
-                }
-            ).finally(() => {
-                spinner.hide();
-            });
-        } catch (err) {
-            console.error("error occur on getAllLabs()", err)
-        }
+    //                 }
+    //             },
+    //             err => {
+    //                 spinner.hide();
+    //             }
+    //         ).finally(() => {
+    //             spinner.hide();
+    //         });
+    //     } catch (err) {
+    //         console.error("error occur on getAllLabs()", err)
+    //     }
 
-    }
+    // }
 
     // get all instructor
     const getInstructor = () => {
@@ -400,6 +447,31 @@ const ReportDownload = () => {
             spinner.hide();
         }
     }
+
+    //show reports for supervisor only
+    const getSupervisorReportTrainingDetailsSupervisor = () => {
+        try {
+            spinner.show();
+            RestService.getSupervisorReportTrainingDetails(studentSid, trainingSid).then(
+                response => {
+                    if (response.status === 200) {
+                        setShowReport(response.data.sectionDetails);
+                        // setTrainingSid('');
+                        // setStudentSid('');
+
+                    }
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on getTrainings()", err)
+        }
+    }
+
     if (trainingDetailsList.length > 0) {
         for (let i = 0; i < trainingDetailsList.length; i++) {
             for (let j = 0; j < trainingDetailsList[i].courseContentResposeTOList.length; j++) {
@@ -418,6 +490,12 @@ const ReportDownload = () => {
                 assessment.push({
                     "contentName": trainingDetailsList[i].courseContentResposeTOList[j].contentName,
                     "sid": trainingDetailsList[i].courseContentResposeTOList[j].sid
+                })
+            }
+            if (trainingDetailsList[i].courseContentResposeTOList[j].type === "LAB") {
+                labList.push({
+                    "labName": trainingDetailsList[i].courseContentResposeTOList[j].contentName,
+                    "labId": trainingDetailsList[i].courseContentResposeTOList[j].labId
                 })
             }
         }
@@ -456,7 +534,7 @@ const ReportDownload = () => {
             setReport(res.data);
         });
         getTrainings();
-        getAllLabs();
+        // getAllLabs();
         getInstructor();
         getLearners();
 
@@ -500,7 +578,7 @@ const ReportDownload = () => {
                                         )
                                     })
                                 }
-
+                                <option value="training progress">Training Progress</option>
                             </select>
                             {/* <Button type="submit" className="  px-4">Display Report </Button> */}
                         </div>
@@ -735,9 +813,9 @@ const ReportDownload = () => {
                                                     <label className="mb-2 label form-label ">Training</label>
                                                     <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
                                                         setTrainingSid(e.target.value);
-
+                                                        getTrainingContentsByTrainingSid(e.target.value);
                                                     }}>
-                                                        <option value="">Select Training</option>
+                                                        <option value="" disabled selected hidden>Select Training</option>
                                                         {
                                                             trainingList.map((item) => {
                                                                 return (
@@ -781,12 +859,12 @@ const ReportDownload = () => {
 
                                                             }}>
                                                                 <option value="ALL">ALL</option>
-                                                               
+
                                                             </select>
                                                             :
                                                             <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
                                                                 setSelectLearner(e.target.value);
-        
+
                                                             }}>
                                                                 <option value="ALL">ALL</option>
                                                                 {
@@ -800,7 +878,7 @@ const ReportDownload = () => {
                                                                     })
                                                                     // : ''
                                                                 }
-        
+
                                                             </select>
 
                                                     }
@@ -940,6 +1018,203 @@ const ReportDownload = () => {
                     // </Formik>
                     <ReportHeatmapChart data={data} />
                     : ""}
+            {
+                reportName === "training progress" ?
+                    <div className="" style={{ marginBottom: "120px" }}>
+
+                        <div className='row py-2 ' style={{ background: "#49167E", margin: "0", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>
+                            <div className='col-6 d-flex ' style={{ alignContent: "center", alignItems: "center" }}>
+                                <label className="col-3 mt-2 label form-label text-white ">Training Name</label>
+
+                                <select className="form-control col-6" style={{ borderRadius: "10px", backgroundColor: "rgb(248, 250, 251)" }}
+                                    onChange={(e) => {
+                                        setTrainingSid(e.target.value);
+                                    }}
+                                >
+                                    <option hidden>Select Training</option>
+                                    {
+                                        trainingList.map((item) => {
+                                            return (
+                                                <>
+                                                    <option value={item.sid}>
+
+                                                        {item.name}
+
+                                                    </option>
+                                                </>
+                                            )
+                                        })
+                                    }
+
+                                </select>
+
+                            </div>
+
+                            {
+                                trainingSid.length > 0 ?
+
+                                    <div className='col-6 d-flex '>
+                                        <label className="mt-2 col-3 label form-label text-white">Learner</label>
+                                        <select className="form-control col-6" style={{ borderRadius: "10px", backgroundColor: "rgb(248, 250, 251)" }}
+                                            onChange={(e) => setStudentSid(e.target.value)}
+                                        >
+                                            <option hidden>Select Learner</option>
+                                            {
+
+
+                                                learnerList.map((item) => {
+                                                    return (
+                                                        <>
+                                                            <option value={item.sid}>{item.name}</option>
+                                                        </>
+                                                    )
+                                                })}
+                                        </select>
+                                        <button className='p-2 mt-1' style={{ marginLeft: "10px", borderRadius: "10px", height: "35px", backgroundColor: "rgb(248, 250, 251)", width: "100px" }} disabled={trainingSid.length === 0 || studentSid.length === 0} onClick={() => getSupervisorReportTrainingDetailsSupervisor()}>Submit</button>
+                                    </div>
+                                    :
+                                    ''
+                            }
+                        </div>
+
+                        <div>
+                            {
+                                showReport !== null ?
+                                    <>
+                                        <table>
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <table className='c'>
+                                                        <tr>
+                                                            <th>Section</th>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Study Material</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Videos</td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Assessments</td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Labs</td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Challenges</td>
+
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-10 table-wrapper">
+                                                    <table className='c'>
+                                                        <tr>
+                                                            {
+                                                                showReport.DOCUMENTS.map((item) => {
+                                                                    return (
+                                                                        <th>{item.sectionName.split("", 8)}</th>
+                                                                    )
+                                                                })
+
+                                                            }
+
+
+
+
+                                                        </tr>
+                                                        <tr>
+                                                            {
+                                                                showReport.DOCUMENTS.map((item) => {
+                                                                    return (
+                                                                        <td>{item.documentCompletion}</td>
+                                                                    )
+                                                                })
+
+                                                            }
+
+                                                        </tr>
+                                                        <tr>
+                                                            {
+                                                                showReport.VIDEO.map((item) => {
+                                                                    return (
+                                                                        <td>{item.videoCompletion}</td>
+                                                                    )
+                                                                })
+
+                                                            }
+
+                                                        </tr>
+                                                        <tr>
+                                                            {
+                                                                showReport.ASSESSMENT.map((item) => {
+                                                                    return (
+                                                                        <td>{item.assessmentCompletion}</td>
+                                                                    )
+                                                                })
+
+                                                            }
+
+                                                        </tr>
+                                                        <tr>
+                                                            {
+                                                                showReport.LAB.map((item) => {
+                                                                    return (
+                                                                        <td>{item.labCompletion}</td>
+                                                                    )
+                                                                })
+
+                                                            }
+
+                                                        </tr>
+                                                        <tr>
+                                                            {
+                                                                showReport.CODING.map((item) => {
+                                                                    return (
+                                                                        <td>{item.codingCompletion}</td>
+                                                                    )
+                                                                })
+
+                                                            }
+
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </table>
+                                        <div style={{ marginTop: "-135px", position: "relative" }}>
+                                            <button
+
+                                                onMouseDown={handleLeftMouseDown}
+                                                onMouseUp={handleMouseUp}
+                                                style={{ marginLeft: "230px" }}
+                                            >
+                                                <ArrowBackIosIcon />
+                                            </button>
+                                            <button
+                                                style={{ float: "right", marginRight: "-20px" }}
+                                                onMouseDown={handleRightMouseDown}
+                                                onMouseUp={handleMouseUp}
+                                            >
+
+                                                <ArrowForwardIosIcon />
+                                            </button>
+
+                                        </div>
+
+
+                                    </>
+                                    : ""
+                            }
+
+                        </div>
+
+                    </div>
+                    : ''
+            }
 
         </>)
 }
