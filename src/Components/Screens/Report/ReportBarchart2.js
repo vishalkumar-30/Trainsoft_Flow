@@ -1,7 +1,7 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 
-const ReportBarchart = ({trainingAssessmentList}) => {
+const ReportBarchart2 = ({ trainingAssessmentList }) => {
     // let data, categories;
     // if (trainingLabsList.labDetails === null) {
     //     data = trainingLabsList.map(item => item.individualScore.toFixed(2));
@@ -35,24 +35,26 @@ const ReportBarchart = ({trainingAssessmentList}) => {
 
 
             // categories:  ['Kubernetes Journey Training', 'K8s Basics', 'Stochastic Learning', 'Windows Server', 'ML and Data Science']
-            categories: trainingAssessmentList.oneTrainingOneAssessment.map(item => item.learnerName)
+            categories: trainingAssessmentList.oneTrainingAllAssessment.assessmentDetails.details.map(item => item.assessmentName)
             // ['Kubernetes Journey Training', 'K8s Basics', 'Stochastic Learning', 'Windows Server', 'ML and Data Science']
         },
         yaxis: {
             title: {
-                text: 'Learner'
+                text: 'Assessment'
             }
         }
     };
 
     const series = [{
-        name: "Training",
-        // data: [2,6, 9, 12, 8]
-        data: trainingAssessmentList.oneTrainingOneAssessment.map(item => item.score.toFixed(2))
+        name: "Assessment Average Score",
+
+        data: trainingAssessmentList.oneTrainingAllAssessment.assessmentDetails.details.map(item => item.assessmentAverageScore !== null ? item.assessmentAverageScore.toFixed(2)
+        : item.learnerDetails.individualScore.toFixed(2))
         // name: trainingLabsList.labDetails === null ? "Learner" : "Assessment",
         // data: trainingLabsList.labDetails === null ? trainingLabsList.map(item => item.individualScore.toFixed(2)) : ''
        
     }];
+
 
     console.log(trainingAssessmentList);
     return (
@@ -60,4 +62,4 @@ const ReportBarchart = ({trainingAssessmentList}) => {
     )
 }
 
-export default ReportBarchart
+export default ReportBarchart2

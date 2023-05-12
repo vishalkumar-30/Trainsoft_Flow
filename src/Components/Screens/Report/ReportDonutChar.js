@@ -1,24 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 
-const ReportDonutChar = () => {
+const ReportDonutChar = ({labUsage}) => {
 
- const [chartData, setChartData] = useState({
+  const [chartData, setChartData] = useState({
     options: {
       chart: {
         id: "donut",
       },
-    //   fill: { colors: ['red', 'green', 'yellow'] },
-    //   colors: ['red', 'green', 'yellow'],
+      //   fill: { colors: ['red', 'green', 'yellow'] },
+      //   colors: ['red', 'green', 'yellow'],
       labels: ["Started", "Paused", "Completed"],
     },
-    series: [44, 55, 13],
+    // series: [44, 55, 13],
+    // series: labUsage
   });
 
   return (
     <Chart
       options={chartData.options}
-      series={chartData.series}
+      series={labUsage}
       type="donut"
       width="50%"
       height="50%"
