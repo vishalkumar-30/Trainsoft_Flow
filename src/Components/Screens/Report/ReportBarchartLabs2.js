@@ -1,6 +1,7 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 
+
 const ReportBarchartLabs2 = ({ trainingLabsList }) => {
     // let data, categories;
     // if (trainingLabsList.labDetails === null) {
@@ -35,7 +36,8 @@ const ReportBarchartLabs2 = ({ trainingLabsList }) => {
 
 
             // categories:  ['Kubernetes Journey Training', 'K8s Basics', 'Stochastic Learning', 'Windows Server', 'ML and Data Science']
-            categories: trainingLabsList.oneTrainingAllLabs.labDetails.details.map(item => item.labName)
+            categories: trainingLabsList.oneTrainingAllLabs.labDetails !== null &&
+                trainingLabsList.oneTrainingAllLabs.labDetails.details.map(item => item.labName)
             // ['Kubernetes Journey Training', 'K8s Basics', 'Stochastic Learning', 'Windows Server', 'ML and Data Science']
         },
         yaxis: {
@@ -48,17 +50,27 @@ const ReportBarchartLabs2 = ({ trainingLabsList }) => {
     const series = [{
         name: "Lab Average Score",
 
-        data: trainingLabsList.oneTrainingAllLabs.labDetails.details.map(item => item.labAverageScore !== null ? item.labAverageScore.toFixed(2)
-        : item.learnerDetails.individualScore.toFixed(2))
+        data: trainingLabsList.oneTrainingAllLabs.labDetails !== null &&
+            trainingLabsList.oneTrainingAllLabs.labDetails.details.map(item => item.labAverageScore !== null ? item.labAverageScore.toFixed(2)
+                : item.learnerDetails.individualScore.toFixed(2))
         // name: trainingLabsList.labDetails === null ? "Learner" : "Assessment",
         // data: trainingLabsList.labDetails === null ? trainingLabsList.map(item => item.individualScore.toFixed(2)) : ''
-       
+
     }];
 
 
-    console.log(trainingLabsList);
     return (
-        <div style={{ background: "#F5F8FB", borderRadius: "15px" }} className='p-2'> <Chart options={options} series={series} type="bar" height={450} /></div>
+        <>
+            {
+                series[0].data !== null && series[0].data.length > 0 ?
+
+                    <div style={{ background: "#F5F8FB", borderRadius: "15px" }} className='p-2'>
+                        <Chart options={options} series={series} type="bar" height={450} />
+                    </div>
+                    : <div className="title-lg text-center" style={{ background: "#F5F8FB", borderRadius: "15px" ,height:"450px"}} >No Data Found</div>
+                    }
+        </>
+
     )
 }
 

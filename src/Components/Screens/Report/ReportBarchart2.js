@@ -35,7 +35,8 @@ const ReportBarchart2 = ({ trainingAssessmentList }) => {
 
 
             // categories:  ['Kubernetes Journey Training', 'K8s Basics', 'Stochastic Learning', 'Windows Server', 'ML and Data Science']
-            categories: trainingAssessmentList.oneTrainingAllAssessment.assessmentDetails.details.map(item => item.assessmentName)
+            categories: trainingAssessmentList.oneTrainingAllAssessment.assessmentDetails.details !== null &&
+                trainingAssessmentList.oneTrainingAllAssessment.assessmentDetails.details.map(item => item.assessmentName)
             // ['Kubernetes Journey Training', 'K8s Basics', 'Stochastic Learning', 'Windows Server', 'ML and Data Science']
         },
         yaxis: {
@@ -48,17 +49,27 @@ const ReportBarchart2 = ({ trainingAssessmentList }) => {
     const series = [{
         name: "Assessment Average Score",
 
-        data: trainingAssessmentList.oneTrainingAllAssessment.assessmentDetails.details.map(item => item.assessmentAverageScore !== null ? item.assessmentAverageScore.toFixed(2)
-        : item.learnerDetails.individualScore.toFixed(2))
+        data: trainingAssessmentList.oneTrainingAllAssessment.assessmentDetails.details !== null &&
+            trainingAssessmentList.oneTrainingAllAssessment.assessmentDetails.details.map(item => item.assessmentAverageScore !== null ? item.assessmentAverageScore.toFixed(2)
+                : item.learnerDetails.individualScore.toFixed(2))
         // name: trainingLabsList.labDetails === null ? "Learner" : "Assessment",
         // data: trainingLabsList.labDetails === null ? trainingLabsList.map(item => item.individualScore.toFixed(2)) : ''
-       
+
     }];
 
 
-    console.log(trainingAssessmentList);
+
     return (
-        <div style={{ background: "#F5F8FB", borderRadius: "15px" }} className='p-2'> <Chart options={options} series={series} type="bar" height={450} /></div>
+        <>  
+        {
+            series[0].data !== null && series[0].data.length > 0 ?
+            
+            <div style={{ background: "#F5F8FB", borderRadius: "15px" }} className='p-2'>
+                <Chart options={options} series={series} type="bar" height={450} />
+            </div>
+            : <div style={{ background: "#F5F8FB", borderRadius: "15px" ,height:"450px"}} className='p-2 title-lg text-center'>No Data Found</div>}
+        </>
+
     )
 }
 

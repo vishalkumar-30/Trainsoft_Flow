@@ -22,7 +22,7 @@ const ReportDonutChar = ({labUsage}) => {
       series={labUsage}
       type="donut"
       width="50%"
-      height="50%"
+      height="60%"
     />
   );
 }

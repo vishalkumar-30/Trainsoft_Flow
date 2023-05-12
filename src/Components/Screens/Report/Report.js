@@ -20,16 +20,10 @@ const Report = ({ location }) => {
   const [trainingList, setTrainingList] = useState([]);
   const [showReport, setShowReport] = useState(null);
   const [studentSid, setStudentSid] = useState('');
-  const [showReportDoc, setShowReportDoc] = useState([]);
-  const [showReportVideo, setShowReportVideo] = useState([]);
-  const [showReportAssessment, setShowReportAssessment] = useState([]);
-  const [showReportLab, setShowReportLab] = useState([]);
-  const [showReportCoding, setShowReportCoding] = useState([]);
+
   const learner = JSON.parse(localStorage.getItem('user'));
   const [trainingSid, setTrainingSid] = useState('');
-  const hrithikSid = "354F373847414839374238383836433941374144483839384334335532433331363735364B3545364B413444343438394E453233373831324C33413431434233";
-  const newLearnSid = "401D2043EAF8446E83E6B89D23332414F99CE8AC02D148F0B9F2D22CAA45B28E";
-  const learnerSid = learner.sid;
+    const learnerSid = learner.sid;
   const [scrollLeftInterval, setScrollLeftInterval] = useState(null);
   const [scrollRightInterval, setScrollRightInterval] = useState(null);
 
@@ -177,7 +171,7 @@ const Report = ({ location }) => {
       <p style={{ fontSize: "16px", color: "#49167E", fontWeight: "600" }}>
         {
           user.role === ROLE.SUPERVISOR ?
-            "Download Report"
+            "Report"
             :
             "Show Reports"
         }
@@ -374,191 +368,192 @@ const Report = ({ location }) => {
 
             </div>
             :
-            <div style={{ marginBottom: "120px" }}>
+            ''
+            // <div style={{ marginBottom: "120px" }}>
 
-              <div className='row py-2 ' style={{ background: "#49167E", margin: "0", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>
-                <div className='col-6 d-flex ' style={{ alignContent: "center", alignItems: "center" }}>
-                  <label className="col-3 mt-2 label form-label text-white ">Training Name</label>
+            //   <div className='row py-2 ' style={{ background: "#49167E", margin: "0", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>
+            //     <div className='col-6 d-flex ' style={{ alignContent: "center", alignItems: "center" }}>
+            //       <label className="col-3 mt-2 label form-label text-white ">Training Name</label>
 
-                  <select className="form-control col-6" style={{ borderRadius: "10px", backgroundColor: "rgb(248, 250, 251)" }}
-                    onChange={(e) => {
-                      setTrainingSid(e.target.value);
-                    }}
-                  >
-                    <option hidden>Select Training</option>
-                    {
-                      trainingList.map((item) => {
-                        return (
-                          <>
-                            <option value={item.sid}>
+            //       <select className="form-control col-6" style={{ borderRadius: "10px", backgroundColor: "rgb(248, 250, 251)" }}
+            //         onChange={(e) => {
+            //           setTrainingSid(e.target.value);
+            //         }}
+            //       >
+            //         <option hidden>Select Training</option>
+            //         {
+            //           trainingList.map((item) => {
+            //             return (
+            //               <>
+            //                 <option value={item.sid}>
 
-                              {item.name}
+            //                   {item.name}
 
-                            </option>
-                          </>
-                        )
-                      })
-                    }
+            //                 </option>
+            //               </>
+            //             )
+            //           })
+            //         }
 
-                  </select>
+            //       </select>
 
-                </div>
+            //     </div>
 
-                {
-                  trainingSid.length > 0 ?
+            //     {
+            //       trainingSid.length > 0 ?
 
-                    <div className='col-6 d-flex '>
-                      <label className="mt-2 col-3 label form-label text-white">Learner</label>
-                      <select className="form-control col-6" style={{ borderRadius: "10px", backgroundColor: "rgb(248, 250, 251)" }}
-                        onChange={(e) => setStudentSid(e.target.value)}
-                      >
-                        <option hidden>Select Learner</option>
-                        <option value={hrithikSid}>Hrithik</option>
-                        <option value={newLearnSid}>Learner</option>
-                      </select>
-                      <button className='p-2 mt-2' style={{ marginLeft: "10px", borderRadius: "10px", height: "30px",backgroundColor: "rgb(248, 250, 251)", width: "75px" }} disabled={trainingSid.length === 0 || studentSid.length === 0} onClick={() => getSupervisorReportTrainingDetailsSupervisor()}>Submit</button>
-                    </div>
-                    :
-                    ''
-                }
-              </div>
+            //         <div className='col-6 d-flex '>
+            //           <label className="mt-2 col-3 label form-label text-white">Learner</label>
+            //           <select className="form-control col-6" style={{ borderRadius: "10px", backgroundColor: "rgb(248, 250, 251)" }}
+            //             onChange={(e) => setStudentSid(e.target.value)}
+            //           >
+            //             <option hidden>Select Learner</option>
+            //             <option value={hrithikSid}>Hrithik</option>
+            //             <option value={newLearnSid}>Learner</option>
+            //           </select>
+            //           <button className='p-2 mt-2' style={{ marginLeft: "10px", borderRadius: "10px", height: "30px",backgroundColor: "rgb(248, 250, 251)", width: "75px" }} disabled={trainingSid.length === 0 || studentSid.length === 0} onClick={() => getSupervisorReportTrainingDetailsSupervisor()}>Submit</button>
+            //         </div>
+            //         :
+            //         ''
+            //     }
+            //   </div>
 
-              <div>
-                {
-                  showReport !== null ?
-                    <>
-                      <table>
-                        <div class="row">
-                          <div class="col-2">
-                            <table className='c'>
-                              <tr>
-                                <th>Section</th>
-                              </tr>
+            //   <div>
+            //     {
+            //       showReport !== null ?
+            //         <>
+            //           <table>
+            //             <div class="row">
+            //               <div class="col-2">
+            //                 <table className='c'>
+            //                   <tr>
+            //                     <th>Section</th>
+            //                   </tr>
 
-                              <tr>
-                                <td>Study Material</td>
-                              </tr>
-                              <tr>
-                                <td>Videos</td>
+            //                   <tr>
+            //                     <td>Study Material</td>
+            //                   </tr>
+            //                   <tr>
+            //                     <td>Videos</td>
 
-                              </tr>
-                              <tr>
-                                <td>Assessments</td>
+            //                   </tr>
+            //                   <tr>
+            //                     <td>Assessments</td>
 
-                              </tr>
-                              <tr>
-                                <td>Labs</td>
+            //                   </tr>
+            //                   <tr>
+            //                     <td>Labs</td>
 
-                              </tr>
-                              <tr>
-                                <td>Challenges</td>
+            //                   </tr>
+            //                   <tr>
+            //                     <td>Challenges</td>
 
-                              </tr>
-                            </table>
-                          </div>
-                          <div class="col-10 table-wrapper">
-                            <table className='c'>
-                              <tr>
-                                {
-                                  showReport.DOCUMENTS.map((item) => {
-                                    return (
-                                      <th>{item.sectionName.split("", 8)}</th>
-                                    )
-                                  })
+            //                   </tr>
+            //                 </table>
+            //               </div>
+            //               <div class="col-10 table-wrapper">
+            //                 <table className='c'>
+            //                   <tr>
+            //                     {
+            //                       showReport.DOCUMENTS.map((item) => {
+            //                         return (
+            //                           <th>{item.sectionName.split("", 8)}</th>
+            //                         )
+            //                       })
 
-                                }
-
-
-
-
-                              </tr>
-                              <tr>
-                                {
-                                  showReport.DOCUMENTS.map((item) => {
-                                    return (
-                                      <td>{item.documentCompletion}</td>
-                                    )
-                                  })
-
-                                }
-
-                              </tr>
-                              <tr>
-                                {
-                                  showReport.VIDEO.map((item) => {
-                                    return (
-                                      <td>{item.videoCompletion}</td>
-                                    )
-                                  })
-
-                                }
-
-                              </tr>
-                              <tr>
-                                {
-                                  showReport.ASSESSMENT.map((item) => {
-                                    return (
-                                      <td>{item.assessmentCompletion}</td>
-                                    )
-                                  })
-
-                                }
-
-                              </tr>
-                              <tr>
-                                {
-                                  showReport.LAB.map((item) => {
-                                    return (
-                                      <td>{item.labCompletion}</td>
-                                    )
-                                  })
-
-                                }
-
-                              </tr>
-                              <tr>
-                                {
-                                  showReport.CODING.map((item) => {
-                                    return (
-                                      <td>{item.codingCompletion}</td>
-                                    )
-                                  })
-
-                                }
-
-                              </tr>
-                            </table>
-                          </div>
-                        </div>
-                      </table>
-                      <div style={{ marginTop: "-135px", position: "relative" }}>
-                        <button
-
-                          onMouseDown={handleLeftMouseDown}
-                          onMouseUp={handleMouseUp}
-                          style={{ marginLeft: "230px" }}
-                        >
-                          <ArrowBackIosIcon />
-                        </button>
-                        <button
-                          style={{ float: "right", marginRight: "-20px" }}
-                          onMouseDown={handleRightMouseDown}
-                          onMouseUp={handleMouseUp}
-                        >
-
-                          <ArrowForwardIosIcon />
-                        </button>
-
-                      </div>
+            //                     }
 
 
-                    </>
-                    : ""
-                }
 
-              </div>
 
-            </div>
+            //                   </tr>
+            //                   <tr>
+            //                     {
+            //                       showReport.DOCUMENTS.map((item) => {
+            //                         return (
+            //                           <td>{item.documentCompletion}</td>
+            //                         )
+            //                       })
+
+            //                     }
+
+            //                   </tr>
+            //                   <tr>
+            //                     {
+            //                       showReport.VIDEO.map((item) => {
+            //                         return (
+            //                           <td>{item.videoCompletion}</td>
+            //                         )
+            //                       })
+
+            //                     }
+
+            //                   </tr>
+            //                   <tr>
+            //                     {
+            //                       showReport.ASSESSMENT.map((item) => {
+            //                         return (
+            //                           <td>{item.assessmentCompletion}</td>
+            //                         )
+            //                       })
+
+            //                     }
+
+            //                   </tr>
+            //                   <tr>
+            //                     {
+            //                       showReport.LAB.map((item) => {
+            //                         return (
+            //                           <td>{item.labCompletion}</td>
+            //                         )
+            //                       })
+
+            //                     }
+
+            //                   </tr>
+            //                   <tr>
+            //                     {
+            //                       showReport.CODING.map((item) => {
+            //                         return (
+            //                           <td>{item.codingCompletion}</td>
+            //                         )
+            //                       })
+
+            //                     }
+
+            //                   </tr>
+            //                 </table>
+            //               </div>
+            //             </div>
+            //           </table>
+            //           <div style={{ marginTop: "-135px", position: "relative" }}>
+            //             <button
+
+            //               onMouseDown={handleLeftMouseDown}
+            //               onMouseUp={handleMouseUp}
+            //               style={{ marginLeft: "230px" }}
+            //             >
+            //               <ArrowBackIosIcon />
+            //             </button>
+            //             <button
+            //               style={{ float: "right", marginRight: "-20px" }}
+            //               onMouseDown={handleRightMouseDown}
+            //               onMouseUp={handleMouseUp}
+            //             >
+
+            //               <ArrowForwardIosIcon />
+            //             </button>
+
+            //           </div>
+
+
+            //         </>
+            //         : ""
+            //     }
+
+            //   </div>
+
+            // </div>
       }
 
     </div>)
