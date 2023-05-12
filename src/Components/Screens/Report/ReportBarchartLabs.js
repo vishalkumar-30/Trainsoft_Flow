@@ -1,7 +1,7 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 
-const ReportBarchart = ({trainingAssessmentList}) => {
+const ReportBarchartLabs = ({ trainingLabsList }) => {
     // let data, categories;
     // if (trainingLabsList.labDetails === null) {
     //     data = trainingLabsList.map(item => item.individualScore.toFixed(2));
@@ -35,7 +35,7 @@ const ReportBarchart = ({trainingAssessmentList}) => {
 
 
             // categories:  ['Kubernetes Journey Training', 'K8s Basics', 'Stochastic Learning', 'Windows Server', 'ML and Data Science']
-            categories: trainingAssessmentList.oneTrainingOneAssessment.map(item => item.learnerName)
+            categories: trainingLabsList.oneTrainingOneLab.map(item => item.learnerName)
             // ['Kubernetes Journey Training', 'K8s Basics', 'Stochastic Learning', 'Windows Server', 'ML and Data Science']
         },
         yaxis: {
@@ -46,18 +46,18 @@ const ReportBarchart = ({trainingAssessmentList}) => {
     };
 
     const series = [{
-        name: "Training",
-        // data: [2,6, 9, 12, 8]
-        data: trainingAssessmentList.oneTrainingOneAssessment.map(item => item.score.toFixed(2))
+        name: "Learner",
+        data: trainingLabsList.oneTrainingOneLab.map(item => item.individualScore.toFixed(2))
         // name: trainingLabsList.labDetails === null ? "Learner" : "Assessment",
         // data: trainingLabsList.labDetails === null ? trainingLabsList.map(item => item.individualScore.toFixed(2)) : ''
        
     }];
 
-    console.log(trainingAssessmentList);
+
+    console.log(trainingLabsList);
     return (
         <div style={{ background: "#F5F8FB", borderRadius: "15px" }} className='p-2'> <Chart options={options} series={series} type="bar" height={450} /></div>
     )
 }
 
-export default ReportBarchart
+export default ReportBarchartLabs

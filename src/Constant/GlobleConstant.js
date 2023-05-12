@@ -298,6 +298,14 @@ const GLOBELCONSTANT = {
     REPORT: {
         GENERATE_REPORT: API_HOST_V2 + "generate-report"
     },
+    REPORT_GRAPH: {
+        GET_TRAINING_ASSESSMENT_DETAILS: API_HOST_V2 + "training-assessment-report",
+        GET_LAB_SCORE_DETAILS: API_HOST_V2 + "lab-score-report",
+        GET_LAB_USAGE_DETAILS: API_HOST_V2 + "lab-usage-details",
+        GET_LOGIN_DETAILS: API_HOST_V2 + "login-details-report",
+        GET_TRAINER_FEEDBACK_DETAILS: API_HOST_V2 + "trainer-feedback-report",
+        GET_TRAINING_FEEDBACK_DETAILS: API_HOST_V2 + "training-feedback-report"
+    },
     INSTRUCTOR: {
         GET_INSTRUCTOR: API_HOST + "vaccounts/INSTRUCTOR/1/200",
     },

@@ -1,48 +1,88 @@
 import React from 'react'
 import Chart from 'react-apexcharts';
 
-const options = {
-  chart: {
-    type: 'bar',
-    // height: 50,
-    // horizontalAlign: 'left',
+// const options = {
+//   chart: {
+//     type: 'bar',
+//     // height: 50,
+//     // horizontalAlign: 'left',
    
-  },
+//   },
 
  
  
-  plotOptions: {
-    bar: {
-    //   horizontal: true,
-    //   barHeight: '70%',
-      distributed:true
-    },
+//   plotOptions: {
+//     bar: {
+//     //   horizontal: true,
+//     //   barHeight: '70%',
+//       distributed:true
+//     },
    
     
-  },
-//   grid: {
-//     show: false
-// },
+//   },
+// //   grid: {
+// //     show: false
+// // },
 
-  xaxis: {
+//   xaxis: {
    
   
    
-    categories: ['Kubernetes Journey Training', 'K8s Basics', 'Stochastic Learning', 'Windows Server', 'ML and Data Science']
-  },
-//   yaxis: {
-//     title: {
-//       text: 'training name'
-//     }
-//   }
-};
+//     categories: ['Kubernetes Journey Training', 'K8s Basics', 'Stochastic Learning', 'Windows Server', 'ML and Data Science']
+//   },
+// //   yaxis: {
+// //     title: {
+// //       text: 'training name'
+// //     }
+// //   }
+// };
 
-const series = [{
-//   name: 'training name',
-  data: [2, 4, 3, 4, 9]
-}];
+// const series = [{
+// //   name: 'training name',
+//   data: [2, 4, 3, 4, 9]
+// }];
 
-const ReportHorizontalBarChart = () => {
+const ReportHorizontalBarChart = ({feedback, name}) => {
+
+  const options = {
+    chart: {
+      type: 'bar',
+      // height: 50,
+      // horizontalAlign: 'left',
+     
+    },
+    plotOptions: {
+      bar: {
+      //   horizontal: true,
+      //   barHeight: '70%',
+        distributed:true
+      },
+     
+      
+    },
+  //   grid: {
+  //     show: false
+  // },
+  
+    xaxis: {
+     
+    
+     
+      // categories: ['Kubernetes Journey Training', 'K8s Basics', 'Stochastic Learning', 'Windows Server', 'ML and Data Science']
+      categories: name
+    },
+  //   yaxis: {
+  //     title: {
+  //       text: 'training name'
+  //     }
+  //   }
+  };
+
+  const series = [{
+    //   name: 'training name',
+      // data: [2, 4, 3, 4, 9]
+      data: feedback
+    }];
   return (
     <div style={{background:"#F5F8FB",borderRadius:"15px"}} className='p-2'> <Chart options={options} series={series} type="bar" height={450} /></div>
   )

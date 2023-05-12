@@ -241,6 +241,15 @@ const RestService = {
 
   //Report
   generateReport: (assessmentSid, instructor, labId, passPercentage, reportName, trainingSid) => AxiosService.patch(GLOBELCONSTANT.REPORT.GENERATE_REPORT + `?assessment=${assessmentSid}&instructor=${instructor}&lab=${labId}&pass-percentage=${passPercentage}&report-type=${reportName}&training=${trainingSid}`),
+  
+  //Report graph
+  getTrainingAssessmentDetails: (assessmentSid, learnerSid, trainingSid) => AxiosService.get(GLOBELCONSTANT.REPORT_GRAPH.GET_TRAINING_ASSESSMENT_DETAILS + `?assessment_sid=${assessmentSid}&learner_sid=${learnerSid}&training_sid=${trainingSid}`),
+  getLabScoreDetails: (labId, learnerSid, trainingSid) => AxiosService.get(GLOBELCONSTANT.REPORT_GRAPH.GET_LAB_SCORE_DETAILS + `?lab_id=${labId}&learner_sid=${learnerSid}&training_sid=${trainingSid}`),
+  getLabUsageDetails: () => AxiosService.get(GLOBELCONSTANT.REPORT_GRAPH.GET_LAB_USAGE_DETAILS),
+  getLoginDetails: () => AxiosService.get(GLOBELCONSTANT.REPORT_GRAPH.GET_LOGIN_DETAILS),
+  getTrainerFeedbackDetails: () => AxiosService.get(GLOBELCONSTANT.REPORT_GRAPH.GET_TRAINER_FEEDBACK_DETAILS),
+  getTrainingFeedbackDetails: () => AxiosService.get(GLOBELCONSTANT.REPORT_GRAPH.GET_TRAINING_FEEDBACK_DETAILS),
+
 
   //get instructor
   getInstructor: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR.GET_INSTRUCTOR),

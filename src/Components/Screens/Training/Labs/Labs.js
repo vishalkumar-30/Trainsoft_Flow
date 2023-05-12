@@ -319,7 +319,7 @@ function Labs(props) {
                                                     <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Complete Lab</button>
                                                 </div>
                                                 <div className="col-2" style={{ textAlign: "center", textDecoration: "none", background: "#471579", padding: "15px 20px", marginLeft: "25px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
-                                                    <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Start Recording</button>
+                                                    <button style={{ color: "#fff", fontSize: "15px" }}>Start Recording</button>
                                                 </div>
                                             </>
                                             : ''}

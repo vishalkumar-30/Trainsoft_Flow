@@ -25,9 +25,13 @@ import LoadingSpinner from "./LoadingSpinner";
 import WhiteBoard from "../ClassLab/WhiteBoard/WhiteBoard";
 import { BsModal } from "../../Common/BsUtils";
 import ClassNotes from "../ClassLab/ClassNotes/ClassNotes";
+import TrainingObjective from "./TrainingObjective";
 
 const TrainingDetails = ({ location }) => {
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
+    const [trainingObjective, setTrainingObjective] = useState({});
+    // const [sessionDescriptions, setSessionDescriptions] = useState([]);
+    // const [sessions, setSessions] = useState({});
     const { user, ROLE, spinner } = useContext(AppContext);
     const [vdlink, setVdlink] = useState("");
     const Toast = useToast();
@@ -41,7 +45,7 @@ const TrainingDetails = ({ location }) => {
     const [markCompleted, setMarkAsCompleted] = useState([]);
     const [trainingBySid, setTrainingBySid] = useState({});
     const [labId, setLabId] = useState('');
-    const [type, setType] = useState('');
+    const [type, setType] = useState('OBJECTIVE');
     const [labDescription, setLabDescription] = useState('');
     const [labOverview, setLabOverview] = useState('');
     const [labSolution, setLabSolution] = useState('');
@@ -168,7 +172,7 @@ const TrainingDetails = ({ location }) => {
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
-                render: (data, i, j) =>
+                render: (data) =>
                     <Link onClick={() => {
 
                         if (data.contentLink) {
@@ -189,7 +193,9 @@ const TrainingDetails = ({ location }) => {
                             setLabDuration(Number(data.durationInMinutes.split('.')[0]));
                         }
                         if (data.type) {
-                            storeType(data.type)
+                            storeType(data.type);
+                            
+                            
                         }
                         if ((data.sid != null && (data.type === "DOCUMENTS" || data.type === "MS_OFFICE"))
                             && data.completed === false) {
@@ -216,8 +222,8 @@ const TrainingDetails = ({ location }) => {
                             }
                         }))
 
-                    }}  style={{ cursor: "pointer" ,alignContent:"center", textAlign:"center", alignItems:"center"}} >
-                        <input type="checkbox"  checked={"checked" ? data.completed : ''} disabled ></input>
+                    }} style={{ cursor: "pointer", alignContent: "center", textAlign: "center", alignItems: "center" }} >
+                        <input type="checkbox" checked={"checked" ? data.completed : ''} disabled ></input>
                         {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB") ? <ScienceIcon />
                             : (data.type === "ASSESSMENT") ? <AssessmentIcon /> : (data.type === "CODING") ? <CodeIcon /> : <SummarizeRoundedIcon />}
                         {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
@@ -273,26 +279,28 @@ const TrainingDetails = ({ location }) => {
                         }
                         else {
                             setTrainingDetailsList(response.data.courseSectionResponseTO);
-                            setSid(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].sid);
-                            setType(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].type);
-                            setVdlink(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentLink !== null ?
-                                response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentLink : '');
-                            setLabId(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labId !== null ?
-                                response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labId : '');
-                            setContentSid(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].sectionSid);
-                            setLabDescription(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
-                                !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labDescription
-                                : '');
-                            setLabOverview(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
-                                !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labOverview
-                                : '');
+                            setTrainingObjective(response.data.trainingObjective);
+                            // setSessionDescriptions(response.data.trainingObjective.sessionDescriptions);
+                            // setSid(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].sid);
+                            // setType(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].type);
+                            // setVdlink(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentLink !== null ?
+                            //     response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentLink : '');
+                            // setLabId(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labId !== null ?
+                            //     response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labId : '');
+                            // setContentSid(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].sectionSid);
+                            // setLabDescription(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
+                            //     !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labDescription
+                            //     : '');
+                            // setLabOverview(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
+                            //     !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labOverview
+                            //     : '');
 
-                            setLabSolution(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
-                                !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labSolution : '');
-                            setLabDuration(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].durationInMinutes !== null ?
-                                response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].durationInMinutes : '');
+                            // setLabSolution(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent
+                            //     !== null ? response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].labContent.labSolution : '');
+                            // setLabDuration(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].durationInMinutes !== null ?
+                            //     response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].durationInMinutes : '');
 
-                            setShowcoursename(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentName);
+                            // setShowcoursename(response.data.courseSectionResponseTO[0].courseContentResposeTOList[0].contentName);
                         }
 
 
@@ -491,21 +499,21 @@ const TrainingDetails = ({ location }) => {
         document.addEventListener('contextmenu', (e) => {
             Toast.error({ message: `Right click not allowed` });
             e.preventDefault();
-          })
+        })
 
         //disable ctrl shift i 
-          const disableConsole = (event) => {
+        const disableConsole = (event) => {
             if (event.ctrlKey && event.shiftKey && event.keyCode === 73) {
-              event.preventDefault();
+                event.preventDefault();
             }
             else if (event.metaKey && event.altKey && event.keyCode === 73) {
                 event.preventDefault();
-              }
-          };
-          window.addEventListener('keydown', disableConsole);
-          return () => {
+            }
+        };
+        window.addEventListener('keydown', disableConsole);
+        return () => {
             window.removeEventListener('keydown', disableConsole);
-          };
+        };
 
     }, []);
 
@@ -529,7 +537,7 @@ const TrainingDetails = ({ location }) => {
             }
         }
     }
-   
+
     return (
         <>
             {
@@ -568,12 +576,24 @@ const TrainingDetails = ({ location }) => {
                             <div class="row mt-2">
 
                                 <div class="col-8  pl-3 " >
+                                    {(trainingObjective !== null && type === "OBJECTIVE") ?
+                                    
+                                        <TrainingObjective trainingObjective={trainingObjective}/>
+                                    
+                                    :
+                                    // (sessions !== null) ?
+                                    // <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
 
-                                    {(type === "EXTERNAL_LINK" || type === "VIDEO") ?
+                                    //     <p>{sessions.sectionName}</p>
+                                    //     <p>{sessions.sectionDescription}</p>
+                                    // </div>
+                                    // : 
+
+                                    (type === "EXTERNAL_LINK" || type === "VIDEO") ?
                                         VideoMediaPlayer(vdlink)
-                                        : (type === "PHOTO" || type === "DOCUMENTS") ? 
-                                     
-                                        <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
+                                        : (type === "PHOTO" || type === "DOCUMENTS") ?
+
+                                            <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
                                             : (type === "LAB" || type === "CODING") ?
                                                 <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
                                                     <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
@@ -602,11 +622,12 @@ const TrainingDetails = ({ location }) => {
                                                                 <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
                                                             </div>
                                                         </div>
-                                                        : ''
+                                                        :
+                                                        ''
 
                                     }
 
-                                    <div class="tabset">
+                                    {/* <div class="tabset">
 
                                         <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked />
                                         <label for="tab1">Overview</label>
@@ -630,16 +651,17 @@ const TrainingDetails = ({ location }) => {
 
                                         </div>
 
-                                    </div>
+                                    </div> */}
 
                                 </div>
 
                                 <div class="col-4 training-content" >
-                                    {trainingDetailsList.length > 0 ? trainingDetailsList.map((train) => {
+                                    {trainingDetailsList.length > 0 ? trainingDetailsList.map((train, i) => {
+
                                         return (
                                             <>
-                                                <div >
-                                                    <DropdownItem title={train.sectionName} total={train.courseContentResposeTOList.length} theme="dark">
+                                                <div>
+                                                    <DropdownItem title={train.sectionName} total={train.courseContentResposeTOList.length} theme="dark" hello="hello">
                                                         <DynamicTable  {...{ configuration, sourceData: train.courseContentResposeTOList }} />
                                                     </DropdownItem>
                                                     {/* {
@@ -654,20 +676,20 @@ const TrainingDetails = ({ location }) => {
                                         )
                                     }) : ''}
                                     {
-                                        user.role === ROLE.INSTRUCTOR || user.role === ROLE.SUPERVISOR?
-                                    
-                                    <DropdownItem title="Fun Activity" total="2" theme="dark">
-                                        
-                                            <div>
-                                                <div className="py-3"> <AssessmentIcon /><a href="https://learnlytica.s3.ap-south-1.amazonaws.com/server-virtualization.html" target="_blank">Fun with Server-Virtualization</a></div>
-                                                <div className="py-2"> <AssessmentIcon /><a href="https://learnlytica.s3.ap-south-1.amazonaws.com/windows-server11.html" target="_blank">Fun with Windows-Server</a></div>
-                                            </div> 
-                                            {/* <div>
+                                        user.role === ROLE.INSTRUCTOR || user.role === ROLE.SUPERVISOR ?
+
+                                            <DropdownItem title="Fun Activity" total="2" theme="dark">
+
+                                                <div>
+                                                    <div className="py-3"> <AssessmentIcon /><a href="https://learnlytica.s3.ap-south-1.amazonaws.com/server-virtualization.html" target="_blank">Fun with Server-Virtualization</a></div>
+                                                    <div className="py-2"> <AssessmentIcon /><a href="https://learnlytica.s3.ap-south-1.amazonaws.com/windows-server11.html" target="_blank">Fun with Windows-Server</a></div>
+                                                </div>
+                                                {/* <div>
                                                 <div className="py-3"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/cloud-native-jeopardy.html" target="_blank">Fun With Cloud Native</a></div>
                                                 <div className="py-2"> <AssessmentIcon /><a href="https://course-content-storage.s3.amazonaws.com/kubernetes-jeopardy-game.html" target="_blank">Fun With Kubernetes</a></div>
                                             </div> */}
-                                    </DropdownItem>
-                                    : ''}
+                                            </DropdownItem>
+                                            : ''}
 
                                     {trainingBySid.name === "Cloud Computing, Docker And Kubernetes Journey" ?
                                         <>
