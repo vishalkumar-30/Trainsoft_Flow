@@ -528,7 +528,14 @@ const ReportDownload = () => {
 
         }
     }
-
+ 
+    const key = 'contentName';
+        const key1 = 'labName';
+    assessment = [...new Map(assessment.map(item =>
+      [item[key], item])).values()];
+      labList = [...new Map(labList.map(item =>
+        [item[key1], item])).values()];
+        
     useEffect(() => {
         axios.get("https://trainsoft.live/insled/v2/get-report-seed-data").then((res) => {
             setReport(res.data);
@@ -649,7 +656,8 @@ const ReportDownload = () => {
                                                     {
                                                         trainingSid !== 'ALL' || assessmentSid !== 'ALL' ?
 
-                                                            <div>
+                                                      
+                                                              <div className='col-6'>
                                                                 <label className="mb-2 label form-label ">Learner</label>
                                                                 {
                                                                     assessmentSid !== 'ALL' && trainingSid !== 'ALL' ?
@@ -682,6 +690,7 @@ const ReportDownload = () => {
                                                                         </select>
                                                                 }
 
+                                                          
                                                             </div>
                                                             :
                                                             <div className='col-6'>
@@ -689,16 +698,17 @@ const ReportDownload = () => {
                                                                 <input type="text" value={passPercentage} onChange={e => setPassPercentage(e.target.value)} className="form-control" style={{ borderRadius: "20px", background: "#F8FAFB" }} />
                                                             </div>
                                                     }
-                                                    <div className=" mt-5 ml-4">
-                                                        <Button type="submit" className="  px-4">Generate Report {DOWNLOAD_ICON} </Button>
-                                                    </div>
-
+                                                  
                                                 </div>
 
                                             </>
 
                                         </div>
                                     </div>
+                                    <div className=" mt-5 ml-4">
+                                                        <Button type="submit" className="  px-4">Generate Report {DOWNLOAD_ICON} </Button>
+                                                    </div>
+
                                     {
 
                                         trainingAssessmentList !== null &&
@@ -882,16 +892,16 @@ const ReportDownload = () => {
                                                             </select>
 
                                                     }
-                                                    <div className=" mt-5 ml-4">
-                                                        <Button type="submit" className="  px-4">Generate Report {DOWNLOAD_ICON} </Button>
-                                                    </div>
+                                                   
                                                 </div>
                                             </>
 
                                         </div>
 
                                     </div>
-
+                                    <div className=" mt-5 ml-4">
+                                                        <Button type="submit" className="  px-4">Generate Report {DOWNLOAD_ICON} </Button>
+                                                    </div>
                                 </form>
 
                             </>)}

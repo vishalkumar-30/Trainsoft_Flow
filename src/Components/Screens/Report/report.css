@@ -120,9 +120,40 @@ table {
 
 
 
-/* .react-calendar-heatmap .color-github-1 {
+.react-calendar-heatmap .color-github-4 {
     fill: #49167E !important;
-} */
 
+}
+.react-calendar-heatmap .color-github-1 {
+    fill: #8666AB!important;
+   
+}
+
+.react-calendar-heatmap .color-github-2 {
+    fill: #cfb2f1!important;
+   
+}
+.react-calendar-heatmap .color-github-3 {
+    fill: #8964b4!important;
+   
+}
+.has-tooltip {
+    position: relative;
+    cursor: pointer;
+  }
+  .has-tooltip:hover:after {
+    content: attr(data-tip);
+    position: absolute;
+    top: -40px;
+    left: -40px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #000;
+    color: #fff;
+    white-space: nowrap;
+    z-index: 99999;
+  }
 
 
