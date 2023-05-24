@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsModal } from "../../Common/BsUtils";
 import { BtnPrimary } from "../../Common/Buttons/Buttons";
 import SearchBox from "../../Common/SearchBox/SearchBox"
@@ -11,6 +11,7 @@ const LabList = ({ list = [], myLab = false }) => {
     const [labId, setLabId] = useState('');
     const [labName, setLabName] = useState('');
     const [labDescription, setLabDescription] = useState('');
+    const [Imported, SetImported] = useState(0);
     // const categoryName = location.state.categoryName;
     const wordShort = (str, maxLen, separator = ' ') => {
         try {
@@ -24,8 +25,29 @@ const LabList = ({ list = [], myLab = false }) => {
         }
     }
 
+
+
+useEffect(()=>{
+   
+    const imptlabs = list.filter((item)=>{
+     return item.importStatus === "IMPORTED"
+    });
+    console.log(imptlabs)
+    console.log(list)
+    console.log("useeefect is running")
+    SetImported(imptlabs.length);
+},)
     return (<>
+ {/* <div className="title-sm ">Imported  <span>{Imported}</span></div>
+ <div className="title-sm ">Total  <span>{list.length}</span></div> */}
+ <div className="aic jcb">
+            <div className="title-md">Total Labs<span className="mx-1">{list.length}</span></div>
+            <div className="aic">
+                <div className="title-md">Imported Lab <span className="mx-1">{Imported}</span></div>
+            </div>
+        </div>
         <div className="catalog-container">
+           
             {list.map(res => <div className="labList">
                 <div className="labList-info flx5">
                     <div>
@@ -55,9 +77,11 @@ const LabList = ({ list = [], myLab = false }) => {
                         {myLab ? <div>
                             <BtnPrimary className="btn-block">Select Training</BtnPrimary>
                         </div> : res.importStatus === "IMPORTED" ? <BtnPrimary className="bg-success imprtbtn" disabled={true} >&#xf121; Lab Already Imported</BtnPrimary> :
+                        
                             <BtnPrimary className="btn-block" onClick={() => { setShow(true); setLabId(res.labId); setLabName(res.labName); setLabDescription(res.labDescription) }}>
                                 + Import Now</BtnPrimary>}
                     </div>
+                    {console.log(res.importStatus)}
                     <div className="">
                         {myLab ? <BtnPrimary className="btn-block my-2">Assign Now</BtnPrimary> : ""
                             // <div className="title-sm text-white">500 + active imports</div>

@@ -171,9 +171,11 @@
    
     background: #ffffff;
     left: 10%;
-    top: 10%;
-    padding: 20px;
+    top: 12%;
+    padding: 2px 5px 5px 0px;
     width: 80%;
+    border-radius: 15px;
+    
   }
   iframe{
     margin: 0;
