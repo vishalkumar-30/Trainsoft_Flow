@@ -35,10 +35,15 @@ const Trainings = ({ location }) => {
     const [isEdit, setIsEdit] = useState(false);
     const [initialValues, setInitialValue] = useState(initialVal);
     const [count, setCount] = useState(0);
+    // const [enabledCount, setEnabledCount] = useState(0);
+    // const [disabledCount, setDisabledCount] = useState(0);
+    // const [archivedCount, setArchivedCount] = useState(0);
     const [status, setStatus] = useState('ENABLED');
     const newStatus = user.role === ROLE.SUPERVISOR ? 'Status' : '';
     const newBatches = user.role === ROLE.SUPERVISOR ? 'No of Batches' : '';
-
+    let userSid = JSON.parse(localStorage.getItem('user'))
+    userSid = userSid.sid;
+    
     // get all batches
     const allBatches = useFetch({
         method: "get",
@@ -53,7 +58,7 @@ const Trainings = ({ location }) => {
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
-                render: (data) => <Link onClick={() => setTraining(data)} to={`training-details`} state={{ title: data.name, rowData: data, sid: data.sid, subTitle: "Training Info", subPath: '/' }} className="dt-name">{data.name}</Link>
+                render: (data) => <Link onClick={() => setTraining(data)} to={`training-details`} state={{rowData: data, sid: data.sid, subTitle: "Training Info", subPath: '/' }} className="dt-name">{data.name}</Link>
 
             },
             "noOfBatches": {
@@ -191,12 +196,33 @@ const Trainings = ({ location }) => {
 
 
     // get all training
-    const getTrainings = async (value) => {
+    const getTrainings = async (status) => {
         try {
             let pageSize = 10;
             let pagination = "1"
             spinner.show();
-            RestService.getAllTrainingByPage(user.role, pagination, pageSize, value).then(
+            RestService.getAllTrainingByPage(user.role, pagination, pageSize, status).then(
+                response => {
+                    setTrainingList(response.data);
+                    
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on getTrainings()", err)
+        }
+    }
+    
+    //for pagination
+    const getTrainingsForAction = async (pagination = "1") => {
+        try {
+            let pageSize = 10;
+            spinner.show();
+            RestService.getAllTrainingByPage(user.role, pagination, pageSize, status).then(
                 response => {
                     setTrainingList(response.data);
                 },
@@ -256,6 +282,7 @@ const Trainings = ({ location }) => {
             spinner.show();
             RestService.deleteTraining(trainingId).then(res => {
                 spinner.hide();
+                console.log(status);
                 getTrainings(status)
                 Toast.success({ message: `Training is Deleted Successfully ` });
             }, err => { spinner.hide(); }
@@ -269,7 +296,33 @@ const Trainings = ({ location }) => {
     }
 
     // get training count
+
     const getTrainingCount = async () => {
+        try {
+            RestService.getTrainings().then(
+                response => {
+                    
+                        setCount((response.data.filter(i=>i.status === status
+                    && i.createdByVASid === userSid).length));
+                    
+                    
+                    // setDisabledCount((response.data.filter(i=>i.status === 'DISABLED'
+                    // && i.createdByVASid === userSid).length));
+                    // setArchivedCount((response.data.filter(i=>i.status === 'ARCHIVED'
+                    // && i.createdByVASid === userSid).length));
+                },
+                err => {
+                    spinner.hide();
+                }
+            ).finally(() => {
+                spinner.hide();
+            });
+        } catch (err) {
+            console.error("error occur on getTrainings()", err)
+        }
+    }
+
+    const getTrainingCount1 = async () => {
         try {
             RestService.getCount("vw_training").then(
                 response => {
@@ -285,12 +338,19 @@ const Trainings = ({ location }) => {
             console.error("error occur on getAllBatch()", err)
         }
     }
+    
 
     // initialize component
     useEffect(() => {
         allBatches.response && setBatches(allBatches.response);
+        getTrainingCount1();
+        getTrainings(status);
+    }, []);
+
+    useEffect(() => {
         getTrainingCount();
-        getTrainings('ENABLED');
+        
+        
         // if(user.role === ROLE.SUPERVISOR){
         //     getTrainings('ENABLED');
         // }
@@ -299,7 +359,11 @@ const Trainings = ({ location }) => {
         // }
         
 
-    }, []);
+    }, [status]);
+
+    console.log(status);
+    // console.log(disabledCount);
+    // console.log(archivedCount);
 
     return (<>
         <div className="table-shadow">
@@ -319,21 +383,21 @@ const Trainings = ({ location }) => {
 
                         <div class="form-check aic " style={{ fontSize: "15px" }} >
 
-                            <input type="radio" id="ENABLED" name="status" value="ENABLED" defaultChecked
-                                onChange={(e) => { setStatus(e.target.value); getTrainings(e.target.value)} }/>
+                            <input type="radio" id={status} name="status" value="ENABLED" defaultChecked
+                                onChange={(e) => { setStatus(e.target.value); getTrainings(e.target.value);} }/>
                             <label class="form-check-label mx-3">Enabled</label>
 
                         </div>
                         <div className=' form-check aic" mx-5' style={{ fontSize: "15px" }}>
-                            <input type="radio" id="DISABLED" name="status" value="DISABLED"
-                                 onChange={(e) => {setStatus(e.target.value); getTrainings(e.target.value)} }/>
+                            <input type="radio" id={status} name="status" value="DISABLED"
+                                 onChange={(e) => {setStatus(e.target.value); getTrainings(e.target.value);} }/>
 
                             <label class="form-check-label mx-3">Disabled</label>
                         </div>
                         <div class="form-check aic " style={{ fontSize: "15px" }} >
 
-                            <input type="radio" id="ARCHIVED" name="status" value="ARCHIVED"
-                                 onChange={(e) => {setStatus(e.target.value);  getTrainings(e.target.value)} }/>
+                            <input type="radio" id={status} name="status" value="ARCHIVED"
+                                 onChange={(e) => {setStatus(e.target.value); getTrainings(e.target.value);} }/>
                             <label class="form-check-label mx-3">Archived</label>
 
                         </div>
@@ -344,39 +408,30 @@ const Trainings = ({ location }) => {
             <AddEditTraining {...{ getTrainings, show, setShow, initialValues, isEdit, status }} />
 
             {
-                // status === "ENABLED" && user.role === ROLE.SUPERVISOR ?
-                //     <>
-
-                //         <DynamicTable {...{
-                //             count, configuration, sourceData: trainingList.filter(item => item.status === 'ENABLED'),
-                //             onPageChange: (e) => getTrainings(e)
-                //         }} />
-                //     </>
-
-                //     :
-                //     status === "DISABLED" && user.role === ROLE.SUPERVISOR ?
-                //         <>
-
-                //             <DynamicTable {...{
-                //                 count, configuration, sourceData: trainingList.filter(item => item.status === 'DISABLED'),
-                //                 onPageChange: (e) => getTrainings(e)
-                //             }} />
-                //         </>
-                //         :
-                //         status === "ARCHIVED" && user.role === ROLE.SUPERVISOR ?
-                //             <>
-
-                //                 <DynamicTable {...{
-                //                     count, configuration, sourceData: trainingList.filter(item => item.status === 'ARCHIVED'),
-                //                     onPageChange: (e) => getTrainings(e)
-                //                 }} />
-                //             </>
-                user.role === ROLE.SUPERVISOR ?
+                    user.role === ROLE.SUPERVISOR && status === 'ENABLED'?
                     <>
 
                         <DynamicTable {...{
                             count, configuration, sourceData: trainingList
-                            // ,onPageChange: (e) => getTrainingsForAction(e)
+                            ,onPageChange: (e) => getTrainingsForAction(e)
+                        }} />
+                    </>
+                    :
+                    user.role === ROLE.SUPERVISOR && status === 'DISABLED'?
+                    <>
+
+                        <DynamicTable {...{
+                            count, configuration, sourceData: trainingList
+                            ,onPageChange: (e) => getTrainingsForAction(e)
+                        }} />
+                    </>
+                    :
+                    user.role === ROLE.SUPERVISOR && status === 'ARCHIVED'?
+                    <>
+
+                        <DynamicTable {...{
+                            count, configuration, sourceData: trainingList
+                            ,onPageChange: (e) => getTrainingsForAction(e)
                         }} />
                     </>
                     :

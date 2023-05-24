@@ -75,7 +75,7 @@ const Dashboard = ({ location }) => {
               <QuestionBank path="questions/*" />
               <TopicAssesment path="topicAssesments/*" />
               <Training path="training/*" />
-              <Calender path="calender/*" />
+              <Calender path="calendar/*" />
               <Labs path="labs/*" />
               <User path="user" />
               <UserProfileSetting path="profilesettings" />

@@ -178,6 +178,15 @@ const GLOBELCONSTANT = {
         STOP_EC2_INSTANCE_AND_TERMINATE_GUACAMOLE_SERVER: API_HOST_V2 + "stop-instance",
         TERMINATE_EC2_INSTANCE_AND_TERMINATE_GUACAMOLE_SERVER: API_HOST_V2 + "terminate-instance"
     },
+    RECORDING: {
+        UPLOAD_LAB_RECORDING: API_HOST_V2 + "upload-lab-recording",
+        GET_RECORDINGS: API_HOST_V2 + "get-recordings",
+        GET_INSTRUCTOR_SCREEN_RECORDING_FILTER: API_HOST_V2 + "get-recording-filters",
+        GET_USER_SUBMISSIONS: API_HOST_V2 + "get-user-submission",
+        SCORE_LAB: API_HOST_V2 + "score-lab",
+        EDIT_LEARNER_SCORE_REMARKS: API_HOST_V2 + "edit-learner-score-remarks",
+        GET_ALL_LEARNERS_SCORE: API_HOST_V2 + "get-all-learners-score"
+    },
     SUPPORT: {
         SUBMIT_TICKET: API_HOST_V2 + "submit-ticket",
         GET_TICKETS_BY_ROLE: API_HOST_V2 + "get-tickets-by-role",

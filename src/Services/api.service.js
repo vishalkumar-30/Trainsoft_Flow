@@ -212,6 +212,15 @@ const RestService = {
   stopEC2InstanceAndTerminateGuacamoleServer: (conString) => AxiosService.delete(GLOBELCONSTANT.LABS.STOP_EC2_INSTANCE_AND_TERMINATE_GUACAMOLE_SERVER + `?connection-string=${conString}`),
   terminateEC2InstanceAndTerminateGuacamoleServer: (conString) => AxiosService.delete(GLOBELCONSTANT.LABS.TERMINATE_EC2_INSTANCE_AND_TERMINATE_GUACAMOLE_SERVER + `?connection-string=${conString}`),
 
+  // Recordings 
+  uploadLabRecording: (labId, sectionSid, trainingSid, payload) => AxiosService.post(GLOBELCONSTANT.RECORDING.UPLOAD_LAB_RECORDING + `?lab_id=${labId}&section_sid=${sectionSid}&training_sid=${trainingSid}`, payload),
+  getRecordings: (labId, sectionSid, trainingSid) => AxiosService.get(GLOBELCONSTANT.RECORDING.GET_RECORDINGS + `?lab_id=${labId}&section_sid=${sectionSid}&training_sid=${trainingSid}`),
+  getInstructorScreenRecordingFilter: (labId, trainingSid) => AxiosService.get(GLOBELCONSTANT.RECORDING.GET_INSTRUCTOR_SCREEN_RECORDING_FILTER + `?lab_id=${labId}&training_sid=${trainingSid}`),
+  getUserSubmissions: (labId, learnerSid, trainingSid) => AxiosService.get(GLOBELCONSTANT.RECORDING.GET_USER_SUBMISSIONS + `?lab_id=${labId}&learner_sid=${learnerSid}&training_sid=${trainingSid}`),
+  scoreLab: (payload) => AxiosService.put(GLOBELCONSTANT.RECORDING.SCORE_LAB, payload),
+  editLearnerScoreAndRemarks: (payload) => AxiosService.put(GLOBELCONSTANT.RECORDING.EDIT_LEARNER_SCORE_REMARKS, payload),
+  getAllLearnersScore: (labId, trainingSid) => AxiosService.get(GLOBELCONSTANT.RECORDING.GET_ALL_LEARNERS_SCORE + `?lab_id=${labId}&training_sid=${trainingSid}`),
+  
   // SUPRVISERDASHBOARD
   getAverageTrainerFeedback: () => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.GET_AVERAGE_TRAINER_FEEDBACK),
   getAverageTrainingFeedback: () => AxiosService.get(GLOBELCONSTANT.SUPERVISOR_DASHBOARD.GET_AVERAGE_TRAINING_FEEDBACK),
