@@ -203,7 +203,7 @@ const RestService = {
   //labs
   getAllLabCategories: () => AxiosService.get(GLOBELCONSTANT.LABS.GET_ALL_LAB_CATEGORIES),
   filterLabs: (labs) => AxiosService.get(GLOBELCONSTANT.LABS.FILTER_LABS + `?filter=${labs}`),
-  filterAccountLabs: (labs) => AxiosService.get(GLOBELCONSTANT.LABS.FILTER_ACCOUNT_LABS + `?filter=${labs}`),
+  filterAccountLabs: (labs, capstoneLabs) => AxiosService.get(GLOBELCONSTANT.LABS.FILTER_ACCOUNT_LABS + `?filter=${labs}&capstone_labs=${capstoneLabs}`),
   getAllLabs: () => AxiosService.get(GLOBELCONSTANT.LABS.GET_ALL_LABS),
   getAccountLabs: () => AxiosService.get(GLOBELCONSTANT.LABS.GET_LABS_IN_ACCOUNT),
   selectLabInCourse: (labId, courseSid, sectionSid, tags) => AxiosService.post(GLOBELCONSTANT.LABS.ADD_LAB_IN_COURSE + `${labId}/add-lab-in-course?course-sid=${courseSid}&section-sid=${sectionSid}&tags=${tags}`),

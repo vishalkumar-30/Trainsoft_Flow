@@ -27,6 +27,7 @@ const CourseDetails = ({ location }) => {
     const handleshowhide = (event) => {
         const getuser = event.target.value;
         setShowhide(getuser);
+        setCapstoneLabs(false);
 
     }
     const { user, spinner } = useContext(AppContext)
@@ -53,6 +54,7 @@ const CourseDetails = ({ location }) => {
     const [codingQuestion, setCodingQuestion] = useState([]);
     const [instructorDocuments, setInstructorDocuments] = useState(false);
     const [instructorVideo, setInstructorVideo] = useState(false);
+    const [capstoneLabs, setCapstoneLabs] = useState(false);
     const [tags, setTags] = useState([]);
     const [tags1, setTags1] = useState([]);
     const [tags2, setTags2] = useState([]);
@@ -496,9 +498,10 @@ const CourseDetails = ({ location }) => {
         try {
 
             spinner.show()
-            RestService.filterAccountLabs(labs).then(
+            RestService.filterAccountLabs(labs, capstoneLabs).then(
                 response => {
                     setAccountLabs(response.data.labDetails);
+                    setCapstoneLabs(false);
                 },
                 err => {
                     spinner.hide();
@@ -555,7 +558,7 @@ const CourseDetails = ({ location }) => {
             let tagsCsv = tags.map((item) => item.text);
             tagsString = tagsCsv.toString();
         }
-        else{
+        else {
             tagsString = tags;
         }
         try {
@@ -672,7 +675,7 @@ const CourseDetails = ({ location }) => {
             let tagsCsv = tags1.map((item) => item.text);
             tagsString = tagsCsv.toString();
         }
-        else{
+        else {
             tagsString = tags1;
         }
 
@@ -705,7 +708,7 @@ const CourseDetails = ({ location }) => {
             let tagsCsv = tags2.map((item) => item.text);
             tagsString = tagsCsv.toString();
         }
-        else{
+        else {
             tagsString = tags2;
         }
         try {
@@ -767,7 +770,9 @@ const CourseDetails = ({ location }) => {
         getAllCodingQuestions();
     }, []);
 
-   
+
+    console.log(capstoneLabs);
+
     return (<>
         <div className="table-shadow p-3 pb-5">
             <CardHeader {...{
@@ -1006,7 +1011,14 @@ const CourseDetails = ({ location }) => {
 
                                             <>
                                                 <form onSubmit={handleSubmit}>
-                                                    <div className="row mb-3 mx-1">
+                                                    <div class="form-check aic mt-3 mb-3" style={{ fontSize: "15px" }} >
+
+                                                        <input type="checkbox" id="capstone" name="capstone" checked={capstoneLabs}
+                                                            onChange={(e) => setCapstoneLabs(e.target.checked)} />
+                                                        <label class="form-check-label form-label mx-3 title-sm">Capstone Labs </label>
+                                                        <div className='title-sm'>(Select this option to narrow down the list of Labs suitable for assessment purposes.)</div>
+                                                    </div>
+                                                    <div className="row mt-3 mb-3 ">
 
                                                         {/* <TextInput name="assets" label="Assets" /> */}
 
@@ -1033,9 +1045,8 @@ const CourseDetails = ({ location }) => {
                                                         <div className="col-6" >
                                                             <SelectInput label="Lab-Details" bindKey="labName" payloadKey="labId" name="labName" value={values.labId} option={accountLabs} />
                                                         </div>
-
                                                     </div>
-                                                    <div>
+                                                    <div className='mt-3 mb-3'>
                                                         <p className='label form-label'>Enter Technology Tags</p>
                                                         <ReactTags
                                                             tags={tags}
@@ -1199,7 +1210,8 @@ const CourseDetails = ({ location }) => {
                             <DropdownItem title={item.sectionName} theme="dark">
                                 <Button className=" ml-2 mb-2" onClick={() => {
 
-                                    setShow(true); setContentType("Add Content"); setSectionSid(item.sid); setShowhide(""); setIsEdit(false); setType(''); setAccountLabs('')
+                                    setShow(true); setContentType("Add Content"); setSectionSid(item.sid); setShowhide(""); setIsEdit(false); setType(''); setAccountLabs('');
+                                    setCapstoneLabs(false);
 
                                 }}>Add Content</Button>
 
