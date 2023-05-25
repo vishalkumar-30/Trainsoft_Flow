@@ -37,7 +37,8 @@ display: block;
 width: 200px;
 height: 200px;
 color: #fff;
-background: linear-gradient(-45deg, #bbbcbc, #F3F3F3, #bbbcbc);
+/* background: linear-gradient(-45deg, #bbbcbc, #F3F3F3, #bbbcbc); */
+background-color: #764BC4;
 background-size: 400% 400%;
 -webkit-animation: Gradient 5s ease infinite;
 -moz-animation: Gradient 5s ease infinite;
@@ -47,7 +48,12 @@ animation: Gradient 5s ease infinite;
 border-radius: 50vh;
 position: relative;
 margin: auto;
-top: 25%;
+display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;
+font-size: 18px;
+font-weight: bold;
 }
 
 @-webkit-keyframes Gradient {
@@ -113,14 +119,14 @@ font-weight: 200;
 .words-wrapper .is-visible {
 position: relative;
 opacity: 1;
--webkit-animation: push-in 0.5s;
--moz-animation: push-in 0.5s;
-animation: push-in 0.5s;
+-webkit-animation: push-in 0.1s;
+-moz-animation: push-in 0.1s;
+animation: push-in 0.1s;
 }
 .words-wrapper .is-hidden {
--webkit-animation: push-out 0.5s;
--moz-animation: push-out 0.5s;
-animation: push-out 0.5s;
+-webkit-animation: push-out 0.1s;
+-moz-animation: push-out 0.1s;
+animation: push-out 0.1s;
 }
 
 @-webkit-keyframes push-in {

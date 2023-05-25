@@ -14,13 +14,13 @@ import AWS from 'aws-sdk';
 import axios from 'axios';
 import { Modal, ModalBody, ModalHeader, Button, Row } from "reactstrap";
 
-const S3_BUCKET = process.env.S3_BUCKET;
-const REGION = process.env.REGION;
-const bucketUrl = process.env.BUCKET_URL
+const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
+const REGION = process.env.REACT_APP_REGION;
+const bucketUrl = process.env.REACT_APP_BUCKET_URL;
 
 AWS.config.update({
-    accessKeyId: process.env.ACCESSKEYID,
-    secretAccessKey: process.env.SECRETACCESSKEY
+    accessKeyId: process.env.REACT_APP_ACCESSKEYID,
+    secretAccessKey: process.env.REACT_APP_SECRETACCESSKEY
 })
 
 const myBucket = new AWS.S3({
@@ -63,6 +63,9 @@ function Labs(props) {
     const Toast = useToast();
     const navigate = useNavigate();
 
+    let timestamp = new Date(localStorage.getItem("end_date") - Date.now());
+    let splitMinutes = timestamp.toUTCString().slice(-11, -4).split(':');
+    let minutes = (+splitMinutes[0]) * 60 + (+splitMinutes[1]);
     // strechable layout start
     const [leftWidth, setLeftWidth] = useState(40);
 
@@ -261,7 +264,7 @@ function Labs(props) {
         );
     };
 
-    const uploadFile = async(file) => {
+    const uploadFile = async (file) => {
         const params = {
             ACL: 'public-read',
             Body: file,
@@ -274,7 +277,7 @@ function Labs(props) {
                 setProgress(Math.round((evt.loaded / evt.total) * 100));
                 // console.log("success");
                 if (evt.loaded === evt.total) {
-                    
+
                     insertRecordingSeedDetails();
                 }
             })
@@ -304,17 +307,20 @@ function Labs(props) {
             await RestService.ec2GuacamolePOC(labId, sectionSid, trainingSid).then(
                 response => {
                     if (response.status === 200) {
-                        Toast.success({ message: 'Lab Started Successfully', time: 3000 });
+
                         setStartLabConnection(response.data);
                         setStopConnection(response.data.split('#')[1]);
-                        localStorage.setItem('connectionString', response.data.split('#')[1]);
                         setStopServer('');
                         setTimeout(function () {
                             setShowButton(true);
                             setIsLoading(false);
-                            localStorage.setItem('appearButton', true);
-                            startScreenRecord();
-                        }, 18000);
+                            localStorage.setItem(`connectionString_${labId}_${labName}`, response.data);
+                            Toast.success({ message: 'Lab Started Successfully', time: 3000 });
+                            // localStorage.setItem('appearButton', true);
+                            if (evaluatedLab) {
+                                startScreenRecord();
+                            }
+                        }, 30000);
                         // setLabConnection(response.data.split('#')[1]);
                     }
                 },
@@ -340,6 +346,7 @@ function Labs(props) {
                         Toast.success({ message: 'Lab paused successfully', time: 3000 });
                         setStartLabConnection('');
                         setStopServer(response.data);
+
                         // setLabConnection('');
                         // localStorage.removeItem('appearButton');
                         // localStorage.removeItem('connectionString');
@@ -370,8 +377,8 @@ function Labs(props) {
 
             }
             else {
-                const connectionString = localStorage.getItem('connectionString');
-                RestService.stopEC2InstanceAndTerminateGuacamoleServer(connectionString).then(
+                const connectionString = localStorage.getItem(`connectionString_${labId}_${labName}`);
+                RestService.stopEC2InstanceAndTerminateGuacamoleServer(connectionString.split('#')[1]).then(
                     response => {
                         Toast.success({ message: 'Lab paused successfully', time: 3000 });
                         setStopServer(response.data);
@@ -399,16 +406,20 @@ function Labs(props) {
             if (startLabConnection.length > 0) {
                 RestService.terminateEC2InstanceAndTerminateGuacamoleServer(startLabConnection.split('#')[1]).then(
                     response => {
+                        console.log(`connectionString_${labId}_${labName}`);
                         Toast.success({ message: 'Lab completed successfully', time: 3000 });
                         setStartLabConnection('');
                         setStopConnection('');
                         setShowButton(false);
                         markCourseAsCompletedLabs();
                         localStorage.removeItem('appearButton');
-                        localStorage.removeItem('connectionString');
+                        localStorage.removeItem(`connectionString_${labId}_${labName}`);
                         localStorage.removeItem("end_date");
                         setOffStartButton(true);
-                        stop()
+                        if (evaluatedLab) {
+                            stop();
+                        }
+
                         // setLabConnection('');
                     },
                     err => {
@@ -426,10 +437,13 @@ function Labs(props) {
                         setShowButton(false);
                         markCourseAsCompletedLabs();
                         localStorage.removeItem('appearButton');
-                        localStorage.removeItem('connectionString');
+                        localStorage.removeItem(`connectionString_${labId}_${labName}`);
                         localStorage.removeItem("end_date");
                         setOffStartButton(true);
-                        stop()
+                        if (evaluatedLab) {
+                            stop();
+                        }
+
                     },
                     err => {
                         spinner.hide();
@@ -440,18 +454,20 @@ function Labs(props) {
                 });
             }
             else {
-                const connectionString = localStorage.getItem('connectionString');
-                RestService.terminateEC2InstanceAndTerminateGuacamoleServer(connectionString).then(
+                const connectionString = localStorage.getItem(`connectionString_${labId}_${labName}`);
+                RestService.terminateEC2InstanceAndTerminateGuacamoleServer(connectionString.split('#')[1]).then(
                     response => {
                         Toast.success({ message: 'Lab completed successfully', time: 3000 });
                         setStopConnection('');
                         setShowButton(false);
                         markCourseAsCompletedLabs();
-                        localStorage.removeItem('appearButton');
+                        localStorage.removeItem(`connectionString_${labId}_${labName}`);
                         localStorage.removeItem('connectionString');
                         localStorage.removeItem("end_date");
                         setOffStartButton(true);
-                        stop()
+                        if (evaluatedLab) {
+                            stop();
+                        }
                     },
                     err => {
                         spinner.hide();
@@ -472,7 +488,6 @@ function Labs(props) {
             let timestamp = new Date(localStorage.getItem("end_date") - Date.now());
             let splitMinutes = timestamp.toUTCString().slice(-11, -4).split(':');
             let minutes = (+splitMinutes[0]) * 60 + (+splitMinutes[1]);
-
             let payload = {
                 "completedInDuration": minutes,
                 "totalDuration": labDuration
@@ -504,6 +519,46 @@ function Labs(props) {
 
     }, []);
 
+    //go back to training page
+    const handleGoToTrainingDetails = () => {
+        
+        if (evaluatedLab && startLabConnection.length > 0) {
+            const response = window.confirm("Are you sure you want to terminate this lab?");
+            if(response){
+                terminateEC2InstanceAndTerminateGuacamoleServer();
+                navigate('/training');
+                
+            }
+            
+            //this will terminate labs for recording assessment labs
+            
+        }
+        else {
+            navigate('/training');
+        }
+    }
+
+
+
+    //restrict browser back button
+    useEffect(() => {
+        const handlePopstate = () => {
+            // Redirect the user if they try to navigate back to the restricted page
+            if (window.location.pathname === '/training/training-details') {
+                navigate('/labs');
+            }
+        };
+
+        // Listen for the 'popstate' event
+        window.addEventListener('popstate', handlePopstate);
+
+        // Clean up the event listener when the component unmounts
+        return () => {
+            window.removeEventListener('popstate', handlePopstate);
+        };
+    }, []);
+
+
     return (
         <div >
             <div style={{ display: 'flex', height: '100vh', background: "#e9ecef" }} >
@@ -515,7 +570,7 @@ function Labs(props) {
                         evaluatedLab && <ScreenRecording trainingSid={props.location.state.trainingSid} sectionSid={contentSid}
                             labId={labId} />
                         : ''} */}
-                    <button onClick={() => navigate(-1)}>{ICN_BACK}Go back</button>
+                    <button onClick={handleGoToTrainingDetails}>{ICN_BACK}Go back</button>
                     <h3 className="text-center " style={{ fontSize: "18px", fontWeight: "bold" }} >{labName}</h3>
                     <hr />
                     <br />
@@ -545,9 +600,9 @@ function Labs(props) {
                         <div className="col-9 mainbody" >
                             {
                                 !showEditor ? <button className="btn btn-primary mt-3" style={{ color: "#fff", fontSize: "15px" }} onClick={() => { setShowEditor(true) }}>Start Lab</button>
-                                : <div className="btn btn-primary mt-3" style={{ color: "#fff", fontSize: "15px" }}>Started</div>
+                                    : <div className="btn btn-primary mt-3" style={{ color: "#fff", fontSize: "15px" }}>Started</div>
                             }
-                            
+
                             {
                                 showEditor ?
                                     <CodeEditor trainingSid={props.location.state.trainingSid} codingQuestionId={props.location.state.codingQuestionId} sectionSid={props.location.state.contentSid} />
@@ -564,22 +619,50 @@ function Labs(props) {
                                     <div className="col-2" style={{ textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "18px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
 
                                         {
-                                            (startLabConnection.length > 0 && stopConnection.length > 0) && localStorage.getItem('connectionString') && !isLoading ?
+
+                                            `connectionString_${labId}_${labName}` in localStorage ?
                                                 <div>
                                                     <p className="text-white">Started</p>
                                                 </div>
                                                 :
-                                                offStartButton && 
-                                                 <button style={{ color: "#fff", fontSize: "15px" }} onClick={() =>{
-                                                    ec2GuacamolePOC(); setOffStartButton(false)}
-                                                }>Start Lab</button>}
+                                                (startLabConnection.length === 0 || stopConnection.length === 0 || stopServer.length > 0) ?
+                                                    <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => {
+                                                        ec2GuacamolePOC();
+                                                    }
+                                                    }>Start Lab</button>
+                                                    :
+
+                                                    <div>
+                                                        <p className="text-white">Started</p>
+                                                    </div>
+                                            // startLabConnection.length > 0 || stopConnection.length > 0 &&
+                                            // <div>
+                                            //     <p className="text-white">Started</p>
+                                            // </div>
+
+                                        }
                                     </div>
                                     {
-                                        showButton || localStorage.getItem('appearButton') ?
+                                        showButton || `connectionString_${labId}_${labName}` in localStorage ?
                                             <>
-                                                <div className="col-2" style={{ textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "25px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
-                                                    <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>{stopServer.length === 0 ? "Pause Lab" : "Paused"}</button>
-                                                </div>
+                                                {
+                                                    evaluatedLab ? "" :
+                                                     <div className="col-2" style={{ textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "25px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+                                                     {
+                                                         stopServer.length === 0 ?
+ 
+                                                             <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>
+                                                                 Pause Lab
+                                                             </button>
+                                                             :
+                                                             
+                                                             <div>
+                                                                 <p className="text-white">Paused</p>
+                                                             </div>
+                                                     }
+                                                 </div>
+                                                }
+                                                
                                                 <div className="col-2" style={{ textAlign: "center", textDecoration: "none", background: "#471579", padding: "15px 20px", marginLeft: "25px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
                                                     <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Complete Lab</button>
                                                 </div>
@@ -591,9 +674,11 @@ function Labs(props) {
                                             : ''}
                                     <div className="col-2" style={{ marginLeft: "25px", marginBottom: "50px", marginTop: "50px" }}>
                                         {
-                                            (startLabConnection.length > 0 || localStorage.getItem('connectionString')) && !isLoading ?
+                                            startLabConnection.length > 0 && !isLoading ?
                                                 <CountdownTimer {...{ timeLimit: labDuration, callback: (time) => { } }} />
-                                                : ''
+                                                : `connectionString_${labId}_${labName}` in localStorage ?
+                                                    <CountdownTimer {...{ timeLimit: minutes, callback: (time) => { } }} />
+                                                    : ''
                                         }
                                     </div>
                                 </div>
@@ -606,10 +691,14 @@ function Labs(props) {
                                             <LabSpinner />
 
                                             :
+
                                             <iframe src={startLabConnection} width="100%" height="600px" />
 
                                         :
-                                        <p className="text-white">Please Click on Start Lab</p>}
+                                        `connectionString_${labId}_${labName}` in localStorage ?
+                                            <iframe src={localStorage.getItem(`connectionString_${labId}_${labName}`)} width="100%" height="600px" />
+                                            :
+                                            <p className="text-white">Please Click on Start Lab</p>}
                                 </div>
 
                             </div>

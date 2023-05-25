@@ -28,7 +28,7 @@ import { BsModal } from "../../Common/BsUtils";
 import ClassNotes from "../ClassLab/ClassNotes/ClassNotes";
 import TrainingObjective from "./TrainingObjective";
 import axios from 'axios';
-import InfoIcon from '@mui/icons-material/Info';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 const TrainingDetails = ({ location }) => {
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
@@ -256,7 +256,8 @@ const TrainingDetails = ({ location }) => {
                             setCodingQuestiondesc(data.codingQuestionDescription);
                         }
                         if (user.role === ROLE.INSTRUCTOR && data.labId !== null) {
-                            getInstructorScreenRecordingFilter(data.labId)
+
+                           data.labContent.evaluatedLab && getInstructorScreenRecordingFilter(data.labId)
                         }
                         if (data.labAssessment !== null) {
                             setLabAssessment(data.labAssessment);
@@ -278,9 +279,11 @@ const TrainingDetails = ({ location }) => {
                         }))
 
                     }} style={{ cursor: "pointer", alignContent: "center", textAlign: "center", alignItems: "center" }} >
-                        <input type="checkbox" checked={"checked" ? data.completed : ''} disabled ></input>
-                        {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ? <DuoIcon /> : (data.type === "LAB") ? <ScienceIcon />
-                            : (data.type === "ASSESSMENT") ? <AssessmentIcon /> : (data.type === "CODING") ? <CodeIcon /> : <SummarizeRoundedIcon />}
+                        <input type="checkbox" checked={"checked" ? data.completed : ''} disabled ></input> 
+                        {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ?
+                         <DuoIcon /> : (data.type === "LAB" &&  data.labContent.evaluatedLab) ? <AssessmentIcon /> :
+                         (data.type === "LAB" ) ? <ScienceIcon /> :
+                            (data.type === "ASSESSMENT") ? <AssessmentIcon /> : (data.type === "CODING") ? <CodeIcon /> : <SummarizeRoundedIcon />}
                         {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
 
                     </Link >
@@ -632,7 +635,7 @@ const TrainingDetails = ({ location }) => {
         }
     }
 
-    console.log(instructorScreenRecording);
+    console.log(location.state.sid);
     return (
         <>
             {
