@@ -20,6 +20,7 @@
     "chart.js": "^2.9.4",
     "crypto": "^1.0.1",
     "dev-react-attachment-viewer": "0.0.8",
+    "dotenv": "^16.0.3",
     "fabric": "^4.3.1",
     "formik": "^2.2.6",
     "html-react-parser": "^1.4.14",
