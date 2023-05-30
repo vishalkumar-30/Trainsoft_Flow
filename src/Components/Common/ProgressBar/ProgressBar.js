@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState,useContext} from 'react'
 import "react-circular-progressbar/dist/styles.css";
 import Confetti from "react-confetti";
 
@@ -10,7 +10,7 @@ import {
 import "./progressbar.css"
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import GenerateCertificate from '../../Screens/Training/GenerateCertificate/GenerateCertificate';
-
+import AppContext from "../../../Store/AppContext";
 const Modal = ({ handleClose, show, children }) => {
   const showHideClassName = show ? "modal d-block" : "modal d-none";
 
@@ -31,11 +31,12 @@ const Modal = ({ handleClose, show, children }) => {
 
 function Example(props) {
   const [modal, setModal] = useState(false);
+  const { user, ROLE, spinner } = useContext(AppContext);
 
   return (
     <div>
       <div style={{ display: "flex" }}>
-        <div style={{ width: "10%", paddingRight: 4 ,marginTop:"-10px"}}>
+        <div style={{ width: "10%", paddingRight: 4 ,marginTop:"2px"}}>
           {props.children}
         </div>
         {modal ? <Modal show={modal} handleClose={() => setModal(false)}>
@@ -47,11 +48,12 @@ function Example(props) {
           : ''}
 
         <div class="product" style={{ display: "flex" }}>
-          <h6 style={{ color: "#3f51b5", fontSize: "14px" }}> {props.progress === props.totalSection ? <button onClick={() => {
+         {user.role !== ROLE.INSTRUCTOR && <h6 style={{ color: "#3f51b5", fontSize: "14px" }}> {props.progress === props.totalSection ? <button onClick={() => {
             setModal(true);
-          }}>Get Certificate</button> : props.label}
+          }}> Get Certificate</button> : props.label}
             <span><FastForwardIcon /></span>
           </h6>
+          }
           <div class="product-text">
             <h6>&nbsp;: &nbsp;{props.progress} of {props.totalSection} complete.</h6>
 

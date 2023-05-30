@@ -2,17 +2,18 @@
     
     padding: 5px;
    
-   margin-top: -5px;
+   /* margin-top: -5px; */
     
     cursor: pointer;
-    
+    margin-top: 5px;
 }
 
 .product-text {
     float: left;
     width: auto;
     display: flex;
-    font-size:14px
+    font-size:14px;
+   
 }
 /* .product:hover .product-text {
     display: flex;
