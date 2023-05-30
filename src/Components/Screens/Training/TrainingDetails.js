@@ -569,7 +569,7 @@ const TrainingDetails = ({ location }) => {
                 response => {
                     if (response.status === 200) {
                         setInstructorScreenRecording(response.data);
-                        setType('INSTRUCTOR_EVALUATION');
+                        // setType('INSTRUCTOR_EVALUATION');
 
                     }
                 },
@@ -700,12 +700,7 @@ const TrainingDetails = ({ location }) => {
 
                                             <TrainingObjective trainingObjective={hello} />
                                             :
-                                            (instructorScreenRecording !== null && type === "INSTRUCTOR_EVALUATION") ?
-
-                                                <TrainingObjective trainingObjective={instructorScreenRecording}
-                                                    trainingSid={location.state.sid} labId={labId} />
-                                                :
-
+                                            
                                                 // (sessions !== null) ?
                                                 // <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
 
@@ -723,7 +718,7 @@ const TrainingDetails = ({ location }) => {
                                                             <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
                                                                 {
 
-                                                                    labRecordingLink === null && labRecordingFileName == null &&
+                                                                    labRecordingLink === null && labRecordingFileName == null && user.role !== ROLE.INSTRUCTOR &&
                                                                     <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
 
                                                                         <>
@@ -769,6 +764,13 @@ const TrainingDetails = ({ location }) => {
                                                                         </>
 
                                                                         : ''
+                                                                }
+                                                                {
+                                                                    instructorScreenRecording !== null && user.role === ROLE.INSTRUCTOR &&
+
+                                                                    <TrainingObjective trainingObjective={instructorScreenRecording}
+                                                                        trainingSid={location.state.sid} labId={labId} />
+                                                                    
                                                                 }
                                                             </div>
                                                             
