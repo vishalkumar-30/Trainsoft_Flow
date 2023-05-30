@@ -29,6 +29,7 @@ import ClassNotes from "../ClassLab/ClassNotes/ClassNotes";
 import TrainingObjective from "./TrainingObjective";
 import axios from 'axios';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const TrainingDetails = ({ location }) => {
     const [trainingDetailsList, setTrainingDetailsList] = useState([]);
@@ -257,7 +258,7 @@ const TrainingDetails = ({ location }) => {
                         }
                         if (user.role === ROLE.INSTRUCTOR && data.labId !== null) {
 
-                           data.labContent.evaluatedLab && getInstructorScreenRecordingFilter(data.labId)
+                            data.labContent.evaluatedLab && getInstructorScreenRecordingFilter(data.labId)
                         }
                         if (data.labAssessment !== null) {
                             setLabAssessment(data.labAssessment);
@@ -279,11 +280,11 @@ const TrainingDetails = ({ location }) => {
                         }))
 
                     }} style={{ cursor: "pointer", alignContent: "center", textAlign: "center", alignItems: "center" }} >
-                        <input type="checkbox" checked={"checked" ? data.completed : ''} disabled ></input> 
+                        <input type="checkbox" checked={"checked" ? data.completed : ''} disabled ></input>
                         {(data.type === "VIDEO" || data.type === "EXTERNAL_LINK") ? <PlayCircleIcon /> : (data.type === "TRAINING_SESSION") ?
-                         <DuoIcon /> : (data.type === "LAB" &&  data.labContent.evaluatedLab) ? <AssessmentIcon /> :
-                         (data.type === "LAB" ) ? <ScienceIcon /> :
-                            (data.type === "ASSESSMENT") ? <AssessmentIcon /> : (data.type === "CODING") ? <CodeIcon /> : <SummarizeRoundedIcon />}
+                            <DuoIcon /> : (data.type === "LAB" && data.labContent.evaluatedLab) ? <AssessmentIcon /> :
+                                (data.type === "LAB") ? <ScienceIcon /> :
+                                    (data.type === "ASSESSMENT") ? <AssessmentIcon /> : (data.type === "CODING") ? <CodeIcon /> : <SummarizeRoundedIcon />}
                         {data.contentName.length > 35 ? data.contentName.substring(0, 35) + "..." : data.contentName}
 
                     </Link >
@@ -661,33 +662,62 @@ const TrainingDetails = ({ location }) => {
                                 </div>
 
                             </Modal>
-                            <div className="page-title">
-                                <div className="title-lg mb-0">
-                                    <Link onClick={() => setType('OBJECTIVE')}>{trainingBySid.name}</Link>
+
+                            {/* <div className="row mb-3 ml-1 " >
+                         
+                           </div> */}
+
+                            <div className="row  mx-0" style={{ alignItems: "center" }}>
+                                <div className="card ml-0" style={{ borderRadius: "10px", cursor: "pointer" }}>
+                                    <div className="card-body mb-0">
+                                        <div className="title-sm" onClick={() => setType('OBJECTIVE')}>
+                                            {trainingBySid.name} <ArrowDropDownIcon />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="row" >
-
-                                {/* <div>
-                                    <Link onClick={() => setType('OBJECTIVE')}>{trainingBySid.name}</Link>
-
-                                </div> */}
-
-                                {showcoursename.length === 0 ? "" :
-                                    <div className=" title-sm col-6">Content Title: {showcoursename}</div>}
-                                <div className="col-4" >
-                                    <ProgressBar progress={markCompleted.totalCourseCompletedInTraining === null ? 0 : markCompleted.totalCourseCompletedInTraining > contentLength ? contentLength : markCompleted.totalCourseCompletedInTraining} totalSection={contentLength} trainingSid={location.state.sid} />
+                                {showcoursename.length === 0 ? "" : (
+                                    <div className="title-sm col-md-3 col-sm-12" style={{ textAlign: "justify" }}>Content Title: {showcoursename}</div>
+                                )}
+                                <div className="col-md-4 col-sm-12">
+                                    <ProgressBar
+                                        progress={
+                                            markCompleted.totalCourseCompletedInTraining === null
+                                                ? 0
+                                                : markCompleted.totalCourseCompletedInTraining > contentLength
+                                                    ? contentLength
+                                                    : markCompleted.totalCourseCompletedInTraining
+                                        }
+                                        totalSection={contentLength}
+                                        trainingSid={location.state.sid}
+                                    />
                                 </div>
-                                {
-                                    user.role === ROLE.INSTRUCTOR ? <div className="col-1 class-mode mb-4  " onClick={() => { setShow(true) }} style={{ background: "#49167E", borderRadius: "10px" }}>Whiteboard</div> : ""
-                                }
-                                {
-                                    user.role === ROLE.LEARNER ? <div className="col-1 class-mode mb-4 " onClick={() => { setShow(true) }} style={{ background: "#49167E", borderRadius: "10px" }}>Make Notes</div> : ""
-                                }
-
-
+                                {user.role === ROLE.INSTRUCTOR && (
+                                    <div
+                                        className="col-md-1 col-sm-12 class-mode mt-1"
+                                        onClick={() => {
+                                            setShow(true);
+                                        }}
+                                        style={{ background: "#49167E", borderRadius: "10px" }}
+                                    >
+                                        Whiteboard
+                                    </div>
+                                )}
+                                {user.role === ROLE.LEARNER && (
+                                    <div
+                                        className="col-md-1 col-sm-12 class-mode mt-1"
+                                        onClick={() => {
+                                            setShow(true);
+                                        }}
+                                        style={{ background: "#49167E", borderRadius: "10px" }}
+                                    >
+                                        Make Notes
+                                    </div>
+                                )}
                             </div>
+                            <hr />
+
+
                             <div class="row mt-2">
 
                                 <div class="col-8  pl-3 " >
@@ -750,71 +780,71 @@ const TrainingDetails = ({ location }) => {
                                                                                 >Show Recordings</button>
 
                                                                             </div>
-                                                                            
 
-                                                                            { 
-                                                                                labAssessment !==null && 
+
+                                                                            {
+                                                                                labAssessment !== null &&
                                                                                 <div className="border">
-                                                                                <div className="card-body row" >
-                                                                                    <div className="title-md col-5">Lab % <br />{labAssessment.percentage.toFixed(2)}</div>
-                                                                                    
-                                                                                    <div className="col-6">
-                                                                                        <p className="card-text title-md">Your Remarks</p>
-                                                                                        <div className="card p-2 h-100 title-sm" style={{ background: "#E9ECEF", borderRadius: "10px" }}>{labAssessment.remarks}</div>
+                                                                                    <div className="card-body row" >
+                                                                                        <div className="title-md col-5">Lab % <br />{labAssessment.percentage.toFixed(2)}</div>
+
+                                                                                        <div className="col-6">
+                                                                                            <p className="card-text title-md">Your Remarks</p>
+                                                                                            <div className="card p-2 h-100 title-sm" style={{ background: "#E9ECEF", borderRadius: "10px" }}>{labAssessment.remarks}</div>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
                                                                             }
-                                                                            
+
                                                                         </>
 
                                                                         : ''
                                                                 }
                                                             </div>
-                                                            
+
                                                             : (type === "CODING") ?
-                                                            <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
-                                                                {
-
-                                                                    
-                                                                    <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
-
-                                                                        <>
-
-                                                                            <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/labs", {
-                                                                                state: {
-                                                                                    labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename, type, codingQuestionId, codingQuestiondesc, evaluatedLab
-                                                                                }
-                                                                            })
-                                                                            }>Open Sandbox</button>
+                                                                <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
+                                                                    {
 
 
-                                                                        </>
+                                                                        <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
 
-                                                                    </div>
-                                                                }
-                                                                
-                                                            </div>
-                                                            :
-                                                            (type === "ASSESSMENT") ?
-                                                                <div className="assesmentimg row ml-1" >
-                                                                    <div style={{ width: "180px", textAlign: "center", textDecoration: "none", background: "blue", color: "white", padding: "15px 20px", marginLeft: "250px", marginBottom: "10px", marginTop: "100px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                                                        {/* <a href={vdlink} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", fontSize: "15px" }}>Start Assessment</a> */}
-                                                                        <button style={{ color: "#fff", fontSize: "15px" }}
-                                                                            onClick={() => navigate(`/assessment/${vdlink.split('/')[4]}/${vdlink.split('/')[5]}/${vdlink.split('/')[6]}`)}>
-                                                                            Start Assessment
-                                                                        </button>
-                                                                    </div>
+                                                                            <>
+
+                                                                                <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/labs", {
+                                                                                    state: {
+                                                                                        labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename, type, codingQuestionId, codingQuestiondesc, evaluatedLab
+                                                                                    }
+                                                                                })
+                                                                                }>Open Sandbox</button>
+
+
+                                                                            </>
+
+                                                                        </div>
+                                                                    }
+
                                                                 </div>
                                                                 :
-                                                                (type === "TRAINING_SESSION") ?
-                                                                    <div className="zoommeeting row ml-1">
-                                                                        <div style={{ width: "120px", textAlign: "center", textDecoration: "none", color: "white", background: "blue", padding: "10px 10px", marginLeft: "20px", marginBottom: "80px", marginTop: "85px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                                                            <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
+                                                                (type === "ASSESSMENT") ?
+                                                                    <div className="assesmentimg row ml-1" >
+                                                                        <div style={{ width: "180px", textAlign: "center", textDecoration: "none", background: "blue", color: "white", padding: "15px 20px", marginLeft: "250px", marginBottom: "10px", marginTop: "100px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                                                            {/* <a href={vdlink} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", fontSize: "15px" }}>Start Assessment</a> */}
+                                                                            <button style={{ color: "#fff", fontSize: "15px" }}
+                                                                                onClick={() => navigate(`/assessment/${vdlink.split('/')[4]}/${vdlink.split('/')[5]}/${vdlink.split('/')[6]}`)}>
+                                                                                Start Assessment
+                                                                            </button>
                                                                         </div>
                                                                     </div>
                                                                     :
-                                                                    ''
+                                                                    (type === "TRAINING_SESSION") ?
+                                                                        <div className="zoommeeting row ml-1">
+                                                                            <div style={{ width: "120px", textAlign: "center", textDecoration: "none", color: "white", background: "blue", padding: "10px 10px", marginLeft: "20px", marginBottom: "80px", marginTop: "85px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                                                                <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
+                                                                            </div>
+                                                                        </div>
+                                                                        :
+                                                                        ''
 
                                     }
 

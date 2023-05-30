@@ -304,84 +304,76 @@ const DashboardLearner = () => {
     return (
         <>
 
-            <Card title="Skill meter">
-                <div className='row'>
-                    <div className='col-sm-6 col-md-6 pb-3'>
-                        <SkillsLevelGraph skills={(skill / count).toFixed(2)} />
-                    </div>
-                    <div className='col-sm-6 col-md-6'>
-                        <div className='row'>
-                            <div className="col-sm-6 ">
+<Card title="Skill meter">
+  <div className="row">
+    <div className="col-sm-6 col-md-6 pb-3">
+      <SkillsLevelGraph skills={(skill / count).toFixed(2)} />
+    </div>
+    <div className="col-sm-6 col-md-6">
+      <div className="row">
+        <div className="col-sm-6">
+          <div className="grid-batch1">
+            <div className="mb10">{ICN_COMING_BATCHES}</div>
+            <div>
+              <div className="batch-title">{ongoingTrainingDetails.count}</div>
+              <div className="batch-label">Ongoing Trainings</div>
+            </div>
+            <div className="jce">
+              <div className="grid-batch-icon">
+                <i className="bi bi-arrows-angle-expand"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="col-sm-6">
+          <div className="grid-batch2">
+            <div className="mb10">{ICN_COPY}</div>
+            <div>
+              <div className="batch-title">{completedTrainingDetails.count}</div>
+              <div className="batch-label">Completed Trainings</div>
+            </div>
+            <div className="jce">
+              <div className="grid-batch-icon">
+                <i className="bi bi-arrows-angle-expand"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="row mt-3">
+        <div className="col-sm-6">
+          <div className="grid-batch3">
+            <div className="mb10">{ICN_COPY}</div>
+            <div>
+              <div className="batch-title">{learnerCertificateDetails.count}</div>
+              <div className="batch-label">Certificates Earned</div>
+            </div>
+            <div className="jce">
+              <div className="grid-batch-icon">
+                <i className="bi bi-arrows-angle-expand"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="col-sm-6">
+          <div className="grid-batch1">
+            <div className="mb10">{ICN_COPY}</div>
+            <div>
+              <div className="batch-title">{hoursInvested.hoursInvested}</div>
+              <div className="batch-label">Hours Invested</div>
+            </div>
+            <div className="jce">
+              <div className="grid-batch-icon">
+                <i className="bi bi-arrows-angle-expand"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Card>
 
-                                <div className="grid-batch1 ">
-                                    <div className="mb10">{ICN_COMING_BATCHES}</div>
-                                    <div>
-                                        <div className="batch-title">{ongoingTrainingDetails.count}</div>
-                                        <div className="batch-label">Ongoing Trainings</div>
-                                    </div>
-                                    <div className="jce">
-                                        <div className="grid-batch-icon">
-                                            <i className="bi bi-arrows-angle-expand"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div className="col-sm-6 ">
-
-                                <div className="grid-batch2">
-                                    <div className="mb10">{ICN_COPY}</div>
-                                    <div>
-                                        <div className="batch-title">{completedTrainingDetails.count}</div>
-                                        <div className="batch-label">Completed Trainings</div>
-                                    </div>
-                                    <div className="jce">
-                                        <div className="grid-batch-icon">
-                                            <i className="bi bi-arrows-angle-expand"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div className='row mt-3'>
-                            <div className="col-sm-6 ">
-
-                                <div className="grid-batch3">
-                                    <div className="mb10">{ICN_COPY}</div>
-                                    <div>
-                                        <div className="batch-title">{learnerCertificateDetails.count}</div>
-                                        <div className="batch-label">Certificates Earned</div>
-                                    </div>
-                                    <div className="jce">
-                                        <div className="grid-batch-icon">
-                                            <i className="bi bi-arrows-angle-expand"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div className="col-sm-6 ">
-
-                                <div className="grid-batch1">
-                                    <div className="mb10">{ICN_COPY}</div>
-                                    <div>
-                                        <div className="batch-title">{hoursInvested.hoursInvested}</div>
-                                        <div className="batch-label">Hours Invested</div>
-                                    </div>
-                                    <div className="jce">
-                                        <div className="grid-batch-icon">
-                                            <i className="bi bi-arrows-angle-expand"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </Card>
 
             <div className='row mt-2'>
                 <div className='col-sm-6 col-md-6'>
