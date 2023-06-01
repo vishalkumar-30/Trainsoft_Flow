@@ -50,11 +50,14 @@ useEffect(()=>{
            
             {list.map(res => <div className="labList">
                 <div className="labList-info flx5">
-                    <div>
-                        <div className="cat-title-md">{res.labName}</div>
-                        <div className="cat-title-sm">{res.labDescription}</div>
+                    <div style={{display:"flex",alignItems:"center"}}>
+                        <div className="cat-title-md">{res.labName}</div> 
+                        {res.labSolution === "Y" ? <div className="assesmentlab cat-title-md px-3">Assessment</div> :""}
+                        
+                   
                         {/* <div className="cat-title-sm">{myLab ? wordShort(res.desc, 80) : res.labDescription}</div> */}
                     </div>
+                    <div className="cat-title-sm">{res.labDescription}</div>
                     <div className="text-md">
                         <div className="flx f12">
                             <div className="mr-3" >
@@ -69,6 +72,7 @@ useEffect(()=>{
                             <div className="mr-3">
                                 0.2$
                             </div>
+                           
                         </div>
                     </div>
                 </div>
