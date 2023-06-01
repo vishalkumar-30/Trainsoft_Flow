@@ -182,4 +182,13 @@ margin-left: 12px;
     opacity: 1;
     right: 10px;
   }
-  
+  .assesmentlab{
+    background: #c4b1d9;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    cursor: default!important;
+    display: inline-block;
+    font-size: 13px;
+    margin: 0 18px 5px;
+    padding: 6px;
+  }
