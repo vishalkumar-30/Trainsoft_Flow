@@ -66,9 +66,10 @@ const TrainingDetails = ({ location }) => {
     // const [seconds, setSeconds] = useState(0);
     // const [previousSid, setPreviousSid] = useState('');
     const navigate = useNavigate();
-    let trainingSid = location.state.sid;
+    // let trainingSid = location.state.sid;
+    let [trainingSid, setTrainingSid] = useState(location.state.sid ? location.state.sid : localStorage.getItem("trainingSid"));
     let username = JSON.parse(localStorage.getItem('user'));
-    localStorage.setItem("trainingSid", location.state.sid);
+    localStorage.setItem("trainingSid", trainingSid);
     // const userSid = JSON.parse(localStorage.getItem('user'))
     const [show, setShow] = useState(false);
     const [showRecording, setShowRecording] = useState(false);
@@ -159,14 +160,6 @@ const TrainingDetails = ({ location }) => {
                     // loop={true}
                     muted={true}
                     controls
-                // onProgress={(progress) => {
-                //     if (Math.ceil(progress.playedSeconds) >= Math.ceil(0.8 * duration)) {
-                //         setPlayed(progress.playedSeconds);
-                //     }
-                // }}
-                // onDuration={(duration) => {
-                //     setDuration(duration);
-                // }}
                 />
             </div>
 
@@ -274,7 +267,8 @@ const TrainingDetails = ({ location }) => {
                             ...{
                                 "meetingId": data.meetingId,
                                 "password": data.meetingPwd,
-                                "trainingSid": location.state.sid,
+                                // "trainingSid": location.state.sid,
+                                "trainingSid": trainingSid,
                                 "trainingSessionSid": data.sid
                             }
                         }))
@@ -327,7 +321,7 @@ const TrainingDetails = ({ location }) => {
     const getTrainingContentsByTrainingSid = async () => {
         try {
             let sum = 0;
-            let trainingSid = location.state.sid;
+            // let trainingSid = location.state.sid;
             // spinner.show();
             RestService.getTrainingContentsByTrainingSid(trainingSid).then(
                 response => {
@@ -391,7 +385,7 @@ const TrainingDetails = ({ location }) => {
     const getTrainingContentsByTrainingSidUpdated = async () => {
         try {
             let sum = 0;
-            let trainingSid = location.state.sid;
+            // let trainingSid = location.state.sid;
             // spinner.show();
             RestService.getTrainingContentsByTrainingSid(trainingSid).then(
                 response => {
@@ -425,7 +419,7 @@ const TrainingDetails = ({ location }) => {
     //update content mark as completed
     const markCourseAsCompleted = (contentSid, sectionSid) => {
         try {
-            let trainingSid = location.state.sid;
+            // let trainingSid = location.state.sid;
             let payload = {
                 "completedInDuration": 0,
                 "totalDuration": 0
@@ -455,7 +449,7 @@ const TrainingDetails = ({ location }) => {
     const markCourseAsCompletedVideo = () => {
         if (call) {
             try {
-                let trainingSid = location.state.sid;
+                // let trainingSid = location.state.sid;
                 let payload = {
                     "completedInDuration": duration,
                     "totalDuration": duration
@@ -489,7 +483,7 @@ const TrainingDetails = ({ location }) => {
     const getCompletedCourses = () => {
 
         try {
-            let trainingSid = location.state.sid;
+            // let trainingSid = location.state.sid;
             // spinner.show();
             RestService.getCompletedCourses(trainingSid).then(
                 response => {
@@ -528,7 +522,7 @@ const TrainingDetails = ({ location }) => {
     const getTrainingBySid = () => {
 
         try {
-            let trainingSid = location.state.sid;
+            // let trainingSid = location.state.sid;
             // spinner.show();
             RestService.getTrainingBySid(trainingSid).then(
                 response => {
@@ -564,7 +558,7 @@ const TrainingDetails = ({ location }) => {
     //get InstructorScreenRecording Filter for exaluated labs
     const getInstructorScreenRecordingFilter = (labId) => {
         try {
-            let trainingSid = location.state.sid;
+            // let trainingSid = location.state.sid;
             // spinner.show();
             RestService.getInstructorScreenRecordingFilter(labId, trainingSid).then(
                 response => {
@@ -689,7 +683,7 @@ const TrainingDetails = ({ location }) => {
                                                     : markCompleted.totalCourseCompletedInTraining
                                         }
                                         totalSection={contentLength}
-                                        trainingSid={location.state.sid}
+                                        trainingSid={trainingSid}
                                     />
                                 </div>
                                 {user.role === ROLE.INSTRUCTOR && (
@@ -730,25 +724,85 @@ const TrainingDetails = ({ location }) => {
 
                                             <TrainingObjective trainingObjective={hello} />
                                             :
-                                            
-                                                // (sessions !== null) ?
-                                                // <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
 
-                                                //     <p>{sessions.sectionName}</p>
-                                                //     <p>{sessions.sectionDescription}</p>
-                                                // </div>
-                                                // : 
+                                            // (sessions !== null) ?
+                                            // <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
 
-                                                (type === "EXTERNAL_LINK" || type === "VIDEO") ?
-                                                    VideoMediaPlayer(vdlink)
-                                                    : (type === "PHOTO" || type === "DOCUMENTS") ?
+                                            //     <p>{sessions.sectionName}</p>
+                                            //     <p>{sessions.sectionDescription}</p>
+                                            // </div>
+                                            // : 
 
-                                                        <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
-                                                        : (type === "LAB") ?
+                                            (type === "EXTERNAL_LINK" || type === "VIDEO") ?
+                                                VideoMediaPlayer(vdlink)
+                                                : (type === "PHOTO" || type === "DOCUMENTS") ?
+
+                                                    <iframe style={{ marginTop: "-2px" }} src={vdlink} width="100%" height="100%" />
+                                                    : (type === "LAB") ?
+                                                        <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
+                                                            {
+
+                                                                labRecordingLink === null && labRecordingFileName == null && user.role !== ROLE.INSTRUCTOR &&
+                                                                <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
+
+                                                                    <>
+
+                                                                        <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/labs", {
+                                                                            state: {
+                                                                                labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename, type, codingQuestionId, codingQuestiondesc, evaluatedLab
+                                                                            }
+                                                                        })
+                                                                        }>Open Sandbox</button>
+
+
+                                                                    </>
+
+                                                                </div>
+                                                            }
+                                                            {
+                                                                labRecordingLink !== null && labRecordingFileName !== null ?
+                                                                    <>
+                                                                        <div style={{ textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginBottom: "50px", marginTop: "10px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
+
+                                                                            <button style={{ color: "#fff", fontSize: "15px" }}
+                                                                                onClick={() => { setShowRecording(true) }}
+                                                                            >Show Recordings</button>
+
+                                                                        </div>
+
+
+                                                                        {
+                                                                            labAssessment !== null &&
+                                                                            <div className="border">
+                                                                                <div className="card-body row" >
+                                                                                    <div className="title-md col-5">Lab % <br />{labAssessment.percentage.toFixed(2)}</div>
+
+                                                                                    <div className="col-6">
+                                                                                        <p className="card-text title-md">Your Remarks</p>
+                                                                                        <div className="card p-2 h-100 title-sm" style={{ background: "#E9ECEF", borderRadius: "10px" }}>{labAssessment.remarks}</div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+
+                                                                    </>
+
+                                                                    : ''
+                                                            }
+                                                            {
+                                                                instructorScreenRecording !== null && user.role === ROLE.INSTRUCTOR &&
+
+                                                                <TrainingObjective trainingObjective={instructorScreenRecording}
+                                                                    trainingSid={trainingSid} labId={labId} />
+
+                                                            }
+                                                        </div>
+
+                                                        : (type === "CODING") ?
                                                             <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
                                                                 {
 
-                                                                    labRecordingLink === null && labRecordingFileName == null && user.role !== ROLE.INSTRUCTOR &&
+
                                                                     <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
 
                                                                         <>
@@ -765,88 +819,34 @@ const TrainingDetails = ({ location }) => {
 
                                                                     </div>
                                                                 }
-                                                                {
-                                                                    labRecordingLink !== null && labRecordingFileName !== null ?
-                                                                        <>
-                                                                            <div style={{ textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginBottom: "50px", marginTop: "10px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
 
-                                                                                <button style={{ color: "#fff", fontSize: "15px" }}
-                                                                                    onClick={() => { setShowRecording(true) }}
-                                                                                >Show Recordings</button>
-
-                                                                            </div>
-
-
-                                                                            {
-                                                                                labAssessment !== null &&
-                                                                                <div className="border">
-                                                                                    <div className="card-body row" >
-                                                                                        <div className="title-md col-5">Lab % <br />{labAssessment.percentage.toFixed(2)}</div>
-
-                                                                                        <div className="col-6">
-                                                                                            <p className="card-text title-md">Your Remarks</p>
-                                                                                            <div className="card p-2 h-100 title-sm" style={{ background: "#E9ECEF", borderRadius: "10px" }}>{labAssessment.remarks}</div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            }
-
-                                                                        </>
-
-                                                                        : ''
-                                                                }
-                                                                {
-                                                                    instructorScreenRecording !== null && user.role === ROLE.INSTRUCTOR &&
-
-                                                                    <TrainingObjective trainingObjective={instructorScreenRecording}
-                                                                        trainingSid={location.state.sid} labId={labId} />
-                                                                    
-                                                                }
                                                             </div>
-
-                                                            : (type === "CODING") ?
-                                                                <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
-                                                                    {
-
-
-                                                                        <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
-
-                                                                            <>
-
-                                                                                <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/labs", {
-                                                                                    state: {
-                                                                                        labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename, type, codingQuestionId, codingQuestiondesc, evaluatedLab
-                                                                                    }
-                                                                                })
-                                                                                }>Open Sandbox</button>
-
-
-                                                                            </>
-
-                                                                        </div>
-                                                                    }
-
-                                                                </div>
-                                                                :
-                                                                (type === "ASSESSMENT") ?
-                                                                    <div className="assesmentimg row ml-1" >
-                                                                        <div style={{ width: "180px", textAlign: "center", textDecoration: "none", background: "blue", color: "white", padding: "15px 20px", marginLeft: "250px", marginBottom: "10px", marginTop: "100px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                                                            {/* <a href={vdlink} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", fontSize: "15px" }}>Start Assessment</a> */}
+                                                            :
+                                                            (type === "ASSESSMENT") ?
+                                                                <div className="assesmentimg row ml-1" >
+                                                                    <div style={{ width: "180px", textAlign: "center", textDecoration: "none", background: "blue", color: "white", padding: "15px 20px", marginLeft: "250px", marginBottom: "10px", marginTop: "100px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                                                        {/* <a href={vdlink} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", fontSize: "15px" }}>Start Assessment</a> */}
+                                                                        {
+                                                                            !completeContent ?
                                                                             <button style={{ color: "#fff", fontSize: "15px" }}
                                                                                 onClick={() => navigate(`/assessment/${vdlink.split('/')[4]}/${vdlink.split('/')[5]}/${vdlink.split('/')[6]}`)}>
                                                                                 Start Assessment
                                                                             </button>
+                                                                            :
+                                                                            <p style={{ color: "#fff", fontSize: "15px" }}>Already Attempted</p>
+                                                                        }
+
+                                                                    </div>
+                                                                </div>
+                                                                :
+                                                                (type === "TRAINING_SESSION") ?
+                                                                    <div className="zoommeeting row ml-1">
+                                                                        <div style={{ width: "120px", textAlign: "center", textDecoration: "none", color: "white", background: "blue", padding: "10px 10px", marginLeft: "20px", marginBottom: "80px", marginTop: "85px", border: "1px solid #49167E", borderRadius: "10px" }}>
+                                                                            <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
                                                                         </div>
                                                                     </div>
                                                                     :
-                                                                    (type === "TRAINING_SESSION") ?
-                                                                        <div className="zoommeeting row ml-1">
-                                                                            <div style={{ width: "120px", textAlign: "center", textDecoration: "none", color: "white", background: "blue", padding: "10px 10px", marginLeft: "20px", marginBottom: "80px", marginTop: "85px", border: "1px solid #49167E", borderRadius: "10px" }}>
-                                                                                <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/class", { state: zoomInfo })} >Join Now</button>
-                                                                            </div>
-                                                                        </div>
-                                                                        :
-                                                                        ''
+                                                                    ''
 
                                     }
 

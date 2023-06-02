@@ -92,12 +92,14 @@ const Calender = (props) => {
         let start = session[i].startTime;
         let end = session[i].endTime;
         let date = session[i].sessionDate;
+        let currentDate = dayjs().format('YYYY-MM-DD');
+        let checkDate = date >= currentDate ?  session[i].trainingSessionName : <del>{session[i].trainingSessionName}</del>;
         start = start.split(":");
         end = end.split(":");
         date = date.split("-")
         eventlist.push({
             id: i,
-            title: session[i].trainingSessionName,
+            title: checkDate,
             joinUrl: session[i].joinUrl,
             start: new Date(date[0], parseInt(date[1] - 1), parseInt(date[2]), parseInt(start[0]), parseInt(start[1]), parseInt(start[2])),
             end: new Date(date[0], parseInt(date[1] - 1), parseInt(date[2]), parseInt(end[0]), parseInt(end[1]), parseInt(end[2])),
@@ -109,7 +111,10 @@ const Calender = (props) => {
      
         getAllSessions();
         
-    }, [])
+    }, []);
+
+    
+    // console.log(dayjs().format('YYYY-MM-DD'));
 
     return (
         <div>

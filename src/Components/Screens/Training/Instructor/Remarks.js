@@ -75,12 +75,10 @@ const Remarks = ({ trainingSid, labId, learnerSid, assignmentLink, learner, show
     }
   }
 
-  console.log("score", score);
-  console.log("remarks", remarks);
 
 
   return (
-    <Modal show={show} handleClose={() => setShow(false)}  >
+    // <Modal show={show} handleClose={() => setShow(false)}  >
       <div className='border m-2 p-2 ' style={{ background: "#F7F7F7", marginBottom: "0px" }}>
 
         <div class="card-header title-md" style={{ background: "#F7F7F7", marginBottom: "0px" }}>
@@ -137,7 +135,20 @@ const Remarks = ({ trainingSid, labId, learnerSid, assignmentLink, learner, show
               <div class="input-wrapper"><div class="input-field ">
                 <textarea class="form-control form-control-sm" value={remarks} onChange={handleChange} required />
               </div>
-                <p>Maximum {wordCount} Characters</p>
+              {
+                wordCount === 200 ?
+                <p>Maximum 200 Characters Left</p>
+                :
+                wordCount > 0 && wordCount < 200 ?
+
+                <p>Maximum { MAX_WORDS - wordCount} Characters Left</p>
+                :
+                // wordCount === 0 ?
+                // <p>0 Characters Left</p>
+                // :
+                <p>Maximum 200 Characters Left</p>
+              }
+                
               </div>
 
 
@@ -168,7 +179,7 @@ const Remarks = ({ trainingSid, labId, learnerSid, assignmentLink, learner, show
 
 
       </div>
-    </Modal>
+    // </Modal>
 
   )
 }

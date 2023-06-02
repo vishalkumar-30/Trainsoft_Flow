@@ -8,7 +8,7 @@ const VsCodePage = ()=>{
   
 
     const onOpen =()=>{
-        window.open(' https://do.trainsoft.live/')
+        window.open('https://gnosislabs.cloud/')
     }
 
     return(<>

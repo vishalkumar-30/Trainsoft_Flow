@@ -745,21 +745,25 @@ const CourseDetails = ({ location }) => {
         }
     }
 
-    //delete course section
+    //delete course section after confirmation
     const deleteCourseSection = (sectionSid) => {
-        try {
-            spinner.show();
-            RestService.deleteCourseSection(sectionSid).then(res => {
-                Toast.success({ message: `Section deleted successfully` });
-                spinner.hide();
-                //window.location.reload(true);
-                getSection();
-            }, err => console.log(err)
-            );
+        const response = window.confirm("Are you sure you want to delete?");
+        if(response){
+            try {
+                spinner.show();
+                RestService.deleteCourseSection(sectionSid).then(res => {
+                    Toast.success({ message: `Section deleted successfully` });
+                    spinner.hide();
+                    //window.location.reload(true);
+                    getSection();
+                }, err => console.log(err)
+                );
+            }
+            catch (err) {
+                console.error('error occur on deleteCourseSection', err)
+            }
         }
-        catch (err) {
-            console.error('error occur on deleteCourseSection', err)
-        }
+    
     }
 
     useEffect(() => {
@@ -770,8 +774,6 @@ const CourseDetails = ({ location }) => {
         getAllCodingQuestions();
     }, []);
 
-
-    console.log(capstoneLabs);
 
     return (<>
         <div className="table-shadow p-3 pb-5">
@@ -1011,7 +1013,7 @@ const CourseDetails = ({ location }) => {
 
                                             <>
                                                 <form onSubmit={handleSubmit}>
-                                                    <div className="row mt-3 mb-3" >
+                                                    <div className="row mt-5 mb-3" >
 
                                                         {/* <input type="checkbox" id="capstone" name="capstone" checked={capstoneLabs}
                                                             onChange={(e) => setCapstoneLabs(e.target.checked)} /> */}

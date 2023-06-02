@@ -137,7 +137,7 @@ const Main = ({ questions }) => {
         navigator.mediaDevices
             .getUserMedia({
                 audio: true,
-                video: false, //make it true for video
+                video: true, //make it true for video
             })
             .then(cb);
     };

@@ -321,7 +321,8 @@ const GLOBELCONSTANT = {
 
     CODING: {
         GET_ALL_CODING_QUESTIONS: API_HOST_V2 + "get-all-coding-questions",
-        ADD_CODING_QUESTIONS_TO_SECTION: API_HOST_V2 + "add-coding-question-to-section"
+        ADD_CODING_QUESTIONS_TO_SECTION: API_HOST_V2 + "add-coding-question-to-section",
+        EVALUATE_CODE_WITH_TEST_CASE_FILE: API_HOST_V2 + "evaluate-coding-question"
     },
 
     USERPROFILE: {

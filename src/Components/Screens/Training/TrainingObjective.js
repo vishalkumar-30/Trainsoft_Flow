@@ -1,24 +1,58 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import Select from 'react-select';
 import ReactPlayer from 'react-player';
 import useToast from '../../../Store/ToastHook';
 import Remarks from './Instructor/Remarks';
 import RestService from '../../../Services/api.service';
 import AppContext from '../../../Store/AppContext';
+import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+
 const TrainingObjective = ({ trainingObjective, trainingSid, labId }) => {
   const [show, setShow] = useState(false);
   const [showLearnerTable, setShowLearnerTable] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [userSubmissions, setUserSubmissions] = useState([]);
-  const [allLearnersScore, setAllLearnersScore] = useState([]);
-  const [scoreNRemarks, setScoreNRemarks] = useState([]);
   const [score, setScore] = useState('');
+  const [showValidationMessage, setShowValidationMessage] = useState(false);
   const [remarks, setRemarks] = useState('');
+  const [allLearnersScore, setAllLearnersScore] = useState([]);
+  const [wordCount, setWordCount] = useState(200);
+  const MAX_WORDS = 200;
   const Toast = useToast();
   const { course, batches, spinner, user, setBatches, ROLE } = useContext(AppContext);
 
   let learnerData = [];
+
+  const [editMode, setEditMode] = useState(null);
+
+  const handleEdit = (id) => {
+    setEditMode(id);
+  };
+
+  const handleSave = (id) => {
+    setEditMode(null);
+    // editLearnerScoreAndRemarks(id);
+    // Save the edited row data to the backend or perform other operations
+  };
+
+  const handleCancel = () => {
+    setEditMode(null);
+  };
+
+  const handleInputChange = (id, field, value) => {
+    // console.log(id, field, value);
+    if (field === "score") {
+      setScore(value)
+    } else {
+      setRemarks(value)
+    }
+    setAllLearnersScore((prevData) =>
+      prevData.map((row) =>
+        row.learnerSid === id ? { ...row, [field]: value } : row
+      )
+    );
+  };
 
   const AllLearnsScoreNRemarks = () => {
     return (
@@ -57,7 +91,7 @@ const TrainingObjective = ({ trainingObjective, trainingSid, labId }) => {
                         handleInputChange(row.learnerSid, 'score', e.target.value)
 
                       }
-                     
+
                     />
                   ) : (
                     row.score
@@ -72,7 +106,7 @@ const TrainingObjective = ({ trainingObjective, trainingSid, labId }) => {
                         handleInputChange(row.learnerSid, 'remarks', e.target.value)
 
                       }
-                     
+
                     />
                   ) : (
                     row.remarks
@@ -95,45 +129,10 @@ const TrainingObjective = ({ trainingObjective, trainingSid, labId }) => {
       </>
     )
   }
-
-  // editable remarks and name score
-
-
-  // const [data, setData] = useState([
-  //   { id: 1, name: 'John Doe', score: 25, remarks: "good" },
-  //   { id: 2, name: 'Jane Smith', score: 30, remarks: "good" },
-  //   { id: 3, name: 'Bob Johnson', score: 40, remarks: "good" },
-  // ]);
-
-  const [editMode, setEditMode] = useState(null);
-
-  const handleEdit = (id) => {
-    setEditMode(id);
-  };
-
-  const handleSave = (id) => {
-    setEditMode(null);
-    // editLearnerScoreAndRemarks(id);
-    // Save the edited row data to the backend or perform other operations
-  };
-
-  const handleCancel = () => {
-    setEditMode(null);
-  };
-
-  const handleInputChange = (id, field, value) => {
-    // console.log(id, field, value);
-    if (field === "score") {
-      setScore(value)
-    } else {
-      setRemarks(value)
-    }
-    setAllLearnersScore((prevData) =>
-      prevData.map((row) =>
-        row.learnerSid === id ? { ...row, [field]: value } : row
-      )
-    );
-  };
+  console.log("trainingsid", trainingSid);
+  console.log("labId", labId);
+  console.log("learner", selectedOption);
+  console.log(userSubmissions);
 
   //get user submissions
   const getUserSubmissions = () => {
@@ -160,8 +159,8 @@ const TrainingObjective = ({ trainingObjective, trainingSid, labId }) => {
     }
   }
 
-  //get all learners score
-  const getAllLearnersScore = () => {
+   //get all learners score
+   const getAllLearnersScore = () => {
     try {
       spinner.show();
       RestService.getAllLearnersScore(labId, trainingSid).then(
@@ -241,122 +240,103 @@ const TrainingObjective = ({ trainingObjective, trainingSid, labId }) => {
     );
   };
 
-  // useEffect(()=>{
-  //   getAllLearnersScore();
-  // },[]);
-
-  console.log(score);
-  console.log(remarks);
-
-
   return (
 
     <>
-
-
-      {
-        "trainingDescription" in trainingObjective || "sectionDescription" in trainingObjective ?
-
-          <div className='border m-2 p-2 '>
-            <div class="card " >
-              <div class="card-header title-md" style={{ background: "#F7F7F7", marginBottom: "0px" }}>
-                Training Objective
+      <div className='border m-2 p-2'>
+        {
+          "trainingDescription" in trainingObjective || "sectionDescription" in trainingObjective ? (
+            <>
+              <div className='card'>
+                <div className='card-header title-md' style={{ background: "#F7F7F7", marginBottom: "0px" }}>
+                  Training Objective
+                </div>
               </div>
-            </div>
-            <div className='row mt-2 ' >
-              <div className='col-2 '>
-                <div class="card  mb-3 pl-1 pt-2 border ">
-                  <div class="card-text title-sm text-center">Videos</div>
-                  <div class="title-md text-center">
-                    {/* 2/4 */}
-                    {trainingObjective.videos === '0/0' ? 'N/A' : trainingObjective.videos}
-
+              <div className='row mt-2'>
+                <div className='col-sm-6 col-lg-2'>
+                  <div className='card mb-3 pl-1 pt-2 border h-75'>
+                    <div className='card-text title-sm text-center'>Videos</div>
+                    <div className='title-md text-center'>
+                      {trainingObjective.videos === '0/0' ? 'N/A' : trainingObjective.videos}
+                    </div>
+                  </div>
+                </div>
+                <div className='col-sm-6 col-lg-2'>
+                  <div className='card mb-3 pl-1 pt-2 border h-75'>
+                    <div className='card-text title-sm text-center'>Assessment</div>
+                    <div className='title-md text-center'>
+                      {trainingObjective.assessments === '0/0' ? 'N/A' : trainingObjective.assessments}
+                    </div>
+                  </div>
+                </div>
+                <div className='col-sm-6 col-lg-2'>
+                  <div className='card mb-3 pl-1 pt-2 border h-75'>
+                    <div className='card-text title-sm text-center'>Study Material</div>
+                    <div className='title-md text-center'>
+                      {trainingObjective.studyMaterials === '0/0' ? 'N/A' : trainingObjective.studyMaterials}
+                    </div>
+                  </div>
+                </div>
+                <div className='col-sm-6 col-lg-2'>
+                  <div className='card mb-3 pl-1 pt-2 border h-75'>
+                    <div className='card-text title-sm text-center'>Training Session</div>
+                    <div className='title-md text-center'>
+                      {trainingObjective.meetingSessions === '0/0' ? "N/A" : trainingObjective.meetingSessions}
+                    </div>
+                  </div>
+                </div>
+                <div className='col-sm-6 col-lg-2'>
+                  <div className='card mb-3 pl-1 pt-2 border h-75'>
+                    <div className='card-text title-sm text-center'>Labs Assessment</div>
+                    <div className='title-md text-center'>
+                      {trainingObjective.labs === '0/0' ? 'N/A' : trainingObjective.labs}
+                    </div>
+                  </div>
+                </div>
+                <div className='col-sm-6 col-lg-2'>
+                  <div className='card mb-3 pl-1 pt-2 border h-75'>
+                    <div className='card-text title-sm text-center'>Coding Questions</div>
+                    <div className='title-md text-center'>
+                      {trainingObjective.codingQuestions === '0/0' ? 'N/A' : trainingObjective.codingQuestions}
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <div className='col-2'>
-                <div class="card  mb-3 pl-1 pt-2 border">
-                  <div class="card-text title-sm text-center">Assessment</div>
-                  <div class="title-md text-center">
-                    {/* 2/4 */}
-                    {trainingObjective.assessments === '0/0' ? 'N/A' : trainingObjective.assessments}
-                  </div>
-                </div>
-              </div>
-              <div className='col-2'>
-                <div class="card  mb-3 pl-1 pt-2 border">
-                  <div class="card-text title-sm text-center">Study Material</div>
-                  <div class="title-md text-center">
-                    {/* 2/4 */}
-                    {trainingObjective.studyMaterials === '0/0' ? 'N/A' : trainingObjective.studyMaterials}
-                  </div>
-                </div>
-              </div>
-              <div className='col-2'>
-                <div class="card  mb-3 pl-1 pt-2 border">
-                  <div class="card-text title-sm text-center" >Training Session</div>
-                  <div class="title-md text-center">
-                    {/* 2/4 */}
-                    {trainingObjective.meetingSessions === '0/0' ? "N/A" : trainingObjective.meetingSessions}
-                  </div>
+              <div className="card border">
+                <div className="card-body">
+                  <h5 className="card-title title-md">Training Description</h5>
+                  <p className="card-text" style={{ textAlign: "justify" }}>
+                    {trainingObjective.trainingDescription ? (
+                      <ReactMarkdown>{trainingObjective.trainingDescription}</ReactMarkdown>
+                    ) : (
+                      <ReactMarkdown>{trainingObjective.sectionDescription}</ReactMarkdown>
+                    )}
+                  </p>
                 </div>
               </div>
 
-              <div className='col-2'>
-                <div class="card  mb-3 pl-1 pt-2 border">
-                  <div class="card-text title-sm text-center" >Labs Assessment</div>
-                  <div class="title-md text-center">
-                    {/* 2/4 */}
-                    {trainingObjective.labs === '0/0' ? 'N/A' : trainingObjective.labs}
+            </>
+          ) : (
+            <>
+              <div className='row'>
+                <div className='col-12 col-sm-6 col-md-4'>
+                  <div className='card mb-3 pt-2 border'>
+                    <div className='card-text title-sm text-center'>Batch-Strength</div>
+                    <div className='title-md text-center'>
+                      {trainingObjective.batchStrength}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className='col-2'>
-                <div class="card mb-3 pl-1 pt-2 border" >
-                  <div class=" card-text title-sm text-center ">Coding Questions</div>
-                  <div class="title-md text-center">
-                    {/* 2/4 */}
-                    {trainingObjective.codingQuestions === '0/0' ? 'N/A' : trainingObjective.codingQuestions}
+                <div className='col-12 col-sm-6 col-md-4'>
+                  <div className='card mb-3 pt-2 border'>
+                    <div className='card-text title-sm text-center'>Total Submissions</div>
+                    <div className='title-md text-center'>
+                      {trainingObjective.submissions}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="card border" >
-
-              <div class="card-body ">
-                <h5 class="card-title title-md">Training Description</h5>
-                {/* <p class="card-text">With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.With supporting text below as a natural lead-in to additional content.</p> */}
-                <p class="card-text">{"trainingDescription" in trainingObjective ? trainingObjective.trainingDescription : trainingObjective.sectionDescription}</p>
-                {/* <a href="#" class="btn btn-primary">Go somewhere</a> */}
-              </div>
-            </div>
-          </div>
-          :
-
-          <div className='border m-2 p-2 '>
-            <div className='row'>
-
-              <div className='col-4  '>
-                <div class="card  mb-3 pt-2 border ">
-                  <div class="card-text title-sm text-center">Batch-Strength</div>
-                  <div class="title-md text-center">
-                    {trainingObjective.batchStrength}
-                  </div>
-                </div>
-              </div>
-
-              <div className='col-4'>
-                <div class="card  mb-3  pt-2 border">
-                  <div class="card-text title-sm text-center">Total Submissions</div>
-                  <div class="title-md text-center">
-                    {trainingObjective.submissions}
-
-                  </div>
-                </div>
-              </div>
-              <div className='col-4'>
-                <div class="card  mb-3  pt-2 border">
+                <div className='col-12 col-sm-6 col-md-4'>
+                  <div className='card mb-3 pt-2 border'>
                   {
                     trainingObjective.scored > 0 ?
                       <div class="card-text title-sm text-center" style={{ cursor: "pointer" }}
@@ -369,69 +349,72 @@ const TrainingObjective = ({ trainingObjective, trainingSid, labId }) => {
                       :
                       <div class="card-text title-sm text-center">Evaluated Submissions</div>
                   }
-
-                  <div class="title-md text-center">
-                    {trainingObjective.scored}
-
+                    <div className='title-md text-center'>
+                      {trainingObjective.scored}
+                    </div>
                   </div>
                 </div>
               </div>
-
-
-            </div>
-
-            <div className='row'>
-              <div className='col-6'>
-                <div className=" form-group mx-2">
-                  <label className="label form-label">Select Learner</label>
-                  <Select
-                    defaultValue={selectedOption}
-                    onChange={setSelectedOption}
-                    options={learnerData}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
+              <div className='row'>
+                <div className='col-12 col-sm-6'>
+                  <div className='form-group mx-2'>
+                    <label className='label form-label'>Select Learner</label>
+                    <Select
+                      defaultValue={selectedOption}
+                      onChange={setSelectedOption}
+                      options={learnerData}
+                      className='basic-multi-select'
+                      classNamePrefix='select'
+                    />
+                  </div>
+                </div>
+                <div className='col-12 col-sm-6'>
+                  <div className='form-group mx-2'>
+                    <label className='label form-label'>Total Score</label>
+                    <div className='input-wrapper'>
+                      <div className='input-field'>
+                        <input
+                          className='form-control form-control-sm'
+                          type='text'
+                          value={Math.round(trainingObjective.labTotalScore)}
+                          disabled
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {selectedOption !== null && (
+                <div className='row'>
+                  <div className='col-12 col-sm-6'>
+                    <div className='mt-4'>
+                      <button className='btn btn-primary' style={{ width: '100%' }} onClick={() => getUserSubmissions()}>
+                        View
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <Modal show={show} handleClose={() => setShow(false)}>
+                {selectedOption !== null && (
+                  <Remarks
+                    trainingSid={trainingSid}
+                    labId={labId}
+                    learnerSid={selectedOption.value}
+                    assignmentLink={userSubmissions.link}
+                    learner={userSubmissions.userName}
                   />
+                )}
+              </Modal>
+              <Modal show={showLearnerTable} handleClose={() => setShowLearnerTable(false)}  >
+                <AllLearnsScoreNRemarks />
+              </Modal>
+            </>
+          )
+        }
+      </div>
 
-                </div>
-              </div>
-              <div className='col-3 '>
-                <label className="label form-label">Lab Weightage</label>
-                {/* {showValidationMessage && <p style={{ color: 'red' }}>Only numbers are allowed.</p>} */}
-
-                <div class="input-wrapper"><div class="input-field ">
-                  <input class="form-control form-control-sm" type="text" value={Math.round(trainingObjective.labTotalScore)} disabled />
-
-                </div></div>
-              </div>
-              {selectedOption !== null ?
-                <div className='col-3 mt-4'>
-                  <button className='btn btn-primary' style={{ width: "100%" }} onClick={() => { getUserSubmissions() }}>View</button>
-                </div>
-                : ''
-              }
-
-
-            </div>
-
-
-            {/* <Modal show={show} handleClose={() => setShow(false)}  > */}
-            {
-
-              selectedOption !== null && <Remarks trainingSid={trainingSid} labId={labId} learnerSid={selectedOption.value}
-                assignmentLink={userSubmissions.link} learner={userSubmissions.userName} show={show} setShow={setShow} />
-            }
-
-
-            {/* </Modal> */}
-
-
-            <Modal show={showLearnerTable} handleClose={() => setShowLearnerTable(false)}  >
-              <AllLearnsScoreNRemarks />
-            </Modal>
-          </div>
-      }
     </>
-
 
   )
 }
