@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Button } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 import { useState, useContext, useEffect } from "react";
@@ -12,30 +13,33 @@ import CardHeader from "../../../Common/CardHeader";
 import DynamicTable from "../../../Common/DynamicTable/DynamicTable";
 import { ICN_EDIT, ICN_TRASH, ICN_UPLOAD } from "../../../Common/Icon";
 import { Link, navigate } from "../../../Common/Router";
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import './question.css';
 
 
 const QuestionsTable = ({ location }) => {
-  const Toast = useToast()
+  const Toast = useToast();
   const { spinner, user } = useContext(AppContext);
   const [count, setCount] = useState(0);
-  const [questions, setQuestions] = useState([])
-  const [show, setShow] = useState(false)
-  const [files,setFiles] = useState()
-  const [isSearch,setIsSearch] = useState(false)
-  const [searchValue,setSearchValue] = useState('')
+  const [questions, setQuestions] = useState([]);
+  const [show, setShow] = useState(false);
+  const [files, setFiles] = useState();
+  const [isSearch, setIsSearch] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const [alignment, setAlignment] = React.useState('MCQ');
   const [configuration, setConfiguration] = useState({
     columns: {
       name: {
         title: "Question",
         sortDirection: null,
-        sortEnabled: true,
+        sortEnabled: false,
         isSearchEnabled: false,
         render: (data) => (
           <div style={{ display: "flex", alginItems: "center" }}>
-            <div className="w45"><Toggle id={data.sid} onChange={() => { changeStatus(data.sid,data.status) }} checked={data.status === 'ENABLED' ? true : false} /></div>
+            <div className="w45"><Toggle id={data.sid} onChange={() => { changeStatus(data.sid, data.status) }} checked={data.status === 'ENABLED' ? true : false} /></div>
             <Link
-          
+
               to={"question-details"}
               state={{
                 title: "Questions",
@@ -55,13 +59,13 @@ const QuestionsTable = ({ location }) => {
       questionType: {
         title: "Type",
         sortDirection: null,
-        sortEnabled: true,
+        sortEnabled: false,
         isSearchEnabled: false,
       },
       technologyName: {
         title: "Tags",
         sortDirection: null,
-        sortEnabled: true,
+        sortEnabled: false,
         isSearchEnabled: false,
         render: (data) => (
           <div className="flexWrap">
@@ -75,7 +79,7 @@ const QuestionsTable = ({ location }) => {
       difficulty: {
         title: "Difficulty",
         sortDirection: null,
-        sortEnabled: true,
+        sortEnabled: false,
         isSearchEnabled: false,
         render: (data) => (
           <div
@@ -131,13 +135,17 @@ const QuestionsTable = ({ location }) => {
     clearSelection: false,
   });
 
+  const handleChange = (event, newAlignment) => {
+    setAlignment(newAlignment);
+  };
+
   // get All question 
   const getQuestionById = async (sid) => {
     spinner.show("Loading... wait...");
     try {
       let { data } = await RestService.getQuestionById(sid);
       navigate("/questions/create", {
-        state: { title: "Questions", subTitle: data.name, "isEdit": true, "questionData": {...data, "answer": data.answer.filter(d => d.status != GLOBELCONSTANT.STATUS.DELETED).map(a => ({...a, "operation" : GLOBELCONSTANT.OPERATION.UPDATE})) }},
+        state: { title: "Questions", subTitle: data.name, "isEdit": true, "questionData": { ...data, "answer": data.answer.filter(d => d.status != GLOBELCONSTANT.STATUS.DELETED).map(a => ({ ...a, "operation": GLOBELCONSTANT.OPERATION.UPDATE })) } },
       });
       spinner.hide();
     } catch (err) {
@@ -162,19 +170,35 @@ const QuestionsTable = ({ location }) => {
     }
   }
 
-    // change question status
-    const changeStatus = async (qSid,status) => {
-      spinner.show("Loading... wait");
-      try {
-        let { data } = await RestService.changeQuestionStatus(qSid,status === "DISABLED" ? "enabled": "disabled")
-        getAllQuestion()
-        Toast.success({ message: "Status updated successfully" })
-        spinner.hide();
-      } catch (err) {
-        spinner.hide();
-        console.error("error occur on getAllQuestion()", err)
-      }
+  //get coding questions
+  const getAllCodingQuestion = async (page = 1) => {
+    spinner.show("Loading... wait");
+    try {
+      let { data } = await RestService.getAllCodingQuestion(GLOBELCONSTANT.PAGE_SIZE, page - 1)
+      setQuestions(data);
+      setIsSearch(false)
+      setSearchValue('')
+      spinner.hide();
+    } catch (err) {
+      setIsSearch(false)
+      spinner.hide();
+      console.error("error occur on getAllCodingQuestion()", err)
     }
+  }
+
+  // change question status
+  const changeStatus = async (qSid, status) => {
+    spinner.show("Loading... wait");
+    try {
+      let { data } = await RestService.changeQuestionStatus(qSid, status === "DISABLED" ? "enabled" : "disabled")
+      getAllQuestion();
+      Toast.success({ message: "Status updated successfully" })
+      spinner.hide();
+    } catch (err) {
+      spinner.hide();
+      console.error("error occur on getAllQuestion()", err)
+    }
+  }
 
   // Delete question
   const deleteQuestion = async (sid) => {
@@ -192,10 +216,10 @@ const QuestionsTable = ({ location }) => {
   }
 
   // search topic 
-  const searchQuestion = async (value,pageNo=1) => {
+  const searchQuestion = async (value, pageNo = 1) => {
     spinner.show("Loading... wait");
     try {
-      let { data } = await RestService.searchQuestion(value , user.companySid,GLOBELCONSTANT.PAGE_SIZE,pageNo-1)
+      let { data } = await RestService.searchQuestion(value, user.companySid, GLOBELCONSTANT.PAGE_SIZE, pageNo - 1)
       setQuestions(data);
       setIsSearch(true)
       spinner.hide();
@@ -235,16 +259,25 @@ const QuestionsTable = ({ location }) => {
   }
 
   useEffect(() => {
-    getQuestionCount()
-    getAllQuestion()
+    getQuestionCount();
+    // getAllQuestion();
   }, [])
+
+  useEffect(() => {
+    if (alignment === "MCQ") {
+      getAllQuestion();
+    }
+    else {
+      getAllCodingQuestion();
+    }
+  }, [alignment])
   return (
     <>
       <CardHeader
         {...{
           location,
           onChange: (e) => e.length === 0 && getAllQuestion(),
-          onEnter: (e) => {setSearchValue(e);searchQuestion(e)},
+          onEnter: (e) => { setSearchValue(e); searchQuestion(e) },
         }}
       >
         <DropdownButton className="btn-sm f13" title="+ New Question">
@@ -257,16 +290,44 @@ const QuestionsTable = ({ location }) => {
         </DropdownButton>
 
       </CardHeader>
-      <div className="table-shadow">
-        <DynamicTable
-          {...{
-            configuration,
-            sourceData: questions,
-            onPageChange: (e) => {isSearch ? searchQuestion(searchValue, e) : getAllQuestion(e)},
-            count,
-          }}
-        />
-      </div>
+      <ToggleButtonGroup
+        color="primary"
+        value={alignment}
+        exclusive
+        onChange={handleChange}
+        aria-label="Platform"
+      >
+        <ToggleButton value="MCQ">Mcq And Descriptive</ToggleButton>
+        <ToggleButton value="CODING">Coding Questions</ToggleButton>
+      </ToggleButtonGroup>
+      {
+        alignment === "MCQ" &&
+
+        <div className="table-shadow">
+          <DynamicTable
+            {...{
+              configuration,
+              sourceData: questions,
+              onPageChange: (e) => { isSearch ? searchQuestion(searchValue, e) : getAllQuestion(e) },
+              count,
+            }}
+          />
+        </div>
+      }
+      {alignment === "CODING" &&
+
+        <div className="table-shadow">
+          <DynamicTable
+            {...{
+              configuration,
+              sourceData: questions,
+              onPageChange: (e) => { isSearch ? searchQuestion(searchValue, e) : getAllCodingQuestion(e) },
+              count,
+            }}
+          />
+        </div>
+
+      }
       <BsModal {...{ show, setShow, headerTitle: "Upload Questions in Bulk", size: "lg" }}>
         <div className="">
           <div className="bulk-upload mt-2 border-0 ">
@@ -280,7 +341,7 @@ const QuestionsTable = ({ location }) => {
                 <label className="mb-0" htmlFor="contained-button-file2">
                   <Button variant="contained" color="primary" component="span">
                     <span className="mr-2">{ICN_UPLOAD}</span> Upload
-                              </Button>
+                  </Button>
                 </label>
               </div>
             </div>

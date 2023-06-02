@@ -30,7 +30,7 @@ const VsCode = ()=>{
             //      spinner.hide()
             //     // window.open(createPortal(data))
             // })
-            setLink(" https://do.trainsoft.live/")
+            setLink("https://gnosislabs.cloud/")
             spinner.hide()
             
         }catch(err){
@@ -46,7 +46,7 @@ const VsCode = ()=>{
                    {/* { link &&  <object type="text/html" data={link} style={{ width: "100%", height: "100%" }}>
                                 <p className="px-4">Loading... VsCode</p>
                             </object> } */}
-       { link && <iframe  src=" https://do.trainsoft.live/" height="100%" width="100%" title="Iframe Example"> </iframe> }
+       { link && <iframe  src="https://gnosislabs.cloud/" height="100%" width="100%" title="Iframe Example"> </iframe> }
     </>)
 }
 

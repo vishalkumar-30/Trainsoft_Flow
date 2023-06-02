@@ -9,6 +9,23 @@ import RestService from '../../../../Services/api.service';
 import AppUtils from '../../../../Services/Utils';
 import useToast from "../../../../Store/ToastHook";
 import TimesUpModal from "./TimesUpModal";
+import RecordRTC from "recordrtc";
+import AWS from 'aws-sdk';
+
+const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
+const REGION = process.env.REACT_APP_REGION;
+// const bucketUrl = process.env.REACT_APP_BUCKET_URL;
+
+AWS.config.update({
+    accessKeyId: process.env.REACT_APP_ACCESSKEYID,
+    secretAccessKey: process.env.REACT_APP_SECRETACCESSKEY
+})
+
+const myBucket = new AWS.S3({
+    params: { Bucket: S3_BUCKET },
+    region: REGION,
+})
+
 
 const Main = ({ questions }) => {
     const {
@@ -24,6 +41,19 @@ const Main = ({ questions }) => {
     const { spinner } = useContext(AppContext);
     const [review, setReview] = useState(true);
     const [show, setShow] = useState(false);
+    //start of recording
+    const [recordedVideoUrl, setRecordedVideoUrl] = useState(null);
+    const [isOpenVideoModal, setIsOpenVideoModal] = useState(false);
+    const [screen, setScreen] = useState(null);
+    const [camera, setCamera] = useState(null);
+    const [recorder, setRecorder] = useState(null);
+    const [startDisable, setStartDisable] = useState(false);
+    const [stopDisable, setStopDisable] = useState(true);
+    const [loadModal, setLoadModal] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [file, setFile] = useState(null);
+    const [progress, setProgress] = useState(0);
+    //end of recording
     const Toast = useToast();
 
     //update content mark as completed
@@ -58,7 +88,7 @@ const Main = ({ questions }) => {
         }
     }
 
-    // this method to submit your answer
+    // this method to submit your answer for both assessment and via training
     const handleSubmitAssessment = async () => {
         try {
             spinner.show("Submitting assessment.. Please wait...");
@@ -77,13 +107,15 @@ const Main = ({ questions }) => {
                     "virtualAccountSid": assUserInfo.sid
                 }
             }
-            
+
             await RestService.submitAssessment(payload).then(
                 response => {
                     spinner.hide();
-                    markCourseAsCompleted();
                     Toast.success({ message: `Congratulation! You have submitted your assessment successfully`, time: 3000 });
-
+                    if(trainingSid !== null){
+                        markCourseAsCompleted();
+                        stop();
+                    }
                     setFinished(true);
                 },
                 err => {
@@ -99,12 +131,229 @@ const Main = ({ questions }) => {
 
     }
 
+    // start of recording
+    //recording method starts
+    const captureCamera = (cb) => {
+        navigator.mediaDevices
+            .getUserMedia({
+                audio: true,
+                video: true, //make it true for video
+            })
+            .then(cb);
+    };
+
+    const startScreenRecord = async () => {
+        await setStopDisable(false);
+        setStartDisable(true);
+
+        captureScreen((screen) => {
+            captureCamera(async (camera) => {
+                screen.width = window.screen.width;
+                screen.height = window.screen.height;
+                screen.fullcanvas = true;
+                camera.width = 320;
+                camera.height = 240;
+                camera.top = screen.height - camera.height;
+                camera.left = screen.width - camera.width;
+
+                setScreen(screen);
+                setCamera(camera);
+
+                const newRecorder = RecordRTC([screen, camera], {
+                    type: "video",
+                });
+
+                newRecorder.startRecording();
+                newRecorder.screen = screen;
+
+                setRecorder(newRecorder);
+            });
+        });
+    };
+
+    const captureScreen = (callback) => {
+        invokeGetDisplayMedia(
+            (screen) => {
+                addStreamStopListener(screen, () => { });
+                callback(screen);
+            },
+            (error) => {
+                console.error(error);
+                alert(
+                    "Unable to capture your screen. Please check console logs.\n" + error
+                );
+                setStopDisable(true);
+                setStartDisable(false);
+            }
+        );
+    };
+
+    const stopLocalVideo = async (screen, camera) => {
+        [screen, camera].forEach(async (stream) => {
+            stream.getTracks().forEach(async (track) => {
+                track.stop();
+            });
+        });
+    };
+
+    const invokeGetDisplayMedia = (success, error) => {
+        var displaymediastreamconstraints = {
+            video: {
+                displaySurface: "monitor", // monitor, window, application, browser
+                logicalSurface: true,
+                cursor: "always", // never, always, motion
+            },
+        };
+        displaymediastreamconstraints = {
+            video: true,
+            audio: true,
+        };
+        if (navigator.mediaDevices.getDisplayMedia) {
+            navigator.mediaDevices
+                .getDisplayMedia(displaymediastreamconstraints)
+                .then(success)
+                .catch(error);
+        } else {
+            navigator
+                .getDisplayMedia(displaymediastreamconstraints)
+                .then(success)
+                .catch(error);
+        }
+    };
+
+    const addStreamStopListener = (stream, callback) => {
+        stream.addEventListener(
+            "ended",
+            () => {
+                callback();
+                callback = () => { };
+            },
+            false
+        );
+        stream.addEventListener(
+            "inactive",
+            () => {
+                callback();
+                callback = () => { };
+            },
+            false
+        );
+        stream.getTracks().forEach((track) => {
+            track.addEventListener(
+                "ended",
+                () => {
+                    callback();
+                    callback = () => { };
+                },
+                false
+            );
+            track.addEventListener(
+                "inactive",
+                () => {
+                    callback();
+                    callback = () => { };
+                },
+                false
+            );
+        });
+        stream.getVideoTracks()[0].onended = () => {
+            stop();
+        };
+    };
+
+    const stop = async () => {
+        await setStartDisable(true);
+        recorder.stopRecording(stopRecordingCallback);
+    };
+
+    const stopRecordingCallback = async () => {
+        await stopLocalVideo(screen, camera);
+
+        let recordedVideoUrl;
+        let blob = recorder.getBlob();
+
+        if (recorder.getBlob()) {
+            setRecordedVideoUrl(URL.createObjectURL(recorder.getBlob()));
+        }
+
+        setScreen(null);
+        setIsOpenVideoModal(true);
+        setStartDisable(false);
+        setStopDisable(true);
+        setCamera(null);
+
+        recorder.screen.stop();
+        recorder.destroy();
+        setRecorder(null);
+
+        var file = new File([blob], getFileName("mp4"), {
+            type: "video/mp4",
+        });
+
+        uploadFile(file);
+    };
+
+    const videoModalClose = () => {
+        setIsOpenVideoModal(false);
+    };
+
+    const openModal = async () => {
+        await setLoadModal(false);
+    };
+
+    const getFileName = (fileExtension) => {
+        let userSid = JSON.parse(localStorage.getItem('user'))
+        userSid = userSid.sid;
+
+        return (
+            `assessment_${instruction.sid}_${userSid}.${fileExtension}`
+        );
+    };
+
+    const uploadFile = async (file) => {
+        const params = {
+            ACL: 'public-read',
+            Body: file,
+            Bucket: S3_BUCKET,
+            Key: file.name
+        };
+
+        myBucket.putObject(params)
+            .on('httpUploadProgress', (evt) => {
+                setProgress(Math.round((evt.loaded / evt.total) * 100));
+                // console.log("success");
+                // if (evt.loaded === evt.total) {
+
+                //     insertRecordingSeedDetails();
+                // }
+            })
+            .send((err, data) => {
+                if (err) console.log(err);
+            });
+    };
+
+    //save link to db
+
+    // const insertRecordingSeedDetails = () => {
+    //     axios.post(`https://trainsoft.live/insled/v2/insert-seed-recording-details`, {}, {
+    //         params: {
+    //             recording_link: `${bucketUrl}${getFileName("mp4")}`
+    //         }
+    //     })
+    //         .then(response => console.log(response.status))
+    //         .catch(err => console.warn(err));
+    // }
+    // end of recording    
     // listening when time's up to submit assessment automatically
     useEffect(() => {
         if (hasExamEnd) {
             setShow(true);
         }
-    }, [hasExamEnd])
+    }, [hasExamEnd]);
+
+    useEffect(()=>{
+        startScreenRecord();
+    },[])
 
     return (
         <div className={styles.main}>

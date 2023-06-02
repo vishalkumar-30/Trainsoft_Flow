@@ -38,7 +38,7 @@ const DashboardLearner = () => {
     const [ongoingTrainingDetails, setOngoingTrainingDetails] = useState([]);
     const [completedTrainingDetails, setCompletedTrainingDetails] = useState([]);
     const [learnerCertificateDetails, setLearnerCertificateDetails] = useState([]);
-    const [hoursInvested, setHoursInvested] = useState("");
+    const [hoursInvested, setHoursInvested] = useState('');
     // const [fourCards, setFourCards] = useState([]);
     let weakness = [], strength = [];
     let sum = 0;
@@ -260,7 +260,7 @@ const DashboardLearner = () => {
                         setOngoingTrainingDetails(response.data.ongoingTrainingDetails);
                         setCompletedTrainingDetails(response.data.completedTrainingDetails);
                         setLearnerCertificateDetails(response.data.learnerCertificateDetails);
-                        setHoursInvested(response.data.hourseInvestedDetails);
+                        setHoursInvested(response.data.hourseInvestedDetails.hoursInvested);
                     }
 
                 },
@@ -273,6 +273,19 @@ const DashboardLearner = () => {
         } catch (err) {
             console.error("error occur on getLearnerDasboardCardsDetails()", err)
         }
+    }
+
+    //convert minutes and hours into days
+    const getDaysFromMinutesAndHours = (hoursNMinutes) => {
+        const hours = hoursNMinutes.split(':')[0].replace(/\D/g, '');
+        const minutes = hoursNMinutes.split(':')[1].replace(/\D/g, '');
+        // Convert minutes and hours to milliseconds
+        var totalMilliseconds = (minutes * 60 + hours * 3600) * 1000;
+
+        // Calculate the number of days
+        var days = Math.floor(totalMilliseconds / (24 * 60 * 60 * 1000));
+
+        return days;
     }
 
     const keys = Object.keys(tagsScore);
@@ -300,79 +313,88 @@ const DashboardLearner = () => {
         getLearnerDasboardCardsDetails();
     }, []);
 
-    console.log(trainingDetails);
+    // console.log(hoursInvested.hoursInvested.split(':')[1].replace(/\D/g,''));
     return (
         <>
 
-<Card title="Skill meter">
-  <div className="row">
-    <div className="col-sm-6 col-md-6 pb-3">
-      <SkillsLevelGraph skills={(skill / count).toFixed(2)} />
-    </div>
-    <div className="col-sm-6 col-md-6">
-      <div className="row">
-        <div className="col-sm-6">
-          <div className="grid-batch1">
-            <div className="mb10">{ICN_COMING_BATCHES}</div>
-            <div>
-              <div className="batch-title">{ongoingTrainingDetails.count}</div>
-              <div className="batch-label">Ongoing Trainings</div>
-            </div>
-            <div className="jce">
-              <div className="grid-batch-icon">
-                <i className="bi bi-arrows-angle-expand"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-sm-6">
-          <div className="grid-batch2">
-            <div className="mb10">{ICN_COPY}</div>
-            <div>
-              <div className="batch-title">{completedTrainingDetails.count}</div>
-              <div className="batch-label">Completed Trainings</div>
-            </div>
-            <div className="jce">
-              <div className="grid-batch-icon">
-                <i className="bi bi-arrows-angle-expand"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="row mt-3">
-        <div className="col-sm-6">
-          <div className="grid-batch3">
-            <div className="mb10">{ICN_COPY}</div>
-            <div>
-              <div className="batch-title">{learnerCertificateDetails.count}</div>
-              <div className="batch-label">Certificates Earned</div>
-            </div>
-            <div className="jce">
-              <div className="grid-batch-icon">
-                <i className="bi bi-arrows-angle-expand"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-sm-6">
-          <div className="grid-batch1">
-            <div className="mb10">{ICN_COPY}</div>
-            <div>
-              <div className="batch-title">{hoursInvested.hoursInvested}</div>
-              <div className="batch-label">Hours Invested</div>
-            </div>
-            <div className="jce">
-              <div className="grid-batch-icon">
-                <i className="bi bi-arrows-angle-expand"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</Card>
+            <Card title="Skill meter">
+                <div className="row">
+                    <div className="col-sm-6 col-md-6 pb-3">
+                        <SkillsLevelGraph skills={(skill / count).toFixed(2)} />
+                    </div>
+                    <div className="col-sm-6 col-md-6">
+                        <div className="row">
+                            <div className="col-sm-6">
+                                <div className="grid-batch1">
+                                    <div className="mb10">{ICN_COMING_BATCHES}</div>
+                                    <div>
+                                        <div className="batch-title">{ongoingTrainingDetails.count}</div>
+                                        <div className="batch-label">Ongoing Trainings</div>
+                                    </div>
+                                    <div className="jce">
+                                        <div className="grid-batch-icon">
+                                            <i className="bi bi-arrows-angle-expand"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-sm-6">
+                                <div className="grid-batch2">
+                                    <div className="mb10">{ICN_COPY}</div>
+                                    <div>
+                                        <div className="batch-title">{completedTrainingDetails.count}</div>
+                                        <div className="batch-label">Completed Trainings</div>
+                                    </div>
+                                    <div className="jce">
+                                        <div className="grid-batch-icon">
+                                            <i className="bi bi-arrows-angle-expand"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row mt-3">
+                            <div className="col-sm-6">
+                                <div className="grid-batch3">
+                                    <div className="mb10">{ICN_COPY}</div>
+                                    <div>
+                                        <div className="batch-title">{learnerCertificateDetails.count}</div>
+                                        <div className="batch-label">Certificates Earned</div>
+                                    </div>
+                                    <div className="jce">
+                                        <div className="grid-batch-icon">
+                                            <i className="bi bi-arrows-angle-expand"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-sm-6">
+                                <div className="grid-batch1">
+                                    <div className="mb10">{ICN_COPY}</div>
+                                    { 
+                                        hoursInvested.indexOf(":") && hoursInvested.split(':')[0].replace(/\D/g,'') >= 24?
+                                        <div>
+                                            <div className="batch-title">{getDaysFromMinutesAndHours(hoursInvested)}</div>
+                                            <div className="batch-label">Days Invested</div>
+                                        </div>
+                                        :
+                                        <div>
+                                            <div className="batch-title">{hoursInvested}</div>
+                                            <div className="batch-label">Hours Invested</div>
+                                        </div>
+
+                                    }
+                                    <div className="jce">
+                                        <div className="grid-batch-icon">
+                                            <i className="bi bi-arrows-angle-expand"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Card>
 
 
             <div className='row mt-2'>
@@ -445,7 +467,7 @@ const DashboardLearner = () => {
                                                         `${trainingDetails[0].learnerWeightedDetailsTO.videoCompletion.overalllAverageWeightage * 100}%`
                                                     } */}
                                                     {/* {Number.isInteger(trainingProgressVideo.percentage)? trainingProgressVideo.percentage : (trainingProgressVideo.percentage).toFixed(2)} */}
-                                                    {Number.isInteger(progressAll.VIDEO.percentage)? `${progressAll.VIDEO.percentage}%` : `${progressAll.VIDEO.percentage.toFixed(2)}%` }
+                                                    {Number.isInteger(progressAll.VIDEO.percentage) ? `${progressAll.VIDEO.percentage}%` : `${progressAll.VIDEO.percentage.toFixed(2)}%`}
                                                 </div>
                                             </div>
                                             : ''
@@ -461,7 +483,7 @@ const DashboardLearner = () => {
                                                         :
                                                         `${(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage * 100).toFixed(2)}%`
                                                     } */}
-                                                    {Number.isInteger(progressAll.LAB.percentage)? `${progressAll.LAB.percentage}%` : `${progressAll.LAB.percentage.toFixed(2)}%` }
+                                                    {Number.isInteger(progressAll.LAB.percentage) ? `${progressAll.LAB.percentage}%` : `${progressAll.LAB.percentage.toFixed(2)}%`}
                                                     {/* {Number.isInteger(trainingProgressLab.percentage) ? trainingProgressLab.percentage : (trainingProgressLab.percentage).toFixed(2)} */}
                                                 </div>
                                             </div>
@@ -476,7 +498,7 @@ const DashboardLearner = () => {
                                                     :
                                                     `${(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage * 100).toFixed(2)}%`
                                                 } */}
-                                              {Number.isInteger(progressAll.ASSESSMENT.percentage)? `${progressAll.ASSESSMENT.percentage}%` : `${progressAll.ASSESSMENT.percentage.toFixed(2)}%` }
+                                                {Number.isInteger(progressAll.ASSESSMENT.percentage) ? `${progressAll.ASSESSMENT.percentage}%` : `${progressAll.ASSESSMENT.percentage.toFixed(2)}%`}
                                                 {/* {Number.isInteger(trainingProgressAssessment.percentage) ? trainingProgressAssessment.percentage : (trainingProgressAssessment.percentage).toFixed(2)} */}
                                             </div>
                                         </div>
@@ -487,7 +509,7 @@ const DashboardLearner = () => {
                                         <div >70%</div>
                                     </div> */}
                                     {
-                                        progressAll.DOCUMENTS.total !== 0  ?
+                                        progressAll.DOCUMENTS.total !== 0 ?
                                             <div className=' my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
                                                 <div className='title-sm'>Study Material</div>
                                                 <div>
@@ -496,7 +518,7 @@ const DashboardLearner = () => {
                                                         :
                                                         `${trainingDetails[0].learnerWeightedDetailsTO.documentDetails.overalllAverageWeightage * 100}%`
                                                     } */}
-                                                    {Number.isInteger(progressAll.DOCUMENTS.percentage)? `${progressAll.DOCUMENTS.percentage}%` : `${progressAll.DOCUMENTS.percentage.toFixed(2)}%` }
+                                                    {Number.isInteger(progressAll.DOCUMENTS.percentage) ? `${progressAll.DOCUMENTS.percentage}%` : `${progressAll.DOCUMENTS.percentage.toFixed(2)}%`}
                                                     {/* {Number.isInteger(trainingProgressDoc.percentage) ? trainingProgressDoc.percentage : (trainingProgressDoc.percentage).toFixed(2)} */}
                                                 </div>
                                             </div>
@@ -504,7 +526,7 @@ const DashboardLearner = () => {
                                     }
 
                                     {
-                                        progressAll.CODING.total !== 0  ?
+                                        progressAll.CODING.total !== 0 ?
                                             <div className='d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
                                                 <div className='title-sm'>Challenges</div>
                                                 <div>
@@ -516,7 +538,7 @@ const DashboardLearner = () => {
                                                     {/* {
                                                       Number.isInteger(trainingProgressCoding.percentage) ? trainingProgressCoding.percentage : (trainingProgressCoding.percentage).toFixed(2)
                                                     } */}
-                                                    {Number.isInteger(progressAll.CODING.percentage)? `${progressAll.CODING.percentage}%` : `${progressAll.CODING.percentage.toFixed(2)}%` }
+                                                    {Number.isInteger(progressAll.CODING.percentage) ? `${progressAll.CODING.percentage}%` : `${progressAll.CODING.percentage.toFixed(2)}%`}
                                                 </div>
                                             </div>
                                             : ''
@@ -645,8 +667,8 @@ const DashboardLearner = () => {
                             </div>
 
                         </>
-                    : 
-                    ''
+                        :
+                        ''
 
                 }
 
