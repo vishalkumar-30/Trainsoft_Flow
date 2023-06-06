@@ -9,6 +9,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { BsCheckbox } from "../../../Common/BsUtils";
 
 const MyLab = ({ accountLabs }) => {
+    console.log(accountLabs);
     return (<>
         <div className="aic jcb">
             <div className="title-md">Lab Filter</div>

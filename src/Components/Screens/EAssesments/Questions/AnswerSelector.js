@@ -10,18 +10,39 @@ import { Field } from "formik";
 import AppUtils from '../../../../Services/Utils';
 import GLOBELCONSTANT from '../../../../Constant/GlobleConstant';
 
-const AnswerSelector = ({ 
-  values, 
-  ordering = GLOBELCONSTANT.ANSWER_PATTERN.ALPHABETS, 
+const AnswerSelector = ({
+  values,
+  ordering = GLOBELCONSTANT.ANSWER_PATTERN.ALPHABETS,
   setFieldValue,
   deletedAnswers,
   setDeletedAnswers
 }) => {
   const [correctAnswer, setCorrectAnswer] = useState();
+  const [correctAnswerMulti, setCorrectAnswerMulti] = useState([]);
+
+  //handle multiple checkbox
+  const handleMultiCheck = (event, id) => {
+    const { checked } = event.target;
+
+    // Update the checkboxArray based on whether the checkbox was checked or unchecked
+    if (checked) {
+      setCorrectAnswerMulti((prevArray) => [...prevArray, id]);
+      let newValMulti = values.answer && values.answer.map((r, i) => ({ ...r, correct: i === id? true : r.correct === false ? false
+       : false}));
+       setFieldValue("answer", newValMulti);
+    } else {
+      setCorrectAnswerMulti((prevArray) => prevArray.filter((item) => item !== id));
+      let newValMulti = values.answer && values.answer.map((r, i) => ({ ...r, correct: 
+        r.correct ? true : i === id? false 
+       : false}));
+       setFieldValue("answer", newValMulti);
+    }
+    // handleSetCorrectAnswerMulti(id);
+  };
 
   const addAnswer = () => {
     try {
-      let tmpVal = {...values};
+      let tmpVal = { ...values };
       tmpVal.answer.push(GLOBELCONSTANT.DATA.ANS_OBJ);
       setFieldValue("answer", tmpVal.answer);
       handleChangeOptionValue();
@@ -32,12 +53,12 @@ const AnswerSelector = ({
 
   const deleteAnswer = (index) => {
     try {
-      let tmpVal = {...values};
+      let tmpVal = { ...values };
       let tempDelObj = tmpVal.answer.find((r, i) => i === index);
-      if(AppUtils.isNotEmptyObject(tempDelObj)) {
-        if (tempDelObj.sid) setDeletedAnswers([...deletedAnswers, {...tempDelObj, "operation": GLOBELCONSTANT.OPERATION.DELETE}])
+      if (AppUtils.isNotEmptyObject(tempDelObj)) {
+        if (tempDelObj.sid) setDeletedAnswers([...deletedAnswers, { ...tempDelObj, "operation": GLOBELCONSTANT.OPERATION.DELETE }])
       }
-      if (tempDelObj.sid) console.log([...deletedAnswers, {...tempDelObj, "operation": GLOBELCONSTANT.OPERATION.DELETE}]);
+      if (tempDelObj.sid) console.log([...deletedAnswers, { ...tempDelObj, "operation": GLOBELCONSTANT.OPERATION.DELETE }]);
       tmpVal.answer.splice(index, 1);
       setFieldValue("answer", tmpVal.answer);
       handleChangeOptionValue();
@@ -48,7 +69,7 @@ const AnswerSelector = ({
 
   // this method to set option value
   const handleChangeOptionValue = () => {
-    let newVal = values.answer && values.answer.map((r, i) => ({...r, answerOption: ordering === GLOBELCONSTANT.ANSWER_PATTERN.ALPHABETS ? GLOBELCONSTANT.ALPHABETS[i] : i + 1}))
+    let newVal = values.answer && values.answer.map((r, i) => ({ ...r, answerOption: ordering === GLOBELCONSTANT.ANSWER_PATTERN.ALPHABETS ? GLOBELCONSTANT.ALPHABETS[i] : i + 1 }))
     setFieldValue("answer", newVal);
   }
 
@@ -56,17 +77,39 @@ const AnswerSelector = ({
   const handleSetCorrectAnswer = (index) => {
     try {
       setCorrectAnswer(index);
-      let newVal = values.answer && values.answer.map((r, i) => ({...r, correct: i === index ? true : false}));
-      setFieldValue("answer", newVal);
+        let newVal = values.answer && values.answer.map((r, i) => ({ ...r, correct: i === index ? true : false }));
+        setFieldValue("answer", newVal);
     } catch (err) {
-      console.error("Error occur in handleSetCorrectAnswer --", err);  
+      console.error("Error occur in handleSetCorrectAnswer --", err);
     }
   }
+
+  //this method to set multi correct answer for question
+  const handleSetCorrectAnswerMulti = (event, index) => {
+    // handleMultiCheck(event, index);
+    console.log(correctAnswerMulti);
+    console.log(values.answer);
+    try {
+      //setCorrectAnswer(index);
+      let newValMulti = values.answer && values.answer.map((r, i) => ({ ...r, correct: i === index ||
+       r.correct ? true : r.correct === false ? false
+      : false}));
+      setFieldValue("answer", newValMulti);
+
+    } catch (err) {
+      console.error("Error occur in handleSetCorrectAnswerMulti --", err);
+    }
+  }
+
 
   useEffect(() => {
     handleChangeOptionValue();
   }, [ordering])
-   
+
+  console.log(values);
+  // useEffect(()=>{
+  //   handleSetCorrectAnswerMulti();
+  // },[correctAnswerMulti])
 
   return (
     <div style={{ margin: "45px 0" }}>
@@ -96,9 +139,9 @@ const AnswerSelector = ({
                   }}
                 />
                 <div style={{ display: "flex", alignItems: "center" }}>
-                  <div style={{ width: "20px" }}>{ ordering === GLOBELCONSTANT.ANSWER_PATTERN.ALPHABETS ? GLOBELCONSTANT.ALPHABETS[index] : index + 1}.</div>
-                  <Field 
-                     style={{
+                  <div style={{ width: "20px" }}>{ordering === GLOBELCONSTANT.ANSWER_PATTERN.ALPHABETS ? GLOBELCONSTANT.ALPHABETS[index] : index + 1}.</div>
+                  <Field
+                    style={{
                       width: "500px",
                       border: "none",
                       borderBottom: "1px solid rgba(0,0,0,0.2)",
@@ -132,31 +175,44 @@ const AnswerSelector = ({
           <div>
             <Form.Label className="label">Mark Correct Answer </Form.Label>
             {
-               values.answer
-               && AppUtils.isNotEmptyArray(values.answer)
-               && values.answer.map((ans, index) => <div
-                style={{
-                  padding: "15px 0",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
+              values.answer
+              && AppUtils.isNotEmptyArray(values.answer)
+              && values.answer.map((ans, index) =>
                 <div
-                  onClick={() => handleSetCorrectAnswer(index)}
                   style={{
-                    width: "20px",
-                    height: "20px",
-                    borderRadius: "10px",
-                    background: "#D4D6DB",
-                    marginRight: "10px",
-                    cursor: "pointer",
-                    border:
-                      correctAnswer === index || ans.correct
-                        ? "4px solid blue"
-                        : "4px solid #D4D6DB",
+                    padding: "15px 0",
+                    display: "flex",
+                    alignItems: "center",
                   }}
-                />
-              </div>)
+                >
+
+                  {
+                    values.questionType === "MS_MCQ" ?
+                      <input type="checkbox" value={index} checked={correctAnswerMulti.includes(index)}
+                        onChange={(event) => {
+                          handleMultiCheck(event, index);
+                          
+                        }} />
+
+                      :
+
+                      <div
+                        onClick={() => handleSetCorrectAnswer(index)}
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          borderRadius: "10px",
+                          background: "#D4D6DB",
+                          marginRight: "10px",
+                          cursor: "pointer",
+                          border:
+                            correctAnswer === index || ans.correct
+                              ? "4px solid blue"
+                              : "4px solid #D4D6DB",
+                        }}
+                      />
+                  }
+                </div>)
             }
           </div>
         </div>

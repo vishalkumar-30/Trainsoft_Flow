@@ -185,6 +185,22 @@ const QuestionsTable = ({ location }) => {
       console.error("error occur on getAllCodingQuestion()", err)
     }
   }
+  //get multiple mcq
+  const getAllMultipleMcq = async (page = 1) => {
+    spinner.show("Loading... wait");
+    try {
+      let { data } = await RestService.getAllMultipleMcq(GLOBELCONSTANT.PAGE_SIZE, page - 1)
+      setQuestions(data);
+      setIsSearch(false)
+      setSearchValue('')
+      spinner.hide();
+    } catch (err) {
+      setIsSearch(false)
+      spinner.hide();
+      console.error("error occur on getAllMultipleMcq()", err)
+    }
+  }
+
 
   // change question status
   const changeStatus = async (qSid, status) => {
@@ -267,8 +283,11 @@ const QuestionsTable = ({ location }) => {
     if (alignment === "MCQ") {
       getAllQuestion();
     }
-    else {
+    else if (alignment === "CODING") {
       getAllCodingQuestion();
+    }
+    else {
+      getAllMultipleMcq();
     }
   }, [alignment])
   return (
@@ -299,6 +318,7 @@ const QuestionsTable = ({ location }) => {
       >
         <ToggleButton value="MCQ">Mcq And Descriptive</ToggleButton>
         <ToggleButton value="CODING">Coding Questions</ToggleButton>
+        <ToggleButton value="MS_MCQ">Multiple Select</ToggleButton>
       </ToggleButtonGroup>
       {
         alignment === "MCQ" &&
@@ -322,6 +342,20 @@ const QuestionsTable = ({ location }) => {
               configuration,
               sourceData: questions,
               onPageChange: (e) => { isSearch ? searchQuestion(searchValue, e) : getAllCodingQuestion(e) },
+              count,
+            }}
+          />
+        </div>
+
+      }
+      {alignment === "MS_MCQ" &&
+
+        <div className="table-shadow">
+          <DynamicTable
+            {...{
+              configuration,
+              sourceData: questions,
+              onPageChange: (e) => { isSearch ? searchQuestion(searchValue, e) : getAllMultipleMcq(e) },
               count,
             }}
           />
