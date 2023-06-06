@@ -22,11 +22,7 @@ flex-wrap: wrap;
 height: 100vh;
 } */
 
-::selection{
-background-color: #8666AB;
-color :#ffffff;
 
-}
 .S {
 position: absolute;
 margin: 30% 30%;

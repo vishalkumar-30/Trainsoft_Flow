@@ -260,3 +260,14 @@ border-radius: 15px;
    border-radius: 20px;
    border-left: 2px solid #C8A3DF;
 }
+
+.continue {
+   background: #c4b1d9;
+   border: 1px solid #ddd;
+   border-radius: 15px;
+   cursor: pointer;
+   display: inline-block;
+   font-size: 13px;
+   margin: 0 18px 5px;
+   padding: 6px;
+}
