@@ -1383,3 +1383,8 @@ p {
 .hidden{
   overflow: hidden;
 }
+::selection{
+  background: rgb(73, 22, 126) !important;
+  padding: 5px !important;
+  color: #fff !important;
+}

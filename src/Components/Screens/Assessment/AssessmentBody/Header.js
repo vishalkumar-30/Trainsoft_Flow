@@ -38,7 +38,7 @@ const Header = ({ instruction, startTime = 0, timeLimit = 2500, introDialog }) =
               >
                 Download Certificate
               </div>
-              <div className={styles.exitButton} onClick={() =>{ fromLogin ? navigate("/assessment",{state:{title:"Dashboard"}}) : navigate("/")}}><span className="aic"><span className="mr5"><IcnExitApp /></span><span className="pt2">Exit</span></span></div>
+              <div className={styles.exitButton} onClick={() =>{ fromLogin ? navigate("/assessment",{state:{title:"Dashboard"}}) : navigate("/training/training-details")}}><span className="aic"><span className="mr5"><IcnExitApp /></span><span className="pt2">Exit</span></span></div>
               </>
             : <div className={styles.quitButton} onClick={() => setShow(true)}><span className="mr10"><IcnCloseCircleOutline /></span><span className="pt2">Quit</span></div>
           }

@@ -358,7 +358,7 @@ const CourseDetails = ({ location }) => {
 
     //create Training session
     const createTrainingSession = (data) => {
-        console.log(data);
+        console.log(data.sessionDate);
         try {
             spinner.show();
             let endTime = setTimes(data.sessionDate, data.endTime)
@@ -981,6 +981,7 @@ const CourseDetails = ({ location }) => {
 
                                                             <div className="col-md-4 ">
                                                                 <DateInput name="sessionDate" label="Start date" />
+                                                         
                                                             </div>
                                                             <div className="col-md-4">
                                                                 <TimeInput name="startTime" placeholder="Select Time" label="Start Time" />

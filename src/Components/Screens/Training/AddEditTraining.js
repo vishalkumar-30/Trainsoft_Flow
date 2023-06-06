@@ -41,6 +41,17 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit, s
     const [selectedOption, setSelectedOption] = useState(null);
     let batchData = [];
 
+
+    const isFormValid = () => {
+        return training.trim() !== '' && trainingoverview.trim() !== '' && startDate.trim() !== '' && endDate.trim() !== '';
+    };
+
+
+
+
+
+
+
     //validation
     const schema = Yup.object().shape({
         name: Yup.string().required('Required!'),
@@ -291,6 +302,8 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit, s
         getAllBatchByPage();
     }, []);
 
+
+    const currentDate = new Date().toISOString().split('T')[0];
     return (<>
         {
             isEdit ?
@@ -318,42 +331,43 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit, s
                                     initialValues={initialValues}
                                     validationSchema={schema}
                                 >
-                                    {({ handleSubmit, isSubmitting, dirty, setFieldValue, values }) => <form onSubmit={handleSubmit} className="create-batch" >
-                                        <div className="edit-shipping">
-                                            <Form.Group className="row">
-                                                <div className="col-6">
-                                                    <TextInput label="Training Name" name="name" />
-                                                </div>
-                                                <div className="col-6">
-                                                    <MultiSelectInput label="Select Batch(s)" footerAction={true} initialVal={values.trainingBatchs} bindKey="name" bindLevel="name" option={batches} name="trainingBatchs" />
-                                                </div>
-                                            </Form.Group>
-                                            <Form.Group className="row">
-                                                <div className="col-6">
-                                                    <DateInput label="Start Date" name="startDate" setFieldValue={setFieldValue} values={values} />
-                                                </div>
-                                                <div className="col-6">
-                                                    <DateInput label="End date" name="endDate" setFieldValue={setFieldValue} values={values} />
-                                                </div>
-                                            </Form.Group>
-                                            <Form.Group className="row">
-                                                <div className="col-6">
-                                                    <SelectInput label="Course" bindKey="name" value={values.courseSid} payloadKey="sid" name="courseSid" option={course} />
-                                                </div>
-                                                <div className="col-6">
-                                                    <SelectInput label="Instructor" bindKey="name" value={values.instructor} payloadKey="sid" name="instructor" option={instructor} />
-                                                </div>
-                                            </Form.Group>
-                                        </div>
+                                    {({ handleSubmit, isSubmitting, dirty, setFieldValue, values }) =>
+                                        <form onSubmit={handleSubmit} className="create-batch" >
+                                            <div className="edit-shipping">
+                                                <Form.Group className="row">
+                                                    <div className="col-6">
+                                                        <TextInput label="Training Name" name="name" />
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <MultiSelectInput label="Select Batch(s)" footerAction={true} initialVal={values.trainingBatchs} bindKey="name" bindLevel="name" option={batches} name="trainingBatchs" />
+                                                    </div>
+                                                </Form.Group>
+                                                <Form.Group className="row">
+                                                    <div className="col-6">
+                                                        <DateInput label="Start Date" name="startDate" setFieldValue={setFieldValue} values={values} />
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <DateInput label="End date" name="endDate" setFieldValue={setFieldValue} values={values} />
+                                                    </div>
+                                                </Form.Group>
+                                                <Form.Group className="row">
+                                                    <div className="col-6">
+                                                        <SelectInput label="Course" bindKey="name" value={values.courseSid} payloadKey="sid" name="courseSid" option={course} />
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <SelectInput label="Instructor" bindKey="name" value={values.instructor} payloadKey="sid" name="instructor" option={instructor} />
+                                                    </div>
+                                                </Form.Group>
+                                            </div>
 
-                                        <footer className="jcb">
-                                            <div>
-                                            </div>
-                                            <div>
-                                                <Button type="submit">Update</Button>
-                                            </div>
-                                        </footer>
-                                    </form>
+                                            <footer className="jcb">
+                                                <div>
+                                                </div>
+                                                <div>
+                                                    <Button type="submit">Update</Button>
+                                                </div>
+                                            </footer>
+                                        </form>
                                     }
                                 </Formik>
                             </div>
@@ -406,11 +420,12 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit, s
                                                                 <>
                                                                     <div className="row form-group">
                                                                         <div className="col">
-                                                                            <label className="label form-label">Training Name:</label>
+                                                                            <label className="label form-label">Training Name <span className="required " style={{color
+                                                                            :"red"}}>*</span> :</label>
                                                                             <div class="input-wrapper">
                                                                                 <div class="input-field ">
 
-                                                                                    <input className="form-control form-control-sm" type="text" value={training} onChange={(e) => setTraining(e.target.value)} />
+                                                                                    <input className="form-control form-control-sm" type="text" value={training} onChange={(e) => setTraining(e.target.value)} required />
                                                                                 </div>
                                                                             </div>
 
@@ -422,11 +437,12 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit, s
                                                                     <div className="row form-group">
 
                                                                         <div className="col">
-                                                                            <label className="label form-label">Training Overview</label>
+                                                                            <label className="label form-label">Training Overview  <span className="required " style={{color
+                                                                            :"red"}}>*</span> :</label>
                                                                             <div class="input-wrapper">
                                                                                 <div class="input-field ">
 
-                                                                                    <textarea className="form-control form-control-sm" type="text" value={trainingoverview} onChange={(e) => setTrainingoverview(e.target.value)} />
+                                                                                    <textarea className="form-control form-control-sm" type="text" value={trainingoverview} onChange={(e) => setTrainingoverview(e.target.value)} required />
                                                                                 </div>
                                                                             </div>
 
@@ -436,18 +452,20 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit, s
                                                                     <div className="row  form-group">
 
                                                                         <div className="col-6">
-                                                                            <label className="label form-label">Start date:</label>
+                                                                            <label className="label form-label">Start date  <span className="required " style={{color
+                                                                            :"red"}}>*</span> :</label>
                                                                             <div class="input-wrapper"><div class="input-field ">
-                                                                                <input class="form-control form-control-sm" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                                                                                <input class="form-control form-control-sm" type="date" value={startDate} min={currentDate} onChange={(e) => setStartDate(e.target.value)} required />
                                                                             </div></div>
 
                                                                         </div>
 
                                                                         <div className="col-6">
-                                                                            <label className="label form-label">End  date:</label>
+                                                                            <label className="label form-label">End  date <span className="required " style={{color
+                                                                            :"red"}}>*</span>:</label>
 
                                                                             <div class="input-wrapper"><div class="input-field ">
-                                                                                <input class="form-control form-control-sm" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                                                                                <input class="form-control form-control-sm" type="date" value={endDate}  min={currentDate}onChange={(e) => setEndDate(e.target.value)} required />
                                                                             </div></div>
 
                                                                         </div>
@@ -460,7 +478,8 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit, s
                                                                     <div className="row form-group">
 
                                                                         {showBatch ? '' : <div className="col">
-                                                                            <label className="label form-label">Select Existing Batch:</label>
+                                                                            <label className="label form-label">Select Existing Batch <span className="required " style={{color
+                                                                            :"red"}}>*</span> :</label>
                                                                             <Select
                                                                                 defaultValue={selectedOption}
                                                                                 onChange={setSelectedOption}
@@ -468,6 +487,8 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit, s
                                                                                 isMulti
                                                                                 className="basic-multi-select"
                                                                                 classNamePrefix="select"
+                                                                                required
+                                                                                isValid={selectedOption !== null && selectedOption.length > 0}
                                                                             />
 
                                                                         </div>
@@ -539,7 +560,8 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit, s
                                                                 <>
                                                                     <div className="row form-group">
                                                                         <div className="col mb-3">
-                                                                            <label className="label form-label ">Course</label>
+                                                                            <label className="label form-label ">Course  <span className="required " style={{color
+                                                                            :"red"}}>*</span>:</label>
                                                                             <select className="form-control" value={courseName} style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
                                                                                 setCourseName(e.target.value)
 
@@ -572,7 +594,8 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit, s
                                                                     <div className="row form-group">
 
                                                                         <div className="col mb-3 ">
-                                                                            <label className="label form-label ">Instructor</label>
+                                                                            <label className="label form-label ">Instructor  <span className="required " style={{color
+                                                                            :"red"}}>*</span>:</label>
                                                                             <select className="form-control" value={instructorName} style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => {
                                                                                 setInstructorName(e.target.value)
 
@@ -634,7 +657,7 @@ const AddEditTraining = ({ show, setShow, getTrainings, initialValues, isEdit, s
                                                             {
                                                                 activeStep !== 3 && activeStep !== 4 ?
 
-                                                                    <Button onClick={handleNext}>Next</Button>
+                                                                    <Button onClick={handleNext} disabled={!isFormValid()}>Next</Button>
                                                                     :
 
                                                                     ''

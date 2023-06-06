@@ -152,23 +152,6 @@ const InstructorDashboard = () => {
             </div>
         </Card>
 
-        <div className='row mt-2'>
-            <div className='col-sm-6 col-md-6'>
-                <Card title="Pending Task">
-                    <LinearProgressBar />
-
-                </Card>
-            </div>
-            <div className='col-sm-6 col-md-6'>
-                <Card title="Upcoming Classes">
-                    <div className='title-md' style={{ float: "right", margintop: "-40px" }}>
-                        {/* <a href='/calender'>  See All</a>
- View All */}
-                    </div>
-                    <Upcoming />
-                </Card>
-            </div>
-        </div>
 
 
 

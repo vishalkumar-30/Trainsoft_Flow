@@ -33,6 +33,9 @@ const DashboardLearner = () => {
     const [tagsScore, setTagsScore] = useState({});
     const [overallLeaderboard, setOverallLeaderboard] = useState([]);
     const [ranking, setRanking] = useState(40);
+const [leaderboardPercentage, setLeaderboardPercentage] =useState(20)
+
+
     const [skill, setSkill] = useState(0);
     const [count, setCount] = useState(0);
     const [ongoingTrainingDetails, setOngoingTrainingDetails] = useState([]);
@@ -118,8 +121,10 @@ const DashboardLearner = () => {
                                     if (overallLeaderboard[i].trainingSid === response.data[0].trainingSid &&
                                         overallLeaderboard[i].rankingDetails[j].isLoggedIn) {
 
-                                        console.log(overallLeaderboard[i].rankingDetails[j].rank);
-                                        setRanking(overallLeaderboard[i].rankingDetails[j].rank);
+                                        setRanking(overallLeaderboard[i].rankingDetails[j].leaderboardPosition);
+                                        console.log(overallLeaderboard[i].rankingDetails[j].leaderboardPercentage);
+                                        setLeaderboardPercentage(overallLeaderboard[i].rankingDetails[j].leaderboardPercentage);
+
                                         break;
                                     }
                                 }
@@ -140,6 +145,8 @@ const DashboardLearner = () => {
             console.error("error occur on getLearnerWeightedScores()", err)
         }
     }
+
+    console.log(leaderboardPercentage)
 
     //get specific training weightage
     const getLearnerWeightedScoresAll = () => {
@@ -319,11 +326,11 @@ const DashboardLearner = () => {
 
             <Card title="Skill meter">
                 <div className="row">
-                    <div className="col-sm-6 col-md-6 pb-3">
+                    <div className="col-sm-6 col-md-6 " style={{marginTop:"-20px"}}>
                         <SkillsLevelGraph skills={(skill / count).toFixed(2)} />
                     </div>
-                    <div className="col-sm-6 col-md-6">
-                        <div className="row">
+                    <div className="col-sm-6 col-md-6 ">
+                        <div className="row mt-4">
                             <div className="col-sm-6">
                                 <div className="grid-batch1">
                                     <div className="mb10">{ICN_COMING_BATCHES}</div>
@@ -397,22 +404,22 @@ const DashboardLearner = () => {
             </Card>
 
 
-            <div className='row mt-2'>
-                <div className='col-sm-6 col-md-6'>
-                    <Card title="Pending Task">
+            <div className='row mt-2 mx-1'>
+                
+                    <Card title="Pick up where you left off">
                         <LinearProgressBar />
 
                     </Card>
-                </div>
-                <div className='col-sm-6 col-md-6'>
+               
+                {/* <div className='col-sm-6 col-md-6'>
                     <Card title="Upcoming Classes">
                         <div className='title-md' style={{ float: "right", margintop: "-40px" }}>
-                            {/* <a href='/calender'>  See All</a>
-                            View All */}
+                            <a href='/calender'>  See All</a>
+                            View All
                         </div>
                         <Upcoming />
                     </Card>
-                </div>
+                </div> */}
             </div>
 
             {/* leaderboard */}
@@ -449,7 +456,7 @@ const DashboardLearner = () => {
                                     <div className='title-md'>
                                         Leaderboard
                                     </div>
-                                    <LeaderboardTimeline ranking={ranking} />
+                                    <LeaderboardTimeline ranking={ranking.toFixed(2)}  leaderboardPercentage={leaderboardPercentage}/>
 
                                 </div>
                                 <div className='col-sm-3 col-md-3'>
@@ -543,6 +550,33 @@ const DashboardLearner = () => {
                                             </div>
                                             : ''
                                     }
+
+{
+                                        progressAll.CAPSTONE.total !== 0  ?
+                                            <div className='d-flex justify-content-between p-2 border  mt-2' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
+                                                <div className='title-sm'>Capstone</div>
+                                                <div>
+                                                    {/* {isNaN(trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails.overalllAverageWeightage) ?
+                                                        "0%"
+                                                        :
+                                                        `${trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails.overalllAverageWeightage * 100}%`
+                                                    } */}
+                                                    {/* {
+                                                      Number.isInteger(trainingProgressCoding.percentage) ? trainingProgressCoding.percentage : (trainingProgressCoding.percentage).toFixed(2)
+                                                    } */}
+                                                    {Number.isInteger(progressAll.CAPSTONE.percentage) ? `${progressAll.CAPSTONE.percentage}%` : `${progressAll.CAPSTONE.percentage.toFixed(2)}%`}
+                                                </div>
+                                            </div>
+                                            : ''
+                                    }
+
+
+
+
+
+
+
+
 
                                 </div>
                                 <div className='col-sm-3 col-md-3'>
@@ -696,8 +730,8 @@ const DashboardLearner = () => {
                                             return (
                                                 <>
                                                     <tr >
-                                                        <td className='title-sm'><ul><li>{skill.tags}</li></ul></td>
-                                                        <td>{Math.round(skill.totalTagPercentage)}</td>
+                                                        <td className='title-sm '><ul><li>{skill.tags}</li></ul></td>
+                                                        <td  className='assesmentlab cat-title-md px-3' style={{float:"right"}}>{Math.round(skill.totalTagPercentage)}</td>
 
                                                     </tr>
                                                 </>

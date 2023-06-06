@@ -16,7 +16,7 @@ const AddComment = ({ buttonValue, addComments, replyingTo }) => {
       score: 0,
       username: "juliusomo",
       currentUser: true,
-      replies: [],
+      replies: [], 
     };
 
     addComments(newComment);
