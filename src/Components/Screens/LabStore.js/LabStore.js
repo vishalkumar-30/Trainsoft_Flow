@@ -68,8 +68,9 @@ const LabStore = ({ location }) => {
                   
                     <div className="text-right">
                         <BtnPrimary onClick={() => {
-                            navigate('labstore/lab-list', { state: { title: 'LAB STORE', subTitle: "Catalog", subPath: "labstore"} });
-                            filterLabs(res.categoryName);
+                            navigate('labstore/lab-list', { state: { title: 'LAB STORE', subTitle: "Catalog", 
+                            subPath: "labstore", categoryName: res.categoryName} });
+                            // filterLabs(res.categoryName);
                             }} className="labbutton">Show All Lab(s)</BtnPrimary>
                     </div>
                     </div>
@@ -99,28 +100,6 @@ const LabStore = ({ location }) => {
         }
     }
 
-    // get all labs from categories
-    const filterLabs = (labs) => {
-        try {
-
-            spinner.show()
-            RestService.filterLabs(labs).then(
-                response => {
-                    setLabsFromCategory(response.data.labDetails);
-                    // setLabsFromCategoryCount(response.data.count);
-                },
-                err => {
-                    spinner.hide();
-                }
-            ).finally(() => {
-                spinner.hide();
-            });
-        } catch (err) {
-            console.error("error occur on filterLabs()", err)
-        }
-    }
-
-    
      // get all labs from account
      const getAccountLabs = () => {
         try {
@@ -156,7 +135,8 @@ const LabStore = ({ location }) => {
             </div>
             <Router>
                 <LabContainer path="/" />
-                <LabList {...{ list: labsFromCategory}} path="lab-list" />
+                {/* <LabList {...{ list: labsFromCategory}} path="lab-list" /> */}
+                <LabList path="lab-list" />
                 <MyLab  {...{ accountLabs }} path="mylab" />
             </Router>
         </div>)

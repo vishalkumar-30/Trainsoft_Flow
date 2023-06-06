@@ -591,8 +591,8 @@ const [leaderboardPercentage, setLeaderboardPercentage] =useState(20)
                                                     // maxValue="1000"
                                                     // minValue="1" value="580"
                                                     // text={`580`}
-                                                    value="30"
-                                                    text={`30%`}
+                                                    value={progressAll.CAPSTONE.percentage}
+                                                    text={`${progressAll.CAPSTONE.percentage}`}
                                                     styles={buildStyles({
                                                         trailColor: "#F5FBFF",
                                                         pathColor: "#5CC9EE",

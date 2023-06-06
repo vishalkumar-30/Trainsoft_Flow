@@ -9,7 +9,7 @@ import useToast from '../../../Store/ToastHook';
 import AppContext from '../../../Store/AppContext';
 const dummyData = { label: 'Google Cloud Essentials', icon: ICN_ON_GOING, link: '', desc: 'In this introductory-level Quest, you will get hands-on practice with the Google Cloud’s fundamental tools and services. Google Cloud Essentials is the recommended first Quest for the Google... more details' }
 
-const AddLab = ({ labId, labName, labDescription }) => {
+const AddLab = ({ labId, labName, labDescription, filterLabs }) => {
   const { spinner } = useContext(AppContext);
   const Toast = useToast();
 
@@ -19,8 +19,9 @@ const AddLab = ({ labId, labName, labDescription }) => {
       spinner.show()
       RestService.addLabsToAccount(labId).then(res => {
         
-        Toast.success({ message: `Lab import successful` });
+        Toast.success({ message: `Lab import successful`, time: 3000 });
         spinner.hide();
+        filterLabs();
       }, err => console.log(err)
       );
     }

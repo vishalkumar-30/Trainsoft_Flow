@@ -73,7 +73,7 @@ const TrainingDetails = ({ location }) => {
     // const userSid = JSON.parse(localStorage.getItem('user'))
     const [show, setShow] = useState(false);
     const [showRecording, setShowRecording] = useState(false);
-    const [hello, setHello] = useState({});
+    const [sectionObjective, setSectionObjective] = useState({});
     const [evaluatedLab, setEvaluatedLab] = useState();
     const [labRecordingLink, setLabRecordingLink] = useState();
     const [labRecordingFileName, setLabRecordingFileName] = useState();
@@ -720,9 +720,9 @@ const TrainingDetails = ({ location }) => {
                                         <TrainingObjective trainingObjective={trainingObjective} />
 
                                         :
-                                        (hello !== null && type === "SECTION") ?
+                                        (sectionObjective !== null && type === "SECTION") ?
 
-                                            <TrainingObjective trainingObjective={hello} />
+                                            <TrainingObjective trainingObjective={sectionObjective} />
                                             :
 
                                             // (sessions !== null) ?
@@ -742,7 +742,8 @@ const TrainingDetails = ({ location }) => {
                                                         <div className=" jumbotron row ml-1" style={{ display: "flex", flexDirection: "column" }} >
                                                             {
 
-                                                                labRecordingLink === null && labRecordingFileName == null && user.role !== ROLE.INSTRUCTOR &&
+                                                                labRecordingLink === null && labRecordingFileName == null &&
+                                                                user.role !== ROLE.INSTRUCTOR &&
                                                                 <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
 
                                                                     <>
@@ -760,7 +761,7 @@ const TrainingDetails = ({ location }) => {
                                                                 </div>
                                                             }
                                                             {
-                                                                labRecordingLink !== null && labRecordingFileName !== null ?
+                                                                labRecordingLink !== null && labRecordingFileName !== null && user.role !== ROLE.INSTRUCTOR ?
                                                                     <>
                                                                         <div style={{ textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginBottom: "50px", marginTop: "10px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
 
@@ -790,10 +791,27 @@ const TrainingDetails = ({ location }) => {
                                                                     : ''
                                                             }
                                                             {
-                                                                instructorScreenRecording !== null && user.role === ROLE.INSTRUCTOR &&
+                                                                instructorScreenRecording !== null && user.role === ROLE.INSTRUCTOR && evaluatedLab ?
 
                                                                 <TrainingObjective trainingObjective={instructorScreenRecording}
                                                                     trainingSid={trainingSid} labId={labId} />
+                                                                :
+                                                                user.role === ROLE.INSTRUCTOR && !evaluatedLab &&
+                                                                <div style={{ width: "160px", textAlign: "center", textDecoration: "none", background: "rgb(73,22,126) ", padding: "15px 20px", marginLeft: "240px", marginBottom: "50px", marginTop: "40px", border: "1px solid rgb(73,22,126)", borderRadius: "10px" }}>
+
+                                                                    <>
+
+                                                                        <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => navigate("/labs", {
+                                                                            state: {
+                                                                                labDescription, labOverview, labSolution, labId, contentSid, trainingSid, labDuration, showcoursename, type, codingQuestionId, codingQuestiondesc, evaluatedLab
+                                                                            }
+                                                                        })
+                                                                        }>Open Sandbox</button>
+
+
+                                                                    </>
+
+                                                                </div>
 
                                                             }
                                                         </div>
@@ -884,8 +902,8 @@ const TrainingDetails = ({ location }) => {
                                         return (
                                             <>
                                                 <div>
-                                                    <DropdownItem title={train.sectionName} total={train.courseContentResposeTOList.length} theme="dark" hello="hello">
-                                                        <button onClick={() => { setType('SECTION'); setHello(train.sectionObjective) }}>Objective</button>
+                                                    <DropdownItem title={train.sectionName} total={train.courseContentResposeTOList.length} theme="dark">
+                                                        <button onClick={() => { setType('SECTION'); setSectionObjective(train.sectionObjective) }}>Objective</button>
                                                         <DynamicTable  {...{ configuration, sourceData: train.courseContentResposeTOList }} />
                                                     </DropdownItem>
                                                     {/* {

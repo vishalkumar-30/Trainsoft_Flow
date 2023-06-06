@@ -32,7 +32,7 @@ const LeaderboardTimeline = ({ ranking ,leaderboardPercentage}) => {
         </defs>
       
       </svg>
-     <div className='mt-2'> <i className='title-sm '>You are amongst top {Math.round(leaderboardPercentage)}</i></div>
+     <div className='mt-2'> <i className='title-sm '>You are amongst top {Math.round(leaderboardPercentage)}%</i></div>
     </>
   )
 }
