@@ -592,13 +592,13 @@ const [leaderboardPercentage, setLeaderboardPercentage] =useState(20)
                                                     // minValue="1" value="580"
                                                     // text={`580`}
                                                     value={progressAll.CAPSTONE.percentage}
-                                                    text={`${progressAll.CAPSTONE.percentage}`}
+                                                    text={`${progressAll.CAPSTONE.percentage}%`}
                                                     styles={buildStyles({
                                                         trailColor: "#F5FBFF",
                                                         pathColor: "#5CC9EE",
 
                                                     })} />
-                                                <div className="mt-2">Project Work</div>
+                                                <div className="mt-2">Capstone Project</div>
                                             </div>
 
 
@@ -614,9 +614,10 @@ const [leaderboardPercentage, setLeaderboardPercentage] =useState(20)
                                                                 pathColor: "#5CC9EE",
                                                             })} />
                                                         :
+                                            
                                                         <CircularProgressbar
-                                                            value={Math.round(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage * 100)}
-                                                            text={`${Math.round(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage * 100)}%`}
+                                                            value={progressAll.ASSESSMENT.percentage}
+                                                            text={`${progressAll.ASSESSMENT.percentage}%`}
                                                             styles={buildStyles({
                                                                 trailColor: "#F5FBFF",
                                                                 pathColor: "#5CC9EE",
@@ -661,8 +662,9 @@ const [leaderboardPercentage, setLeaderboardPercentage] =useState(20)
                                                                 // maxValue="1000"
                                                                 // minValue="1" value="789"
                                                                 // text={`789`}
-                                                                value={Math.round(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage * 100)}
-                                                                text={`${Math.round(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage * 100)}%`}
+                                                                // Lab Assessment
+                                                                value={progressAll.LAB.percentage}
+                                                                text={`${progressAll.LAB.percentage}%`}
                                                                 styles={buildStyles({
                                                                     trailColor: "#F5FBFF",
                                                                     pathColor: "#7D00B5",
@@ -679,7 +681,7 @@ const [leaderboardPercentage, setLeaderboardPercentage] =useState(20)
                                                                 pathColor: "#7D00B5",
                                                             })} />
                                                 }
-                                                <div className="mt-2">Lab Assessments </div>
+                                                <div className="mt-2">Practice Labs </div>
                                             </div>
                                         </div>
                                     </div>
