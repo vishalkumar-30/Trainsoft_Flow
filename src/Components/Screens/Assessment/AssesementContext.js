@@ -14,6 +14,8 @@ export const AssessmentProvider = ({ children }) => {
   const [dialogOpen, setDialogOpen] = useState(true);
   const [instruction, setInstruction] = useState({});
   const [selectedAnswer, setSelectedAnswer] = useState("");
+  //for mcq for multiple correct answer
+  const [correctAnswerMulti, setCorrectAnswerMulti] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [assUserInfo, setAssUserInfo] = useState({});
   const [hasExamEnd, setHasExamEnd] = useState(false);
@@ -98,6 +100,8 @@ export const AssessmentProvider = ({ children }) => {
     setInstruction,
     selectedAnswer, 
     setSelectedAnswer,
+    correctAnswerMulti,
+    setCorrectAnswerMulti,
     assUserInfo, 
     setAssUserInfo,
     questions,
