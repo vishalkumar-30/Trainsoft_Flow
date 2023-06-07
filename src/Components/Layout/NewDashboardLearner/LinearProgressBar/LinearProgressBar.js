@@ -36,12 +36,13 @@ const getLearnerUpcomingContent = () => {
     RestService.getLearnerUpcomingContent().then(
         response => {
             if (response.status === 200) {
-              setUpcomingDocuments(response.data.upcomingDocuments);
-              setUpcomingVideo(response.data.upcomingVideo);
-              setUpcomingTrainingSession(response.data.upcomingTrainingSession);
-              setUpcomingAssessment(response.data.upcomingAssessment);
-              setUpcomingPracticeLab(response.data.upcomingPracticeLab);
-              setUpcomingCapstoneLab(response.data.upcomingCapstoneLab);
+              setUpcomingDocuments(response.data.upcomingDocuments !== null ? response.data.upcomingDocuments : null);
+              setUpcomingVideo(response.data.upcomingVideo !== null ? response.data.upcomingVideo : null);
+              setUpcomingTrainingSession(response.data.upcomingTrainingSession !== null ? response.data.upcomingTrainingSession : null);
+              setUpcomingAssessment(response.data.upcomingAssessment !== null ? response.data.upcomingAssessment : null);
+              // console.log(response.data.upcomingPracticeLab !== null ? response.data.upcomingPracticeLab : null)
+              setUpcomingPracticeLab(response.data.upcomingPracticeLab !== null ? response.data.upcomingPracticeLab : null);
+              setUpcomingCapstoneLab(response.data.upcomingCapstoneLab !== null ? response.data.upcomingCapstoneLab : null);
             }
 
         },
@@ -77,7 +78,7 @@ useEffect(()=>{
           <div className="continue cat-title-md px-3" >Continue</div>
         </div>
         <div className="c-details1" style={{ textAlign: "justify"}}>
-          <span className='title-sm' style={{textTransform:"capitalize"}}>{upcomingVideo.contentName !==null ? upcomingVideo.contentName : "Everything Caught Up!!"}</span>
+          <span className='title-sm' style={{textTransform:"capitalize"}}>{upcomingVideo !== null && upcomingVideo.contentName !==null ? upcomingVideo.contentName : "Everything Caught Up!!"}</span>
 {/*        
        <span className='title-sm'>{upcomingVideo.trainingName }  </span> */}
         </div>
@@ -97,7 +98,7 @@ useEffect(()=>{
           </div>
 
           <div className="c-details1" style={{ textAlign: "justify" }}>
-      <span className='title-sm' style={{textTransform:"capitalize"}}> {upcomingDocuments.contentName !==null ?upcomingDocuments.contentName :"Everything Caught Up!!"}</span>
+      <span className='title-sm' style={{textTransform:"capitalize"}}> {upcomingDocuments !== null && upcomingDocuments.contentName !==null ?upcomingDocuments.contentName :"Everything Caught Up!!"}</span>
         </div>
          
 
@@ -116,7 +117,7 @@ useEffect(()=>{
             <div className='continue cat-title-md px-3'  > Continue </div>
           </div>
           <div className="c-details1" style={{ textAlign: "justify" }}>
-       <span className='title-sm'style={{textTransform:"capitalize"}}>{upcomingPracticeLab.contentName !== null ? upcomingPracticeLab.contentName:"Everything Caught Up!!"}</span>
+       <span className='title-sm'style={{textTransform:"capitalize"}}>{upcomingPracticeLab !== null && upcomingPracticeLab.contentName !== null ? upcomingPracticeLab.contentName:"Everything Caught Up!!"}</span>
         </div>
           
 
@@ -136,7 +137,7 @@ useEffect(()=>{
           </div>
 
           <div className="c-details1" style={{ textAlign: "justify" }}>
-       <span className='title-sm'style={{textTransform:"capitalize"}}>{upcomingAssessment.contentName !== null ? upcomingAssessment.contentName : "Everything Caught Up!!"}</span>
+       <span className='title-sm'style={{textTransform:"capitalize"}}>{upcomingAssessment !== null && upcomingAssessment.contentName !== null ? upcomingAssessment.contentName : "Everything Caught Up!!"}</span>
         </div>
          
 
@@ -156,7 +157,7 @@ useEffect(()=>{
           </div>
          
           <div className="c-details1" style={{ textAlign: "justify" }}>
- <span className='title-sm'style={{textTransform:"capitalize"}}> {upcomingCapstoneLab.contentName !==null ? upcomingCapstoneLab.contentName :"Everything Caught Up!!"}</span>
+ <span className='title-sm'style={{textTransform:"capitalize"}}> {upcomingCapstoneLab !== null && upcomingCapstoneLab.contentName !==null ? upcomingCapstoneLab.contentName :"Everything Caught Up!!"}</span>
         </div>
          
          
@@ -176,7 +177,7 @@ useEffect(()=>{
             <div className='continue cat-title-md px-3' > Continue </div>
           </div>
           <div className="c-details1" style={{ textAlign: "justify" }}>
-     <span className='title-sm'style={{textTransform:"capitalize"}}>  {upcomingTrainingSession.contentName !==null ? upcomingTrainingSession.contentName :"Everything Caught Up!!"} </span>
+     <span className='title-sm'style={{textTransform:"capitalize"}}>  {upcomingTrainingSession !== null && upcomingTrainingSession.contentName !==null ? upcomingTrainingSession.contentName :"Everything Caught Up!!"} </span>
         </div>
       
 

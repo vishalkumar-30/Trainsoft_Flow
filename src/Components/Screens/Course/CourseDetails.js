@@ -379,18 +379,18 @@ const CourseDetails = ({ location }) => {
             payload.status = "ENABLED"
             console.log(payload);
             RestService.CreateTrainingSession(payload).then(res => {
-                Toast.success({ message: `Agenda is Successfully Created` });
+                Toast.success({ message: `Agenda is Successfully Created`, time: 2000 });
                 getSessionByPage()
                 setShow(false)
                 spinner.hide();
                 getSection();
-            }, err => { console.log(err); spinner.hide(); }
+            }, err => { console.log(err); spinner.hide(); Toast.error({ message: `Something wrong!!`, time: 2000 });}
             );
         }
         catch (err) {
             spinner.hide();
             console.error('error occur on createTrainingSession', err)
-            Toast.error({ message: `Something wrong!!` });
+            Toast.error({ message: `Something wrong!!`, time: 2000 });
         }
     }
 

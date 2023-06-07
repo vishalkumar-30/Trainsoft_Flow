@@ -19,6 +19,8 @@ const AssessmentCard = ({ question, review = false, setReview, index, correct = 
     activeQuestion,
     selectedAnswer,
     setSelectedAnswer,
+    correctAnswerMulti,
+    setCorrectAnswerMulti,
     instruction,
     assUserInfo,
     inReview,
@@ -26,18 +28,45 @@ const AssessmentCard = ({ question, review = false, setReview, index, correct = 
   } = useContext(AssessmentContext);
   const [activeOption, setActiveOption] = useState(selectedAnswers[question?.sid]?.answerId);
   const [submitStatus, setSubmitStatus] = useState(false);
+  const [questionType, setQuestionType] = useState('');
+  // const [correctAnswerMulti, setCorrectAnswerMulti] = useState([]);
   // this method to submit your answer
   // localStorage.setItem("assessmentSid", instruction.sid);
+
+  //handle multiple checkbox
+  const handleMultiCheck = (event, id) => {
+    const { checked } = event.target;
+
+    // Update the checkboxArray based on whether the checkbox was checked or unchecked
+    if (checked) {
+      setCorrectAnswerMulti((prevArray) => [...prevArray, id]);
+    } else {
+      setCorrectAnswerMulti((prevArray) => prevArray.filter((item) => item !== id));
+    }
+  };
   const handleSubmitAnswer = () => {
     if (AppUtils.isNotEmptyObject(selectedAnswer) && AppUtils.isNotEmptyObject(question)) {
       try {
         setSubmitStatus(true);
-        let payload = {
-          "sid": inReview ? selectedAnswers[activeQuestion.sid]?.sid : null,
-          "answerSid": selectedAnswer.sid,
-          "questionSid": activeQuestion.questionId.sid,
-          "quizSetSid": instruction.sid,
-          "virtualAccountSid": assUserInfo.sid
+        let payload;
+        if (questionType === "MS_MCQ") {
+          payload = {
+            "sid": inReview ? selectedAnswers[activeQuestion.sid]?.sid : null,
+            // "answerSid": selectedAnswer.sid,
+            "multiple_select_answer_sids": correctAnswerMulti,
+            "questionSid": activeQuestion.questionId.sid,
+            "quizSetSid": instruction.sid,
+            "virtualAccountSid": assUserInfo.sid
+          }
+        }
+        else {
+          payload = {
+            "sid": inReview ? selectedAnswers[activeQuestion.sid]?.sid : null,
+            "answerSid": selectedAnswer.sid,
+            "questionSid": activeQuestion.questionId.sid,
+            "quizSetSid": instruction.sid,
+            "virtualAccountSid": assUserInfo.sid
+          }
         }
         console.log(payload);
         RestService.submitAnswer(payload).then(
@@ -64,8 +93,6 @@ const AssessmentCard = ({ question, review = false, setReview, index, correct = 
   useEffect(() => {
     setActiveOption(selectedAnswers[question?.sid]?.answerId);
   }, [question, selectedAnswers]);
-
-  // console.log(questions);
 
   return (
     <div className={styles.AssessmentCard}>
@@ -108,9 +135,21 @@ const AssessmentCard = ({ question, review = false, setReview, index, correct = 
                 if (!finished && !review) {
                   setActiveOption(option?.sid);
                   setSelectedAnswer(option);
+                  console.log(option)
+                  setQuestionType(question.questionId.questionType)
                 }
               }}
             >
+             <div style={{display:"flex" }}>
+             {
+                question.questionId.questionType === "MS_MCQ" &&
+                  <input className='mb-3 mr-2' type="checkbox" value={option.sid} checked={correctAnswerMulti.includes(option.sid)}
+                    onChange={(event) => {
+                      handleMultiCheck(event, option.sid);
+
+                    }} disabled={review || finished? true : false} style={{outline:"none"}}/>
+               
+              }
               <AnswerOption
                 {...option}
                 correct={result ? option.correct : correct}
@@ -119,10 +158,14 @@ const AssessmentCard = ({ question, review = false, setReview, index, correct = 
                 active={activeOption === option?.sid}
                 result={result}
                 isAlphabet={question.questionId.alphabet}
+                questionType={question.questionId.questionType}
               />
+             </div>
+              
             </div>
           </>)
       }
+
       {/* {
         question
         && question.questionId && question.questionId.sid === null &&
@@ -176,8 +219,8 @@ const AssessmentCard = ({ question, review = false, setReview, index, correct = 
       <div className={styles.divider} />
       {
         !review
-        && !finished 
-        && 
+        && !finished
+        &&
         // question
         // && question.questionId && question.questionId.sid !== null &&
         <div className={styles.button}>

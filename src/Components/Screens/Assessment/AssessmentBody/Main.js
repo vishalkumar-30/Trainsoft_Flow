@@ -27,7 +27,7 @@ const myBucket = new AWS.S3({
 })
 
 
-const Main = ({ questions }) => {
+const Main = ({ questions}) => {
     const {
         questionIndex,
         activeQuestion,
@@ -71,7 +71,7 @@ const Main = ({ questions }) => {
                 response => {
 
                     if (response.status === 200) {
-                        localStorage.removeItem("trainingSid");
+                        // localStorage.removeItem("trainingSid");
                         localStorage.removeItem("sid");
                         localStorage.removeItem("sectionSid");
 
@@ -304,9 +304,10 @@ const Main = ({ questions }) => {
     const getFileName = (fileExtension) => {
         let userSid = JSON.parse(localStorage.getItem('user'))
         userSid = userSid.sid;
+        let trainingSid = localStorage.getItem("trainingSid");
 
         return (
-            `assessment_${instruction.sid}_${userSid}.${fileExtension}`
+            `assessmentrecording_${instruction.sid}_${trainingSid}_${userSid}.${fileExtension}`
         );
     };
 
