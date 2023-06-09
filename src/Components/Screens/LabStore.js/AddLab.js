@@ -14,13 +14,18 @@ const dummyData = {
   desc: "In this introductory-level Quest, you will get hands-on practice with the Google Cloud’s fundamental tools and services. Google Cloud Essentials is the recommended first Quest for the Google... more details",
 };
 
+<<<<<<< HEAD
 const AddLab = ({ labId, labName, labDescription, setStatus }) => {
+=======
+const AddLab = ({ labId, labName, labDescription, filterLabs }) => {
+>>>>>>> upstream/main
   const { spinner } = useContext(AppContext);
   const Toast = useToast();
 
   // add labs to account
   const addLabsToAccount = () => {
     try {
+<<<<<<< HEAD
       spinner.show();
       RestService.addLabsToAccount(labId).then(
         (res) => {
@@ -28,6 +33,15 @@ const AddLab = ({ labId, labName, labDescription, setStatus }) => {
           spinner.hide();
         },
         (err) => console.log(err)
+=======
+      spinner.show()
+      RestService.addLabsToAccount(labId).then(res => {
+        
+        Toast.success({ message: `Lab import successful`, time: 3000 });
+        spinner.hide();
+        filterLabs();
+      }, err => console.log(err)
+>>>>>>> upstream/main
       );
     } catch (err) {
       console.error("error occur on addLabsToAccount()", err);

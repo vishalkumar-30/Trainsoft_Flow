@@ -38,6 +38,7 @@ export const DateInput = (props) => {
                     placeholderText={props.placeholder ? props.placeholder : "Select Date"}
                     {...field}
                     dateFormat="dd/MM/yyyy"
+                    minDate={new Date()} 
                     value={meta.value}
                     onChange={e => setValue(e.getTime())}
                     className="form-control form-control-sm" />

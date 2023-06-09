@@ -125,6 +125,8 @@ const RestService = {
   deleteTopic: (sid) => AxiosService.delete(GLOBELCONSTANT.ASSESSMENT.DELETE_TOPIC.replace("{topicSid}", sid)),
   updateTopic: (payload) => AxiosService.put(GLOBELCONSTANT.ASSESSMENT.UPDATE_TOPIC, payload),
   getAllQuestion: (pageSize, pageNo) => AxiosService.get(GLOBELCONSTANT.ASSESSMENT.GET_ALL_QUESTION + pageSize + "&pageNo=" + pageNo),
+  getAllCodingQuestion: (pageSize, pageNo) => AxiosService.get(GLOBELCONSTANT.ASSESSMENT.GET_ALL_QUESTION + pageSize + "&pageNo=" + pageNo + `&question_type=CODING`),
+  getAllMultipleMcq: (pageSize, pageNo) => AxiosService.get(GLOBELCONSTANT.ASSESSMENT.GET_ALL_QUESTION + pageSize + "&pageNo=" + pageNo + `&question_type=MS_MCQ`),
   createQuestion: (payload) => AxiosService.post(GLOBELCONSTANT.ASSESSMENT.CREATE_QUESTION, payload),
   GetQuestionType: () => AxiosService.get(GLOBELCONSTANT.ASSESSMENT.GET_QUESTION_TYPE),
   createTopic: (payload) => AxiosService.post(GLOBELCONSTANT.ASSESSMENT.CREATE_TOPIC, payload),
@@ -240,6 +242,7 @@ const RestService = {
   getLearnerDasboardCardsDetails: () => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_LEARNER_DASHBOARD_CARD_DETAILS),
   getLogoutTimes: (timeSpent) => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_LOGOUT_TIMES + `?time_spent=${timeSpent}`),
   getLearnerTrainingProgress: (trainingSid) => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_LEARNER_TRAINING_PROGRESS + `?training-sid=${trainingSid}`),
+  getLearnerUpcomingContent: () => AxiosService.get(GLOBELCONSTANT.LEARNER_DASHBOARD.GET_LEARNER_UPCOMING_CONTENT),
 
   //INSTRUCTORDASHBOARD(
   getTrainersTrainingSessions: () => AxiosService.get(GLOBELCONSTANT.INSTRUCTOR_DASHBOARD.GET_TRAINERS_TRAINING_SESSIONS),
@@ -277,6 +280,7 @@ const RestService = {
   //coding questions
   getAllCodingQuestions: () => AxiosService.get(GLOBELCONSTANT.CODING.GET_ALL_CODING_QUESTIONS),
   addCodingQuestionToSection: (courseSid, sectionSid, questionId, tags) => AxiosService.post(GLOBELCONSTANT.CODING.ADD_CODING_QUESTIONS_TO_SECTION + `?course_sid=${courseSid}&question_id=${questionId}&section_sid=${sectionSid}&tags=${tags}`),
+  evaluateCodeWithTestCaseFile: (payload) => AxiosService.patch(GLOBELCONSTANT.CODING.EVALUATE_CODE_WITH_TEST_CASE_FILE, payload),
 
   //USERPROFILE
   getprofiledetails: () => AxiosService.get(GLOBELCONSTANT.USERPROFILE.GET_PROFILE_DETAILS),

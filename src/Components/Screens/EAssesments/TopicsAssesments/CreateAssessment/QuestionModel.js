@@ -3,7 +3,7 @@ import DynamicTable from "../../../../Common/DynamicTable/DynamicTable";
 import { Dropdown, Form } from 'react-bootstrap'
 import { Formik } from 'formik';
 import { ICN_EDIT, ICN_DELETE, ICN_TRASH } from "../../../../Common/Icon";
-import { Button,Cancel } from "../../../../Common/Buttons/Buttons";
+import { Button, Cancel } from "../../../../Common/Buttons/Buttons";
 import { BsModal } from "../../../../Common/BsUtils";
 import SearchBox from "../../../../Common/SearchBox/SearchBox";
 import RestService from "../../../../../Services/api.service";
@@ -11,15 +11,16 @@ import AppContext from "../../../../../Store/AppContext";
 import useToast from "../../../../../Store/ToastHook";
 import AssessmentContext from "../../../../../Store/AssessmentContext";
 
-const QuestionModel = ({ show, setShow, sid, getParticipant,allQuestion }) => {
-  const {assessmentVal,initialAssessment} = useContext(AssessmentContext)
+const QuestionModel = ({ show, setShow, sid, getParticipant, allQuestion }) => {
+    const { assessmentVal, initialAssessment } = useContext(AssessmentContext)
     const { user, spinner, ROLE } = useContext(AppContext)
     const [count, setCount] = useState(0)
     const Toast = useToast()
     const [participant, setParticipant] = useState([])
     const [selectedSid, setSelectedSid] = useState([])
+    const [selectedCodingQuestions, setSelectedCodingQuestions] = useState([])
     const [searchValue, setSearchValue] = useState([])
-    const [question,setQuestion] = useState([])
+    const [question, setQuestion] = useState([])
 
     const [configuration, setConfiguration] = useState({
         columns: {
@@ -28,7 +29,7 @@ const QuestionModel = ({ show, setShow, sid, getParticipant,allQuestion }) => {
                 "sortDirection": null,
                 "sortEnabled": true,
                 isSearchEnabled: false,
-                render: (data)=> <div className="elps hidden" title={data.name}>{data.name}</div>
+                render: (data) => <div className="elps hidden" title={data.name}>{data.name}</div>
             },
             "questionType": {
                 "title": "Type",
@@ -75,27 +76,48 @@ const QuestionModel = ({ show, setShow, sid, getParticipant,allQuestion }) => {
 
 
     // get All topic
-  const getAllQuestion = async () => {
-    spinner.show("Loading... wait");
-    try {
-      let { data } = await RestService.getNotAssociateQuestion(initialAssessment.sid)
-      setQuestion(data);
-      setSearchValue(data)
-      spinner.hide();
-    } catch (err) {
-      spinner.hide();
-      console.error("error occur on getAllTopic()", err)
+    const getAllQuestion = async () => {
+        spinner.show("Loading... wait");
+        try {
+            let { data } = await RestService.getNotAssociateQuestion(initialAssessment.sid)
+            setQuestion(data);
+            setSearchValue(data)
+            spinner.hide();
+        } catch (err) {
+            spinner.hide();
+            console.error("error occur on getAllTopic()", err)
+        }
     }
-  }
 
 
     // get user count
     const associateQuestion = async () => {
         try {
-            let payload = {
-                "questionSidList":selectedSid,
-                "assessmentSid": assessmentVal.sid
-              }
+            let payload;
+            // let payload = {
+            //     "questionSidList": selectedSid,
+            //     "assessmentSid": assessmentVal.sid,
+            //     "codingQuestionIdList": selectedSid
+            // }
+            if(selectedSid.length > 0 && selectedCodingQuestions.length > 0 ){
+                payload = {
+                    "questionSidList": selectedSid,
+                    "assessmentSid": assessmentVal.sid,
+                    "codingQuestionIdList": selectedCodingQuestions
+                }
+            }
+            else if(selectedSid.length > 0){
+                payload = {
+                    "questionSidList": selectedSid,
+                    "assessmentSid": assessmentVal.sid
+                }
+            }
+            else if(selectedCodingQuestions.length > 0 ){
+                payload = {
+                    "assessmentSid": assessmentVal.sid,
+                    "codingQuestionIdList": selectedCodingQuestions
+                }
+            }
             RestService.associateQuestion(sid, payload).then(
                 response => {
                     Toast.success({ message: "Question added successfully" })
@@ -128,6 +150,8 @@ const QuestionModel = ({ show, setShow, sid, getParticipant,allQuestion }) => {
         getAllQuestion()
     }, [])
 
+    console.log(question);
+
     return (<>
         <BsModal {...{
             show,
@@ -137,11 +161,29 @@ const QuestionModel = ({ show, setShow, sid, getParticipant,allQuestion }) => {
             size: "xl"
         }}>
             <div className="partiContainer">
-                <DynamicTable {...{ configuration, sourceData: searchValue, onSelected: (e) => {console.log(e); setSelectedSid(e.map(r => r.sid)); } }} />
+                <DynamicTable {...{
+                    configuration, sourceData: searchValue, onSelected: (e) => {
+                        console.log(e);
+                        // e.map(r=> r.sid !== null ? setSelectedSid(datas=>(
+                        //     ...datas, r.sid)) :
+                        let mcq = e.filter(function (sid) {
+                            return sid.sid !== null
+                        }).map(function (val) {
+                            return val.sid;
+                        })
+                        let coding = e.filter(function (coding) {
+                            return coding.codingQuestionId !== null
+                        }).map(function (val) {
+                            return val.codingQuestionId;
+                        })
+                         setSelectedCodingQuestions(coding)
+                         setSelectedSid(mcq);
+                    }
+                }} />
             </div>
             <div className="jce mt-2">
-               <Cancel className="mx-2" onClick={() => { setShow(false) }}>Cancel</Cancel>
-                <Button className="mx-2" onClick={() => { setShow(true); associateQuestion() }}>Add Question({selectedSid.length})</Button>
+                <Cancel className="mx-2" onClick={() => { setShow(false) }}>Cancel</Cancel>
+                <Button className="mx-2" onClick={() => { setShow(true); associateQuestion() }}>Add Question({selectedSid.length + selectedCodingQuestions.length})</Button>
             </div>
         </BsModal>
     </>)

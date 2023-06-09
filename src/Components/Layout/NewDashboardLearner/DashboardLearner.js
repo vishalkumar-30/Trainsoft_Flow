@@ -33,12 +33,15 @@ const DashboardLearner = () => {
     const [tagsScore, setTagsScore] = useState({});
     const [overallLeaderboard, setOverallLeaderboard] = useState([]);
     const [ranking, setRanking] = useState(40);
+const [leaderboardPercentage, setLeaderboardPercentage] =useState(20)
+
+
     const [skill, setSkill] = useState(0);
     const [count, setCount] = useState(0);
     const [ongoingTrainingDetails, setOngoingTrainingDetails] = useState([]);
     const [completedTrainingDetails, setCompletedTrainingDetails] = useState([]);
     const [learnerCertificateDetails, setLearnerCertificateDetails] = useState([]);
-    const [hoursInvested, setHoursInvested] = useState("");
+    const [hoursInvested, setHoursInvested] = useState('');
     // const [fourCards, setFourCards] = useState([]);
     let weakness = [], strength = [];
     let sum = 0;
@@ -118,8 +121,10 @@ const DashboardLearner = () => {
                                     if (overallLeaderboard[i].trainingSid === response.data[0].trainingSid &&
                                         overallLeaderboard[i].rankingDetails[j].isLoggedIn) {
 
-                                        console.log(overallLeaderboard[i].rankingDetails[j].rank);
-                                        setRanking(overallLeaderboard[i].rankingDetails[j].rank);
+                                        setRanking(overallLeaderboard[i].rankingDetails[j].leaderboardPosition);
+                                        console.log(overallLeaderboard[i].rankingDetails[j].leaderboardPercentage);
+                                        setLeaderboardPercentage(overallLeaderboard[i].rankingDetails[j].leaderboardPercentage);
+
                                         break;
                                     }
                                 }
@@ -140,6 +145,8 @@ const DashboardLearner = () => {
             console.error("error occur on getLearnerWeightedScores()", err)
         }
     }
+
+    console.log(leaderboardPercentage)
 
     //get specific training weightage
     const getLearnerWeightedScoresAll = () => {
@@ -260,7 +267,7 @@ const DashboardLearner = () => {
                         setOngoingTrainingDetails(response.data.ongoingTrainingDetails);
                         setCompletedTrainingDetails(response.data.completedTrainingDetails);
                         setLearnerCertificateDetails(response.data.learnerCertificateDetails);
-                        setHoursInvested(response.data.hourseInvestedDetails);
+                        setHoursInvested(response.data.hourseInvestedDetails.hoursInvested);
                     }
 
                 },
@@ -273,6 +280,19 @@ const DashboardLearner = () => {
         } catch (err) {
             console.error("error occur on getLearnerDasboardCardsDetails()", err)
         }
+    }
+
+    //convert minutes and hours into days
+    const getDaysFromMinutesAndHours = (hoursNMinutes) => {
+        const hours = hoursNMinutes.split(':')[0].replace(/\D/g, '');
+        const minutes = hoursNMinutes.split(':')[1].replace(/\D/g, '');
+        // Convert minutes and hours to milliseconds
+        var totalMilliseconds = (minutes * 60 + hours * 3600) * 1000;
+
+        // Calculate the number of days
+        var days = Math.floor(totalMilliseconds / (24 * 60 * 60 * 1000));
+
+        return days;
     }
 
     const keys = Object.keys(tagsScore);
@@ -300,20 +320,19 @@ const DashboardLearner = () => {
         getLearnerDasboardCardsDetails();
     }, []);
 
-    console.log(trainingDetails);
+    // console.log(hoursInvested.hoursInvested.split(':')[1].replace(/\D/g,''));
     return (
         <>
 
             <Card title="Skill meter">
-                <div className='row'>
-                    <div className='col-sm-6 col-md-6 pb-3'>
+                <div className="row">
+                    <div className="col-sm-6 col-md-6 " style={{marginTop:"-20px"}}>
                         <SkillsLevelGraph skills={(skill / count).toFixed(2)} />
                     </div>
-                    <div className='col-sm-6 col-md-6'>
-                        <div className='row'>
-                            <div className="col-sm-6 ">
-
-                                <div className="grid-batch1 ">
+                    <div className="col-sm-6 col-md-6 ">
+                        <div className="row mt-4">
+                            <div className="col-sm-6">
+                                <div className="grid-batch1">
                                     <div className="mb10">{ICN_COMING_BATCHES}</div>
                                     <div>
                                         <div className="batch-title">{ongoingTrainingDetails.count}</div>
@@ -325,10 +344,8 @@ const DashboardLearner = () => {
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-                            <div className="col-sm-6 ">
-
+                            <div className="col-sm-6">
                                 <div className="grid-batch2">
                                     <div className="mb10">{ICN_COPY}</div>
                                     <div>
@@ -341,12 +358,10 @@ const DashboardLearner = () => {
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
-                        <div className='row mt-3'>
-                            <div className="col-sm-6 ">
-
+                        <div className="row mt-3">
+                            <div className="col-sm-6">
                                 <div className="grid-batch3">
                                     <div className="mb10">{ICN_COPY}</div>
                                     <div>
@@ -359,46 +374,52 @@ const DashboardLearner = () => {
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
-                            <div className="col-sm-6 ">
-
+                            <div className="col-sm-6">
                                 <div className="grid-batch1">
                                     <div className="mb10">{ICN_COPY}</div>
-                                    <div>
-                                        <div className="batch-title">{hoursInvested.hoursInvested}</div>
-                                        <div className="batch-label">Hours Invested</div>
-                                    </div>
+                                    { 
+                                        hoursInvested.indexOf(":") && hoursInvested.split(':')[0].replace(/\D/g,'') >= 24?
+                                        <div>
+                                            <div className="batch-title">{getDaysFromMinutesAndHours(hoursInvested)}</div>
+                                            <div className="batch-label">Days Invested</div>
+                                        </div>
+                                        :
+                                        <div>
+                                            <div className="batch-title">{hoursInvested}</div>
+                                            <div className="batch-label">Hours Invested</div>
+                                        </div>
+
+                                    }
                                     <div className="jce">
                                         <div className="grid-batch-icon">
                                             <i className="bi bi-arrows-angle-expand"></i>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
-
                     </div>
                 </div>
             </Card>
 
-            <div className='row mt-2'>
-                <div className='col-sm-6 col-md-6'>
-                    <Card title="Pending Task">
+
+            <div className='row mt-2 mx-1'>
+                
+                    <Card title="Pick up where you left off">
                         <LinearProgressBar />
 
                     </Card>
-                </div>
-                <div className='col-sm-6 col-md-6'>
+               
+                {/* <div className='col-sm-6 col-md-6'>
                     <Card title="Upcoming Classes">
                         <div className='title-md' style={{ float: "right", margintop: "-40px" }}>
-                            {/* <a href='/calender'>  See All</a>
-                            View All */}
+                            <a href='/calender'>  See All</a>
+                            View All
                         </div>
                         <Upcoming />
                     </Card>
-                </div>
+                </div> */}
             </div>
 
             {/* leaderboard */}
@@ -435,7 +456,7 @@ const DashboardLearner = () => {
                                     <div className='title-md'>
                                         Leaderboard
                                     </div>
-                                    <LeaderboardTimeline ranking={ranking} />
+                                    <LeaderboardTimeline ranking={ranking.toFixed(2)}  leaderboardPercentage={leaderboardPercentage}/>
 
                                 </div>
                                 <div className='col-sm-3 col-md-3'>
@@ -453,7 +474,7 @@ const DashboardLearner = () => {
                                                         `${trainingDetails[0].learnerWeightedDetailsTO.videoCompletion.overalllAverageWeightage * 100}%`
                                                     } */}
                                                     {/* {Number.isInteger(trainingProgressVideo.percentage)? trainingProgressVideo.percentage : (trainingProgressVideo.percentage).toFixed(2)} */}
-                                                    {Number.isInteger(progressAll.VIDEO.percentage)? `${progressAll.VIDEO.percentage}%` : `${progressAll.VIDEO.percentage.toFixed(2)}%` }
+                                                    {Number.isInteger(progressAll.VIDEO.percentage) ? `${progressAll.VIDEO.percentage}%` : `${progressAll.VIDEO.percentage.toFixed(2)}%`}
                                                 </div>
                                             </div>
                                             : ''
@@ -469,7 +490,7 @@ const DashboardLearner = () => {
                                                         :
                                                         `${(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage * 100).toFixed(2)}%`
                                                     } */}
-                                                    {Number.isInteger(progressAll.LAB.percentage)? `${progressAll.LAB.percentage}%` : `${progressAll.LAB.percentage.toFixed(2)}%` }
+                                                    {Number.isInteger(progressAll.LAB.percentage) ? `${progressAll.LAB.percentage}%` : `${progressAll.LAB.percentage.toFixed(2)}%`}
                                                     {/* {Number.isInteger(trainingProgressLab.percentage) ? trainingProgressLab.percentage : (trainingProgressLab.percentage).toFixed(2)} */}
                                                 </div>
                                             </div>
@@ -484,7 +505,7 @@ const DashboardLearner = () => {
                                                     :
                                                     `${(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage * 100).toFixed(2)}%`
                                                 } */}
-                                              {Number.isInteger(progressAll.ASSESSMENT.percentage)? `${progressAll.ASSESSMENT.percentage}%` : `${progressAll.ASSESSMENT.percentage.toFixed(2)}%` }
+                                                {Number.isInteger(progressAll.ASSESSMENT.percentage) ? `${progressAll.ASSESSMENT.percentage}%` : `${progressAll.ASSESSMENT.percentage.toFixed(2)}%`}
                                                 {/* {Number.isInteger(trainingProgressAssessment.percentage) ? trainingProgressAssessment.percentage : (trainingProgressAssessment.percentage).toFixed(2)} */}
                                             </div>
                                         </div>
@@ -495,7 +516,7 @@ const DashboardLearner = () => {
                                         <div >70%</div>
                                     </div> */}
                                     {
-                                        progressAll.DOCUMENTS.total !== 0  ?
+                                        progressAll.DOCUMENTS.total !== 0 ?
                                             <div className=' my-2 d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #7214AE 0%, rgba(114, 20, 174, 0) 100%)" }}>
                                                 <div className='title-sm'>Study Material</div>
                                                 <div>
@@ -504,7 +525,7 @@ const DashboardLearner = () => {
                                                         :
                                                         `${trainingDetails[0].learnerWeightedDetailsTO.documentDetails.overalllAverageWeightage * 100}%`
                                                     } */}
-                                                    {Number.isInteger(progressAll.DOCUMENTS.percentage)? `${progressAll.DOCUMENTS.percentage}%` : `${progressAll.DOCUMENTS.percentage.toFixed(2)}%` }
+                                                    {Number.isInteger(progressAll.DOCUMENTS.percentage) ? `${progressAll.DOCUMENTS.percentage}%` : `${progressAll.DOCUMENTS.percentage.toFixed(2)}%`}
                                                     {/* {Number.isInteger(trainingProgressDoc.percentage) ? trainingProgressDoc.percentage : (trainingProgressDoc.percentage).toFixed(2)} */}
                                                 </div>
                                             </div>
@@ -512,7 +533,7 @@ const DashboardLearner = () => {
                                     }
 
                                     {
-                                        progressAll.CODING.total !== 0  ?
+                                        progressAll.CODING.total !== 0 ?
                                             <div className='d-flex justify-content-between p-2 border ' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
                                                 <div className='title-sm'>Challenges</div>
                                                 <div>
@@ -524,11 +545,38 @@ const DashboardLearner = () => {
                                                     {/* {
                                                       Number.isInteger(trainingProgressCoding.percentage) ? trainingProgressCoding.percentage : (trainingProgressCoding.percentage).toFixed(2)
                                                     } */}
-                                                    {Number.isInteger(progressAll.CODING.percentage)? `${progressAll.CODING.percentage}%` : `${progressAll.CODING.percentage.toFixed(2)}%` }
+                                                    {Number.isInteger(progressAll.CODING.percentage) ? `${progressAll.CODING.percentage}%` : `${progressAll.CODING.percentage.toFixed(2)}%`}
                                                 </div>
                                             </div>
                                             : ''
                                     }
+
+{
+                                        progressAll.CAPSTONE.total !== 0  ?
+                                            <div className='d-flex justify-content-between p-2 border  mt-2' style={{ width: "100%", borderRadius: "20px", background: "linear-gradient(180deg, #5CC9EE 0%, rgba(92, 201, 238, 0) 100%)" }}>
+                                                <div className='title-sm'>Capstone</div>
+                                                <div>
+                                                    {/* {isNaN(trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails.overalllAverageWeightage) ?
+                                                        "0%"
+                                                        :
+                                                        `${trainingDetails[0].learnerWeightedDetailsTO.codingQuestionDetails.overalllAverageWeightage * 100}%`
+                                                    } */}
+                                                    {/* {
+                                                      Number.isInteger(trainingProgressCoding.percentage) ? trainingProgressCoding.percentage : (trainingProgressCoding.percentage).toFixed(2)
+                                                    } */}
+                                                    {Number.isInteger(progressAll.CAPSTONE.percentage) ? `${progressAll.CAPSTONE.percentage}%` : `${progressAll.CAPSTONE.percentage.toFixed(2)}%`}
+                                                </div>
+                                            </div>
+                                            : ''
+                                    }
+
+
+
+
+
+
+
+
 
                                 </div>
                                 <div className='col-sm-3 col-md-3'>
@@ -543,14 +591,14 @@ const DashboardLearner = () => {
                                                     // maxValue="1000"
                                                     // minValue="1" value="580"
                                                     // text={`580`}
-                                                    value="30"
-                                                    text={`30%`}
+                                                    value={progressAll.CAPSTONE.percentage}
+                                                    text={`${progressAll.CAPSTONE.percentage}%`}
                                                     styles={buildStyles({
                                                         trailColor: "#F5FBFF",
                                                         pathColor: "#5CC9EE",
 
                                                     })} />
-                                                <div className="mt-2">Project Work</div>
+                                                <div className="mt-2">Capstone Project</div>
                                             </div>
 
 
@@ -566,9 +614,10 @@ const DashboardLearner = () => {
                                                                 pathColor: "#5CC9EE",
                                                             })} />
                                                         :
+                                            
                                                         <CircularProgressbar
-                                                            value={Math.round(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage * 100)}
-                                                            text={`${Math.round(trainingDetails[0].learnerWeightedDetailsTO.assessmentDetails.overalllAverageWeightage * 100)}%`}
+                                                            value={progressAll.ASSESSMENT.percentage}
+                                                            text={`${progressAll.ASSESSMENT.percentage}%`}
                                                             styles={buildStyles({
                                                                 trailColor: "#F5FBFF",
                                                                 pathColor: "#5CC9EE",
@@ -613,8 +662,9 @@ const DashboardLearner = () => {
                                                                 // maxValue="1000"
                                                                 // minValue="1" value="789"
                                                                 // text={`789`}
-                                                                value={Math.round(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage * 100)}
-                                                                text={`${Math.round(trainingDetails[0].learnerWeightedDetailsTO.labDetails.overalllAverageWeightage * 100)}%`}
+                                                                // Lab Assessment
+                                                                value={progressAll.LAB.percentage}
+                                                                text={`${progressAll.LAB.percentage}%`}
                                                                 styles={buildStyles({
                                                                     trailColor: "#F5FBFF",
                                                                     pathColor: "#7D00B5",
@@ -631,7 +681,7 @@ const DashboardLearner = () => {
                                                                 pathColor: "#7D00B5",
                                                             })} />
                                                 }
-                                                <div className="mt-2">Lab Assessments </div>
+                                                <div className="mt-2">Practice Labs </div>
                                             </div>
                                         </div>
                                     </div>
@@ -653,8 +703,8 @@ const DashboardLearner = () => {
                             </div>
 
                         </>
-                    : 
-                    ''
+                        :
+                        ''
 
                 }
 
@@ -682,8 +732,8 @@ const DashboardLearner = () => {
                                             return (
                                                 <>
                                                     <tr >
-                                                        <td className='title-sm'><ul><li>{skill.tags}</li></ul></td>
-                                                        <td>{Math.round(skill.totalTagPercentage)}</td>
+                                                        <td className='title-sm '><ul><li>{skill.tags}</li></ul></td>
+                                                        <td  className='assesmentlab cat-title-md px-3' style={{float:"right"}}>{Math.round(skill.totalTagPercentage)}</td>
 
                                                     </tr>
                                                 </>

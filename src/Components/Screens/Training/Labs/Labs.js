@@ -12,7 +12,6 @@ import LabSpinner from "./LabSpinner";
 import RecordRTC from "recordrtc";
 import AWS from 'aws-sdk';
 import axios from 'axios';
-import { Modal, ModalBody, ModalHeader, Button, Row } from "reactstrap";
 
 const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
 const REGION = process.env.REACT_APP_REGION;
@@ -47,6 +46,10 @@ function Labs(props) {
     const [evaluatedLab, setEvaluatedLab] = useState(props.location.state.evaluatedLab);
     const [isLoading, setIsLoading] = useState(true);
     const [offStartButton, setOffStartButton] = useState(true);
+    const labIdArray = [19, 20, 21, 24, 26, 27, 28, 29, 30, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+        51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 98,
+        204, 205, 206, 265, 266, 267, 365, 366, 367, 368];
+    const vsCodeLink = "https://gnosislabs.cloud/";
 
     //for recording
     const [recordedVideoUrl, setRecordedVideoUrl] = useState(null);
@@ -298,42 +301,87 @@ function Labs(props) {
             .catch(err => console.warn(err));
     }
 
+    // start lab for vscode 
+    // const startVSCodeLab = async () => {
+
+
+    //         if(labIdArray.includes(labId)){
+    //             setStartLabConnection(vsCodeLink);
+    //             setStopServer('');
+    //             setTimeout(function () {
+
+    //                 setShowButton(true);
+    //                 setIsLoading(false);
+    //                 Toast.success({ message: 'Lab Started Successfully', time: 3000 });
+
+    //             }, 20000);
+    //         }
+    // }
+
     //start lab 
     const ec2GuacamolePOC = async () => {
-        try {
-            let trainingSid = props.location.state.trainingSid;
-            let sectionSid = contentSid
-            spinner.show();
-            await RestService.ec2GuacamolePOC(labId, sectionSid, trainingSid).then(
-                response => {
-                    if (response.status === 200) {
+        // start lab for vscode 
+        if (labIdArray.includes(labId)) {
 
-                        setStartLabConnection(response.data);
-                        setStopConnection(response.data.split('#')[1]);
-                        setStopServer('');
-                        setTimeout(function () {
-                            setShowButton(true);
-                            setIsLoading(false);
-                            localStorage.setItem(`connectionString_${labId}_${labName}`, response.data);
-                            Toast.success({ message: 'Lab Started Successfully', time: 3000 });
-                            // localStorage.setItem('appearButton', true);
-                            if (evaluatedLab) {
-                                startScreenRecord();
-                            }
-                        }, 30000);
-                        // setLabConnection(response.data.split('#')[1]);
-                    }
-                },
-                err => {
-                    spinner.hide();
-                    Toast.error({ message: 'Try again', time: 2000 });
+            setStartLabConnection(vsCodeLink);
+            setStopConnection(vsCodeLink);
+            setStopServer('');
+            setTimeout(function () {
+
+                setShowButton(true);
+                setIsLoading(false);
+                Toast.success({ message: 'Lab Started Successfully', time: 3000 });
+                if (evaluatedLab) {
+                    startScreenRecord();
                 }
-            ).finally(() => {
-                spinner.hide();
-            });
-        } catch (err) {
-            console.error("error occur on ec2GuacamolePOC()", err)
+
+            }, 20000);
         }
+        else {
+            try {
+                let trainingSid = props.location.state.trainingSid;
+                let sectionSid = contentSid
+                spinner.show();
+                await RestService.ec2GuacamolePOC(labId, sectionSid, trainingSid).then(
+                    response => {
+                        if (response.status === 200) {
+
+                            setStartLabConnection(response.data);
+                            if (response.data.indexOf('#') > -1) {
+                                setStopConnection(response.data.split('#')[1]);
+                            }
+                            else {
+                                setStopConnection(response.data.split(':')[1].substring(2));
+                            }
+
+
+                            setStopServer('');
+                            setTimeout(function () {
+
+                                setShowButton(true);
+                                setIsLoading(false);
+                                localStorage.setItem(`connectionString_${labId}_${labName}`, response.data);
+                                Toast.success({ message: 'Lab Started Successfully', time: 3000 });
+                                // localStorage.setItem('appearButton', true);
+                                if (evaluatedLab) {
+                                    startScreenRecord();
+                                }
+                            }, 60000);
+                            // setLabConnection(response.data.split('#')[1]);
+                        }
+                    },
+                    err => {
+                        spinner.hide();
+                        Toast.error({ message: 'Try again', time: 2000 });
+                    }
+                ).finally(() => {
+                    spinner.hide();
+                });
+            } catch (err) {
+                console.error("error occur on ec2GuacamolePOC()", err)
+            }
+        }
+
     }
 
     //stop lab 
@@ -341,7 +389,9 @@ function Labs(props) {
         try {
             spinner.show();
             if (startLabConnection.length > 0) {
-                RestService.stopEC2InstanceAndTerminateGuacamoleServer(startLabConnection.split('#')[1]).then(
+                const connectionCheckString = startLabConnection.indexOf('#') > -1 ?
+                    startLabConnection.split('#')[1] : startLabConnection.split(':')[1].substring(2);
+                RestService.stopEC2InstanceAndTerminateGuacamoleServer(connectionCheckString).then(
                     response => {
                         Toast.success({ message: 'Lab paused successfully', time: 3000 });
                         setStartLabConnection('');
@@ -378,7 +428,9 @@ function Labs(props) {
             }
             else {
                 const connectionString = localStorage.getItem(`connectionString_${labId}_${labName}`);
-                RestService.stopEC2InstanceAndTerminateGuacamoleServer(connectionString.split('#')[1]).then(
+                const connectionCheckString = connectionString.indexOf('#') > -1 ?
+                    connectionString.split('#')[1] : connectionString.split(':')[1].substring(2);
+                RestService.stopEC2InstanceAndTerminateGuacamoleServer(connectionCheckString).then(
                     response => {
                         Toast.success({ message: 'Lab paused successfully', time: 3000 });
                         setStopServer(response.data);
@@ -401,84 +453,104 @@ function Labs(props) {
 
     //terminate lab 
     const terminateEC2InstanceAndTerminateGuacamoleServer = async () => {
-        try {
-            spinner.show();
-            if (startLabConnection.length > 0) {
-                RestService.terminateEC2InstanceAndTerminateGuacamoleServer(startLabConnection.split('#')[1]).then(
-                    response => {
-                        console.log(`connectionString_${labId}_${labName}`);
-                        Toast.success({ message: 'Lab completed successfully', time: 3000 });
-                        setStartLabConnection('');
-                        setStopConnection('');
-                        setShowButton(false);
-                        markCourseAsCompletedLabs();
-                        localStorage.removeItem('appearButton');
-                        localStorage.removeItem(`connectionString_${labId}_${labName}`);
-                        localStorage.removeItem("end_date");
-                        setOffStartButton(true);
-                        if (evaluatedLab) {
-                            stop();
-                        }
+        // stop lab for vscode 
+        if (labIdArray.includes(labId)) {
 
-                        // setLabConnection('');
-                    },
-                    err => {
-                        spinner.hide();
-                        Toast.error({ message: 'Try again', time: 3000 });
-                    }
-                ).finally(() => {
-                    spinner.hide();
-                });
-            } else if (stopConnection.length > 0) {
-                RestService.terminateEC2InstanceAndTerminateGuacamoleServer(stopConnection).then(
-                    response => {
-                        Toast.success({ message: 'Lab completed successfully', time: 3000 });
-                        setStopConnection('');
-                        setShowButton(false);
-                        markCourseAsCompletedLabs();
-                        localStorage.removeItem('appearButton');
-                        localStorage.removeItem(`connectionString_${labId}_${labName}`);
-                        localStorage.removeItem("end_date");
-                        setOffStartButton(true);
-                        if (evaluatedLab) {
-                            stop();
-                        }
+            setStartLabConnection('');
+            setStopConnection('');
+            setShowButton(false);
+            markCourseAsCompletedLabs();
+            localStorage.removeItem("end_date");
+            setOffStartButton(true);
+            if (evaluatedLab) {
+                stop();
+            }
+        }
+        else {
+            try {
+                spinner.show();
+                if (startLabConnection.length > 0) {
+                    const connectionCheckString = startLabConnection.indexOf('#') > -1 ?
+                        startLabConnection.split('#')[1] : startLabConnection.split(':')[1].substring(2);
+                    RestService.terminateEC2InstanceAndTerminateGuacamoleServer(connectionCheckString).then(
+                        response => {
+                            console.log(`connectionString_${labId}_${labName}`);
+                            Toast.success({ message: 'Lab completed successfully', time: 3000 });
+                            setStartLabConnection('');
+                            setStopConnection('');
+                            setShowButton(false);
+                            markCourseAsCompletedLabs();
+                            localStorage.removeItem('appearButton');
+                            localStorage.removeItem(`connectionString_${labId}_${labName}`);
+                            localStorage.removeItem("end_date");
+                            setOffStartButton(true);
+                            if (evaluatedLab) {
+                                stop();
+                            }
 
-                    },
-                    err => {
-                        spinner.hide();
-                        Toast.error({ message: 'Try again', time: 3000 });
-                    }
-                ).finally(() => {
-                    spinner.hide();
-                });
-            }
-            else {
-                const connectionString = localStorage.getItem(`connectionString_${labId}_${labName}`);
-                RestService.terminateEC2InstanceAndTerminateGuacamoleServer(connectionString.split('#')[1]).then(
-                    response => {
-                        Toast.success({ message: 'Lab completed successfully', time: 3000 });
-                        setStopConnection('');
-                        setShowButton(false);
-                        markCourseAsCompletedLabs();
-                        localStorage.removeItem(`connectionString_${labId}_${labName}`);
-                        localStorage.removeItem('connectionString');
-                        localStorage.removeItem("end_date");
-                        setOffStartButton(true);
-                        if (evaluatedLab) {
-                            stop();
+                            // setLabConnection('');
+                        },
+                        err => {
+                            spinner.hide();
+                            Toast.error({ message: 'Try again', time: 3000 });
                         }
-                    },
-                    err => {
+                    ).finally(() => {
                         spinner.hide();
-                        Toast.error({ message: 'Try again', time: 3000 });
-                    }
-                ).finally(() => {
-                    spinner.hide();
-                });
+                    });
+                } else if (stopConnection.length > 0) {
+                    RestService.terminateEC2InstanceAndTerminateGuacamoleServer(stopConnection).then(
+                        response => {
+                            Toast.success({ message: 'Lab completed successfully', time: 3000 });
+                            setStopConnection('');
+                            setShowButton(false);
+                            markCourseAsCompletedLabs();
+                            localStorage.removeItem('appearButton');
+                            localStorage.removeItem(`connectionString_${labId}_${labName}`);
+                            localStorage.removeItem("end_date");
+                            setOffStartButton(true);
+                            if (evaluatedLab) {
+                                stop();
+                            }
+
+                        },
+                        err => {
+                            spinner.hide();
+                            Toast.error({ message: 'Try again', time: 3000 });
+                        }
+                    ).finally(() => {
+                        spinner.hide();
+                    });
+                }
+                else {
+                    // const connectionString = localStorage.getItem(`connectionString_${labId}_${labName}`);
+                    const connectionString = localStorage.getItem(`connectionString_${labId}_${labName}`);
+                    const connectionCheckString = connectionString.indexOf('#') > -1 ?
+                        connectionString.split('#')[1] : connectionString.split(':')[1].substring(2);
+                    RestService.terminateEC2InstanceAndTerminateGuacamoleServer(connectionCheckString).then(
+                        response => {
+                            Toast.success({ message: 'Lab completed successfully', time: 3000 });
+                            setStopConnection('');
+                            setShowButton(false);
+                            markCourseAsCompletedLabs();
+                            localStorage.removeItem(`connectionString_${labId}_${labName}`);
+                            localStorage.removeItem('connectionString');
+                            localStorage.removeItem("end_date");
+                            setOffStartButton(true);
+                            if (evaluatedLab) {
+                                stop();
+                            }
+                        },
+                        err => {
+                            spinner.hide();
+                            Toast.error({ message: 'Try again', time: 3000 });
+                        }
+                    ).finally(() => {
+                        spinner.hide();
+                    });
+                }
+            } catch (err) {
+                console.error("error occur on terminateEC2InstanceAndTerminateGuacamoleServer()", err)
             }
-        } catch (err) {
-            console.error("error occur on terminateEC2InstanceAndTerminateGuacamoleServer()", err)
         }
     }
     //mark course as complete labs
@@ -521,23 +593,24 @@ function Labs(props) {
 
     //go back to training page
     const handleGoToTrainingDetails = () => {
-        
+
         if (evaluatedLab && startLabConnection.length > 0) {
             const response = window.confirm("Are you sure you want to terminate this lab?");
-            if(response){
+            if (response) {
                 terminateEC2InstanceAndTerminateGuacamoleServer();
-                navigate('/training');
-                
+                navigate('/training/training-details');
+
             }
-            
+
             //this will terminate labs for recording assessment labs
-            
+
         }
         else {
-            navigate('/training');
+            navigate('/training/training-details');
         }
     }
-
+    console.log(contentSid);
+    console.log(labId);
 
 
     //restrict browser back button
@@ -558,7 +631,7 @@ function Labs(props) {
         };
     }, []);
 
-
+    console.log(startLabConnection);
     return (
         <div >
             <div style={{ display: 'flex', height: '100vh', background: "#e9ecef" }} >
@@ -646,23 +719,23 @@ function Labs(props) {
                                         showButton || `connectionString_${labId}_${labName}` in localStorage ?
                                             <>
                                                 {
-                                                    evaluatedLab ? "" :
-                                                     <div className="col-2" style={{ textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "25px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
-                                                     {
-                                                         stopServer.length === 0 ?
- 
-                                                             <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>
-                                                                 Pause Lab
-                                                             </button>
-                                                             :
-                                                             
-                                                             <div>
-                                                                 <p className="text-white">Paused</p>
-                                                             </div>
-                                                     }
-                                                 </div>
+                                                    evaluatedLab || labIdArray.includes(labId) ? "" :
+                                                        <div className="col-2" style={{ textAlign: "center", textDecoration: "none", background: "#471579 ", padding: "15px 20px", marginLeft: "25px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
+                                                            {
+                                                                stopServer.length === 0 ?
+
+                                                                    <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => stopEC2InstanceAndTerminateGuacamoleServer()}>
+                                                                        Pause Lab
+                                                                    </button>
+                                                                    :
+
+                                                                    <div>
+                                                                        <p className="text-white">Paused</p>
+                                                                    </div>
+                                                            }
+                                                        </div>
                                                 }
-                                                
+
                                                 <div className="col-2" style={{ textAlign: "center", textDecoration: "none", background: "#471579", padding: "15px 20px", marginLeft: "25px", marginBottom: "50px", marginTop: "40px", border: "1px solid #471579", borderRadius: "10px" }}>
                                                     <button style={{ color: "#fff", fontSize: "15px" }} onClick={() => terminateEC2InstanceAndTerminateGuacamoleServer()}>Complete Lab</button>
                                                 </div>
@@ -692,11 +765,11 @@ function Labs(props) {
 
                                             :
 
-                                            <iframe src={startLabConnection} width="100%" height="600px" />
+                                            <iframe is="x-frame-bypass" src={startLabConnection} width="100%" height="600px" />
 
                                         :
                                         `connectionString_${labId}_${labName}` in localStorage ?
-                                            <iframe src={localStorage.getItem(`connectionString_${labId}_${labName}`)} width="100%" height="600px" />
+                                            <iframe is="x-frame-bypass" src={localStorage.getItem(`connectionString_${labId}_${labName}`)} width="100%" height="600px" />
                                             :
                                             <p className="text-white">Please Click on Start Lab</p>}
                                 </div>

@@ -358,7 +358,7 @@ const CourseDetails = ({ location }) => {
 
     //create Training session
     const createTrainingSession = (data) => {
-        console.log(data);
+        console.log(data.sessionDate);
         try {
             spinner.show();
             let endTime = setTimes(data.sessionDate, data.endTime)
@@ -379,18 +379,18 @@ const CourseDetails = ({ location }) => {
             payload.status = "ENABLED"
             console.log(payload);
             RestService.CreateTrainingSession(payload).then(res => {
-                Toast.success({ message: `Agenda is Successfully Created` });
+                Toast.success({ message: `Agenda is Successfully Created`, time: 2000 });
                 getSessionByPage()
                 setShow(false)
                 spinner.hide();
                 getSection();
-            }, err => { console.log(err); spinner.hide(); }
+            }, err => { console.log(err); spinner.hide(); Toast.error({ message: `Something wrong!!`, time: 2000 });}
             );
         }
         catch (err) {
             spinner.hide();
             console.error('error occur on createTrainingSession', err)
-            Toast.error({ message: `Something wrong!!` });
+            Toast.error({ message: `Something wrong!!`, time: 2000 });
         }
     }
 
@@ -501,7 +501,7 @@ const CourseDetails = ({ location }) => {
             RestService.filterAccountLabs(labs, capstoneLabs).then(
                 response => {
                     setAccountLabs(response.data.labDetails);
-                    setCapstoneLabs(false);
+                    // setCapstoneLabs(false);
                 },
                 err => {
                     spinner.hide();
@@ -745,21 +745,25 @@ const CourseDetails = ({ location }) => {
         }
     }
 
-    //delete course section
+    //delete course section after confirmation
     const deleteCourseSection = (sectionSid) => {
-        try {
-            spinner.show();
-            RestService.deleteCourseSection(sectionSid).then(res => {
-                Toast.success({ message: `Section deleted successfully` });
-                spinner.hide();
-                //window.location.reload(true);
-                getSection();
-            }, err => console.log(err)
-            );
+        const response = window.confirm("Are you sure you want to delete?");
+        if(response){
+            try {
+                spinner.show();
+                RestService.deleteCourseSection(sectionSid).then(res => {
+                    Toast.success({ message: `Section deleted successfully` });
+                    spinner.hide();
+                    //window.location.reload(true);
+                    getSection();
+                }, err => console.log(err)
+                );
+            }
+            catch (err) {
+                console.error('error occur on deleteCourseSection', err)
+            }
         }
-        catch (err) {
-            console.error('error occur on deleteCourseSection', err)
-        }
+    
     }
 
     useEffect(() => {
@@ -770,8 +774,6 @@ const CourseDetails = ({ location }) => {
         getAllCodingQuestions();
     }, []);
 
-
-    console.log(capstoneLabs);
 
     return (<>
         <div className="table-shadow p-3 pb-5">
@@ -979,6 +981,7 @@ const CourseDetails = ({ location }) => {
 
                                                             <div className="col-md-4 ">
                                                                 <DateInput name="sessionDate" label="Start date" />
+                                                         
                                                             </div>
                                                             <div className="col-md-4">
                                                                 <TimeInput name="startTime" placeholder="Select Time" label="Start Time" />
@@ -1011,14 +1014,24 @@ const CourseDetails = ({ location }) => {
 
                                             <>
                                                 <form onSubmit={handleSubmit}>
-                                                    <div class="form-check aic mt-3 mb-3" style={{ fontSize: "15px" }} >
+                                                    <div className="row mt-5 mb-3" >
 
-                                                        <input type="checkbox" id="capstone" name="capstone" checked={capstoneLabs}
-                                                            onChange={(e) => setCapstoneLabs(e.target.checked)} />
-                                                        <label class="form-check-label form-label mx-3 title-sm">Capstone Labs </label>
-                                                        <div className='title-sm'>(Select this option to narrow down the list of Labs suitable for assessment purposes.)</div>
+                                                        {/* <input type="checkbox" id="capstone" name="capstone" checked={capstoneLabs}
+                                                            onChange={(e) => setCapstoneLabs(e.target.checked)} /> */}
+                                                     <div className='col'>
+                                                     <label className="mb-2 label form-label ">Capstone Labs </label>
+                                                        <div className="input-wrapper">
+
+                                                            <select className="form-control" style={{ borderRadius: "30px", backgroundColor: "rgb(248, 250, 251)" }} onChange={(e) => setCapstoneLabs(e.target.value)}>
+                                                                <option value="" disabled selected hidden>Select</option>
+                                                                <option value="Yes">Yes</option>
+                                                                <option value="No">No</option>
+                                                            </select>
+                                                        </div>
+                                                     </div>
+                                                        {/* <div className='title-sm'>(Select this option to narrow down the list of Labs suitable for assessment purposes.)</div> */}
                                                     </div>
-                                                    <div className="row mt-3 mb-3 ">
+                                                    <div className="row mt-3  ">
 
                                                         {/* <TextInput name="assets" label="Assets" /> */}
 

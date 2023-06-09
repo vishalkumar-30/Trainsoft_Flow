@@ -1,167 +1,194 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import LinearProgress from '@mui/material/LinearProgress';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import  React,{useEffect,useState, useContext} from 'react';
+
 import "../NewDashboardLearner.css"
-function LinearProgressWithLabel(props) {
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Box sx={{ width: '100%', mr: 1 }}>
-        <LinearProgress variant="determinate" {...props} />
-      </Box>
-      <Box sx={{ minWidth: 45 }}>
-        <Typography variant="body2" color="text.secondary">{`${Math.round(
-          props.value,
-        )}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
+import DuoIcon from '@mui/icons-material/Duo';
+import SummarizeIcon from '@mui/icons-material/Summarize';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import SummarizeRoundedIcon from '@mui/icons-material/SummarizeRounded';
+import Groups3Icon from '@mui/icons-material/Groups3';
+import AppContext from '../../../../Store/AppContext';
+import ScienceIcon from '@mui/icons-material/Science';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import CodeIcon from '@mui/icons-material/Code';
+import RestService from '../../../../Services/api.service';
+import { useNavigate } from '@reach/router';
 
-LinearProgressWithLabel.propTypes = {
-  /**
-   * The value of the progress indicator for the determinate and buffer variants.
-   * Value between 0 and 100.
-   */
-  value: PropTypes.number.isRequired,
-};
+
 const LinearProgressBar = () => {
-  // const [progress, setProgress] = React.useState(10);
+const [upcomingDocuments,setUpcomingDocuments] =useState({});
+const [upcomingVideo,setUpcomingVideo] =useState({});
+const [upcomingTrainingSession,setUpcomingTrainingSession] =useState({});
+const [upcomingAssessment,setUpcomingAssessment] =useState({});
+const [upcomingPracticeLab,setUpcomingPracticeLab] =useState({});
+const [upcomingCapstoneLab,setUpcomingCapstoneLab] =useState({});
+const { user, batches, course, ROLE, spinner, setCategory } = useContext(AppContext);
 
-  // React.useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-  //   }, 800);
-  //   return () => {
-  //     clearInterval(timer);
-  //   };
-  // }, []);
+
+// const navigate = useNavigate();
+
+// function handleClick() {
+//   navigate("/training/training-details");
+// }
+
+// getLearnerUpcomingContent
+const getLearnerUpcomingContent = () => {
+  try {
+    RestService.getLearnerUpcomingContent().then(
+        response => {
+            if (response.status === 200) {
+              setUpcomingDocuments(response.data.upcomingDocuments !== null ? response.data.upcomingDocuments : null);
+              setUpcomingVideo(response.data.upcomingVideo !== null ? response.data.upcomingVideo : null);
+              setUpcomingTrainingSession(response.data.upcomingTrainingSession !== null ? response.data.upcomingTrainingSession : null);
+              setUpcomingAssessment(response.data.upcomingAssessment !== null ? response.data.upcomingAssessment : null);
+              // console.log(response.data.upcomingPracticeLab !== null ? response.data.upcomingPracticeLab : null)
+              setUpcomingPracticeLab(response.data.upcomingPracticeLab !== null ? response.data.upcomingPracticeLab : null);
+              setUpcomingCapstoneLab(response.data.upcomingCapstoneLab !== null ? response.data.upcomingCapstoneLab : null);
+            }
+
+        },
+        err => {
+            spinner.hide();
+        }
+    ).finally(() => {
+        spinner.hide();
+    });
+} catch (err) {
+    console.error("error occur on getLearnerUpcomingContent()", err)
+}
+}
+useEffect(()=>{
+  getLearnerUpcomingContent()
+},[])
 
   return (
+    <>
     <div className='row'>
-      {/* <div className='col-md-6 col-sm-6'>
-<Box sx={{ width: '100%' }} className="card">
-        <p>hello</p>
-        <LinearProgressWithLabel value={progress} />
-      </Box>
-</div>
-<div className='col-md-6 col-sm-6'>
-<Box sx={{ width: '100%' }}>
-        <p>hello</p>
-        <LinearProgressWithLabel value={progress} />
-      </Box>
-</div> */}
 
-      <div className='col-md-6 col-sm-6'>
-        <div class="card p-3 mb-2 shadow-sm  bg-white rounded">
-          <div class="d-flex justify-content-between">
-            <div class="d-flex flex-row align-items-center">
 
-              <div class="ms-2 c-details">
-                <div class="mb-0">Kubernetes for cloud native</div>
+<div className="col-md-4 col-sm-4 my-2">
+      <div className="card p-3 mb-2 shadow-sm rounded h-100" style={{ background: "#F7F7F9" }}>
+        <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex flex-row align-items-center">
+            <div className="ms-2 c-details">
+              <div className="mb-0">
+                <DuoIcon  /> Videos
               </div>
-
             </div>
-            <div className='days'> <span>30 mins</span></div>
           </div>
-
-          <div class="c-details1">Assignment 1</div>
-          <div class="mt-2">
-
-            <Box sx={{ width: '100%' }}>
-
-              {/* <LinearProgressWithLabel value={progress} /> */}
-              <LinearProgressWithLabel value={10} />
-            </Box>
-            {/*                         
-                        <div class="mt-3"> <span class="text1">32 Applied <span class="text2">of 50 capacity</span></span> </div> */}
-          </div>
-
+          <div className="continue cat-title-md px-3" >Continue</div>
         </div>
-      </div>
-      <div className='col-md-6 col-sm-6'>
-        <div class="card p-3 mb-2 shadow-sm  bg-white rounded">
-          <div class="d-flex justify-content-between">
-            <div class="d-flex flex-row align-items-center">
-
-              <div class="ms-2 c-details">
-                <div class="mb-0">Git labs</div>
-              </div>
-
-            </div>
-            <div className='days'> <span>30 mins</span></div>
-          </div>
-
-          <div class="c-details1">Assignment 2</div>
-          <div class="mt-2">
-
-            <Box sx={{ width: '100%' }}>
-
-              {/* <LinearProgressWithLabel value={progress} /> */}
-              <LinearProgressWithLabel value={30} />
-            </Box>
-            {/*                         
-                        <div class="mt-3"> <span class="text1">32 Applied <span class="text2">of 50 capacity</span></span> </div> */}
-          </div>
-
-        </div>
-      </div>
-      <div className='col-md-6 col-sm-6'>
-        <div class="card p-3 mb-2 shadow-sm  bg-white rounded">
-          <div class="d-flex justify-content-between">
-            <div class="d-flex flex-row align-items-center">
-
-              <div class="ms-2 c-details">
-                <div class="mb-0">Docker labs</div>
-              </div>
-
-            </div>
-            <div className='days'> <span>30 mins</span></div>
-          </div>
-
-          <div class="c-details1">Assignment 3</div>
-          <div class="mt-2">
-
-            <Box sx={{ width: '100%' }}>
-
-              {/* <LinearProgressWithLabel value={progress} /> */}
-              <LinearProgressWithLabel value={30} />
-            </Box>
-            {/*                         
-                        <div class="mt-3"> <span class="text1">32 Applied <span class="text2">of 50 capacity</span></span> </div> */}
-          </div>
-
-        </div>
-      </div>
-      <div className='col-md-6 col-sm-6'>
-        <div class="card p-3 mb-2 shadow-sm  bg-white rounded">
-          <div class="d-flex justify-content-between">
-            <div class="d-flex flex-row align-items-center">
-
-              <div class="ms-2 c-details">
-                <div class="mb-0">Devops Assignment</div>
-              </div>
-
-            </div>
-            <div className='days'> <span>30 mins</span></div>
-          </div>
-
-          <div class="c-details1">Assignment 4</div>
-          <div class="mt-2">
-
-            <Box sx={{ width: '100%' }}>
-
-              {/* <LinearProgressWithLabel value={progress} /> */}
-              <LinearProgressWithLabel value={60} />
-            </Box>
-            {/*                         
-                        <div class="mt-3"> <span class="text1">32 Applied <span class="text2">of 50 capacity</span></span> </div> */}
-          </div>
-
+        <div className="c-details1" style={{ textAlign: "justify"}}>
+          <span className='title-sm' style={{textTransform:"capitalize"}}>{upcomingVideo !== null && upcomingVideo.contentName !==null ? upcomingVideo.contentName : "Everything Caught Up!!"}</span>
+{/*        
+       <span className='title-sm'>{upcomingVideo.trainingName }  </span> */}
         </div>
       </div>
     </div>
+      <div className='col-md-4 col-sm-4 my-2'>
+        <div class="card p-3 mb-2 shadow-sm   rounded h-100" style={{background:"#F7F7F9"}}>
+          <div class="d-flex justify-content-between">
+            <div class="d-flex flex-row align-items-center">
+
+              <div class="ms-2 c-details">
+                <div class="mb-0"><SummarizeIcon/>Document</div>
+              </div>
+
+            </div>
+            <div className='continue cat-title-md px-3' > Continue </div>
+          </div>
+
+          <div className="c-details1" style={{ textAlign: "justify" }}>
+      <span className='title-sm' style={{textTransform:"capitalize"}}> {upcomingDocuments !== null && upcomingDocuments.contentName !==null ?upcomingDocuments.contentName :"Everything Caught Up!!"}</span>
+        </div>
+         
+
+        </div>
+      </div>
+      <div className='col-md-4 col-sm-4 my-2'>
+        <div class="card p-3 mb-2 shadow-sm   rounded h-100" style={{background:"#F7F7F9"}}>
+          <div class="d-flex justify-content-between">
+            <div class="d-flex flex-row align-items-center">
+
+              <div class="ms-2 c-details">
+                <div class="mb-0"><ScienceIcon/>Practice Lab</div>
+              </div>
+
+            </div>
+            <div className='continue cat-title-md px-3'  > Continue </div>
+          </div>
+          <div className="c-details1" style={{ textAlign: "justify" }}>
+       <span className='title-sm'style={{textTransform:"capitalize"}}>{upcomingPracticeLab !== null && upcomingPracticeLab.contentName !== null ? upcomingPracticeLab.contentName:"Everything Caught Up!!"}</span>
+        </div>
+          
+
+        </div>
+      </div>
+      <div className='col-md-4 col-sm-4'>
+        <div class="card p-3 mb-2 shadow-sm   h-100" style={{background:"#F7F7F9"}}>
+          <div class="d-flex justify-content-between">
+            <div class="d-flex flex-row align-items-center">
+
+              <div class="ms-2 c-details">
+                <div class="mb-0"><AssessmentIcon/>Assessment </div>
+              </div>
+
+            </div>
+            <div className='continue cat-title-md px-3' > Continue </div>
+          </div>
+
+          <div className="c-details1" style={{ textAlign: "justify" }}>
+       <span className='title-sm'style={{textTransform:"capitalize"}}>{upcomingAssessment !== null && upcomingAssessment.contentName !== null ? upcomingAssessment.contentName : "Everything Caught Up!!"}</span>
+        </div>
+         
+
+        </div>
+      </div>
+      <div className='col-md-4 col-sm-4'>
+        <div class="card p-3 mb-2 shadow-sm   h-100" style={{background:"#F7F7F9"}}>
+          <div class="d-flex justify-content-between">
+            <div class="d-flex flex-row align-items-center">
+
+              <div class="ms-2 c-details">
+                <div class="mb-0"><AssessmentIcon/>Capstone </div>
+              </div>
+
+            </div>
+            <div className='continue cat-title-md px-3' > Continue </div>
+          </div>
+         
+          <div className="c-details1" style={{ textAlign: "justify" }}>
+ <span className='title-sm'style={{textTransform:"capitalize"}}> {upcomingCapstoneLab !== null && upcomingCapstoneLab.contentName !==null ? upcomingCapstoneLab.contentName :"Everything Caught Up!!"}</span>
+        </div>
+         
+         
+
+        </div>
+      </div>
+      <div className='col-md-4 col-sm-4'>
+        <div class="card p-3 mb-2 shadow-sm   h-100" style={{background:"#F7F7F9"}}>
+          <div class="d-flex justify-content-between">
+            <div class="d-flex flex-row align-items-center">
+
+              <div class="ms-2 c-details">
+                <div class="mb-0"><Groups3Icon/>Meeting </div>
+              </div>
+
+            </div>
+            <div className='continue cat-title-md px-3' > Continue </div>
+          </div>
+          <div className="c-details1" style={{ textAlign: "justify" }}>
+     <span className='title-sm'style={{textTransform:"capitalize"}}>  {upcomingTrainingSession !== null && upcomingTrainingSession.contentName !==null ? upcomingTrainingSession.contentName :"Everything Caught Up!!"} </span>
+        </div>
+      
+
+        </div>
+      </div>
+    
+
+
+
+    </div>
+    </>
   );
 }
 

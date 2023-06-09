@@ -20,7 +20,7 @@ const QuitModal = ({ show, setShow }) => {
   const handleQuitAssessment = () => {
     try {
       spinner.show("Quitting assessment.. Please wait...");
-      fromLogin ? navigate("/assessment", { state: { title: "Dashboard" } }) : navigate("/")
+      fromLogin ? navigate("/assessment", { state: { title: "Dashboard" } }) : navigate("/training/training-details")
       RestService.quitAssessment(instruction.sid, assUserInfo.sid).then(
         response => {
           spinner.hide();

@@ -6,6 +6,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { BsCheckbox } from "../../../Common/BsUtils";
 
 const MyLab = ({ accountLabs }) => {
+<<<<<<< HEAD
   return (
     <>
       <div className="aic jcb">
@@ -17,6 +18,15 @@ const MyLab = ({ accountLabs }) => {
           <div>
             <BsCheckbox label="Requested Lab" id="request-labs" />{" "}
           </div>
+=======
+    console.log(accountLabs);
+    return (<>
+        <div className="aic jcb">
+            <div className="title-md">Lab Filter</div>
+            <div className="aic">
+                <div className="mx-3"><BsCheckbox label="All Labs" id="all-labs"/></div><div><BsCheckbox label="Requested Lab" id="request-labs"/> </div>
+            </div>
+>>>>>>> upstream/main
         </div>
       </div>
 

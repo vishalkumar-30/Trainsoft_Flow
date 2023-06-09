@@ -277,7 +277,9 @@ const GLOBELCONSTANT = {
         GET_ALL_TRAINING_SESSIONS :API_HOST_V2 + 'learner/get-all-training-sessions',
         GET_LEARNER_DASHBOARD_CARD_DETAILS: API_HOST_V2 + "learner/get-dashboard-card-details",
         GET_LOGOUT_TIMES: API_HOST + "logout-times",
-        GET_LEARNER_TRAINING_PROGRESS: API_HOST_V2 + "learner/training-progress"
+        GET_LEARNER_TRAINING_PROGRESS: API_HOST_V2 + "learner/training-progress",
+
+        GET_LEARNER_UPCOMING_CONTENT :API_HOST_V2 +"learner/upcoming-content"
     },
     INSTRUCTOR_DASHBOARD : {
         GET_TRAINERS_TRAINING_SESSIONS: API_HOST_V2 + "instructor/get-daily-training-sessions",
@@ -321,7 +323,8 @@ const GLOBELCONSTANT = {
 
     CODING: {
         GET_ALL_CODING_QUESTIONS: API_HOST_V2 + "get-all-coding-questions",
-        ADD_CODING_QUESTIONS_TO_SECTION: API_HOST_V2 + "add-coding-question-to-section"
+        ADD_CODING_QUESTIONS_TO_SECTION: API_HOST_V2 + "add-coding-question-to-section",
+        EVALUATE_CODE_WITH_TEST_CASE_FILE: API_HOST_V2 + "evaluate-coding-question"
     },
 
     USERPROFILE: {
