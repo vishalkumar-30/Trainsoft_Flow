@@ -1,34 +1,44 @@
 import { useContext } from "react";
-import Carousel from 'react-bootstrap/Carousel'
-import { ICN_ON_GOING } from "../../Common/Icon"
-import Screen1 from '../../../Assets/Images/screen1.png';
+import Carousel from "react-bootstrap/Carousel";
+import { ICN_ON_GOING } from "../../Common/Icon";
+import Screen1 from "../../../Assets/Images/screen1.png";
 import "./Styles.css";
-import { Button } from '../../Common/Buttons/Buttons';
-import RestService from '../../../Services/api.service';
-import useToast from '../../../Store/ToastHook';
-import AppContext from '../../../Store/AppContext';
-const dummyData = { label: 'Google Cloud Essentials', icon: ICN_ON_GOING, link: '', desc: 'In this introductory-level Quest, you will get hands-on practice with the Google Cloud’s fundamental tools and services. Google Cloud Essentials is the recommended first Quest for the Google... more details' }
+import { Button } from "../../Common/Buttons/Buttons";
+import RestService from "../../../Services/api.service";
+import useToast from "../../../Store/ToastHook";
+import AppContext from "../../../Store/AppContext";
+const dummyData = {
+  label: "Google Cloud Essentials",
+  icon: ICN_ON_GOING,
+  link: "",
+  desc: "In this introductory-level Quest, you will get hands-on practice with the Google Cloud’s fundamental tools and services. Google Cloud Essentials is the recommended first Quest for the Google... more details",
+};
 
-const AddLab = ({ labId, labName, labDescription }) => {
+const AddLab = ({ labId, labName, labDescription, setStatus }) => {
   const { spinner } = useContext(AppContext);
   const Toast = useToast();
 
   // add labs to account
   const addLabsToAccount = () => {
     try {
-      spinner.show()
-      RestService.addLabsToAccount(labId).then(res => {
-        
-        Toast.success({ message: `Lab import successful` });
-        spinner.hide();
-      }, err => console.log(err)
+      spinner.show();
+      RestService.addLabsToAccount(labId).then(
+        (res) => {
+          Toast.success({ message: `Lab import successful` });
+          spinner.hide();
+        },
+        (err) => console.log(err)
       );
-    }
-    catch (err) {
-      console.error('error occur on addLabsToAccount()', err)
+    } catch (err) {
+      console.error("error occur on addLabsToAccount()", err);
       Toast.error({ message: `Something wrong!!` });
     }
-  }
+  };
+
+  const handleOnClick = () => {
+    addLabsToAccount();
+    setStatus(labId);
+  };
 
   return (
     <div>
@@ -93,78 +103,47 @@ const AddLab = ({ labId, labName, labDescription }) => {
         <Carousel.Item>
           <div className="flx">
             <div className="carousel-div">
-              <img
-                className="d-block"
-                src={Screen1}
-                alt="First slide"
-              />
+              <img className="d-block" src={Screen1} alt="First slide" />
             </div>
             <div className="carousel-div">
-              <img
-                className="d-block"
-                src={Screen1}
-                alt="First slide"
-              />
+              <img className="d-block" src={Screen1} alt="First slide" />
             </div>
             <div className="carousel-div">
-              <img
-                className="d-block"
-                src={Screen1}
-                alt="First slide"
-              />
+              <img className="d-block" src={Screen1} alt="First slide" />
             </div>
             <div className="carousel-div">
-              <img
-                className="d-block"
-                src={Screen1}
-                alt="First slide"
-              />
+              <img className="d-block" src={Screen1} alt="First slide" />
             </div>
           </div>
-
         </Carousel.Item>
         <Carousel.Item>
           <div className="flx">
             <div className="carousel-div">
-              <img
-                className="d-block"
-                src={Screen1}
-                alt="First slide"
-              />
+              <img className="d-block" src={Screen1} alt="First slide" />
             </div>
             <div className="carousel-div">
-              <img
-                className="d-block"
-                src={Screen1}
-                alt="First slide"
-              />
+              <img className="d-block" src={Screen1} alt="First slide" />
             </div>
             <div className="carousel-div">
-              <img
-                className="d-block"
-                src={Screen1}
-                alt="First slide"
-              />
+              <img className="d-block" src={Screen1} alt="First slide" />
             </div>
             <div className="carousel-div">
-              <img
-                className="d-block"
-                src={Screen1}
-                alt="First slide"
-              />
+              <img className="d-block" src={Screen1} alt="First slide" />
             </div>
           </div>
         </Carousel.Item>
-
       </Carousel>
 
       <footer className="jcb mt-4">
         <div></div>
         <div>
-          <Button type="submit"  onClick={() => addLabsToAccount()}>Pay and import</Button>
+          <Button type="submit" onClick={handleOnClick}>
+            Pay and import
+          </Button>
         </div>
       </footer>
-    </div>)
-}
+    </div>
+  );
+};
 
-export default AddLab
+export default AddLab;
