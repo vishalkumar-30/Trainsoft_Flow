@@ -138,7 +138,6 @@ const LabStore = ({ location }) => {
                 <div className="cat-title-md">{res.categoryName}</div>
                 {/* <div className="cat-title-sm">{res.desc}</div> */}
 
-<<<<<<< HEAD
                 <div className="text-right">
                   <BtnPrimary
                     onClick={() => {
@@ -204,69 +203,6 @@ const LabStore = ({ location }) => {
         });
     } catch (err) {
       console.error("error occur on filterLabs()", err);
-=======
-        return (<div className="catalog-container">
-            {categorieList.map(res => <div className="catalogBox">
-                <div className="catalogBox-info">
-                    
-                <div ><img src={res.thumbnail} width="100%" height="230px" alt="Lab" title={res.categoryName} style={{borderTopLeftRadius:"15px",borderTopRightRadius:"15px"}}/></div>
-                <div className="catalog-content" >
-                        <div className="cat-title-md">{res.categoryName}</div>
-                        {/* <div className="cat-title-sm">{res.desc}</div> */}
-                  
-                    <div className="text-right">
-                        <BtnPrimary onClick={() => {
-                            navigate('labstore/lab-list', { state: { title: 'LAB STORE', subTitle: "Catalog", 
-                            subPath: "labstore", categoryName: res.categoryName} });
-                            // filterLabs(res.categoryName);
-                            }} className="labbutton">Show All Lab(s)</BtnPrimary>
-                    </div>
-                    </div>
-                </div>
-            </div>)}
-    
-        </div>)
-    }
-
-    // get all labs categories
-    const getAllLabCategories = () => {
-        try {
-
-            spinner.show()
-            RestService.getAllLabCategories().then(
-                response => {
-                    setCategorieList(response.data);
-                },
-                err => {
-                    spinner.hide();
-                }
-            ).finally(() => {
-                spinner.hide();
-            });
-        } catch (err) {
-            console.error("error occur on getAllLabCategories()", err)
-        }
-    }
-
-     // get all labs from account
-     const getAccountLabs = () => {
-        try {
-
-            spinner.show()
-            RestService.getAccountLabs().then(
-                response => {
-                    setAccountLabs(response.data.labDetails);
-                },
-                err => {
-                    spinner.hide();
-                }
-            ).finally(() => {
-                spinner.hide();
-            });
-        } catch (err) {
-            console.error("error occur on getAllLabCategories()", err)
-        }
->>>>>>> upstream/main
     }
   };
 
@@ -296,7 +232,6 @@ const LabStore = ({ location }) => {
     // getAccountLabs();
   }, []);
 
-<<<<<<< HEAD
   return (
     <div className="table-shadow p-3">
       <CardHeader {...{ location }} />
@@ -339,21 +274,3 @@ const LabStore = ({ location }) => {
   );
 };
 export default LabStore;
-=======
-    return (
-        <div className="table-shadow p-3">
-            <CardHeader {...{ location }} />
-            <div className="flx tab-btn-group mb-3">
-                <TabBtn active={location.state.subPath === "labstore"} onClick={() => navigate("/labstore", { state: { title: 'Lab Store', subTitle: "Catalog", subPath: "labstore" } })}>Catalog</TabBtn>
-                <TabBtn active={location.state.subPath === "mylab"} onClick={() => navigate("/labstore/mylab", { state: { title: 'Lab Store', subTitle: "My Lab", subPath: "mylab" } })}>My Labs</TabBtn>
-            </div>
-            <Router>
-                <LabContainer path="/" />
-                {/* <LabList {...{ list: labsFromCategory}} path="lab-list" /> */}
-                <LabList path="lab-list" />
-                <MyLab  {...{ accountLabs }} path="mylab" />
-            </Router>
-        </div>)
-}
-export default LabStore
->>>>>>> upstream/main
